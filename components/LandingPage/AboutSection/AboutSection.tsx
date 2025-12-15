@@ -10,7 +10,7 @@ const AboutSection = () => {
           alt="Innovare HP Team"
           fill
           className="object-cover"
-          sizes="(max-width: 1024px) 100vw, 50vw"
+          sizes="(max-width: 1023px) 100vw, 50vw"
           priority
         />
       </div>

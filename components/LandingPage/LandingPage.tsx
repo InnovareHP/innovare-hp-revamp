@@ -1,3 +1,4 @@
+import AboutSection from "./AboutSection/AboutSection";
 import ContactPage from "./ContactSection/ContactPage";
 import HeroSection from "./HeroSection/HeroSection";
 import Navigation from "./Navigation/Navigation";
@@ -10,6 +11,7 @@ const LandingPage = () => {
     <main className="relative">
       <Navigation />
       <HeroSection />
+      <AboutSection />
       <Partners />
       <Process />
       <ContactPage />

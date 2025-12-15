@@ -4,6 +4,7 @@ import HeroSection from "./HeroSection/HeroSection";
 import Navigation from "./Navigation/Navigation";
 import Partners from "./Partners/Partners";
 import Process from "./Proces/Process";
+import WhatWeDo from "./WhatWeDo/WhatWeDo";
 
 const LandingPage = () => {
   return (
@@ -14,6 +15,7 @@ const LandingPage = () => {
       <AboutSection />
       <Partners />
       <Process />
+      <WhatWeDo />
       <ContactPage />
     </main>
   );

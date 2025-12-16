@@ -61,12 +61,13 @@ const TeamSection = () => {
           {team.map((member, index) => (
             <div key={index} className="flex items-start gap-6">
               {/* Profile Image */}
-              <div className="w-[100px] h-[120px] bg-gray-400 flex-shrink-0 overflow-hidden shadow-sm relative">
+              <div className="w-[100px] h-[120px] bg-gray-400 shrink-0 overflow-hidden shadow-sm relative">
                 <Image
                   src={member.image}
                   alt={member.name}
                   fill
                   className="object-cover grayscale"
+                  sizes="100px"
                 />
               </div>
 

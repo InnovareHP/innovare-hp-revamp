@@ -36,9 +36,8 @@ const logos = [
 const Partners = () => {
   //Pending pictures
   return (
-    <section className="bg-muted/30 py-16 md:py-24 overflow-hidden">
-      <div className="container mx-auto px-4">
-        {/* Heading */}
+    <section className="bg-muted/30 p-10 my-10 overflow-hidden">
+      <div className="">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -46,12 +45,11 @@ const Partners = () => {
           viewport={{ once: true }}
           className="mb-12"
         >
-          <p className="text-4xl md:text-5xl font-semibold text-left">
+          <p className="text-4xl md:text-5xl font-bold text-left">
             Who we partner with
           </p>
         </motion.div>
 
-        {/* Logos */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

@@ -15,7 +15,7 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-black/60" />
       </div>
 
-      <div className="container relative z-10 px-10 sm:px-2 mx-auto">
+      <div className="relative z-10 w-full mx-20">
         <div className="max-w-4xl space-y-2">
           <h1 className="text-3xl md:text-4xl lg:text-5xl text-white leading-tighter">
             Marketing that empowers healthcare brands to stand apart and stay

@@ -5,37 +5,37 @@ const TeamSection = () => {
     {
       name: "Rich Nollen, BSN, RN",
       role: "Owner/CEO",
-      image: "/api/placeholder/120/150",
+      image: "/images/team/team-1.png",
     },
     {
       name: "Roy Gingrich",
       role: "CFO",
-      image: "/api/placeholder/120/150",
+      image: "/images/team/team-5.png",
     },
     {
       name: "Amy Cunningham, MHC, MBA",
       role: "Regional Brand & Relationship Manager",
-      image: "/api/placeholder/120/150",
+      image: "/images/team/team-2.png",
     },
     {
       name: "Tracy Lorenz",
       role: "Regional Brand & Relationship Manager",
-      image: "/api/placeholder/120/150",
+      image: "/images/team/team-6.png",
     },
     {
       name: "Ivor Glorioso",
       role: "Software Engineer/CIO",
-      image: "/api/placeholder/120/150",
+      image: "/images/team/team-3.png",
     },
     {
       name: "Abcdef Cresencio",
       role: "Software Engineer/IT & Web Systems Manager",
-      image: "/api/placeholder/120/150",
+      image: "/images/team/team-7.png",
     },
     {
       name: "Shiela Veran",
       role: "Strategic Growth Associate",
-      image: "/api/placeholder/120/150",
+      image: "/images/team/team-4.png",
     },
   ];
 
@@ -60,12 +60,13 @@ const TeamSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
           {team.map((member, index) => (
             <div key={index} className="flex items-start gap-6">
-              {/* Profile Image Placeholder */}
-              <div className="w-[100px] h-[120px] bg-gray-400 flex-shrink-0 overflow-hidden shadow-sm">
-                <img
+              {/* Profile Image */}
+              <div className="w-[100px] h-[120px] bg-gray-400 flex-shrink-0 overflow-hidden shadow-sm relative">
+                <Image
                   src={member.image}
                   alt={member.name}
-                  className="w-full h-full object-cover grayscale"
+                  fill
+                  className="object-cover grayscale"
                 />
               </div>
 

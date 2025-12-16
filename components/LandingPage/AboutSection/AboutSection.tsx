@@ -11,6 +11,8 @@ const AboutSection = () => {
           fill
           className="object-cover"
           priority
+          quality={100}
+          sizes="(max-width: 1024px) 100vw, 50vw"
         />
       </div>
 

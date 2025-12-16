@@ -1,4 +1,5 @@
 import AboutSection from "./AboutSection/AboutSection";
+import ClientReviews from "./ClientReviews/ClientReviews";
 import ContactPage from "./ContactSection/ContactPage";
 import HeroSection from "./HeroSection/HeroSection";
 import MissionSection from "./MissionSection/MissionSection";
@@ -20,6 +21,7 @@ const LandingPage = () => {
       <Process />
       <WhatWeDo />
       <OtherService />
+      <ClientReviews />
       <MissionSection />
       <TeamSection />
       <ContactPage />

@@ -1,0 +1,100 @@
+import Image from "next/image";
+
+const TeamSection = () => {
+  const team = [
+    {
+      name: "Rich Nollen, BSN, RN",
+      role: "Owner/CEO",
+      image: "/api/placeholder/120/150",
+    },
+    {
+      name: "Roy Gingrich",
+      role: "CFO",
+      image: "/api/placeholder/120/150",
+    },
+    {
+      name: "Amy Cunningham, MHC, MBA",
+      role: "Regional Brand & Relationship Manager",
+      image: "/api/placeholder/120/150",
+    },
+    {
+      name: "Tracy Lorenz",
+      role: "Regional Brand & Relationship Manager",
+      image: "/api/placeholder/120/150",
+    },
+    {
+      name: "Ivor Glorioso",
+      role: "Software Engineer/CIO",
+      image: "/api/placeholder/120/150",
+    },
+    {
+      name: "Abcdef Cresencio",
+      role: "Software Engineer/IT & Web Systems Manager",
+      image: "/api/placeholder/120/150",
+    },
+    {
+      name: "Shiela Veran",
+      role: "Strategic Growth Associate",
+      image: "/api/placeholder/120/150",
+    },
+  ];
+
+  return (
+    <section className="bg-[#E5E1DA] py-16 px-6 md:px-24 text-[#414141]">
+      <div className="max-w-6xl mx-auto">
+        {/* Header Content */}
+        <div className="mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-700">
+            Meet the champions of our proven outreach strategies
+          </h2>
+          <p className="max-w-4xl text-sm leading-relaxed text-gray-600">
+            Over the course of our journey, we have forged meaningful
+            partnerships with a diverse range of healthcare and health-related
+            organizations. From hospitals and staffing company to senior living
+            and consultants, we have collaborated with businesses across various
+            sectors, harnessing our expertise to drive meaningful growth.
+          </p>
+        </div>
+
+        {/* Team Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+          {team.map((member, index) => (
+            <div key={index} className="flex items-start gap-6">
+              {/* Profile Image Placeholder */}
+              <div className="w-[100px] h-[120px] bg-gray-400 flex-shrink-0 overflow-hidden shadow-sm">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="w-full h-full object-cover grayscale"
+                />
+              </div>
+
+              {/* Member Details */}
+              <div className="flex flex-col pt-2">
+                <h3 className="font-bold text-lg leading-tight">
+                  {member.name}
+                </h3>
+                <p className="text-sm text-gray-600 mt-1">{member.role}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Footer Logo */}
+        <div className="mt-20 flex justify-end items-center gap-2 opacity-80">
+          <Image
+            src="/images/logo-black.png"
+            alt="Innovare HP"
+            width={50}
+            height={50}
+          />
+          <h2 className="uppercase font-light text-lg font-signika tracking-[0.55em] sm:block hidden">
+            Innovare HP
+          </h2>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default TeamSection;

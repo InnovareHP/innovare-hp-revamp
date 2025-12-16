@@ -44,7 +44,6 @@ const OtherService = () => {
         </Button>
       </div>
 
-      {/* Services Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
         {services.map((service, index) => (
           <div key={index} className="space-y-4">

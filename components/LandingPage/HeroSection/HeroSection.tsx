@@ -13,7 +13,7 @@ const HeroSection = () => {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-black/60"  />
       </div>
 
       <div className="relative z-10 w-full px-8 sm:px-6 md:px-12 lg:px-20">

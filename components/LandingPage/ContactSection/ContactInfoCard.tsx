@@ -89,7 +89,7 @@ const ContactInfoCard = () => {
             <p className="text-sm font-semibold text-gray-700">Social Media</p>
 
             <div className="flex gap-3">
-              {socialLinks.map(({ icon: Icon, href }, index) => (
+              {socialLinks.map(({ icon: Icon, href, title }, index) => (
                 <a
                   key={index}
                   href={href}

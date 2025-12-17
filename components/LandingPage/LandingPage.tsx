@@ -21,9 +21,9 @@ const LandingPage = () => {
       <Process />
       <WhatWeDo />
       <OtherService />
-      <ClientReviews />
       <MissionSection />
       <TeamSection />
+      <ClientReviews />
       <ContactPage />
     </main>
   );

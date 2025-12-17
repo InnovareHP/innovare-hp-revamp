@@ -32,129 +32,144 @@ const ClientReviews = () => {
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-16">
-      {/* Two Column Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Left Column - Header + Brian Caulfield Review */}
-        <div className="space-y-6">
-          {/* Header Section */}
-          <div>
-            <h2 className="text-4xl md:text-5xl font-bold text-blue-900 tracking-tight mb-6">
-              CLIENT REVIEWS
-            </h2>
-            <p className="text-gray-700 leading-relaxed text-[15px] mb-8">
-              Taking the lead in implementing brand-specific outreach strategies
-              means advocating for and implementing effective methods to connect
-              with a specific target audience or community, with the ultimate
-              aim of achieving well-defined goals. Whether it&apos;s promoting a
-              product or service, advocating for a cause, or cultivating
-              relationships with referral partners, successful outreach plays a
-              pivotal role in these endeavors. Here are some reviews from
-              mission-based organizations that we have helped.
-            </p>
-          </div>
-
-          {/* Brian Caulfield Review */}
-          <div className="grid grid-cols-2 gap-4">
-            {/* Left Sub-column - Headshot and Logo */}
-            <div className="flex flex-row items-start gap-3">
-              <Image
-                src={reviews[0].headshot}
-                alt={reviews[0].name}
-                width={120}
-                height={120}
-                className="rounded-full object-cover shrink-0 w-[120px] h-[120px] mt-[18px]"
-              />
-              <Image
-                src={reviews[0].logo}
-                alt={`${reviews[0].company} logo`}
-                width={182}
-                height={182}
-                className="object-contain shrink-0 w-[182px] h-[182px] min-w-[182px] min-h-[182px]"
-              />
+    <section className="bg-gray-200 w-full">
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        {/* Two Column Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Left Column - Header + Brian Caulfield Review */}
+          <div className="space-y-6">
+            {/* Header Section */}
+            <div>
+              <h2 className="text-4xl md:text-5xl text-gray-700 tracking-tight mb-6">
+                <span className="font-bold">CLIENT</span> REVIEWS
+              </h2>
+              <p className="text-gray-700 leading-tight text-base lg:text-xl font-sans font-normal mb-8">
+                Taking the lead in implementing brand-specific outreach
+                strategies means advocating for and implementing effective
+                methods to connect with a specific target audience or community,
+                with the ultimate aim of achieving well-defined goals. Whether
+                it&apos;s promoting a product or service, advocating for a
+                cause, or cultivating relationships with referral partners,
+                successful outreach plays a pivotal role in these endeavors.
+                Here are some reviews from mission-based organizations that we
+                have helped.
+              </p>
             </div>
-            {/* Right Sub-column - Text Content */}
-            <div className="space-y-4">
-              <blockquote className="text-gray-700 leading-relaxed text-base lg:text-lg mb-4">
-                &ldquo;{reviews[0].quote}&rdquo;
-              </blockquote>
-              <div className="space-y-0.5">
-                <p className="font-bold text-blue-900 text-lg">
-                  {reviews[0].name}
-                </p>
-                <p className="text-gray-700 text-base">{reviews[0].title}</p>
-                <p className="text-gray-700 text-base">{reviews[0].company}</p>
+
+            {/* Brian Caulfield Review */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* Left Sub-column - Headshot and Logo */}
+              <div className="flex flex-row items-start gap-3">
+                <Image
+                  src={reviews[0].headshot}
+                  alt={reviews[0].name}
+                  width={120}
+                  height={120}
+                  className="rounded-full object-cover shrink-0 w-[120px] h-[120px] mt-[18px]"
+                />
+                <Image
+                  src={reviews[0].logo}
+                  alt={`${reviews[0].company} logo`}
+                  width={182}
+                  height={182}
+                  className="object-contain shrink-0 w-[182px] h-[182px] min-w-[182px] min-h-[182px]"
+                />
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Column - Ken Watts + Nadine Carlson Reviews */}
-        <div className="space-y-10">
-          {/* Ken Watts Review */}
-          <div className="grid grid-cols-2 gap-4">
-            {/* Left Sub-column - Headshot and Logo */}
-            <div className="flex flex-row items-start gap-3">
-              <Image
-                src={reviews[1].headshot}
-                alt={reviews[1].name}
-                width={120}
-                height={120}
-                className="rounded-full object-cover shrink-0 w-[120px] h-[120px] mt-[18px]"
-              />
-              <Image
-                src={reviews[1].logo}
-                alt={`${reviews[1].company} logo`}
-                width={182}
-                height={182}
-                className="object-contain shrink-0 w-[182px] h-[182px] min-w-[182px] min-h-[182px]"
-              />
-            </div>
-            {/* Right Sub-column - Text Content */}
-            <div className="space-y-4">
-              <blockquote className="text-gray-700 leading-relaxed text-base lg:text-lg mb-4">
-                &ldquo;{reviews[1].quote}&rdquo;
-              </blockquote>
-              <div className="space-y-0.5">
-                <p className="font-bold text-blue-900 text-lg">
-                  {reviews[1].name}
-                </p>
-                <p className="text-gray-700 text-base">{reviews[1].title}</p>
-                <p className="text-gray-700 text-base">{reviews[1].company}</p>
+              {/* Right Sub-column - Text Content */}
+              <div className="space-y-4">
+                <blockquote className="text-gray-700 leading-tight text-base lg:text-xl font-sans font-normal mb-4">
+                  &ldquo;{reviews[0].quote}&rdquo;
+                </blockquote>
+                <div className="space-y-0.5">
+                  <p className="font-bold text-gray-700 text-base lg:text-xl">
+                    {reviews[0].name}
+                  </p>
+                  <p className="text-gray-700 text-base italic lg:text-xl">
+                    {reviews[0].title}
+                  </p>
+                  <p className="text-gray-700 text-base italic lg:text-xl">
+                    {reviews[0].company}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Nadine Carlson Review */}
-          <div className="grid grid-cols-2 gap-4">
-            {/* Left Sub-column - Headshot and Logo */}
-            <div className="flex flex-row items-start gap-3">
-              <Image
-                src={reviews[2].headshot}
-                alt={reviews[2].name}
-                width={120}
-                height={120}
-                className="rounded-full object-cover shrink-0 w-[120px] h-[120px] mt-[18px]"
-              />
-              <Image
-                src={reviews[2].logo}
-                alt={`${reviews[2].company} logo`}
-                width={182}
-                height={182}
-                className="object-contain shrink-0 w-[182px] h-[182px] min-w-[182px] min-h-[182px]"
-              />
+          {/* Right Column - Ken Watts + Nadine Carlson Reviews */}
+          <div className="space-y-10">
+            {/* Ken Watts Review */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* Left Sub-column - Headshot and Logo */}
+              <div className="flex flex-row items-start gap-3">
+                <Image
+                  src={reviews[1].headshot}
+                  alt={reviews[1].name}
+                  width={120}
+                  height={120}
+                  className="rounded-full object-cover shrink-0 w-[120px] h-[120px] mt-[18px]"
+                />
+                <Image
+                  src={reviews[1].logo}
+                  alt={`${reviews[1].company} logo`}
+                  width={182}
+                  height={182}
+                  className="object-contain shrink-0 w-[182px] h-[182px] min-w-[182px] min-h-[182px]"
+                />
+              </div>
+              {/* Right Sub-column - Text Content */}
+              <div className="space-y-4">
+                <blockquote className="text-gray-700 leading-tight text-base lg:text-xl font-sans font-normal mb-4">
+                  &ldquo;{reviews[1].quote}&rdquo;
+                </blockquote>
+                <div className="space-y-0.5">
+                  <p className="font-bold text-gray-700 text-base lg:text-xl">
+                    {reviews[1].name}
+                  </p>
+                  <p className="text-gray-700 text-base italic lg:text-xl">
+                    {reviews[1].title}
+                  </p>
+                  <p className="text-gray-700 text-base italic lg:text-xl">
+                    {reviews[1].company}
+                  </p>
+                </div>
+              </div>
             </div>
-            {/* Right Sub-column - Text Content */}
-            <div className="space-y-4">
-              <blockquote className="text-gray-700 leading-relaxed text-base lg:text-lg mb-4">
-                &ldquo;{reviews[2].quote}&rdquo;
-              </blockquote>
-              <div className="space-y-0.5">
-                <p className="font-bold text-blue-900 text-lg">
-                  {reviews[2].name}
-                </p>
-                <p className="text-gray-700 text-base">{reviews[2].title}</p>
-                <p className="text-gray-700 text-base">{reviews[2].company}</p>
+
+            {/* Nadine Carlson Review */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* Left Sub-column - Headshot and Logo */}
+              <div className="flex flex-row items-start gap-3">
+                <Image
+                  src={reviews[2].headshot}
+                  alt={reviews[2].name}
+                  width={120}
+                  height={120}
+                  className="rounded-full object-cover shrink-0 w-[120px] h-[120px] mt-[18px]"
+                />
+                <Image
+                  src={reviews[2].logo}
+                  alt={`${reviews[2].company} logo`}
+                  width={182}
+                  height={182}
+                  className="object-contain shrink-0 w-[182px] h-[182px] min-w-[182px] min-h-[182px]"
+                />
+              </div>
+              {/* Right Sub-column - Text Content */}
+              <div className="space-y-4">
+                <blockquote className="text-gray-700 leading-tight text-base lg:text-xl font-sans font-normal mb-4">
+                  &ldquo;{reviews[2].quote}&rdquo;
+                </blockquote>
+                <div className="space-y-0.5">
+                  <p className="font-bold text-gray-700 text-base lg:text-xl">
+                    {reviews[2].name}
+                  </p>
+                  <p className="text-gray-700 text-base italic lg:text-xl">
+                    {reviews[2].title}
+                  </p>
+                  <p className="text-gray-700 text-base italic lg:text-xl">
+                    {reviews[2].company}
+                  </p>
+                </div>
               </div>
             </div>
           </div>

@@ -47,7 +47,7 @@ const TeamSection = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-700">
             Meet the champions of our proven outreach strategies
           </h2>
-          <p className="max-w-4xl text-sm leading-relaxed text-gray-600">
+          <p className="text-lg lg:text-2xl leading-tight text-gray-600 font-sans font-normal">
             Over the course of our journey, we have forged meaningful
             partnerships with a diverse range of healthcare and health-related
             organizations. From hospitals and staffing company to senior living
@@ -61,22 +61,24 @@ const TeamSection = () => {
           {team.map((member, index) => (
             <div key={index} className="flex items-start gap-6">
               {/* Profile Image */}
-              <div className="w-[100px] h-[120px] bg-gray-400 shrink-0 overflow-hidden shadow-sm relative">
+              <div className="w-[121px] h-[145px] bg-gray-400 shrink-0 overflow-hidden shadow-sm relative">
                 <Image
                   src={member.image}
                   alt={member.name}
                   fill
                   className="object-cover grayscale"
-                  sizes="100px"
+                  sizes="121px"
                 />
               </div>
 
               {/* Member Details */}
               <div className="flex flex-col pt-2">
-                <h3 className="font-bold text-lg leading-tight">
+                <h3 className="font-bold text-xl md:text-2xl leading-tight">
                   {member.name}
                 </h3>
-                <p className="text-sm text-gray-600 mt-1">{member.role}</p>
+                <p className="text-lg lg:text-2xl leading-tight text-gray-600 font-sans font-normal mt-1">
+                  {member.role}
+                </p>
               </div>
             </div>
           ))}

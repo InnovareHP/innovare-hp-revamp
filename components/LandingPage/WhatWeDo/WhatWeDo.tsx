@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import WorkWithUsButton from "@/components/ui/work-with-us-button";
 
 const services = [
   {
@@ -42,12 +42,7 @@ const WhatWeDo = () => {
           <h2 className="text-4xl md:text-5xl font-bold text-left text-blue-900">
             What we do
           </h2>
-          <Button
-            variant="outline"
-            className="border-blue-400 text-blue-400 hover:bg-blue-50 hover:text-blue-500 rounded-none px-6 py-3 text-sm font-normal uppercase tracking-wide cursor-pointer"
-          >
-            WORK WITH US
-          </Button>
+          <WorkWithUsButton />
         </div>
 
         <div className="space-y-8 lg:space-y-10 mx-10">
@@ -63,7 +58,7 @@ const WhatWeDo = () => {
 
               <p
                 className={
-                  "text-lg lg:text-4xl leading-tight text-black font-sans font-normal mx-10"
+                  "text-lg lg:text-4xl leading-tight text-black font-sans font-normal"
                 }
               >
                 {service.description}

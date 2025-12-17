@@ -1,10 +1,58 @@
+"use client";
+
 import WorkWithUsButton from "@/components/ui/work-with-us-button";
+import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 
 const HeroSection = () => {
+  // Container variant: Smoothly brings in the text elements
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  // Item variant: Slide and fade without causing flashes
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  // Static/Scale variant: We remove the Opacity 0 to prevent the flash
+  const bgVariants: Variants = {
+    hidden: { scale: 1.05 },
+    visible: {
+      scale: 1,
+      transition: {
+        duration: 2, // Slow, elegant zoom out
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
-    <section className="relative w-full min-h-[80vh] flex items-center">
-      <div className="absolute inset-0 w-full h-full">
+    <section className="relative w-full min-h-[80vh] flex items-center overflow-hidden bg-gray-900">
+      {/* Background remains dark (bg-gray-900) immediately. 
+         Only the scale effect is applied to the image. 
+      */}
+      <motion.div
+        variants={bgVariants}
+        initial="hidden"
+        animate="visible"
+        className="absolute inset-0 w-full h-full"
+      >
         <Image
           src="/images/hero-section.jpg"
           alt="Hero Section"
@@ -12,25 +60,37 @@ const HeroSection = () => {
           className="object-cover"
           priority
         />
+        {/* The overlay is here from frame 1 */}
         <div className="absolute inset-0 bg-black/60" />
-      </div>
+      </motion.div>
 
       <div className="relative z-10 w-full px-8 sm:px-6 md:px-12 lg:px-20">
-        <div className="max-w-4xl space-y-2">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white leading-relaxed sm:leading-tight">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="max-w-4xl space-y-4"
+        >
+          <motion.h1
+            variants={itemVariants}
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white leading-relaxed sm:leading-tight font-bold"
+          >
             Marketing that empowers healthcare brands to stand apart and stay
             ahead.
-          </h1>
+          </motion.h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-xl tracking-wide">
+          <motion.p
+            variants={itemVariants}
+            className="text-base sm:text-lg md:text-xl text-gray-200 max-w-xl tracking-wide"
+          >
             Innovare HP delivers full-service healthcare marketing for
             organizations that want to lead—not follow.
-          </p>
+          </motion.p>
 
-          <div className="pt-4">
+          <motion.div variants={itemVariants} className="pt-4">
             <WorkWithUsButton variant="hero" />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

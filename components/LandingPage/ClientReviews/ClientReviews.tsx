@@ -1,10 +1,13 @@
+"use client";
+
+import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 
 const ClientReviews = () => {
   const reviews = [
     {
       quote:
-        "Our organization's relationship with Innovare HP is rooted in a clear increase in revenue-driven by their innovative strategies, collaborative approach, and most importantly, the high-quality introductions they've facilitated. While we are technically a client of Innovare HP, the experience feels far more relational than transactional. They take the time to truly understand our goals, tailor their approach accordingly, and continually invest in our success. If you're looking for a marketing partner who shows up as part of your team and not just a vendor, Innovare HP is the one.",
+        "“Our organization's relationship with Innovare HP is rooted in a clear increase in revenue-driven by their innovative strategies, collaborative approach, and most importantly, the high-quality introductions they've facilitated. While we are technically a client of Innovare HP, the experience feels far more relational than transactional. They take the time to truly understand our goals, tailor their approach accordingly, and continually invest in our success. If you're looking for a marketing partner who shows up as part of your team and not just a vendor, Innovare HP is the one.”",
       name: "Brian Caulfield",
       title: "CMO",
       company: "Centerline Billing & Consulting",
@@ -13,7 +16,7 @@ const ClientReviews = () => {
     },
     {
       quote:
-        "What comes to mind when I think of Rich, he is amazing at marketing! All kinds of marketing. I have been in business for over 45 years, and he is the most cost-effective creative marketer I have ever worked with. If you need help building your business to higher profits, call Rich! don't waste your time anywhere else.",
+        "“What comes to mind when I think of Rich, he is amazing at marketing! All kinds of marketing. I have been in business for over 45 years, and he is the most cost-effective creative marketer I have ever worked with. If you need help building your business to higher profits, call Rich! don't waste your time anywhere else.”",
       name: "Ken Watts",
       title: "Owner/Founder",
       company: "Helping with Mom's Home",
@@ -31,15 +34,37 @@ const ClientReviews = () => {
     },
   ];
 
+  // Animation Variants
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.3 },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
+
   return (
-    <section id="reviews" className="bg-gray-200 w-full">
-      <div className="max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 py-16">
-        {/* Two Column Layout */}
+    <section id="reviews" className="bg-gray-200 w-full overflow-hidden">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        className="max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 py-16"
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Left Column - Header + Brian Caulfield Review */}
           <div className="space-y-6">
-            {/* Header Section */}
-            <div>
+            <motion.div variants={itemVariants}>
               <h2 className="text-4xl md:text-5xl text-gray-700 tracking-tight mb-6">
                 <span className="font-bold">CLIENT</span> REVIEWS
               </h2>
@@ -54,32 +79,38 @@ const ClientReviews = () => {
                 Here are some reviews from mission-based organizations that we
                 have helped.
               </p>
-            </div>
+            </motion.div>
 
             {/* Brian Caulfield Review */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Left Sub-column - Headshot and Logo */}
+            <motion.div
+              variants={itemVariants}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+            >
               <div className="flex flex-row items-start gap-3">
-                <Image
-                  src={reviews[0].headshot}
-                  alt={reviews[0].name}
-                  width={120}
-                  height={120}
-                  sizes="(max-width: 640px) 80px, 120px"
-                  className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
-                />
-                <Image
-                  src={reviews[0].logo}
-                  alt={`${reviews[0].company} logo`}
-                  width={182}
-                  height={182}
-                  sizes="(max-width: 640px) 120px, 182px"
-                  className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px] min-h-[120px] sm:min-w-[182px] sm:min-h-[182px]"
-                />
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Image
+                    src={reviews[0].headshot}
+                    alt={reviews[0].name}
+                    width={120}
+                    height={120}
+                    className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
+                  />
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.05 }}>
+                  <Image
+                    src={reviews[0].logo}
+                    alt={`${reviews[0].company} logo`}
+                    width={182}
+                    height={182}
+                    className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px]"
+                  />
+                </motion.div>
               </div>
-              {/* Right Sub-column - Text Content */}
               <div className="space-y-4">
-                <blockquote className="text-gray-700 leading-relaxed sm:leading-normal text-base lg:text-xl font-sans font-normal mb-4">
+                <blockquote className="text-gray-700 leading-relaxed text-base lg:text-xl font-sans italic">
                   &ldquo;{reviews[0].quote}&rdquo;
                 </blockquote>
                 <div className="space-y-0.5">
@@ -94,93 +125,62 @@ const ClientReviews = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Right Column - Ken Watts + Nadine Carlson Reviews */}
           <div className="space-y-10">
-            {/* Ken Watts Review */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Left Sub-column - Headshot and Logo */}
-              <div className="flex flex-row items-start gap-3">
-                <Image
-                  src={reviews[1].headshot}
-                  alt={reviews[1].name}
-                  width={120}
-                  height={120}
-                  sizes="(max-width: 640px) 80px, 120px"
-                  className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
-                />
-                <Image
-                  src={reviews[1].logo}
-                  alt={`${reviews[1].company} logo`}
-                  width={182}
-                  height={182}
-                  sizes="(max-width: 640px) 120px, 182px"
-                  className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px] min-h-[120px] sm:min-w-[182px] sm:min-h-[182px]"
-                />
-              </div>
-              {/* Right Sub-column - Text Content */}
-              <div className="space-y-4">
-                <blockquote className="text-gray-700 leading-relaxed sm:leading-normal text-base lg:text-xl font-sans font-normal mb-4">
-                  &ldquo;{reviews[1].quote}&rdquo;
-                </blockquote>
-                <div className="space-y-0.5">
-                  <p className="font-bold text-gray-700 text-base lg:text-xl">
-                    {reviews[1].name}
-                  </p>
-                  <p className="text-gray-700 text-base italic lg:text-xl">
-                    {reviews[1].title}
-                  </p>
-                  <p className="text-gray-700 text-base italic lg:text-xl">
-                    {reviews[1].company}
-                  </p>
+            {/* Ken Watts & Nadine Carlson loops */}
+            {[reviews[1], reviews[2]].map((review, idx) => (
+              <motion.div
+                key={idx}
+                variants={itemVariants}
+                className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+              >
+                <div className="flex flex-row items-start gap-3">
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <Image
+                      src={review.headshot}
+                      alt={review.name}
+                      width={120}
+                      height={120}
+                      className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
+                    />
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.05 }}>
+                    <Image
+                      src={review.logo}
+                      alt={`${review.company} logo`}
+                      width={182}
+                      height={182}
+                      className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px]"
+                    />
+                  </motion.div>
                 </div>
-              </div>
-            </div>
-
-            {/* Nadine Carlson Review */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Left Sub-column - Headshot and Logo */}
-              <div className="flex flex-row items-start gap-3">
-                <Image
-                  src={reviews[2].headshot}
-                  alt={reviews[2].name}
-                  width={120}
-                  height={120}
-                  sizes="(max-width: 640px) 80px, 120px"
-                  className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
-                />
-                <Image
-                  src={reviews[2].logo}
-                  alt={`${reviews[2].company} logo`}
-                  width={182}
-                  height={182}
-                  sizes="(max-width: 640px) 120px, 182px"
-                  className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px] min-h-[120px] sm:min-w-[182px] sm:min-h-[182px]"
-                />
-              </div>
-              {/* Right Sub-column - Text Content */}
-              <div className="space-y-4">
-                <blockquote className="text-gray-700 leading-relaxed sm:leading-normal text-base lg:text-xl font-sans font-normal mb-4">
-                  &ldquo;{reviews[2].quote}&rdquo;
-                </blockquote>
-                <div className="space-y-0.5">
-                  <p className="font-bold text-gray-700 text-base lg:text-xl">
-                    {reviews[2].name}
-                  </p>
-                  <p className="text-gray-700 text-base italic lg:text-xl">
-                    {reviews[2].title}
-                  </p>
-                  <p className="text-gray-700 text-base italic lg:text-xl">
-                    {reviews[2].company}
-                  </p>
+                <div className="space-y-4">
+                  <blockquote className="text-gray-700 leading-relaxed text-base lg:text-xl font-sans italic">
+                    &ldquo;{review.quote}&rdquo;
+                  </blockquote>
+                  <div className="space-y-0.5">
+                    <p className="font-bold text-gray-700 text-base lg:text-xl">
+                      {review.name}
+                    </p>
+                    <p className="text-gray-700 text-base italic lg:text-xl">
+                      {review.title}
+                    </p>
+                    <p className="text-gray-700 text-base italic lg:text-xl">
+                      {review.company}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            ))}
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

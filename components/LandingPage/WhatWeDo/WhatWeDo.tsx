@@ -1,11 +1,13 @@
+"use client";
+
 import WorkWithUsButton from "@/components/ui/work-with-us-button";
+import { motion, Variants } from "framer-motion";
 
 const services = [
   {
     title: "DIGITAL STRATEGY & INTELLIGENT MARKETING EXECUTION",
     description:
       "We build digital systems that don't chase clicks — they build credibility, authority, and patient trust. From SEO and precision ad campaigns to content ecosystems and analytic dashboards, we drive growth rooted in insight, not guesswork. Every action is intentional. Every channel is aligned. Every dollar works harder, smarter, and with clinical-grade precision.",
-    large: true,
   },
   {
     title: "COMMUNITY-BASED OUTREACH & REFERRAL DEVELOPMENT",
@@ -35,40 +37,73 @@ const services = [
 ];
 
 const WhatWeDo = () => {
+  // Fixes the "ease" string type error by using the Variants type
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15, // Delay between each service reveal
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut", // Properly typed via Variants
+      },
+    },
+  };
+
   return (
     <section
       id="what-we-do"
       className="max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 py-16"
     >
       <div>
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 lg:mb-16 gap-4 sm:gap-6">
+        {/* Header Animation */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 lg:mb-16 gap-4 sm:gap-6"
+        >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-left text-blue-900">
             What we do
           </h2>
           <WorkWithUsButton />
-        </div>
+        </motion.div>
 
-        <div className="space-y-8 lg:space-y-10 mx-0 sm:mx-4 md:mx-6 lg:mx-10">
+        {/* Animated Services List */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="space-y-12 lg:space-y-20 mx-0 sm:mx-4 md:mx-6 lg:mx-10"
+        >
           {services.map((service, index) => (
-            <div key={index} className="space-y-4">
-              <h3
-                className={
-                  "text-2xl sm:text-3xl md:text-4xl font-semibold text-left text-blue-900"
-                }
-              >
+            <motion.div
+              key={index}
+              variants={itemVariants}
+              className="space-y-4 group"
+            >
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-left text-blue-900 group-hover:text-blue-700 transition-colors duration-300">
                 {service.title}
               </h3>
 
-              <p
-                className={
-                  "text-base sm:text-lg lg:text-4xl leading-relaxed sm:leading-normal text-black font-sans font-normal"
-                }
-              >
+              <p className="text-base sm:text-lg lg:text-4xl leading-relaxed sm:leading-normal text-black font-sans font-normal border-l-2 border-transparent group-hover:border-blue-900 pl-0 group-hover:pl-4 transition-all duration-300">
                 {service.description}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

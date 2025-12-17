@@ -36,7 +36,7 @@ const OtherService = () => {
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-900 tracking-tight">
           Our Exciting Service Offerings
         </h2>
-        <WorkWithUsButton />
+        <WorkWithUsButton variant="service" />
       </div>
 
       {/* Services Grid */}

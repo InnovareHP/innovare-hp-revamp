@@ -10,6 +10,7 @@ const Navigation = () => {
           alt="Innovare HP"
           width={100}
           height={100}
+          sizes="(max-width: 639px) 64px, (max-width: 767px) 80px, 96px"
           className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
         />
       </Link>

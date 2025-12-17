@@ -8,7 +8,7 @@ const Process = () => {
     >
       <div className="absolute bottom-0 left-0 w-full select-none pointer-events-none">
         <Image
-          src="/images/services/services.png"
+          src="/images/services/Services.png"
           alt="Services Process"
           width={1920} // Set these to the actual dimensions of your image file
           height={1080}

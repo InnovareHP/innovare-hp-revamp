@@ -10,16 +10,16 @@ interface NavigationProps {
 }
 
 const navLinks = [
-  { name: "About", href: "#about" },
-  { name: "Partners", href: "#partners" },
-  { name: "Process", href: "#process" },
-  { name: "What We Do", href: "#what-we-do" },
-  { name: "Service Offerings", href: "#services" },
-  { name: "Mission", href: "#mission" },
-  { name: "Team", href: "#team" },
-  { name: "Client Review", href: "#reviews" },
-  { name: "Contact", href: "#contact" },
-  { name: "Field Notes", href: "/field-notes" },
+  { name: "About", href: "#about", title: "About" },
+  { name: "Partners", href: "#partners", title: "Partners" },
+  { name: "Process", href: "#process", title: "Process" },
+  { name: "What We Do", href: "#what-we-do", title: "What We Do" },
+  { name: "Service Offerings", href: "#services", title: "Service Offerings" },
+  { name: "Mission", href: "#mission", title: "Mission" },
+  { name: "Team", href: "#team", title: "Team" },
+  { name: "Client Review", href: "#reviews", title: "Client Review" },
+  { name: "Contact", href: "#contact", title: "Contact" },
+  { name: "Field Notes", href: "/field-notes", title: "Field Notes" },
 ];
 
 const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
@@ -39,11 +39,12 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
       <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">
         {/* Logo Section */}
         <nav className="flex items-center gap-2">
-          <Link href="/">
+          <Link href="/" title="Innovare HP">
             <Image
               src="/images/logo.png"
               alt="Innovare HP"
               width={100}
+              title="Innovare HP"
               height={100}
               className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
             />

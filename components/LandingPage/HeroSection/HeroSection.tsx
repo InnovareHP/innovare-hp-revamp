@@ -56,13 +56,13 @@ const HeroSection = () => {
         <Image
           src="/images/hero-section.jpg"
           alt="Hero Section"
+          title="Hero Section"
           fill
           className="object-cover"
           priority
         />
-        {/* The overlay is here from frame 1 */}
-        <div className="absolute inset-0 bg-black/60" />
-      </motion.div>
+        <div className="absolute inset-0 bg-black/60"  />
+      </div>
 
       <div className="relative z-10 w-full px-8 sm:px-6 md:px-12 lg:px-20">
         <motion.div

@@ -53,6 +53,7 @@ const MissionSection = () => {
               src="/images/logo-white-2.png"
               alt="Innovare HP"
               width={50}
+              title="Innovare HP"
               height={50}
             />
             <h2 className="uppercase font-light text-lg font-signika tracking-[0.55em] block">
@@ -92,6 +93,7 @@ const MissionSection = () => {
           <Image
             src="/images/mission.jpg"
             alt="Mission Section"
+            title="Mission Section"
             fill
             className="object-cover"
             priority

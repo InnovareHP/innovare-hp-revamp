@@ -70,6 +70,8 @@ const FieldNotes = () => {
       image:
         "https://images.unsplash.com/photo-1664382953518-4a664ab8a8c9?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       imageCredit: "Unsplash",
+      imageTitle: "Advanced Health Pharmacy",
+      imageAlt: "Advanced Health Pharmacy",
     },
     {
       id: 5,
@@ -87,6 +89,8 @@ const FieldNotes = () => {
         "When billing functions properly, access to care expands quietly. When it does not, the consequences ripple quickly. Centerline’s role may be behind the scenes, but its impact is felt across entire care networks.",
       ],
       image: null,
+      imageTitle: "Centerline Medical Billing",
+      imageAlt: "Centerline Medical Billing",
     },
     {
       id: 6,
@@ -104,6 +108,9 @@ const FieldNotes = () => {
         "It may not be traditionally labeled as healthcare—but it directly impacts access, timing, and peace of mind when families need it most.",
       ],
       image: null,
+      imageTitle: "Helping with Mom’s Home",
+      imageAlt: "Helping with Mom’s Home",
+      imageCredit: "Unsplash",
     },
   ];
 
@@ -155,6 +162,7 @@ const FieldNotes = () => {
                     src={partner.image}
                     alt={partner.category}
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                    title={partner.imageTitle}
                   />
                 </figure>
               )}

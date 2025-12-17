@@ -81,6 +81,7 @@ const Partners = () => {
                     src={`/images/testimonials/Innovare-HP-Brochure-(${n}).png`}
                     alt="Partner Logo"
                     width={220}
+                    title={`Partner Logo ${n}`}
                     height={220}
                     className="object-contain"
                   />

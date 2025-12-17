@@ -8,6 +8,7 @@ const HeroSection = () => {
         <Image
           src="/images/hero-section.jpg"
           alt="Hero Section"
+          title="Hero Section"
           fill
           className="object-cover"
           priority

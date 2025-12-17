@@ -8,6 +8,7 @@ const AboutSection = () => {
         <Image
           src="/images/about/about-img.png"
           alt="Innovare HP Team"
+          title="Innovare HP Team"
           fill
           className="object-cover"
           priority

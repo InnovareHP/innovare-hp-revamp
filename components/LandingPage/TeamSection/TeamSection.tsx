@@ -6,36 +6,43 @@ const TeamSection = () => {
       name: "Rich Nollen, BSN, RN",
       role: "Owner/CEO",
       image: "/images/team/team-1.png",
+      imageTitle: "Rich Nollen, BSN, RN",
     },
     {
       name: "Roy Gingrich",
       role: "CFO",
       image: "/images/team/team-5.png",
+      imageTitle: "Roy Gingrich",
     },
     {
       name: "Amy Cunningham, MHC, MBA",
       role: "Regional Brand & Relationship Manager",
       image: "/images/team/team-2.png",
+      imageTitle: "Amy Cunningham, MHC, MBA",
     },
     {
       name: "Tracy Lorenz",
       role: "Regional Brand & Relationship Manager",
       image: "/images/team/team-6.png",
+      imageTitle: "Tracy Lorenz",
     },
     {
       name: "Ivor Glorioso",
       role: "Software Engineer/CIO",
       image: "/images/team/team-3.png",
+      imageTitle: "Ivor Glorioso",
     },
     {
       name: "Abcdef Cresencio",
       role: "Software Engineer/IT & Web Systems Manager",
       image: "/images/team/team-7.png",
+      imageTitle: "Abcdef Cresencio",
     },
     {
       name: "Shiela Veran",
       role: "Strategic Growth Associate",
       image: "/images/team/team-4.png",
+      imageTitle: "Shiela Veran",
     },
   ];
 
@@ -71,6 +78,7 @@ const TeamSection = () => {
                   fill
                   className="object-cover grayscale"
                   sizes="121px"
+                  title={member.imageTitle}
                 />
               </div>
 
@@ -94,6 +102,7 @@ const TeamSection = () => {
             alt="Innovare HP"
             width={50}
             height={50}
+            title="Innovare HP"
           />
           <h2 className="uppercase font-light text-lg font-signika tracking-[0.55em] block">
             Innovare HP

@@ -46,6 +46,7 @@ const ContactInfoCard = () => {
           src="/images/contact-form.jpg"
           alt="Team collaboration"
           fill
+          title="Team collaboration"
           className="object-cover rounded-t-lg"
         />
       </div>
@@ -56,6 +57,7 @@ const ContactInfoCard = () => {
           alt="Innovare HP"
           width={100}
           height={100}
+          title="Innovare HP"
         />
 
         <div className="space-y-6">

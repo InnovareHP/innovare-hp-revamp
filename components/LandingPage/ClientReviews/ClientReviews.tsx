@@ -66,6 +66,7 @@ const ClientReviews = () => {
                   width={120}
                   height={120}
                   sizes="(max-width: 640px) 80px, 120px"
+                  title={reviews[0].name}
                   className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
                 />
                 <Image
@@ -74,6 +75,7 @@ const ClientReviews = () => {
                   width={182}
                   height={182}
                   sizes="(max-width: 640px) 120px, 182px"
+                  title={`${reviews[0].company} logo`}
                   className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px] min-h-[120px] sm:min-w-[182px] sm:min-h-[182px]"
                 />
               </div>
@@ -109,6 +111,7 @@ const ClientReviews = () => {
                   width={120}
                   height={120}
                   sizes="(max-width: 640px) 80px, 120px"
+                  title={reviews[1].name}
                   className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
                 />
                 <Image
@@ -117,6 +120,7 @@ const ClientReviews = () => {
                   width={182}
                   height={182}
                   sizes="(max-width: 640px) 120px, 182px"
+                  title={`${reviews[1].company} logo`}
                   className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px] min-h-[120px] sm:min-w-[182px] sm:min-h-[182px]"
                 />
               </div>
@@ -148,6 +152,7 @@ const ClientReviews = () => {
                   alt={reviews[2].name}
                   width={120}
                   height={120}
+                  title={reviews[2].name}
                   sizes="(max-width: 640px) 80px, 120px"
                   className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
                 />
@@ -156,6 +161,7 @@ const ClientReviews = () => {
                   alt={`${reviews[2].company} logo`}
                   width={182}
                   height={182}
+                  title={`${reviews[2].company} logo`}
                   sizes="(max-width: 640px) 120px, 182px"
                   className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px] min-h-[120px] sm:min-w-[182px] sm:min-h-[182px]"
                 />

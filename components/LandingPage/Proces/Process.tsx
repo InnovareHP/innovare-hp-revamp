@@ -15,6 +15,7 @@ const Process = () => {
           sizes="100vw"
           className="w-full h-auto object-cover"
           priority
+          title="Services Process"
         />
       </div>
     </section>

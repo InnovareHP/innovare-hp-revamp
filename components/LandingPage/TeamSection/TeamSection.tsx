@@ -40,7 +40,10 @@ const TeamSection = () => {
   ];
 
   return (
-    <section className="bg-[#E5E1DA] py-8 sm:py-12 md:py-16 px-8 lg:px-12 xl:px-16 text-[#414141]">
+    <section
+      id="team"
+      className="bg-[#E5E1DA] py-8 sm:py-12 md:py-16 px-8 lg:px-12 xl:px-16 text-[#414141]"
+    >
       <div className="max-w-6xl mx-auto">
         {/* Header Content */}
         <div className="mb-8 sm:mb-12 md:mb-16">
@@ -92,7 +95,7 @@ const TeamSection = () => {
             width={50}
             height={50}
           />
-          <h2 className="uppercase font-light text-lg font-signika tracking-[0.55em] sm:block hidden">
+          <h2 className="uppercase font-light text-lg font-signika tracking-[0.55em] block">
             Innovare HP
           </h2>
         </div>

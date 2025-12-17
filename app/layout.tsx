@@ -1,3 +1,4 @@
+import { Provider } from "@/components/Provider";
 import { Toaster } from "@/components/ui/sonner";
 import { KeyWords } from "@/lib/const";
 import type { Metadata } from "next";
@@ -91,7 +92,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${workSans.variable} ${signika.variable} antialiased`}>
-        {children}
+        <Provider>{children}</Provider>
         <Toaster />
       </body>
     </html>

@@ -25,7 +25,7 @@ export const createGetInTouch = async (formData: ContactFormValues) => {
         PhoneNumber: phoneNumber,
         Email: email,
         OnlinePresence: websiteOrSocial || "",
-        ContactMethod: preferredContact.join(", "),
+        ContactMethod: preferredContact,
         Message: message,
       })
     ),

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import WorkWithUsButton from "@/components/ui/work-with-us-button";
 import { BarChart3, CalendarDays, Target, Users2 } from "lucide-react";
 
 const OtherService = () => {
@@ -33,23 +33,20 @@ const OtherService = () => {
     <section className="max-w-7xl mx-auto px-6 py-16">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-6">
-        <h2 className="text-4xl md:text-5xl font-bold text-blue-900 tracking-tight">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-900 tracking-tight">
           Our Exciting Service Offerings
         </h2>
-        <Button
-          variant="outline"
-          className="border-blue-400 text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-none px-8 py-6 text-sm font-semibold uppercase tracking-widest"
-        >
-          WORK WITH US
-        </Button>
+        <WorkWithUsButton />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
         {services.map((service, index) => (
           <div key={index} className="space-y-4">
             <div className="mb-4">{service.icon}</div>
-            <h3 className="text-xl font-bold text-blue-900">{service.title}</h3>
-            <p className="text-gray-700 leading-relaxed text-[15px]">
+            <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-blue-900">
+              {service.title}
+            </h3>
+            <p className="text-lg lg:text-2xl leading-tight text-gray-700 font-sans font-normal">
               {service.description}
             </p>
           </div>

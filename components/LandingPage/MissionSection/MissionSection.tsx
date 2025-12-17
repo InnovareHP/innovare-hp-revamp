@@ -19,13 +19,13 @@ const MissionSection = () => {
             </h2>
           </div>
 
-          <div className="md:max-w-xl space-y-6">
-            <p className="text-lg font-semibold leading-tight">
+          <div className="md:max-w-3xl space-y-6">
+            <p className="text-lg lg:text-2xl font-normal leading-tight">
               We are dedicated to enhancing the reach and influence of
               healthcare brands, touching lives with compassionate and
               innovative marketing approaches driven by valuable insights.
             </p>
-            <p className="text-lg font-semibold leading-tight">
+            <p className="text-lg lg:text-2xl font-normal leading-tight">
               We aspire to lead a transformative growth in healthcare marketing,
               empowering brands to inspire positive change and drive meaningful
               impact.

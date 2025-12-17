@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import WorkWithUsButton from "@/components/ui/work-with-us-button";
 import Image from "next/image";
 
 const HeroSection = () => {
@@ -28,12 +28,7 @@ const HeroSection = () => {
           </p>
 
           <div className="pt-4">
-            <Button
-              variant="outline"
-              className="w-82 underline text-white text-lg py-6"
-            >
-              Work With Us
-            </Button>
+            <WorkWithUsButton variant="hero" />
           </div>
         </div>
       </div>

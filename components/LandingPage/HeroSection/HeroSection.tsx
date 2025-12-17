@@ -61,14 +61,8 @@ const HeroSection = () => {
           className="object-cover"
           priority
         />
-<<<<<<< HEAD
-        {/* The overlay is here from frame 1 */}
         <div className="absolute inset-0 bg-black/60" />
       </motion.div>
-=======
-        <div className="absolute inset-0 bg-black/60"  />
-      </div>
->>>>>>> 0c6d8c53094b41da72a0942d4feab7b0aa25c75e
 
       <div className="relative z-10 w-full px-8 sm:px-6 md:px-12 lg:px-20">
         <motion.div

@@ -3,42 +3,7 @@
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 
-const team = [
-  {
-    name: "Rich Nollen, BSN, RN",
-    role: "Owner/CEO",
-    image: "/images/team/team-1.png",
-  },
-  { name: "Roy Gingrich", role: "CFO", image: "/images/team/team-5.png" },
-  {
-    name: "Amy Cunningham, MHC, MBA",
-    role: "Regional Brand & Relationship Manager",
-    image: "/images/team/team-2.png",
-  },
-  {
-    name: "Tracy Lorenz",
-    role: "Regional Brand & Relationship Manager",
-    image: "/images/team/team-6.png",
-  },
-  {
-    name: "Ivor Glorioso",
-    role: "Software Engineer/CIO",
-    image: "/images/team/team-3.png",
-  },
-  {
-    name: "Abcdef Cresencio",
-    role: "Software Engineer/IT & Web Systems Manager",
-    image: "/images/team/team-7.png",
-  },
-  {
-    name: "Shiela Veran",
-    role: "Strategic Growth Associate",
-    image: "/images/team/team-4.png",
-  },
-];
-
 const TeamSection = () => {
-<<<<<<< HEAD
   // Container variants for the grid
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -59,7 +24,7 @@ const TeamSection = () => {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
-=======
+
   const team = [
     {
       name: "Rich Nollen, BSN, RN",
@@ -104,7 +69,6 @@ const TeamSection = () => {
       imageTitle: "Shiela Veran",
     },
   ];
->>>>>>> 0c6d8c53094b41da72a0942d4feab7b0aa25c75e
 
   return (
     <section

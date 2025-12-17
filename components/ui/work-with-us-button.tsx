@@ -13,7 +13,7 @@ const WorkWithUsButton = ({
 }: WorkWithUsButtonProps) => {
   if (variant === "hero") {
     return (
-      <Link href="#contact">
+      <Link href="#contact" title="Work With Us">
         <Button
           variant="outline"
           className={cn(
@@ -29,7 +29,7 @@ const WorkWithUsButton = ({
 
   if (variant === "service") {
     return (
-      <Link href="#contact">
+      <Link href="#contact" title="Work With Us">
         <Button
           variant="outline"
           className={cn(
@@ -44,7 +44,7 @@ const WorkWithUsButton = ({
   }
 
   return (
-    <Link href="#contact">
+    <Link href="#contact" title="Work With Us">
       <Button
         variant="outline"
         className={cn(

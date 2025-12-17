@@ -33,9 +33,21 @@ const contactDetails = [
 ];
 
 const socialLinks = [
-  { icon: Linkedin, href: "https://www.linkedin.com/company/innovarehp" },
-  { icon: Instagram, href: "https://www.instagram.com/innovarehp/" },
-  { icon: Facebook, href: "https://www.facebook.com/innovarehp" },
+  {
+    icon: Linkedin,
+    href: "https://www.linkedin.com/company/innovarehp",
+    title: "LinkedIn",
+  },
+  {
+    icon: Instagram,
+    href: "https://www.instagram.com/innovarehp/",
+    title: "Instagram",
+  },
+  {
+    icon: Facebook,
+    href: "https://www.facebook.com/innovarehp",
+    title: "Facebook",
+  },
 ];
 
 const ContactInfoCard = () => {
@@ -82,6 +94,7 @@ const ContactInfoCard = () => {
                   key={index}
                   href={href}
                   className="text-white transition bg-blue-600 p-2 rounded-full"
+                  title={title}
                 >
                   <Icon className="w-6 h-6" />
                 </a>

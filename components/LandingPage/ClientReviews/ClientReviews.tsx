@@ -1,10 +1,13 @@
+"use client";
+
+import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 
 const ClientReviews = () => {
   const reviews = [
     {
       quote:
-        "Our organization's relationship with Innovare HP is rooted in a clear increase in revenue-driven by their innovative strategies, collaborative approach, and most importantly, the high-quality introductions they've facilitated. While we are technically a client of Innovare HP, the experience feels far more relational than transactional. They take the time to truly understand our goals, tailor their approach accordingly, and continually invest in our success. If you're looking for a marketing partner who shows up as part of your team and not just a vendor, Innovare HP is the one.",
+        "“Our organization's relationship with Innovare HP is rooted in a clear increase in revenue-driven by their innovative strategies, collaborative approach, and most importantly, the high-quality introductions they've facilitated. While we are technically a client of Innovare HP, the experience feels far more relational than transactional. They take the time to truly understand our goals, tailor their approach accordingly, and continually invest in our success. If you're looking for a marketing partner who shows up as part of your team and not just a vendor, Innovare HP is the one.”",
       name: "Brian Caulfield",
       title: "CMO",
       company: "Centerline Billing & Consulting",
@@ -13,7 +16,7 @@ const ClientReviews = () => {
     },
     {
       quote:
-        "What comes to mind when I think of Rich, he is amazing at marketing! All kinds of marketing. I have been in business for over 45 years, and he is the most cost-effective creative marketer I have ever worked with. If you need help building your business to higher profits, call Rich! don't waste your time anywhere else.",
+        "“What comes to mind when I think of Rich, he is amazing at marketing! All kinds of marketing. I have been in business for over 45 years, and he is the most cost-effective creative marketer I have ever worked with. If you need help building your business to higher profits, call Rich! don't waste your time anywhere else.”",
       name: "Ken Watts",
       title: "Owner/Founder",
       company: "Helping with Mom's Home",
@@ -31,15 +34,37 @@ const ClientReviews = () => {
     },
   ];
 
+  // Animation Variants
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.3 },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
+
   return (
-    <section id="reviews" className="bg-gray-200 w-full">
-      <div className="max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 py-16">
-        {/* Two Column Layout */}
+    <section id="reviews" className="bg-gray-200 w-full overflow-hidden">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        className="max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 py-16"
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Left Column - Header + Brian Caulfield Review */}
           <div className="space-y-6">
-            {/* Header Section */}
-            <div>
+            <motion.div variants={itemVariants}>
               <h2 className="text-4xl md:text-5xl text-gray-700 tracking-tight mb-6">
                 <span className="font-bold">CLIENT</span> REVIEWS
               </h2>
@@ -54,11 +79,13 @@ const ClientReviews = () => {
                 Here are some reviews from mission-based organizations that we
                 have helped.
               </p>
-            </div>
+            </motion.div>
 
             {/* Brian Caulfield Review */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Left Sub-column - Headshot and Logo */}
+            <motion.div
+              variants={itemVariants}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+            >
               <div className="flex flex-row items-start gap-3">
                 <Image
                   src={reviews[0].headshot}
@@ -79,9 +106,8 @@ const ClientReviews = () => {
                   className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px] min-h-[120px] sm:min-w-[182px] sm:min-h-[182px]"
                 />
               </div>
-              {/* Right Sub-column - Text Content */}
               <div className="space-y-4">
-                <blockquote className="text-gray-700 leading-relaxed sm:leading-normal text-base lg:text-xl font-sans font-normal mb-4">
+                <blockquote className="text-gray-700 leading-relaxed text-base lg:text-xl font-sans italic">
                   &ldquo;{reviews[0].quote}&rdquo;
                 </blockquote>
                 <div className="space-y-0.5">
@@ -96,7 +122,7 @@ const ClientReviews = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Right Column - Ken Watts + Nadine Carlson Reviews */}
@@ -186,7 +212,7 @@ const ClientReviews = () => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

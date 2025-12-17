@@ -1,3 +1,6 @@
+"use client";
+
+import { motion, Variants } from "framer-motion";
 import {
   Facebook,
   Instagram,
@@ -9,16 +12,8 @@ import {
 import Image from "next/image";
 
 const contactDetails = [
-  {
-    label: "Phone",
-    value: "(269) 501-4496",
-    icon: Phone,
-  },
-  {
-    label: "Email",
-    value: "hello@innovarehp.com",
-    icon: Mail,
-  },
+  { label: "Phone", value: "(269) 501-4496", icon: Phone },
+  { label: "Email", value: "hello@innovarehp.com", icon: Mail },
   {
     label: "Address",
     value: (
@@ -51,6 +46,19 @@ const socialLinks = [
 ];
 
 const ContactInfoCard = () => {
+  const container: Variants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.3 },
+    },
+  };
+
+  const item: Variants = {
+    hidden: { opacity: 0, x: -10 },
+    show: { opacity: 1, x: 0 },
+  };
+
   return (
     <div className="bg-white rounded-lg overflow-hidden lg:shadow-lg border">
       <div className="relative h-64 w-full">
@@ -73,21 +81,29 @@ const ContactInfoCard = () => {
         />
 
         <div className="space-y-6">
-          <div className="space-y-4">
+          <motion.div
+            variants={container}
+            initial="hidden"
+            animate="show"
+            className="space-y-4"
+          >
             {contactDetails.map(({ label, value, icon: Icon }) => (
-              <div key={label} className="flex items-start gap-3">
+              <motion.div
+                key={label}
+                variants={item}
+                className="flex items-start gap-3"
+              >
                 <Icon className="w-5 h-5 text-blue-600 mt-0.5" />
                 <div>
                   <p className="text-sm font-semibold text-gray-700">{label}</p>
                   <p className="text-sm text-gray-500">{value}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <div className="space-y-3">
             <p className="text-sm font-semibold text-gray-700">Social Media</p>
-
             <div className="flex gap-3">
               {socialLinks.map(({ icon: Icon, href, title }, index) => (
                 <a

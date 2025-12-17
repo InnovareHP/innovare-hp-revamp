@@ -18,14 +18,14 @@ const AboutSection = () => {
 
       <div className="w-full lg:w-1/2 bg-[#ded8d3] flex items-center justify-center p-8 lg:p-12 xl:p-16">
         <div className="w-full max-w-2xl space-y-8">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl leading-tighter">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-relaxed sm:leading-tight">
             We are community resource educators who use creative and thoughtful
             communication methods and technology to help our healthcare partners
             grow in a meaningful way.
           </h1>
 
           {/* Body text */}
-          <p className="text-lg lg:text-2xl leading-tight text-gray-600 font-sans font-normal max-w-lg">
+          <p className="text-base sm:text-lg lg:text-2xl leading-relaxed sm:leading-normal text-gray-600 font-sans font-normal max-w-lg">
             The landscape of healthcare marketing underwent a significant
             transformation with the rise in patient choice and autonomy. This
             shift led numerous healthcare facilities to adopt new strategies,

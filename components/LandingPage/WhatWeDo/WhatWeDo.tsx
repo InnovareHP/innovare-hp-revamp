@@ -36,21 +36,21 @@ const services = [
 
 const WhatWeDo = () => {
   return (
-    <section className="max-w-7xl mx-auto px-6 py-16">
+    <section className="max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 py-16">
       <div>
-        <div className="flex flex-row justify-between items-center mb-12 lg:mb-16 gap-6">
-          <h2 className="text-4xl md:text-5xl font-bold text-left text-blue-900">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 lg:mb-16 gap-4 sm:gap-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-left text-blue-900">
             What we do
           </h2>
           <WorkWithUsButton />
         </div>
 
-        <div className="space-y-8 lg:space-y-10 mx-10">
+        <div className="space-y-8 lg:space-y-10 mx-0 sm:mx-4 md:mx-6 lg:mx-10">
           {services.map((service, index) => (
             <div key={index} className="space-y-4">
               <h3
                 className={
-                  "text-3xl md:text-4xl font-semibold text-left text-blue-900"
+                  "text-2xl sm:text-3xl md:text-4xl font-semibold text-left text-blue-900"
                 }
               >
                 {service.title}
@@ -58,7 +58,7 @@ const WhatWeDo = () => {
 
               <p
                 className={
-                  "text-lg lg:text-4xl leading-tight text-black font-sans font-normal"
+                  "text-base sm:text-lg lg:text-4xl leading-relaxed sm:leading-normal text-black font-sans font-normal"
                 }
               >
                 {service.description}

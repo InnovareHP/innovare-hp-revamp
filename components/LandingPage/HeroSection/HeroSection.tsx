@@ -15,14 +15,14 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-black/60" />
       </div>
 
-      <div className="relative z-10 w-full mx-20">
+      <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 lg:px-20">
         <div className="max-w-4xl space-y-2">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl text-white leading-tighter">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white leading-relaxed sm:leading-tight">
             Marketing that empowers healthcare brands to stand apart and stay
             ahead.
           </h1>
 
-          <p className="text-lg md:text-xl text-gray-200 max-w-xl tracking-wide">
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-xl tracking-wide">
             Innovare HP delivers full-service healthcare marketing for
             organizations that want to lead—not follow.
           </p>

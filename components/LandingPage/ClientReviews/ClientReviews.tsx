@@ -33,7 +33,7 @@ const ClientReviews = () => {
 
   return (
     <section className="bg-gray-200 w-full">
-      <div className="max-w-7xl mx-auto px-6 py-16">
+      <div className="max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 py-16">
         {/* Two Column Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Left Column - Header + Brian Caulfield Review */}
@@ -43,7 +43,7 @@ const ClientReviews = () => {
               <h2 className="text-4xl md:text-5xl text-gray-700 tracking-tight mb-6">
                 <span className="font-bold">CLIENT</span> REVIEWS
               </h2>
-              <p className="text-gray-700 leading-tight text-base lg:text-xl font-sans font-normal mb-8">
+              <p className="text-gray-700 leading-relaxed sm:leading-normal text-base lg:text-xl font-sans font-normal mb-8">
                 Taking the lead in implementing brand-specific outreach
                 strategies means advocating for and implementing effective
                 methods to connect with a specific target audience or community,
@@ -57,7 +57,7 @@ const ClientReviews = () => {
             </div>
 
             {/* Brian Caulfield Review */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Left Sub-column - Headshot and Logo */}
               <div className="flex flex-row items-start gap-3">
                 <Image
@@ -65,19 +65,19 @@ const ClientReviews = () => {
                   alt={reviews[0].name}
                   width={120}
                   height={120}
-                  className="rounded-full object-cover shrink-0 w-[120px] h-[120px] mt-[18px]"
+                  className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
                 />
                 <Image
                   src={reviews[0].logo}
                   alt={`${reviews[0].company} logo`}
                   width={182}
                   height={182}
-                  className="object-contain shrink-0 w-[182px] h-[182px] min-w-[182px] min-h-[182px]"
+                  className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px] min-h-[120px] sm:min-w-[182px] sm:min-h-[182px]"
                 />
               </div>
               {/* Right Sub-column - Text Content */}
               <div className="space-y-4">
-                <blockquote className="text-gray-700 leading-tight text-base lg:text-xl font-sans font-normal mb-4">
+                <blockquote className="text-gray-700 leading-relaxed sm:leading-normal text-base lg:text-xl font-sans font-normal mb-4">
                   &ldquo;{reviews[0].quote}&rdquo;
                 </blockquote>
                 <div className="space-y-0.5">
@@ -98,7 +98,7 @@ const ClientReviews = () => {
           {/* Right Column - Ken Watts + Nadine Carlson Reviews */}
           <div className="space-y-10">
             {/* Ken Watts Review */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Left Sub-column - Headshot and Logo */}
               <div className="flex flex-row items-start gap-3">
                 <Image
@@ -106,19 +106,19 @@ const ClientReviews = () => {
                   alt={reviews[1].name}
                   width={120}
                   height={120}
-                  className="rounded-full object-cover shrink-0 w-[120px] h-[120px] mt-[18px]"
+                  className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
                 />
                 <Image
                   src={reviews[1].logo}
                   alt={`${reviews[1].company} logo`}
                   width={182}
                   height={182}
-                  className="object-contain shrink-0 w-[182px] h-[182px] min-w-[182px] min-h-[182px]"
+                  className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px] min-h-[120px] sm:min-w-[182px] sm:min-h-[182px]"
                 />
               </div>
               {/* Right Sub-column - Text Content */}
               <div className="space-y-4">
-                <blockquote className="text-gray-700 leading-tight text-base lg:text-xl font-sans font-normal mb-4">
+                <blockquote className="text-gray-700 leading-relaxed sm:leading-normal text-base lg:text-xl font-sans font-normal mb-4">
                   &ldquo;{reviews[1].quote}&rdquo;
                 </blockquote>
                 <div className="space-y-0.5">
@@ -136,7 +136,7 @@ const ClientReviews = () => {
             </div>
 
             {/* Nadine Carlson Review */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Left Sub-column - Headshot and Logo */}
               <div className="flex flex-row items-start gap-3">
                 <Image
@@ -144,19 +144,19 @@ const ClientReviews = () => {
                   alt={reviews[2].name}
                   width={120}
                   height={120}
-                  className="rounded-full object-cover shrink-0 w-[120px] h-[120px] mt-[18px]"
+                  className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
                 />
                 <Image
                   src={reviews[2].logo}
                   alt={`${reviews[2].company} logo`}
                   width={182}
                   height={182}
-                  className="object-contain shrink-0 w-[182px] h-[182px] min-w-[182px] min-h-[182px]"
+                  className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px] min-h-[120px] sm:min-w-[182px] sm:min-h-[182px]"
                 />
               </div>
               {/* Right Sub-column - Text Content */}
               <div className="space-y-4">
-                <blockquote className="text-gray-700 leading-tight text-base lg:text-xl font-sans font-normal mb-4">
+                <blockquote className="text-gray-700 leading-relaxed sm:leading-normal text-base lg:text-xl font-sans font-normal mb-4">
                   &ldquo;{reviews[2].quote}&rdquo;
                 </blockquote>
                 <div className="space-y-0.5">

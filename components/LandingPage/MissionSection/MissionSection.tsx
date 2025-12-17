@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const MissionSection = () => {
   return (
-    <section className="bg-[#414141] text-white py-16 px-6 md:px-12 lg:px-24">
+    <section className="bg-[#414141] text-white py-16 px-8 lg:px-12 xl:px-16">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
           {/* Logo Placeholder */}
@@ -20,12 +20,12 @@ const MissionSection = () => {
           </div>
 
           <div className="md:max-w-3xl space-y-6">
-            <p className="text-lg lg:text-2xl font-normal leading-tight">
+            <p className="text-lg lg:text-2xl font-normal leading-relaxed sm:leading-normal">
               We are dedicated to enhancing the reach and influence of
               healthcare brands, touching lives with compassionate and
               innovative marketing approaches driven by valuable insights.
             </p>
-            <p className="text-lg lg:text-2xl font-normal leading-tight">
+            <p className="text-lg lg:text-2xl font-normal leading-relaxed sm:leading-normal">
               We aspire to lead a transformative growth in healthcare marketing,
               empowering brands to inspire positive change and drive meaningful
               impact.

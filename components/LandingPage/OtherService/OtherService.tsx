@@ -30,7 +30,7 @@ const OtherService = () => {
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-16">
+    <section className="max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 py-16">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-6">
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-900 tracking-tight">
@@ -47,7 +47,7 @@ const OtherService = () => {
             <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-blue-900">
               {service.title}
             </h3>
-            <p className="text-lg lg:text-2xl leading-tight text-gray-700 font-sans font-normal">
+            <p className="text-lg lg:text-2xl leading-relaxed sm:leading-normal text-gray-700 font-sans font-normal">
               {service.description}
             </p>
           </div>

@@ -40,14 +40,14 @@ const TeamSection = () => {
   ];
 
   return (
-    <section className="bg-[#E5E1DA] py-16 px-6 md:px-24 text-[#414141]">
+    <section className="bg-[#E5E1DA] py-8 sm:py-12 md:py-16 px-8 lg:px-12 xl:px-16 text-[#414141]">
       <div className="max-w-6xl mx-auto">
         {/* Header Content */}
-        <div className="mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-700">
+        <div className="mb-8 sm:mb-12 md:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-gray-700">
             Meet the champions of our proven outreach strategies
           </h2>
-          <p className="text-lg lg:text-2xl leading-tight text-gray-600 font-sans font-normal">
+          <p className="text-lg lg:text-2xl leading-relaxed sm:leading-normal text-gray-600 font-sans font-normal">
             Over the course of our journey, we have forged meaningful
             partnerships with a diverse range of healthcare and health-related
             organizations. From hospitals and staffing company to senior living
@@ -73,10 +73,10 @@ const TeamSection = () => {
 
               {/* Member Details */}
               <div className="flex flex-col pt-2">
-                <h3 className="font-bold text-xl md:text-2xl leading-tight">
+                <h3 className="font-bold text-xl md:text-2xl leading-relaxed sm:leading-normal">
                   {member.name}
                 </h3>
-                <p className="text-lg lg:text-2xl leading-tight text-gray-600 font-sans font-normal mt-1">
+                <p className="text-lg lg:text-2xl leading-relaxed sm:leading-normal text-gray-600 font-sans font-normal mt-1">
                   {member.role}
                 </p>
               </div>

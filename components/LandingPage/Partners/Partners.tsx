@@ -36,16 +36,16 @@ const logos = [
 const Partners = () => {
   //Pending pictures
   return (
-    <section className="bg-muted/30 p-10 my-10 overflow-hidden">
-      <div className="">
+    <section className="bg-muted/30 p-4 sm:p-6 md:p-10 my-6 sm:my-8 md:my-10 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
           viewport={{ once: true }}
-          className="mb-12"
+          className="mb-8 sm:mb-12"
         >
-          <p className="text-4xl md:text-5xl font-bold text-left">
+          <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-left">
             Who we partner with
           </p>
         </motion.div>

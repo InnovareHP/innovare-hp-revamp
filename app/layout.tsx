@@ -1,4 +1,5 @@
 import { Toaster } from "@/components/ui/sonner";
+import { KeyWords } from "@/lib/const";
 import type { Metadata } from "next";
 import { Signika, Work_Sans } from "next/font/google";
 import "./globals.css";
@@ -25,15 +26,7 @@ export const metadata: Metadata = {
     "Innovare HP delivers intelligent healthcare marketing, community outreach, referral development, and brand strategy for senior care, behavioral health, and clinical organizations.",
   applicationName: "Innovare HP",
   generator: "Next.js",
-  keywords: [
-    "healthcare marketing",
-    "medical marketing agency",
-    "behavioral health marketing",
-    "senior care marketing",
-    "healthcare referrals",
-    "community outreach healthcare",
-    "digital strategy healthcare",
-  ],
+  keywords: KeyWords,
   authors: [{ name: "Innovare HP" }],
   creator: "Innovare HP",
   publisher: "Innovare HP",
@@ -64,7 +57,7 @@ export const metadata: Metadata = {
       "Strategic healthcare marketing rooted in trust, community, and measurable growth. Serving senior care, behavioral health, and clinical organizations.",
     images: [
       {
-        url: "/og-image.jpg", // 1200x630 recommended
+        url: "/images/og-image.png", // 1200x630 recommended
         width: 1200,
         height: 630,
         alt: "Innovare HP Healthcare Marketing",
@@ -77,7 +70,7 @@ export const metadata: Metadata = {
     title: "Innovare HP | Healthcare Marketing & Growth Strategy",
     description:
       "Healthcare marketing built on trust, referrals, and intelligent digital strategy.",
-    images: ["/og-image.jpg"],
+    images: ["/images/og-image.png"],
     creator: "@innovarehp", // optional
   },
 

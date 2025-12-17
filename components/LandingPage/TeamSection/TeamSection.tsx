@@ -38,6 +38,7 @@ const team = [
 ];
 
 const TeamSection = () => {
+<<<<<<< HEAD
   // Container variants for the grid
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -58,6 +59,52 @@ const TeamSection = () => {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
+=======
+  const team = [
+    {
+      name: "Rich Nollen, BSN, RN",
+      role: "Owner/CEO",
+      image: "/images/team/team-1.png",
+      imageTitle: "Rich Nollen, BSN, RN",
+    },
+    {
+      name: "Roy Gingrich",
+      role: "CFO",
+      image: "/images/team/team-5.png",
+      imageTitle: "Roy Gingrich",
+    },
+    {
+      name: "Amy Cunningham, MHC, MBA",
+      role: "Regional Brand & Relationship Manager",
+      image: "/images/team/team-2.png",
+      imageTitle: "Amy Cunningham, MHC, MBA",
+    },
+    {
+      name: "Tracy Lorenz",
+      role: "Regional Brand & Relationship Manager",
+      image: "/images/team/team-6.png",
+      imageTitle: "Tracy Lorenz",
+    },
+    {
+      name: "Ivor Glorioso",
+      role: "Software Engineer/CIO",
+      image: "/images/team/team-3.png",
+      imageTitle: "Ivor Glorioso",
+    },
+    {
+      name: "Abcdef Cresencio",
+      role: "Software Engineer/IT & Web Systems Manager",
+      image: "/images/team/team-7.png",
+      imageTitle: "Abcdef Cresencio",
+    },
+    {
+      name: "Shiela Veran",
+      role: "Strategic Growth Associate",
+      image: "/images/team/team-4.png",
+      imageTitle: "Shiela Veran",
+    },
+  ];
+>>>>>>> 0c6d8c53094b41da72a0942d4feab7b0aa25c75e
 
   return (
     <section
@@ -106,6 +153,7 @@ const TeamSection = () => {
                   fill
                   className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-110 group-hover:scale-100"
                   sizes="121px"
+                  title={member.imageTitle}
                 />
               </div>
 
@@ -135,6 +183,7 @@ const TeamSection = () => {
             alt="Innovare HP"
             width={50}
             height={50}
+            title="Innovare HP"
           />
           <h2 className="uppercase font-light text-lg font-signika tracking-[0.55em] block">
             Innovare HP

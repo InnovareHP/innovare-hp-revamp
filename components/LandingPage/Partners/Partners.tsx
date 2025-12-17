@@ -50,6 +50,41 @@ const Partners = () => {
         </motion.p>
       </div>
 
+      {/* Container with a fade effect on edges */}
+      <div className="flex flex-col gap-6 relative [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]">
+        {rows.map((rowLogos, rowIndex) => (
+          <div key={rowIndex} className="flex overflow-hidden">
+            <motion.div
+              className="flex flex-nowrap gap-12"
+              initial={{ x: rowIndex % 2 === 0 ? "0%" : "-50%" }}
+              animate={{ x: rowIndex % 2 === 0 ? "-50%" : "0%" }}
+              transition={{
+                duration: 20, // Lower duration = faster speed
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            >
+              {/* Render the 4 logos twice to create a seamless loop */}
+              {[...rowLogos, ...rowLogos].map((n, index) => (
+                <div
+                  key={`${n}-${index}`}
+                  className="flex-shrink-0 w-[200px] sm:w-[250px] md:w-[300px] flex items-center justify-center p-4 grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition-all"
+                >
+                  <Image
+                    src={`/images/testimonials/Innovare-HP-Brochure-(${n}).png`}
+                    alt="Partner Logo"
+                    width={220}
+                    title={`Partner Logo ${n}`}
+                    height={220}
+                    className="object-contain"
+                  />
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        ))}
+      </div>
+    </section>
       {/* Main Container with edge fades */}
       <div className="relative flex flex-col gap-8 [mask-image:linear-gradient(to_right,transparent,white_15%,white_85%,transparent)]">
         {/* Row 1: Moving Left */}

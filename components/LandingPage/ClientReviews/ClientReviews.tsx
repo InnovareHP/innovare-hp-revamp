@@ -87,6 +87,7 @@ const ClientReviews = () => {
               className="grid grid-cols-1 sm:grid-cols-2 gap-4"
             >
               <div className="flex flex-row items-start gap-3">
+<<<<<<< HEAD
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   transition={{ type: "spring", stiffness: 300 }}
@@ -108,6 +109,26 @@ const ClientReviews = () => {
                     className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px]"
                   />
                 </motion.div>
+=======
+                <Image
+                  src={reviews[0].headshot}
+                  alt={reviews[0].name}
+                  width={120}
+                  height={120}
+                  sizes="(max-width: 640px) 80px, 120px"
+                  title={reviews[0].name}
+                  className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
+                />
+                <Image
+                  src={reviews[0].logo}
+                  alt={`${reviews[0].company} logo`}
+                  width={182}
+                  height={182}
+                  sizes="(max-width: 640px) 120px, 182px"
+                  title={`${reviews[0].company} logo`}
+                  className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px] min-h-[120px] sm:min-w-[182px] sm:min-h-[182px]"
+                />
+>>>>>>> 0c6d8c53094b41da72a0942d4feab7b0aa25c75e
               </div>
               <div className="space-y-4">
                 <blockquote className="text-gray-700 leading-relaxed text-base lg:text-xl font-sans italic">
@@ -130,6 +151,7 @@ const ClientReviews = () => {
 
           {/* Right Column - Ken Watts + Nadine Carlson Reviews */}
           <div className="space-y-10">
+<<<<<<< HEAD
             {/* Ken Watts & Nadine Carlson loops */}
             {[reviews[1], reviews[2]].map((review, idx) => (
               <motion.div
@@ -175,6 +197,88 @@ const ClientReviews = () => {
                       {review.company}
                     </p>
                   </div>
+=======
+            {/* Ken Watts Review */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Left Sub-column - Headshot and Logo */}
+              <div className="flex flex-row items-start gap-3">
+                <Image
+                  src={reviews[1].headshot}
+                  alt={reviews[1].name}
+                  width={120}
+                  height={120}
+                  sizes="(max-width: 640px) 80px, 120px"
+                  title={reviews[1].name}
+                  className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
+                />
+                <Image
+                  src={reviews[1].logo}
+                  alt={`${reviews[1].company} logo`}
+                  width={182}
+                  height={182}
+                  sizes="(max-width: 640px) 120px, 182px"
+                  title={`${reviews[1].company} logo`}
+                  className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px] min-h-[120px] sm:min-w-[182px] sm:min-h-[182px]"
+                />
+              </div>
+              {/* Right Sub-column - Text Content */}
+              <div className="space-y-4">
+                <blockquote className="text-gray-700 leading-relaxed sm:leading-normal text-base lg:text-xl font-sans font-normal mb-4">
+                  &ldquo;{reviews[1].quote}&rdquo;
+                </blockquote>
+                <div className="space-y-0.5">
+                  <p className="font-bold text-gray-700 text-base lg:text-xl">
+                    {reviews[1].name}
+                  </p>
+                  <p className="text-gray-700 text-base italic lg:text-xl">
+                    {reviews[1].title}
+                  </p>
+                  <p className="text-gray-700 text-base italic lg:text-xl">
+                    {reviews[1].company}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Nadine Carlson Review */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Left Sub-column - Headshot and Logo */}
+              <div className="flex flex-row items-start gap-3">
+                <Image
+                  src={reviews[2].headshot}
+                  alt={reviews[2].name}
+                  width={120}
+                  height={120}
+                  title={reviews[2].name}
+                  sizes="(max-width: 640px) 80px, 120px"
+                  className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
+                />
+                <Image
+                  src={reviews[2].logo}
+                  alt={`${reviews[2].company} logo`}
+                  width={182}
+                  height={182}
+                  title={`${reviews[2].company} logo`}
+                  sizes="(max-width: 640px) 120px, 182px"
+                  className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px] min-h-[120px] sm:min-w-[182px] sm:min-h-[182px]"
+                />
+              </div>
+              {/* Right Sub-column - Text Content */}
+              <div className="space-y-4">
+                <blockquote className="text-gray-700 leading-relaxed sm:leading-normal text-base lg:text-xl font-sans font-normal mb-4">
+                  &ldquo;{reviews[2].quote}&rdquo;
+                </blockquote>
+                <div className="space-y-0.5">
+                  <p className="font-bold text-gray-700 text-base lg:text-xl">
+                    {reviews[2].name}
+                  </p>
+                  <p className="text-gray-700 text-base italic lg:text-xl">
+                    {reviews[2].title}
+                  </p>
+                  <p className="text-gray-700 text-base italic lg:text-xl">
+                    {reviews[2].company}
+                  </p>
+>>>>>>> 0c6d8c53094b41da72a0942d4feab7b0aa25c75e
                 </div>
               </motion.div>
             ))}

@@ -1,7 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const Navigation = () => {
+interface NavigationProps {
+  isFieldNotes?: boolean;
+}
+
+const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
   return (
     <nav className="absolute top-4 sm:top-20 left-2 sm:left-14 z-20 text-white flex items-center gap-2">
       <Link href="/">

@@ -32,7 +32,7 @@ const ClientReviews = () => {
   ];
 
   return (
-    <section className="bg-gray-200 w-full">
+    <section id="reviews" className="bg-gray-200 w-full">
       <div className="max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 py-16">
         {/* Two Column Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

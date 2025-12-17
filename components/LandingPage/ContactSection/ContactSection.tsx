@@ -48,6 +48,7 @@ const ContactSection = () => {
         toast.error("Failed to send message");
       }
     } catch (error) {
+      console.error(error);
       toast.error("Failed to send message");
     }
   };
@@ -145,7 +146,7 @@ const ContactSection = () => {
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}
-                    defaultValue={field.value?.join(", ")}
+                    defaultValue={field.value}
                     className="flex flex-col space-y-1"
                   >
                     <FormItem className="flex items-center space-x-3 space-y-0">

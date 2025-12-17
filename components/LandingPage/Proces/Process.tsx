@@ -2,7 +2,10 @@ import Image from "next/image";
 
 const Process = () => {
   return (
-    <section className="relative w-full h-[110vw] sm:h-[100vw] overflow-hidden">
+    <section
+      id="process"
+      className="relative w-full h-[110vw] sm:h-[100vw] overflow-hidden"
+    >
       <div className="absolute bottom-0 left-0 w-full select-none pointer-events-none">
         <Image
           src="/images/services/services.png"

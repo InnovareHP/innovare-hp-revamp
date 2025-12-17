@@ -30,7 +30,10 @@ const OtherService = () => {
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 py-16">
+    <section
+      id="services"
+      className="max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 py-16"
+    >
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-6">
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-900 tracking-tight">

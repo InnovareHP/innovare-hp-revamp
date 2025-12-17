@@ -2,7 +2,10 @@ import Image from "next/image";
 
 const MissionSection = () => {
   return (
-    <section className="bg-[#414141] text-white py-16 px-8 lg:px-12 xl:px-16">
+    <section
+      id="mission"
+      className="bg-[#414141] text-white py-16 px-8 lg:px-12 xl:px-16"
+    >
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
           {/* Logo Placeholder */}
@@ -14,7 +17,7 @@ const MissionSection = () => {
               height={50}
             />
 
-            <h2 className="uppercase font-light text-lg font-signika tracking-[0.55em] sm:block hidden">
+            <h2 className="uppercase font-light text-lg font-signika tracking-[0.55em] block">
               Innovare HP
             </h2>
           </div>

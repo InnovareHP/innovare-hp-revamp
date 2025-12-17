@@ -1,32 +1,126 @@
+"use client";
+
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 interface NavigationProps {
   isFieldNotes?: boolean;
 }
 
-const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
-  return (
-    <nav
-      className={`${isFieldNotes ? "relative" : "absolute top-20 left-2 z-20 sm:left-14"} text-white flex items-center gap-2`}
-    >
-      <Link href="/">
-        <Image
-          src="/images/logo.png"
-          alt="Innovare HP"
-          width={100}
-          height={100}
-          sizes="(max-width: 639px) 64px, (max-width: 767px) 80px, 96px"
-          className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
-        />
-      </Link>
+const navLinks = [
+  { name: "About", href: "#about" },
+  { name: "Partners", href: "#partners" },
+  { name: "Process", href: "#process" },
+  { name: "What We Do", href: "#what-we-do" },
+  { name: "Service Offerings", href: "#services" },
+  { name: "Mission", href: "#mission" },
+  { name: "Team", href: "#team" },
+  { name: "Client Review", href: "#reviews" },
+  { name: "Contact", href: "#contact" },
+  { name: "Field Notes", href: "/field-notes" },
+];
 
-      <span
-        className={`uppercase font-light text-lg font-signika tracking-[0.55em] sm:block hidden ${isFieldNotes ? "text-black" : "text-white"}`}
-      >
-        Innovare HP
-      </span>
-    </nav>
+const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const linkVariants = {
+    closed: { opacity: 0, y: 20 },
+    open: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: 0.3 + i * 0.1, duration: 0.4 },
+    }),
+  };
+
+  return (
+    <header className="fixed top-0 left-0 w-full z-50 p-6 md:p-10 pointer-events-none">
+      <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">
+        {/* Logo Section */}
+        <nav className="flex items-center gap-2">
+          <Link href="/">
+            <Image
+              src="/images/logo.png"
+              alt="Innovare HP"
+              width={100}
+              height={100}
+              className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
+            />
+          </Link>
+          <span
+            className={`uppercase font-light text-lg font-signika tracking-[0.55em] sm:block hidden ${isFieldNotes ? "text-black" : "text-white"}`}
+          >
+            Innovare HP
+          </span>
+        </nav>
+
+        {/* Burger Icon */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="relative z-50 flex flex-col justify-between w-8 h-6 group"
+          aria-label="Toggle Menu"
+        >
+          <motion.span
+            animate={isOpen ? { rotate: 45, y: 10 } : { rotate: 0, y: 0 }}
+            className={`w-full h-[2px] rounded-full transition-colors ${isOpen || !isFieldNotes ? "bg-blue-400" : "bg-black"}`}
+          />
+          <motion.span
+            animate={isOpen ? { opacity: 0, x: 20 } : { opacity: 1, x: 0 }}
+            className={`w-full h-[2px] rounded-full transition-colors ${isOpen || !isFieldNotes ? "bg-blue-400" : "bg-black"}`}
+          />
+          <motion.span
+            animate={isOpen ? { rotate: -45, y: -12 } : { rotate: 0, y: 0 }}
+            className={`w-full h-[2px] rounded-full transition-colors ${isOpen || !isFieldNotes ? "bg-blue-400" : "bg-black"}`}
+          />
+        </button>
+      </div>
+
+      {/* Full Screen Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            variants={{
+              closed: {
+                opacity: 0,
+                x: "100%",
+                transition: { duration: 0.5, ease: "easeInOut" },
+              },
+              open: {
+                opacity: 1,
+                x: 0,
+                transition: { duration: 0.5, ease: "easeInOut" },
+              },
+            }}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            className="fixed inset-0 bg-black text-white z-40 flex flex-col justify-center items-center pointer-events-auto"
+          >
+            <div className="flex flex-col gap-6 text-center">
+              {navLinks.map((link, i) => (
+                <motion.div
+                  key={link.name}
+                  custom={i}
+                  variants={linkVariants}
+                  initial="closed"
+                  animate="open"
+                  exit="closed"
+                >
+                  <Link
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-400 transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
   );
 };
 

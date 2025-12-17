@@ -36,7 +36,10 @@ const services = [
 
 const WhatWeDo = () => {
   return (
-    <section className="max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 py-16">
+    <section
+      id="what-we-do"
+      className="max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 py-16"
+    >
       <div>
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 lg:mb-16 gap-4 sm:gap-6">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-left text-blue-900">

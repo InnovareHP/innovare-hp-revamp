@@ -1,9 +1,6 @@
-import Image from "next/image";
 import Navigation from "../Navigation/Navigation";
 
 const FieldNotes = () => {
-  // 1. DATA STRUCTURE
-  // We store all the repeating content in an array to "map" over it later.
   const partners = [
     {
       id: 1,
@@ -111,7 +108,7 @@ const FieldNotes = () => {
   ];
 
   return (
-    <div>
+    <section id="field-notes" className="pt-20">
       <Navigation isFieldNotes={true} />
       <div className="max-w-4xl mx-auto px-6 py-12 bg-white font-sans text-gray-800">
         {/* --- HEADER SECTION --- */}
@@ -154,14 +151,11 @@ const FieldNotes = () => {
               {/* Conditional Rendering: Only show image container if image exists */}
               {partner.image && (
                 <figure className="w-full h-64 md:h-80 overflow-hidden rounded-lg shadow-md relative group">
-                  <Image
+                  <img
                     src={partner.image}
                     alt={partner.category}
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                   />
-                  <figcaption className="absolute bottom-2 right-2 text-xs text-white bg-black/50 px-2 py-1 rounded">
-                    Image: {partner.imageCredit}
-                  </figcaption>
                 </figure>
               )}
 
@@ -250,7 +244,7 @@ const FieldNotes = () => {
           </div>
         </footer>
       </div>
-    </div>
+    </section>
   );
 };
 

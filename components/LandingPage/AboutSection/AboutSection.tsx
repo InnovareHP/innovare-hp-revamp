@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const AboutSection = () => {
   return (
-    <section className="flex flex-col lg:flex-row min-h-[70vh]">
+    <section id="about" className="flex flex-col lg:flex-row min-h-[70vh]">
       {/* Left side - Image (50% width) */}
       <div className="w-full lg:w-1/2 bg-gray-200 flex items-center justify-center relative min-h-[400px] lg:min-h-[70vh]">
         <Image

@@ -3,7 +3,7 @@
 import * as z from "zod";
 
 // Define the valid options for the contact method
-const ContactMethod = z.array(z.enum(["Email", "Text", "Phone Call"]), {
+const ContactMethod = z.enum(["Email", "Text", "Phone Call"], {
   error: "Please select a preferred contact method.",
 });
 

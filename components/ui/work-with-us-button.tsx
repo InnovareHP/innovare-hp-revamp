@@ -25,7 +25,7 @@ const WorkWithUsButton = ({ variant = "default", className }: WorkWithUsButtonPr
     <Button
       variant="outline"
         className={cn(
-          "border-blue-400 text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-none px-6 py-5 sm:px-8 sm:py-6 md:px-10 md:py-7 text-sm sm:text-base md:text-lg font-semibold uppercase tracking-widest cursor-pointer underline",
+          "border-blue-400 text-blue-400 hover:bg-blue-50 hover:text-blue-500 rounded-none px-6 py-3 text-sm font-normal uppercase tracking-wide cursor-pointer underline",
           className
         )}
     >

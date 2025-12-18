@@ -7,7 +7,7 @@ const ClientReviews = () => {
   const reviews = [
     {
       quote:
-        "“Our organization's relationship with Innovare HP is rooted in a clear increase in revenue-driven by their innovative strategies, collaborative approach, and most importantly, the high-quality introductions they've facilitated. While we are technically a client of Innovare HP, the experience feels far more relational than transactional. They take the time to truly understand our goals, tailor their approach accordingly, and continually invest in our success. If you're looking for a marketing partner who shows up as part of your team and not just a vendor, Innovare HP is the one.”",
+        "Our organization's relationship with Innovare HP is rooted in a clear increase in revenue-driven by their innovative strategies, collaborative approach, and most importantly, the high-quality introductions they've facilitated. While we are technically a client of Innovare HP, the experience feels far more relational than transactional. They take the time to truly understand our goals, tailor their approach accordingly, and continually invest in our success. If you're looking for a marketing partner who shows up as part of your team and not just a vendor, Innovare HP is the one.",
       name: "Brian Caulfield",
       title: "CMO",
       company: "Centerline Billing & Consulting",
@@ -16,7 +16,7 @@ const ClientReviews = () => {
     },
     {
       quote:
-        "“What comes to mind when I think of Rich, he is amazing at marketing! All kinds of marketing. I have been in business for over 45 years, and he is the most cost-effective creative marketer I have ever worked with. If you need help building your business to higher profits, call Rich! don't waste your time anywhere else.”",
+        "What comes to mind when I think of Rich, he is amazing at marketing! All kinds of marketing. I have been in business for over 45 years, and he is the most cost-effective creative marketer I have ever worked with. If you need help building your business to higher profits, call Rich! don't waste your time anywhere else.",
       name: "Ken Watts",
       title: "Owner/Founder",
       company: "Helping with Mom's Home",
@@ -94,16 +94,16 @@ const ClientReviews = () => {
                   height={120}
                   sizes="(max-width: 640px) 80px, 120px"
                   title={reviews[0].name}
-                  className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
+                  className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[36px] sm:mt-[18px]"
                 />
                 <Image
                   src={reviews[0].logo}
                   alt={`${reviews[0].company} logo`}
                   width={182}
                   height={182}
-                  sizes="(max-width: 640px) 120px, 182px"
+                  sizes="(max-width: 640px) 160px, 182px"
                   title={`${reviews[0].company} logo`}
-                  className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px] min-h-[120px] sm:min-w-[182px] sm:min-h-[182px]"
+                  className="object-contain shrink-0 w-[160px] h-[160px] sm:w-[182px] sm:h-[182px] min-w-[160px] min-h-[160px] sm:min-w-[182px] sm:min-h-[182px]"
                 />
               </div>
               <div className="space-y-4">
@@ -138,16 +138,16 @@ const ClientReviews = () => {
                   height={120}
                   sizes="(max-width: 640px) 80px, 120px"
                   title={reviews[1].name}
-                  className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
+                  className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[36px] sm:mt-[18px]"
                 />
                 <Image
                   src={reviews[1].logo}
                   alt={`${reviews[1].company} logo`}
                   width={182}
                   height={182}
-                  sizes="(max-width: 640px) 120px, 182px"
+                  sizes="(max-width: 640px) 168px, 182px"
                   title={`${reviews[1].company} logo`}
-                  className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px] min-h-[120px] sm:min-w-[182px] sm:min-h-[182px]"
+                  className="object-contain shrink-0 w-[168px] h-[168px] sm:w-[182px] sm:h-[182px] min-w-[168px] min-h-[168px] sm:min-w-[182px] sm:min-h-[182px]"
                 />
               </div>
               {/* Right Sub-column - Text Content */}
@@ -180,7 +180,7 @@ const ClientReviews = () => {
                   height={120}
                   title={reviews[2].name}
                   sizes="(max-width: 640px) 80px, 120px"
-                  className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[18px]"
+                  className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[36px] sm:mt-[18px]"
                 />
                 <Image
                   src={reviews[2].logo}
@@ -188,8 +188,8 @@ const ClientReviews = () => {
                   width={182}
                   height={182}
                   title={`${reviews[2].company} logo`}
-                  sizes="(max-width: 640px) 120px, 182px"
-                  className="object-contain shrink-0 w-[120px] h-[120px] sm:w-[182px] sm:h-[182px] min-w-[120px] min-h-[120px] sm:min-w-[182px] sm:min-h-[182px]"
+                  sizes="(max-width: 640px) 168px, 182px"
+                  className="object-contain shrink-0 w-[168px] h-[168px] sm:w-[182px] sm:h-[182px] min-w-[168px] min-h-[168px] sm:min-w-[182px] sm:min-h-[182px]"
                 />
               </div>
               {/* Right Sub-column - Text Content */}

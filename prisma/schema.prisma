@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model LinkedInPost {
+  id               String   @id                 // urn:li:share / ugcPost
+  authorUrn        String
+  text             String?
+  publishedAt      DateTime
+  createdAt        DateTime
+  lastModifiedAt   DateTime
+  raw              Json
+
+  images           LinkedInPostImage[]
+}
+
+model LinkedInPostImage {
+  id         String   @id @default(uuid())
+  postId    String
+  imageUrn  String
+  imageUrl  String?
+  altText   String?
+  position  Int?
+
+  post      LinkedInPost @relation(fields: [postId], references: [id])
+
+  @@unique([postId, imageUrn])
+}

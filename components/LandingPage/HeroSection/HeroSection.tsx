@@ -43,7 +43,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative w-full min-h-[80vh] flex items-center overflow-hidden bg-gray-900">
+    <section className="relative w-full min-h-[80vh] flex items-end overflow-hidden bg-gray-900">
       {/* Background remains dark (bg-gray-900) immediately. 
          Only the scale effect is applied to the image. 
       */}
@@ -64,7 +64,7 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-black/60" />
       </motion.div>
 
-      <div className="relative z-10 w-full px-8 sm:px-6 md:px-12 lg:px-20">
+      <div className="relative z-10 w-full px-8 sm:px-6 md:px-12 lg:px-20 py-24">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -73,7 +73,7 @@ const HeroSection = () => {
         >
           <motion.h1
             variants={itemVariants}
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white leading-relaxed sm:leading-tight font-bold"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white leading-tightest font-bold"
           >
             Marketing that empowers healthcare brands to stand apart and stay
             ahead.

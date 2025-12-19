@@ -1,3 +1,4 @@
+import { LinkedInPost } from "@/lib/types";
 import AboutSection from "./AboutSection/AboutSection";
 import ClientReviews from "./ClientReviews/ClientReviews";
 import ContactPage from "./ContactSection/ContactPage";
@@ -8,9 +9,10 @@ import OtherService from "./OtherService/OtherService";
 import Partners from "./Partners/Partners";
 import Process from "./Proces/Process";
 import TeamSection from "./TeamSection/TeamSection";
+import WhatWeAreTalkingAbout from "./WhatWeAreTalkingAbout/WhatWeAreTalkingAbout";
 import WhatWeDo from "./WhatWeDo/WhatWeDo";
 
-const LandingPage = () => {
+const LandingPage = ({ posts }: { posts: LinkedInPost[] }) => {
   return (
     //sequence not yet finalized
     <main className="relative">
@@ -20,6 +22,7 @@ const LandingPage = () => {
       <Partners />
       <Process />
       <WhatWeDo />
+      <WhatWeAreTalkingAbout posts={posts} />
       <OtherService />
       <MissionSection />
       <TeamSection />

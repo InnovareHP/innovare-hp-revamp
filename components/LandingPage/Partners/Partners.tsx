@@ -4,33 +4,15 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 const logos = [
-  "25",
-  "10",
-  "22",
-  "9",
-  "6",
-  "23",
-  "11",
-  "16",
-  "21",
-  "13",
-  "19",
-  "28",
-  "30",
-  "15",
-  "12",
-  "26",
-  "7",
-  "14",
-  "29",
-  "27",
-  "8",
-  "31",
+  "25","10","22","9","6","23","11","16","21","13","19",
+  "28","30","15","12","26","7","14","29","27","8","31",
 ];
 
-// Split logos into two rows for a more dynamic look
-const firstRow = logos.slice(0, Math.ceil(logos.length / 2));
-const secondRow = logos.slice(Math.ceil(logos.length / 2));
+// Split logos into 4 rows
+const chunkSize = Math.ceil(logos.length / 4);
+const rows = Array.from({ length: 4 }, (_, i) =>
+  logos.slice(i * chunkSize, (i + 1) * chunkSize)
+);
 
 const Partners = () => {
   return (
@@ -50,19 +32,21 @@ const Partners = () => {
         </motion.p>
       </div>
 
-      {/* Main Container with edge fades */}
+      {/* Marquee Container */}
       <div className="relative flex flex-col gap-8 [mask-image:linear-gradient(to_right,transparent,white_15%,white_85%,transparent)]">
-        {/* Row 1: Moving Left */}
-        <LogoMarquee items={firstRow} direction="left" speed={30} />
-
-        {/* Row 2: Moving Right */}
-        <LogoMarquee items={secondRow} direction="right" speed={35} />
+        {rows.map((row, index) => (
+          <LogoMarquee
+            key={index}
+            items={row}
+            direction={index % 2 === 0 ? "left" : "right"}
+            speed={30 + index * 3}
+          />
+        ))}
       </div>
     </section>
   );
 };
 
-// Sub-component for the Marquee Logic
 const LogoMarquee = ({
   items,
   direction = "left",
@@ -85,10 +69,8 @@ const LogoMarquee = ({
           repeat: Infinity,
           ease: "linear",
         }}
-        // Pause animation on hover
         whileHover={{ animationPlayState: "paused" }}
       >
-        {/* We map the array twice to ensure the gap-less loop */}
         {[...items, ...items].map((n, index) => (
           <div
             key={`${n}-${index}`}

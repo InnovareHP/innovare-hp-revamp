@@ -23,7 +23,7 @@ export default async function Home() {
         },
       },
     },
-    take: 6,
+    take: 10,
   });
 
   const postsWithRelativeTime = posts.map((post) => {

@@ -3,6 +3,7 @@
 import { motion, Variants } from "framer-motion";
 import {
   Facebook,
+  File,
   Instagram,
   Linkedin,
   Mail,
@@ -10,6 +11,7 @@ import {
   Phone,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const contactDetails = [
   { label: "Phone", value: "(269) 501-4496", icon: Phone },
@@ -24,6 +26,15 @@ const contactDetails = [
       </>
     ),
     icon: MapPin,
+  },
+  {
+    label: "Policy",
+    value: (
+      <Link href="/privacy-policy" className="text-blue-600">
+        Privacy Policy
+      </Link>
+    ),
+    icon: File,
   },
 ];
 

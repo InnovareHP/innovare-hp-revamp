@@ -4,8 +4,28 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 const logos = [
-  "25","10","22","9","6","23","11","16","21","13","19",
-  "28","30","15","12","26","7","14","29","27","8","31",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+  "11",
+  "12",
+  "13",
+  "14",
+  "15",
+  "16",
+  "17",
+  "18",
+  "19",
+  "20",
+  "21",
+  "22",
 ];
 
 // Split logos into 4 rows
@@ -77,7 +97,7 @@ const LogoMarquee = ({
             className="flex-shrink-0 w-[150px] sm:w-[200px] md:w-[250px] flex items-center justify-center p-4 grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all duration-300"
           >
             <Image
-              src={`/images/testimonials/Innovare-HP-Brochure-(${n}).png`}
+              src={`/images/testimonials/${n}.png`}
               alt="Partner Logo"
               width={200}
               height={100}

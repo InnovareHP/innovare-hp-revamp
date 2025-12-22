@@ -1,25 +1,29 @@
-type LinkedInPostPayload = any;
-
 export function extractImageUrns(posts: any[]) {
   const results: {
     postId: string;
     imageUrn: string;
     altText?: string;
-    position?: number;
+    position: number;
   }[] = [];
 
   for (const post of posts) {
     const postId = post.id;
+    const content = post?.content;
 
-    const images =
-      (post?.content?.multiImage?.images ??
-      post?.content?.carousel?.cards ??
-      post?.content?.media)
-        ? [post.content.media]
-        : [];
+    let images: any[] = [];
 
-    images.forEach((img: any, index: number) => {
-      const urn = img?.id || img?.media || img?.image?.id;
+    // ✅ Multi-image post
+    if (content?.multiImage?.images?.length) {
+      images = content.multiImage.images;
+    }
+
+    // ✅ Single media (image only, ignore video)
+    else if (content?.media?.id?.startsWith("urn:li:image:")) {
+      images = [content.media];
+    }
+
+    images.forEach((img, index) => {
+      const urn = img?.id;
 
       if (urn?.startsWith("urn:li:image:")) {
         results.push({

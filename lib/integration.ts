@@ -31,8 +31,6 @@ export async function fetchLinkedInPosts() {
 
   const data = await res.json();
 
-  console.log("data", data);
-
   for (const post of data.elements ?? []) {
     await prisma.linkedInPost.upsert({
       where: { id: post.id },
@@ -56,7 +54,6 @@ export async function fetchLinkedInPosts() {
   }
 
   console.log(`LinkedIn sync complete: ${data.elements?.length ?? 0} posts`);
-
   const images = extractImageUrns(data.elements ?? []);
 
   console.log("images", images);

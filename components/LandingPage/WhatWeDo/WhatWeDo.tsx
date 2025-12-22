@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { motion, Variants } from "framer-motion";
 
 const services = [
@@ -34,6 +35,18 @@ const services = [
       "We empower your team with the knowledge and tools to sustain and scale your marketing efforts. Through strategic workshops, digital marketing fundamentals, and best practices training, we build internal capabilities and transform your staff into confident marketing champions.",
   },
 ];
+
+const handleDownloadFile = (url: string, filename?: string) => {
+  // ensure spaces work fine
+  const href = encodeURI(url);
+  const a = document.createElement("a");
+  a.href = href;
+  if (filename) a.download = filename;
+  // if no filename, browser uses last segment of URL
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+};
 
 const WhatWeDo = () => {
   // Fixes the "ease" string type error by using the Variants type
@@ -103,6 +116,18 @@ const WhatWeDo = () => {
           ))}
         </motion.div>
       </div>
+      <Button
+        variant="outline"
+        onClick={() =>
+          handleDownloadFile(
+            "/Innovare HP Brochure.pdf",
+            "Innovare HP Brochure.pdf"
+          )
+        }
+        className="border-blue-400 my-10 w-full text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-none px-8 py-6 text-sm font-semibold uppercase tracking-widest cursor-pointer"
+      >
+        Download Brochure
+      </Button>
     </section>
   );
 };

@@ -17,7 +17,7 @@ const WorkWithUsButton = ({
         <Button
           variant="outline"
           className={cn(
-            "border-white text-white hover:bg-white/10 hover:text-white rounded-none px-6 py-5 sm:px-8 sm:py-6 md:px-10 md:py-7 text-lg font-semibold uppercase tracking-widest cursor-pointer underline",
+            "border-white text-white hover:bg-white/10 hover:text-white rounded-none px-6 py-5 sm:px-8 sm:py-6 md:px-10 md:py-7 text-lg font-semibold uppercase tracking-widest cursor-pointer",
             className
           )}
         >

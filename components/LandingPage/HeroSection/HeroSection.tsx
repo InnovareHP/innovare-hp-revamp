@@ -64,12 +64,12 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-black/60" />
       </motion.div>
 
-      <div className="relative z-10 w-full px-8 sm:px-6 md:px-12 lg:px-20 sm:py-24 py-4">
+      <div className="relative z-10 w-full px-8 sm:px-6 md:px-12 lg:px-20 pb-8 pt-4 sm:py-24 sm:pb-4">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="max-w-4xl space-y-4"
+          className="max-w-4xl space-y-4 mb-[10%] sm:mb-0"
         >
           <motion.h1
             variants={itemVariants}

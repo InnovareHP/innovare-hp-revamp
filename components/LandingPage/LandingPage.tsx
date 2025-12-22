@@ -10,7 +10,6 @@ import Partners from "./Partners/Partners";
 import Process from "./Proces/Process";
 import TeamSection from "./TeamSection/TeamSection";
 import WhatWeAreTalkingAbout from "./WhatWeAreTalkingAbout/WhatWeAreTalkingAbout";
-import WhatWeDo from "./WhatWeDo/WhatWeDo";
 
 const LandingPage = ({ posts }: { posts: LinkedInPost[] }) => {
   return (
@@ -21,7 +20,7 @@ const LandingPage = ({ posts }: { posts: LinkedInPost[] }) => {
       <AboutSection />
       <Partners />
       <Process />
-      <WhatWeDo />
+      {/* <WhatWeDo /> */}
       <WhatWeAreTalkingAbout posts={posts} />
       <OtherService />
       <MissionSection />

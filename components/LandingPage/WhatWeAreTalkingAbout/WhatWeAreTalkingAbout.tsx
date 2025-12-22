@@ -34,42 +34,50 @@ const WhatWeAreTalkingAbout = ({ posts }: { posts: LinkedInPost[] }) => {
 
       <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
         {posts.map((post) => (
-          <div
+          <Link
+            href={`https://www.linkedin.com/embed/feed/update/${post.id}`}
+            target="_blank"
             key={post.id}
-            className="break-inside-avoid group flex flex-col bg-slate-50 rounded-2xl border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
           >
-            {post.images?.[0]?.imageUrl && (
-              <div className="relative aspect-square w-full overflow-hidden">
-                <Image
-                  src={post.images[0].imageUrl}
-                  alt="Post content"
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-            )}
-
-            <div className="p-8">
-              <p className="text-slate-800 text-lg md:text-xl font-medium leading-snug">
-                &ldquo;{cleanText(post.text)}&rdquo;
-              </p>
-
-              <div className="mt-8 flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-[10px] uppercase tracking-widest font-bold text-blue-600">
-                    {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </span>
-                  <span className="text-xs text-slate-400">{post.timeAgo}</span>
+            <div
+              key={post.id}
+              className="break-inside-avoid group flex flex-col bg-slate-50 rounded-2xl border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+            >
+              {post.images?.[0]?.imageUrl && (
+                <div className="relative aspect-square w-full overflow-hidden">
+                  <Image
+                    src={post.images[0].imageUrl}
+                    alt="Post content"
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
                 </div>
-                <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center shadow-sm">
-                  <div className="h-2 w-2 rounded-full bg-blue-600 animate-pulse" />
+              )}
+
+              <div className="p-8">
+                <p className="text-slate-800 text-lg md:text-xl font-medium leading-snug">
+                  &ldquo;{cleanText(post.text)}&rdquo;
+                </p>
+
+                <div className="mt-8 flex items-center justify-between">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] uppercase tracking-widest font-bold text-blue-600">
+                      {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span className="text-xs text-slate-400">
+                      {post.timeAgo}
+                    </span>
+                  </div>
+                  <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center shadow-sm">
+                    <div className="h-2 w-2 rounded-full bg-blue-600 animate-pulse" />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 

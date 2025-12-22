@@ -31,6 +31,8 @@ export async function fetchLinkedInPosts() {
 
   const data = await res.json();
 
+  console.log("data", data);
+
   for (const post of data.elements ?? []) {
     await prisma.linkedInPost.upsert({
       where: { id: post.id },
@@ -38,6 +40,7 @@ export async function fetchLinkedInPosts() {
         text: post.commentary ?? null,
         lastModifiedAt: new Date(post.lastModifiedAt),
         raw: post,
+        linkUrl: post.url ?? undefined,
       },
       create: {
         id: post.id,
@@ -46,6 +49,7 @@ export async function fetchLinkedInPosts() {
         publishedAt: new Date(post.publishedAt),
         createdAt: new Date(post.createdAt),
         lastModifiedAt: new Date(post.lastModifiedAt),
+        linkUrl: post.url ?? undefined,
         raw: post,
       },
     });

@@ -1000,6 +1000,7 @@ export namespace Prisma {
     publishedAt: Date | null
     createdAt: Date | null
     lastModifiedAt: Date | null
+    linkUrl: string | null
   }
 
   export type LinkedInPostMaxAggregateOutputType = {
@@ -1009,6 +1010,7 @@ export namespace Prisma {
     publishedAt: Date | null
     createdAt: Date | null
     lastModifiedAt: Date | null
+    linkUrl: string | null
   }
 
   export type LinkedInPostCountAggregateOutputType = {
@@ -1018,6 +1020,7 @@ export namespace Prisma {
     publishedAt: number
     createdAt: number
     lastModifiedAt: number
+    linkUrl: number
     raw: number
     _all: number
   }
@@ -1030,6 +1033,7 @@ export namespace Prisma {
     publishedAt?: true
     createdAt?: true
     lastModifiedAt?: true
+    linkUrl?: true
   }
 
   export type LinkedInPostMaxAggregateInputType = {
@@ -1039,6 +1043,7 @@ export namespace Prisma {
     publishedAt?: true
     createdAt?: true
     lastModifiedAt?: true
+    linkUrl?: true
   }
 
   export type LinkedInPostCountAggregateInputType = {
@@ -1048,6 +1053,7 @@ export namespace Prisma {
     publishedAt?: true
     createdAt?: true
     lastModifiedAt?: true
+    linkUrl?: true
     raw?: true
     _all?: true
   }
@@ -1131,6 +1137,7 @@ export namespace Prisma {
     publishedAt: Date
     createdAt: Date
     lastModifiedAt: Date
+    linkUrl: string | null
     raw: JsonValue
     _count: LinkedInPostCountAggregateOutputType | null
     _min: LinkedInPostMinAggregateOutputType | null
@@ -1158,6 +1165,7 @@ export namespace Prisma {
     publishedAt?: boolean
     createdAt?: boolean
     lastModifiedAt?: boolean
+    linkUrl?: boolean
     raw?: boolean
     images?: boolean | LinkedInPost$imagesArgs<ExtArgs>
     _count?: boolean | LinkedInPostCountOutputTypeDefaultArgs<ExtArgs>
@@ -1170,6 +1178,7 @@ export namespace Prisma {
     publishedAt?: boolean
     createdAt?: boolean
     lastModifiedAt?: boolean
+    linkUrl?: boolean
     raw?: boolean
   }, ExtArgs["result"]["linkedInPost"]>
 
@@ -1180,6 +1189,7 @@ export namespace Prisma {
     publishedAt?: boolean
     createdAt?: boolean
     lastModifiedAt?: boolean
+    linkUrl?: boolean
     raw?: boolean
   }, ExtArgs["result"]["linkedInPost"]>
 
@@ -1190,10 +1200,11 @@ export namespace Prisma {
     publishedAt?: boolean
     createdAt?: boolean
     lastModifiedAt?: boolean
+    linkUrl?: boolean
     raw?: boolean
   }
 
-  export type LinkedInPostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "authorUrn" | "text" | "publishedAt" | "createdAt" | "lastModifiedAt" | "raw", ExtArgs["result"]["linkedInPost"]>
+  export type LinkedInPostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "authorUrn" | "text" | "publishedAt" | "createdAt" | "lastModifiedAt" | "linkUrl" | "raw", ExtArgs["result"]["linkedInPost"]>
   export type LinkedInPostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     images?: boolean | LinkedInPost$imagesArgs<ExtArgs>
     _count?: boolean | LinkedInPostCountOutputTypeDefaultArgs<ExtArgs>
@@ -1213,6 +1224,7 @@ export namespace Prisma {
       publishedAt: Date
       createdAt: Date
       lastModifiedAt: Date
+      linkUrl: string | null
       raw: Prisma.JsonValue
     }, ExtArgs["result"]["linkedInPost"]>
     composites: {}
@@ -1644,6 +1656,7 @@ export namespace Prisma {
     readonly publishedAt: FieldRef<"LinkedInPost", 'DateTime'>
     readonly createdAt: FieldRef<"LinkedInPost", 'DateTime'>
     readonly lastModifiedAt: FieldRef<"LinkedInPost", 'DateTime'>
+    readonly linkUrl: FieldRef<"LinkedInPost", 'String'>
     readonly raw: FieldRef<"LinkedInPost", 'Json'>
   }
     
@@ -1874,6 +1887,7 @@ export namespace Prisma {
      * The data used to create many LinkedInPosts.
      */
     data: LinkedInPostCreateManyInput | LinkedInPostCreateManyInput[]
+    skipDuplicates?: boolean
   }
 
   /**
@@ -1892,6 +1906,7 @@ export namespace Prisma {
      * The data used to create many LinkedInPosts.
      */
     data: LinkedInPostCreateManyInput | LinkedInPostCreateManyInput[]
+    skipDuplicates?: boolean
   }
 
   /**
@@ -2993,6 +3008,7 @@ export namespace Prisma {
      * The data used to create many LinkedInPostImages.
      */
     data: LinkedInPostImageCreateManyInput | LinkedInPostImageCreateManyInput[]
+    skipDuplicates?: boolean
   }
 
   /**
@@ -3011,6 +3027,7 @@ export namespace Prisma {
      * The data used to create many LinkedInPostImages.
      */
     data: LinkedInPostImageCreateManyInput | LinkedInPostImageCreateManyInput[]
+    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -3181,6 +3198,9 @@ export namespace Prisma {
    */
 
   export const TransactionIsolationLevel: {
+    ReadUncommitted: 'ReadUncommitted',
+    ReadCommitted: 'ReadCommitted',
+    RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
   };
 
@@ -3194,6 +3214,7 @@ export namespace Prisma {
     publishedAt: 'publishedAt',
     createdAt: 'createdAt',
     lastModifiedAt: 'lastModifiedAt',
+    linkUrl: 'linkUrl',
     raw: 'raw'
   };
 
@@ -3227,6 +3248,14 @@ export namespace Prisma {
   export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
+  export const QueryMode: {
+    default: 'default',
+    insensitive: 'insensitive'
+  };
+
+  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
   export const JsonNullValueFilter: {
     DbNull: typeof DbNull,
     JsonNull: typeof JsonNull,
@@ -3234,14 +3263,6 @@ export namespace Prisma {
   };
 
   export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
-
-
-  export const QueryMode: {
-    default: 'default',
-    insensitive: 'insensitive'
-  };
-
-  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
   export const NullsOrder: {
@@ -3265,9 +3286,23 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'String[]'
+   */
+  export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -3293,9 +3328,23 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
   /**
    * Deep Input Types
@@ -3312,6 +3361,7 @@ export namespace Prisma {
     publishedAt?: DateTimeFilter<"LinkedInPost"> | Date | string
     createdAt?: DateTimeFilter<"LinkedInPost"> | Date | string
     lastModifiedAt?: DateTimeFilter<"LinkedInPost"> | Date | string
+    linkUrl?: StringNullableFilter<"LinkedInPost"> | string | null
     raw?: JsonFilter<"LinkedInPost">
     images?: LinkedInPostImageListRelationFilter
   }
@@ -3323,6 +3373,7 @@ export namespace Prisma {
     publishedAt?: SortOrder
     createdAt?: SortOrder
     lastModifiedAt?: SortOrder
+    linkUrl?: SortOrderInput | SortOrder
     raw?: SortOrder
     images?: LinkedInPostImageOrderByRelationAggregateInput
   }
@@ -3337,6 +3388,7 @@ export namespace Prisma {
     publishedAt?: DateTimeFilter<"LinkedInPost"> | Date | string
     createdAt?: DateTimeFilter<"LinkedInPost"> | Date | string
     lastModifiedAt?: DateTimeFilter<"LinkedInPost"> | Date | string
+    linkUrl?: StringNullableFilter<"LinkedInPost"> | string | null
     raw?: JsonFilter<"LinkedInPost">
     images?: LinkedInPostImageListRelationFilter
   }, "id">
@@ -3348,6 +3400,7 @@ export namespace Prisma {
     publishedAt?: SortOrder
     createdAt?: SortOrder
     lastModifiedAt?: SortOrder
+    linkUrl?: SortOrderInput | SortOrder
     raw?: SortOrder
     _count?: LinkedInPostCountOrderByAggregateInput
     _max?: LinkedInPostMaxOrderByAggregateInput
@@ -3364,6 +3417,7 @@ export namespace Prisma {
     publishedAt?: DateTimeWithAggregatesFilter<"LinkedInPost"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"LinkedInPost"> | Date | string
     lastModifiedAt?: DateTimeWithAggregatesFilter<"LinkedInPost"> | Date | string
+    linkUrl?: StringNullableWithAggregatesFilter<"LinkedInPost"> | string | null
     raw?: JsonWithAggregatesFilter<"LinkedInPost">
   }
 
@@ -3437,6 +3491,7 @@ export namespace Prisma {
     publishedAt: Date | string
     createdAt: Date | string
     lastModifiedAt: Date | string
+    linkUrl?: string | null
     raw: JsonNullValueInput | InputJsonValue
     images?: LinkedInPostImageCreateNestedManyWithoutPostInput
   }
@@ -3448,6 +3503,7 @@ export namespace Prisma {
     publishedAt: Date | string
     createdAt: Date | string
     lastModifiedAt: Date | string
+    linkUrl?: string | null
     raw: JsonNullValueInput | InputJsonValue
     images?: LinkedInPostImageUncheckedCreateNestedManyWithoutPostInput
   }
@@ -3459,6 +3515,7 @@ export namespace Prisma {
     publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastModifiedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkUrl?: NullableStringFieldUpdateOperationsInput | string | null
     raw?: JsonNullValueInput | InputJsonValue
     images?: LinkedInPostImageUpdateManyWithoutPostNestedInput
   }
@@ -3470,6 +3527,7 @@ export namespace Prisma {
     publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastModifiedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkUrl?: NullableStringFieldUpdateOperationsInput | string | null
     raw?: JsonNullValueInput | InputJsonValue
     images?: LinkedInPostImageUncheckedUpdateManyWithoutPostNestedInput
   }
@@ -3481,6 +3539,7 @@ export namespace Prisma {
     publishedAt: Date | string
     createdAt: Date | string
     lastModifiedAt: Date | string
+    linkUrl?: string | null
     raw: JsonNullValueInput | InputJsonValue
   }
 
@@ -3491,6 +3550,7 @@ export namespace Prisma {
     publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastModifiedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkUrl?: NullableStringFieldUpdateOperationsInput | string | null
     raw?: JsonNullValueInput | InputJsonValue
   }
 
@@ -3501,6 +3561,7 @@ export namespace Prisma {
     publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastModifiedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkUrl?: NullableStringFieldUpdateOperationsInput | string | null
     raw?: JsonNullValueInput | InputJsonValue
   }
 
@@ -3568,8 +3629,8 @@ export namespace Prisma {
 
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3577,13 +3638,14 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3591,13 +3653,14 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -3613,13 +3676,18 @@ export namespace Prisma {
 
   export type JsonFilterBase<$PrismaModel = never> = {
     equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string
+    path?: string[]
     mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
     string_contains?: string | StringFieldRefInput<$PrismaModel>
     string_starts_with?: string | StringFieldRefInput<$PrismaModel>
     string_ends_with?: string | StringFieldRefInput<$PrismaModel>
     array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
     array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
@@ -3645,6 +3713,7 @@ export namespace Prisma {
     publishedAt?: SortOrder
     createdAt?: SortOrder
     lastModifiedAt?: SortOrder
+    linkUrl?: SortOrder
     raw?: SortOrder
   }
 
@@ -3655,6 +3724,7 @@ export namespace Prisma {
     publishedAt?: SortOrder
     createdAt?: SortOrder
     lastModifiedAt?: SortOrder
+    linkUrl?: SortOrder
   }
 
   export type LinkedInPostMinOrderByAggregateInput = {
@@ -3664,12 +3734,13 @@ export namespace Prisma {
     publishedAt?: SortOrder
     createdAt?: SortOrder
     lastModifiedAt?: SortOrder
+    linkUrl?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3677,6 +3748,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
@@ -3685,8 +3757,8 @@ export namespace Prisma {
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3694,6 +3766,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
@@ -3702,8 +3775,8 @@ export namespace Prisma {
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -3722,13 +3795,18 @@ export namespace Prisma {
 
   export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
     equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string
+    path?: string[]
     mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
     string_contains?: string | StringFieldRefInput<$PrismaModel>
     string_starts_with?: string | StringFieldRefInput<$PrismaModel>
     string_ends_with?: string | StringFieldRefInput<$PrismaModel>
     array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
     array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedJsonFilter<$PrismaModel>
@@ -3737,8 +3815,8 @@ export namespace Prisma {
 
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -3793,8 +3871,8 @@ export namespace Prisma {
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -3885,8 +3963,8 @@ export namespace Prisma {
 
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3899,8 +3977,8 @@ export namespace Prisma {
 
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3913,8 +3991,8 @@ export namespace Prisma {
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -3924,8 +4002,8 @@ export namespace Prisma {
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3941,8 +4019,8 @@ export namespace Prisma {
 
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -3952,8 +4030,8 @@ export namespace Prisma {
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3969,8 +4047,8 @@ export namespace Prisma {
 
   export type NestedIntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -3980,8 +4058,8 @@ export namespace Prisma {
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -4000,20 +4078,25 @@ export namespace Prisma {
 
   export type NestedJsonFilterBase<$PrismaModel = never> = {
     equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string
+    path?: string[]
     mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
     string_contains?: string | StringFieldRefInput<$PrismaModel>
     string_starts_with?: string | StringFieldRefInput<$PrismaModel>
     string_ends_with?: string | StringFieldRefInput<$PrismaModel>
     array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
     array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -4028,8 +4111,8 @@ export namespace Prisma {
 
   export type NestedFloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
@@ -4060,6 +4143,7 @@ export namespace Prisma {
 
   export type LinkedInPostImageCreateManyPostInputEnvelope = {
     data: LinkedInPostImageCreateManyPostInput | LinkedInPostImageCreateManyPostInput[]
+    skipDuplicates?: boolean
   }
 
   export type LinkedInPostImageUpsertWithWhereUniqueWithoutPostInput = {
@@ -4097,6 +4181,7 @@ export namespace Prisma {
     publishedAt: Date | string
     createdAt: Date | string
     lastModifiedAt: Date | string
+    linkUrl?: string | null
     raw: JsonNullValueInput | InputJsonValue
   }
 
@@ -4107,6 +4192,7 @@ export namespace Prisma {
     publishedAt: Date | string
     createdAt: Date | string
     lastModifiedAt: Date | string
+    linkUrl?: string | null
     raw: JsonNullValueInput | InputJsonValue
   }
 
@@ -4133,6 +4219,7 @@ export namespace Prisma {
     publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastModifiedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkUrl?: NullableStringFieldUpdateOperationsInput | string | null
     raw?: JsonNullValueInput | InputJsonValue
   }
 
@@ -4143,6 +4230,7 @@ export namespace Prisma {
     publishedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastModifiedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkUrl?: NullableStringFieldUpdateOperationsInput | string | null
     raw?: JsonNullValueInput | InputJsonValue
   }
 

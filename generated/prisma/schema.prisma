@@ -7,7 +7,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 model LinkedInPost {
@@ -17,6 +17,7 @@ model LinkedInPost {
   publishedAt    DateTime
   createdAt      DateTime
   lastModifiedAt DateTime
+  linkUrl        String?
   raw            Json
 
   images LinkedInPostImage[]

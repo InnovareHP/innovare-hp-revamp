@@ -48,7 +48,7 @@ const Partners = () => {
           viewport={{ once: true }}
           className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold"
         >
-          Who we partner with
+          Brands We Have Worked With
         </motion.p>
       </div>
 

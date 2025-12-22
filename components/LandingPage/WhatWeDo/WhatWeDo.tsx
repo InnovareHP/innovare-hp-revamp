@@ -1,6 +1,5 @@
 "use client";
 
-import WorkWithUsButton from "@/components/ui/work-with-us-button";
 import { motion, Variants } from "framer-motion";
 
 const services = [
@@ -72,12 +71,11 @@ const WhatWeDo = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 lg:mb-16 gap-4 sm:gap-6"
+          className="mb-12 lg:mb-16"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-left text-blue-900">
             What we do
           </h2>
-          <WorkWithUsButton />
         </motion.div>
 
         {/* Animated Services List */}

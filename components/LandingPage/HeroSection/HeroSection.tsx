@@ -71,10 +71,10 @@ const HeroSection = () => {
           animate="visible"
           className="max-w-4xl space-y-4 mb-[10%] sm:mb-0"
         >
-          <div className="flex flex-col justify-between h-[70vh] ">
+          <div className="flex flex-col justify-between h-[70vh] py-10">
             <motion.h1
               variants={itemVariants}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white leading-tightest font-bold"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tightest font-bold"
             >
               Marketing that empowers healthcare brands to stand apart and stay
               ahead.
@@ -83,7 +83,7 @@ const HeroSection = () => {
             <div className="space-y-4">
               <motion.p
                 variants={itemVariants}
-                className="text-base sm:text-lg md:text-xl text-gray-200 max-w-xl tracking-wide"
+                className="text-xl sm:text-2xl md:text-3xl text-gray-200 max-w-xl tracking-wide"
               >
                 <strong>Innovare HP</strong> delivers full-service healthcare
                 marketing for organizations that want to lead—not follow.

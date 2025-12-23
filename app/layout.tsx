@@ -18,7 +18,7 @@ const signika = Signika({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://innovarehp.com"), // 🔁 CHANGE
+  metadataBase: new URL("https://innovare-hp-revamp.vercel.app"), // 🔁 CHANGE
   title: {
     default: "Innovare HP | Healthcare Marketing & Growth Strategy",
     template: "%s | Innovare HP",
@@ -45,13 +45,13 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: "https://innovarehp.com",
+    canonical: "https://innovare-hp-revamp.vercel.app",
   },
 
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://innovarehp.com",
+    url: "https://innovare-hp-revamp.vercel.app",
     siteName: "Innovare HP",
     title: "Innovare HP | Healthcare Marketing & Growth Strategy",
     description:

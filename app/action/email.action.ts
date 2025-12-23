@@ -17,7 +17,7 @@ export const createGetInTouch = async (formData: ContactFormValues) => {
 
   await resend.emails.send({
     from: "Innovare HP <hello@innovarehp.com>",
-    to: "hello@innovarehp.com",
+    to: ["hello@innovarehp.com", "info@innovarehp.com"],
     subject: "New Contact Form Submission",
     html: await render(
       GetInTouch({

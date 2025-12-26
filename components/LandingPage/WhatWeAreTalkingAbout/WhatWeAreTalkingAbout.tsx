@@ -48,6 +48,7 @@ const WhatWeAreTalkingAbout = ({ posts }: { posts: LinkedInPost[] }) => {
                   <Image
                     src={post.images[0].imageUrl}
                     alt="Post content"
+                    title={post.images[0].altText}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />

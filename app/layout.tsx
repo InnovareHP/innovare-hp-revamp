@@ -18,7 +18,7 @@ const signika = Signika({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://innovarehp.com"), // 🔁 CHANGE
+  metadataBase: new URL("https://www.innovarehp.com"), // 🔁 CHANGE
   title: {
     default: "Innovare HP | Healthcare Marketing & Growth Strategy",
     template: "%s | Innovare HP",
@@ -45,20 +45,20 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: "https://innovarehp.com",
+    canonical: "https://www.innovarehp.com",
   },
 
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://innovarehp.com",
+    url: "https://www.innovarehp.com",
     siteName: "Innovare HP",
     title: "Innovare HP | Healthcare Marketing & Growth Strategy",
     description:
       "Strategic healthcare marketing rooted in trust, community, and measurable growth. Serving senior care, behavioral health, and clinical organizations.",
     images: [
       {
-        url: "/images/og-image.png", // 1200x630 recommended
+        url: "/images/og-image.jpg", // 1200x630 recommended
         width: 1200,
         height: 630,
         alt: "Innovare HP Healthcare Marketing",
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     title: "Innovare HP | Healthcare Marketing & Growth Strategy",
     description:
       "Healthcare marketing built on trust, referrals, and intelligent digital strategy.",
-    images: ["/images/og-image.png"],
+    images: ["/images/og-image.jpg"],
     creator: "@innovarehp", // optional
   },
 

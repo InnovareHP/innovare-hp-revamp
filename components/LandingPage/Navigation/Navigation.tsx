@@ -20,7 +20,7 @@ const navLinks = [
   { name: "Client Review", href: "#reviews", title: "Client Review" },
   { name: "Contact", href: "#contact", title: "Contact" },
   { name: "Field Notes", href: "/field-notes", title: "Field Notes" },
-  { name: "Privacy Policy", href: "/privacy-policy", title: "Privacy Policy" },
+  // { name: "Privacy Policy", href: "/privacy-policy", title: "Privacy Policy" },
 ];
 
 const Navigation = ({ isFieldNotes = false }: NavigationProps) => {

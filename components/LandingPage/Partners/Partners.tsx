@@ -39,13 +39,13 @@ const Partners = () => {
       id="partners"
       className="bg-muted/30 py-16 md:py-24 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-16">
+      <div className="max-w-xs  sm:max-w-7xl sm:mx-auto px-10 sm:px-6 mb-16">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           viewport={{ once: true }}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center md:text-left"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-start sm:text-left"
         >
           Brands We Have Worked With
         </motion.p>

@@ -40,7 +40,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative w-full min-h-[100vh] flex items-end overflow-hidden bg-gray-900">
+    <section className="relative w-full min-h-[90vh] flex items-end overflow-hidden bg-gray-900">
       <motion.div
         variants={bgVariants}
         initial="hidden"

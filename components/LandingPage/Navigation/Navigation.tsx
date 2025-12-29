@@ -36,7 +36,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 p-6 md:p-10 pointer-events-none">
+    <header className="fixed top-0 left-0 w-full z-50 px-6 py-2 md:p-10 pointer-events-none bg-white">
       <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">
         {/* Logo Section */}
         <nav className="flex items-center gap-2">
@@ -58,6 +58,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
         </nav>
 
         {/* Burger Icon */}
+
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="relative z-50 flex flex-col justify-between w-8 h-6 group"

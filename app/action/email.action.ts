@@ -3,9 +3,13 @@
 import { GetInTouch } from "@/lib/email";
 import { resend } from "@/lib/resend";
 import { ContactFormValues } from "@/lib/schema";
+import { validateWithRetry } from "@/lib/turnstile";
 import { render } from "@react-email/render";
+import { headers } from "next/headers";
 
-export const createGetInTouch = async (formData: ContactFormValues) => {
+export const createGetInTouch = async (
+  formData: ContactFormValues & { turnstileToken: string }
+) => {
   const {
     name,
     phoneNumber,
@@ -13,7 +17,26 @@ export const createGetInTouch = async (formData: ContactFormValues) => {
     websiteOrSocial,
     preferredContact,
     message,
+    turnstileToken,
   } = formData;
+
+  if (!turnstileToken) {
+    return { success: false };
+  }
+
+  const headersList = await headers();
+  const ip =
+    headersList.get("cf-connecting-ip") ??
+    headersList.get("x-forwarded-for")?.split(",")[0] ??
+    undefined;
+
+  // 🛡️ Verify Turnstile
+  const verification = await validateWithRetry(turnstileToken, ip);
+
+  if (!verification?.success) {
+    console.error("Turnstile failed:", verification);
+    return { success: false };
+  }
 
   await resend.emails.send({
     from: "Innovare HP <hello@innovarehp.com>",

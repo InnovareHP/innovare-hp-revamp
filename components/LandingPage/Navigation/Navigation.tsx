@@ -36,7 +36,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 px-6 py-2 md:p-10 pointer-events-none bg-white">
+    <header className="fixed top-0 left-0 w-full z-50 px-6 py-2 md:px-6 md:py-2 pointer-events-none bg-white">
       <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">
         {/* Logo Section */}
         <nav className="flex items-center gap-2">

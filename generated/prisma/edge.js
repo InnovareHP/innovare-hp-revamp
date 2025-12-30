@@ -112,6 +112,14 @@ exports.Prisma.LinkedInPostImageScalarFieldEnum = {
   position: 'position'
 };
 
+exports.Prisma.ContactFormSubmissionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  message: 'message',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -140,7 +148,8 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   LinkedInPost: 'LinkedInPost',
-  LinkedInPostImage: 'LinkedInPostImage'
+  LinkedInPostImage: 'LinkedInPostImage',
+  ContactFormSubmission: 'ContactFormSubmission'
 };
 /**
  * Create the Client
@@ -150,10 +159,10 @@ const config = {
   "clientVersion": "7.2.0",
   "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel LinkedInPost {\n  id             String   @id // urn:li:share / ugcPost\n  authorUrn      String\n  text           String?\n  publishedAt    DateTime\n  createdAt      DateTime\n  lastModifiedAt DateTime\n  linkUrl        String?\n  raw            Json\n\n  images LinkedInPostImage[]\n}\n\nmodel LinkedInPostImage {\n  id       String  @id @default(uuid())\n  postId   String\n  imageUrn String\n  imageUrl String?\n  altText  String?\n  position Int?\n\n  post LinkedInPost @relation(fields: [postId], references: [id])\n\n  @@unique([postId, imageUrn])\n}\n"
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel LinkedInPost {\n  id             String   @id // urn:li:share / ugcPost\n  authorUrn      String\n  text           String?\n  publishedAt    DateTime\n  createdAt      DateTime\n  lastModifiedAt DateTime\n  linkUrl        String?\n  raw            Json\n\n  images LinkedInPostImage[]\n}\n\nmodel LinkedInPostImage {\n  id       String  @id @default(uuid())\n  postId   String\n  imageUrn String\n  imageUrl String?\n  altText  String?\n  position Int?\n\n  post LinkedInPost @relation(fields: [postId], references: [id])\n\n  @@unique([postId, imageUrn])\n}\n\nmodel ContactFormSubmission {\n  id        String   @id @default(uuid())\n  name      String\n  email     String\n  message   String\n  createdAt DateTime @default(now())\n}\n"
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"LinkedInPost\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"authorUrn\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"text\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"publishedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastModifiedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"linkUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"raw\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"images\",\"kind\":\"object\",\"type\":\"LinkedInPostImage\",\"relationName\":\"LinkedInPostToLinkedInPostImage\"}],\"dbName\":null},\"LinkedInPostImage\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"postId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"imageUrn\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"imageUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"altText\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"position\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"post\",\"kind\":\"object\",\"type\":\"LinkedInPost\",\"relationName\":\"LinkedInPostToLinkedInPostImage\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"LinkedInPost\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"authorUrn\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"text\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"publishedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastModifiedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"linkUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"raw\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"images\",\"kind\":\"object\",\"type\":\"LinkedInPostImage\",\"relationName\":\"LinkedInPostToLinkedInPostImage\"}],\"dbName\":null},\"LinkedInPostImage\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"postId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"imageUrn\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"imageUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"altText\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"position\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"post\",\"kind\":\"object\",\"type\":\"LinkedInPost\",\"relationName\":\"LinkedInPostToLinkedInPostImage\"}],\"dbName\":null},\"ContactFormSubmission\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.compilerWasm = {
   getRuntime: async () => require('./query_compiler_bg.js'),

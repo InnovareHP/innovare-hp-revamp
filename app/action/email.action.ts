@@ -1,6 +1,7 @@
 "use server";
 
 import { GetInTouch } from "@/lib/email";
+import { prisma } from "@/lib/prisma";
 import { resend } from "@/lib/resend";
 import { ContactFormValues } from "@/lib/schema";
 import { validateWithRetry } from "@/lib/turnstile";
@@ -52,6 +53,14 @@ export const createGetInTouch = async (
         Message: message,
       })
     ),
+  });
+
+  await prisma.contactFormSubmission.create({
+    data: {
+      name,
+      email,
+      message,
+    },
   });
 
   return { success: true };

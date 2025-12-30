@@ -140,6 +140,14 @@ exports.Prisma.LinkedInPostImageScalarFieldEnum = {
   position: 'position'
 };
 
+exports.Prisma.ContactFormSubmissionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  message: 'message',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -168,7 +176,8 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   LinkedInPost: 'LinkedInPost',
-  LinkedInPostImage: 'LinkedInPostImage'
+  LinkedInPostImage: 'LinkedInPostImage',
+  ContactFormSubmission: 'ContactFormSubmission'
 };
 
 /**

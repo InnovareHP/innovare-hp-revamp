@@ -23,6 +23,11 @@ export type LinkedInPost = $Result.DefaultSelection<Prisma.$LinkedInPostPayload>
  * 
  */
 export type LinkedInPostImage = $Result.DefaultSelection<Prisma.$LinkedInPostImagePayload>
+/**
+ * Model ContactFormSubmission
+ * 
+ */
+export type ContactFormSubmission = $Result.DefaultSelection<Prisma.$ContactFormSubmissionPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -160,6 +165,16 @@ export class PrismaClient<
     * ```
     */
   get linkedInPostImage(): Prisma.LinkedInPostImageDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.contactFormSubmission`: Exposes CRUD operations for the **ContactFormSubmission** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ContactFormSubmissions
+    * const contactFormSubmissions = await prisma.contactFormSubmission.findMany()
+    * ```
+    */
+  get contactFormSubmission(): Prisma.ContactFormSubmissionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -595,7 +610,8 @@ export namespace Prisma {
 
   export const ModelName: {
     LinkedInPost: 'LinkedInPost',
-    LinkedInPostImage: 'LinkedInPostImage'
+    LinkedInPostImage: 'LinkedInPostImage',
+    ContactFormSubmission: 'ContactFormSubmission'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -611,7 +627,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "linkedInPost" | "linkedInPostImage"
+      modelProps: "linkedInPost" | "linkedInPostImage" | "contactFormSubmission"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -763,6 +779,80 @@ export namespace Prisma {
           }
         }
       }
+      ContactFormSubmission: {
+        payload: Prisma.$ContactFormSubmissionPayload<ExtArgs>
+        fields: Prisma.ContactFormSubmissionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ContactFormSubmissionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactFormSubmissionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ContactFormSubmissionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactFormSubmissionPayload>
+          }
+          findFirst: {
+            args: Prisma.ContactFormSubmissionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactFormSubmissionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ContactFormSubmissionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactFormSubmissionPayload>
+          }
+          findMany: {
+            args: Prisma.ContactFormSubmissionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactFormSubmissionPayload>[]
+          }
+          create: {
+            args: Prisma.ContactFormSubmissionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactFormSubmissionPayload>
+          }
+          createMany: {
+            args: Prisma.ContactFormSubmissionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ContactFormSubmissionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactFormSubmissionPayload>[]
+          }
+          delete: {
+            args: Prisma.ContactFormSubmissionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactFormSubmissionPayload>
+          }
+          update: {
+            args: Prisma.ContactFormSubmissionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactFormSubmissionPayload>
+          }
+          deleteMany: {
+            args: Prisma.ContactFormSubmissionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ContactFormSubmissionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ContactFormSubmissionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactFormSubmissionPayload>[]
+          }
+          upsert: {
+            args: Prisma.ContactFormSubmissionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ContactFormSubmissionPayload>
+          }
+          aggregate: {
+            args: Prisma.ContactFormSubmissionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateContactFormSubmission>
+          }
+          groupBy: {
+            args: Prisma.ContactFormSubmissionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ContactFormSubmissionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ContactFormSubmissionCountArgs<ExtArgs>
+            result: $Utils.Optional<ContactFormSubmissionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -873,6 +963,7 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     linkedInPost?: LinkedInPostOmit
     linkedInPostImage?: LinkedInPostImageOmit
+    contactFormSubmission?: ContactFormSubmissionOmit
   }
 
   /* Types for Logging */
@@ -3194,6 +3285,1001 @@ export namespace Prisma {
 
 
   /**
+   * Model ContactFormSubmission
+   */
+
+  export type AggregateContactFormSubmission = {
+    _count: ContactFormSubmissionCountAggregateOutputType | null
+    _min: ContactFormSubmissionMinAggregateOutputType | null
+    _max: ContactFormSubmissionMaxAggregateOutputType | null
+  }
+
+  export type ContactFormSubmissionMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    email: string | null
+    message: string | null
+    createdAt: Date | null
+  }
+
+  export type ContactFormSubmissionMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    email: string | null
+    message: string | null
+    createdAt: Date | null
+  }
+
+  export type ContactFormSubmissionCountAggregateOutputType = {
+    id: number
+    name: number
+    email: number
+    message: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ContactFormSubmissionMinAggregateInputType = {
+    id?: true
+    name?: true
+    email?: true
+    message?: true
+    createdAt?: true
+  }
+
+  export type ContactFormSubmissionMaxAggregateInputType = {
+    id?: true
+    name?: true
+    email?: true
+    message?: true
+    createdAt?: true
+  }
+
+  export type ContactFormSubmissionCountAggregateInputType = {
+    id?: true
+    name?: true
+    email?: true
+    message?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ContactFormSubmissionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ContactFormSubmission to aggregate.
+     */
+    where?: ContactFormSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContactFormSubmissions to fetch.
+     */
+    orderBy?: ContactFormSubmissionOrderByWithRelationInput | ContactFormSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ContactFormSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContactFormSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContactFormSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ContactFormSubmissions
+    **/
+    _count?: true | ContactFormSubmissionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ContactFormSubmissionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ContactFormSubmissionMaxAggregateInputType
+  }
+
+  export type GetContactFormSubmissionAggregateType<T extends ContactFormSubmissionAggregateArgs> = {
+        [P in keyof T & keyof AggregateContactFormSubmission]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateContactFormSubmission[P]>
+      : GetScalarType<T[P], AggregateContactFormSubmission[P]>
+  }
+
+
+
+
+  export type ContactFormSubmissionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ContactFormSubmissionWhereInput
+    orderBy?: ContactFormSubmissionOrderByWithAggregationInput | ContactFormSubmissionOrderByWithAggregationInput[]
+    by: ContactFormSubmissionScalarFieldEnum[] | ContactFormSubmissionScalarFieldEnum
+    having?: ContactFormSubmissionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ContactFormSubmissionCountAggregateInputType | true
+    _min?: ContactFormSubmissionMinAggregateInputType
+    _max?: ContactFormSubmissionMaxAggregateInputType
+  }
+
+  export type ContactFormSubmissionGroupByOutputType = {
+    id: string
+    name: string
+    email: string
+    message: string
+    createdAt: Date
+    _count: ContactFormSubmissionCountAggregateOutputType | null
+    _min: ContactFormSubmissionMinAggregateOutputType | null
+    _max: ContactFormSubmissionMaxAggregateOutputType | null
+  }
+
+  type GetContactFormSubmissionGroupByPayload<T extends ContactFormSubmissionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ContactFormSubmissionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ContactFormSubmissionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ContactFormSubmissionGroupByOutputType[P]>
+            : GetScalarType<T[P], ContactFormSubmissionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ContactFormSubmissionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    message?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["contactFormSubmission"]>
+
+  export type ContactFormSubmissionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    message?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["contactFormSubmission"]>
+
+  export type ContactFormSubmissionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    message?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["contactFormSubmission"]>
+
+  export type ContactFormSubmissionSelectScalar = {
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    message?: boolean
+    createdAt?: boolean
+  }
+
+  export type ContactFormSubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "message" | "createdAt", ExtArgs["result"]["contactFormSubmission"]>
+
+  export type $ContactFormSubmissionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ContactFormSubmission"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      email: string
+      message: string
+      createdAt: Date
+    }, ExtArgs["result"]["contactFormSubmission"]>
+    composites: {}
+  }
+
+  type ContactFormSubmissionGetPayload<S extends boolean | null | undefined | ContactFormSubmissionDefaultArgs> = $Result.GetResult<Prisma.$ContactFormSubmissionPayload, S>
+
+  type ContactFormSubmissionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ContactFormSubmissionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ContactFormSubmissionCountAggregateInputType | true
+    }
+
+  export interface ContactFormSubmissionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ContactFormSubmission'], meta: { name: 'ContactFormSubmission' } }
+    /**
+     * Find zero or one ContactFormSubmission that matches the filter.
+     * @param {ContactFormSubmissionFindUniqueArgs} args - Arguments to find a ContactFormSubmission
+     * @example
+     * // Get one ContactFormSubmission
+     * const contactFormSubmission = await prisma.contactFormSubmission.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ContactFormSubmissionFindUniqueArgs>(args: SelectSubset<T, ContactFormSubmissionFindUniqueArgs<ExtArgs>>): Prisma__ContactFormSubmissionClient<$Result.GetResult<Prisma.$ContactFormSubmissionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ContactFormSubmission that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ContactFormSubmissionFindUniqueOrThrowArgs} args - Arguments to find a ContactFormSubmission
+     * @example
+     * // Get one ContactFormSubmission
+     * const contactFormSubmission = await prisma.contactFormSubmission.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ContactFormSubmissionFindUniqueOrThrowArgs>(args: SelectSubset<T, ContactFormSubmissionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ContactFormSubmissionClient<$Result.GetResult<Prisma.$ContactFormSubmissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ContactFormSubmission that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContactFormSubmissionFindFirstArgs} args - Arguments to find a ContactFormSubmission
+     * @example
+     * // Get one ContactFormSubmission
+     * const contactFormSubmission = await prisma.contactFormSubmission.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ContactFormSubmissionFindFirstArgs>(args?: SelectSubset<T, ContactFormSubmissionFindFirstArgs<ExtArgs>>): Prisma__ContactFormSubmissionClient<$Result.GetResult<Prisma.$ContactFormSubmissionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ContactFormSubmission that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContactFormSubmissionFindFirstOrThrowArgs} args - Arguments to find a ContactFormSubmission
+     * @example
+     * // Get one ContactFormSubmission
+     * const contactFormSubmission = await prisma.contactFormSubmission.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ContactFormSubmissionFindFirstOrThrowArgs>(args?: SelectSubset<T, ContactFormSubmissionFindFirstOrThrowArgs<ExtArgs>>): Prisma__ContactFormSubmissionClient<$Result.GetResult<Prisma.$ContactFormSubmissionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ContactFormSubmissions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContactFormSubmissionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ContactFormSubmissions
+     * const contactFormSubmissions = await prisma.contactFormSubmission.findMany()
+     * 
+     * // Get first 10 ContactFormSubmissions
+     * const contactFormSubmissions = await prisma.contactFormSubmission.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const contactFormSubmissionWithIdOnly = await prisma.contactFormSubmission.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ContactFormSubmissionFindManyArgs>(args?: SelectSubset<T, ContactFormSubmissionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContactFormSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ContactFormSubmission.
+     * @param {ContactFormSubmissionCreateArgs} args - Arguments to create a ContactFormSubmission.
+     * @example
+     * // Create one ContactFormSubmission
+     * const ContactFormSubmission = await prisma.contactFormSubmission.create({
+     *   data: {
+     *     // ... data to create a ContactFormSubmission
+     *   }
+     * })
+     * 
+     */
+    create<T extends ContactFormSubmissionCreateArgs>(args: SelectSubset<T, ContactFormSubmissionCreateArgs<ExtArgs>>): Prisma__ContactFormSubmissionClient<$Result.GetResult<Prisma.$ContactFormSubmissionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ContactFormSubmissions.
+     * @param {ContactFormSubmissionCreateManyArgs} args - Arguments to create many ContactFormSubmissions.
+     * @example
+     * // Create many ContactFormSubmissions
+     * const contactFormSubmission = await prisma.contactFormSubmission.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ContactFormSubmissionCreateManyArgs>(args?: SelectSubset<T, ContactFormSubmissionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ContactFormSubmissions and returns the data saved in the database.
+     * @param {ContactFormSubmissionCreateManyAndReturnArgs} args - Arguments to create many ContactFormSubmissions.
+     * @example
+     * // Create many ContactFormSubmissions
+     * const contactFormSubmission = await prisma.contactFormSubmission.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ContactFormSubmissions and only return the `id`
+     * const contactFormSubmissionWithIdOnly = await prisma.contactFormSubmission.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ContactFormSubmissionCreateManyAndReturnArgs>(args?: SelectSubset<T, ContactFormSubmissionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContactFormSubmissionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ContactFormSubmission.
+     * @param {ContactFormSubmissionDeleteArgs} args - Arguments to delete one ContactFormSubmission.
+     * @example
+     * // Delete one ContactFormSubmission
+     * const ContactFormSubmission = await prisma.contactFormSubmission.delete({
+     *   where: {
+     *     // ... filter to delete one ContactFormSubmission
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ContactFormSubmissionDeleteArgs>(args: SelectSubset<T, ContactFormSubmissionDeleteArgs<ExtArgs>>): Prisma__ContactFormSubmissionClient<$Result.GetResult<Prisma.$ContactFormSubmissionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ContactFormSubmission.
+     * @param {ContactFormSubmissionUpdateArgs} args - Arguments to update one ContactFormSubmission.
+     * @example
+     * // Update one ContactFormSubmission
+     * const contactFormSubmission = await prisma.contactFormSubmission.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ContactFormSubmissionUpdateArgs>(args: SelectSubset<T, ContactFormSubmissionUpdateArgs<ExtArgs>>): Prisma__ContactFormSubmissionClient<$Result.GetResult<Prisma.$ContactFormSubmissionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ContactFormSubmissions.
+     * @param {ContactFormSubmissionDeleteManyArgs} args - Arguments to filter ContactFormSubmissions to delete.
+     * @example
+     * // Delete a few ContactFormSubmissions
+     * const { count } = await prisma.contactFormSubmission.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ContactFormSubmissionDeleteManyArgs>(args?: SelectSubset<T, ContactFormSubmissionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ContactFormSubmissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContactFormSubmissionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ContactFormSubmissions
+     * const contactFormSubmission = await prisma.contactFormSubmission.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ContactFormSubmissionUpdateManyArgs>(args: SelectSubset<T, ContactFormSubmissionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ContactFormSubmissions and returns the data updated in the database.
+     * @param {ContactFormSubmissionUpdateManyAndReturnArgs} args - Arguments to update many ContactFormSubmissions.
+     * @example
+     * // Update many ContactFormSubmissions
+     * const contactFormSubmission = await prisma.contactFormSubmission.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ContactFormSubmissions and only return the `id`
+     * const contactFormSubmissionWithIdOnly = await prisma.contactFormSubmission.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ContactFormSubmissionUpdateManyAndReturnArgs>(args: SelectSubset<T, ContactFormSubmissionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContactFormSubmissionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ContactFormSubmission.
+     * @param {ContactFormSubmissionUpsertArgs} args - Arguments to update or create a ContactFormSubmission.
+     * @example
+     * // Update or create a ContactFormSubmission
+     * const contactFormSubmission = await prisma.contactFormSubmission.upsert({
+     *   create: {
+     *     // ... data to create a ContactFormSubmission
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ContactFormSubmission we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ContactFormSubmissionUpsertArgs>(args: SelectSubset<T, ContactFormSubmissionUpsertArgs<ExtArgs>>): Prisma__ContactFormSubmissionClient<$Result.GetResult<Prisma.$ContactFormSubmissionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ContactFormSubmissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContactFormSubmissionCountArgs} args - Arguments to filter ContactFormSubmissions to count.
+     * @example
+     * // Count the number of ContactFormSubmissions
+     * const count = await prisma.contactFormSubmission.count({
+     *   where: {
+     *     // ... the filter for the ContactFormSubmissions we want to count
+     *   }
+     * })
+    **/
+    count<T extends ContactFormSubmissionCountArgs>(
+      args?: Subset<T, ContactFormSubmissionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ContactFormSubmissionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ContactFormSubmission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContactFormSubmissionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ContactFormSubmissionAggregateArgs>(args: Subset<T, ContactFormSubmissionAggregateArgs>): Prisma.PrismaPromise<GetContactFormSubmissionAggregateType<T>>
+
+    /**
+     * Group by ContactFormSubmission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ContactFormSubmissionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ContactFormSubmissionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ContactFormSubmissionGroupByArgs['orderBy'] }
+        : { orderBy?: ContactFormSubmissionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ContactFormSubmissionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetContactFormSubmissionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ContactFormSubmission model
+   */
+  readonly fields: ContactFormSubmissionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ContactFormSubmission.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ContactFormSubmissionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ContactFormSubmission model
+   */
+  interface ContactFormSubmissionFieldRefs {
+    readonly id: FieldRef<"ContactFormSubmission", 'String'>
+    readonly name: FieldRef<"ContactFormSubmission", 'String'>
+    readonly email: FieldRef<"ContactFormSubmission", 'String'>
+    readonly message: FieldRef<"ContactFormSubmission", 'String'>
+    readonly createdAt: FieldRef<"ContactFormSubmission", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ContactFormSubmission findUnique
+   */
+  export type ContactFormSubmissionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactFormSubmission
+     */
+    select?: ContactFormSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactFormSubmission
+     */
+    omit?: ContactFormSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which ContactFormSubmission to fetch.
+     */
+    where: ContactFormSubmissionWhereUniqueInput
+  }
+
+  /**
+   * ContactFormSubmission findUniqueOrThrow
+   */
+  export type ContactFormSubmissionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactFormSubmission
+     */
+    select?: ContactFormSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactFormSubmission
+     */
+    omit?: ContactFormSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which ContactFormSubmission to fetch.
+     */
+    where: ContactFormSubmissionWhereUniqueInput
+  }
+
+  /**
+   * ContactFormSubmission findFirst
+   */
+  export type ContactFormSubmissionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactFormSubmission
+     */
+    select?: ContactFormSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactFormSubmission
+     */
+    omit?: ContactFormSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which ContactFormSubmission to fetch.
+     */
+    where?: ContactFormSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContactFormSubmissions to fetch.
+     */
+    orderBy?: ContactFormSubmissionOrderByWithRelationInput | ContactFormSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ContactFormSubmissions.
+     */
+    cursor?: ContactFormSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContactFormSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContactFormSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ContactFormSubmissions.
+     */
+    distinct?: ContactFormSubmissionScalarFieldEnum | ContactFormSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * ContactFormSubmission findFirstOrThrow
+   */
+  export type ContactFormSubmissionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactFormSubmission
+     */
+    select?: ContactFormSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactFormSubmission
+     */
+    omit?: ContactFormSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which ContactFormSubmission to fetch.
+     */
+    where?: ContactFormSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContactFormSubmissions to fetch.
+     */
+    orderBy?: ContactFormSubmissionOrderByWithRelationInput | ContactFormSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ContactFormSubmissions.
+     */
+    cursor?: ContactFormSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContactFormSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContactFormSubmissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ContactFormSubmissions.
+     */
+    distinct?: ContactFormSubmissionScalarFieldEnum | ContactFormSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * ContactFormSubmission findMany
+   */
+  export type ContactFormSubmissionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactFormSubmission
+     */
+    select?: ContactFormSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactFormSubmission
+     */
+    omit?: ContactFormSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter, which ContactFormSubmissions to fetch.
+     */
+    where?: ContactFormSubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ContactFormSubmissions to fetch.
+     */
+    orderBy?: ContactFormSubmissionOrderByWithRelationInput | ContactFormSubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ContactFormSubmissions.
+     */
+    cursor?: ContactFormSubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ContactFormSubmissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ContactFormSubmissions.
+     */
+    skip?: number
+    distinct?: ContactFormSubmissionScalarFieldEnum | ContactFormSubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * ContactFormSubmission create
+   */
+  export type ContactFormSubmissionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactFormSubmission
+     */
+    select?: ContactFormSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactFormSubmission
+     */
+    omit?: ContactFormSubmissionOmit<ExtArgs> | null
+    /**
+     * The data needed to create a ContactFormSubmission.
+     */
+    data: XOR<ContactFormSubmissionCreateInput, ContactFormSubmissionUncheckedCreateInput>
+  }
+
+  /**
+   * ContactFormSubmission createMany
+   */
+  export type ContactFormSubmissionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ContactFormSubmissions.
+     */
+    data: ContactFormSubmissionCreateManyInput | ContactFormSubmissionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ContactFormSubmission createManyAndReturn
+   */
+  export type ContactFormSubmissionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactFormSubmission
+     */
+    select?: ContactFormSubmissionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactFormSubmission
+     */
+    omit?: ContactFormSubmissionOmit<ExtArgs> | null
+    /**
+     * The data used to create many ContactFormSubmissions.
+     */
+    data: ContactFormSubmissionCreateManyInput | ContactFormSubmissionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ContactFormSubmission update
+   */
+  export type ContactFormSubmissionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactFormSubmission
+     */
+    select?: ContactFormSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactFormSubmission
+     */
+    omit?: ContactFormSubmissionOmit<ExtArgs> | null
+    /**
+     * The data needed to update a ContactFormSubmission.
+     */
+    data: XOR<ContactFormSubmissionUpdateInput, ContactFormSubmissionUncheckedUpdateInput>
+    /**
+     * Choose, which ContactFormSubmission to update.
+     */
+    where: ContactFormSubmissionWhereUniqueInput
+  }
+
+  /**
+   * ContactFormSubmission updateMany
+   */
+  export type ContactFormSubmissionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ContactFormSubmissions.
+     */
+    data: XOR<ContactFormSubmissionUpdateManyMutationInput, ContactFormSubmissionUncheckedUpdateManyInput>
+    /**
+     * Filter which ContactFormSubmissions to update
+     */
+    where?: ContactFormSubmissionWhereInput
+    /**
+     * Limit how many ContactFormSubmissions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ContactFormSubmission updateManyAndReturn
+   */
+  export type ContactFormSubmissionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactFormSubmission
+     */
+    select?: ContactFormSubmissionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactFormSubmission
+     */
+    omit?: ContactFormSubmissionOmit<ExtArgs> | null
+    /**
+     * The data used to update ContactFormSubmissions.
+     */
+    data: XOR<ContactFormSubmissionUpdateManyMutationInput, ContactFormSubmissionUncheckedUpdateManyInput>
+    /**
+     * Filter which ContactFormSubmissions to update
+     */
+    where?: ContactFormSubmissionWhereInput
+    /**
+     * Limit how many ContactFormSubmissions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ContactFormSubmission upsert
+   */
+  export type ContactFormSubmissionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactFormSubmission
+     */
+    select?: ContactFormSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactFormSubmission
+     */
+    omit?: ContactFormSubmissionOmit<ExtArgs> | null
+    /**
+     * The filter to search for the ContactFormSubmission to update in case it exists.
+     */
+    where: ContactFormSubmissionWhereUniqueInput
+    /**
+     * In case the ContactFormSubmission found by the `where` argument doesn't exist, create a new ContactFormSubmission with this data.
+     */
+    create: XOR<ContactFormSubmissionCreateInput, ContactFormSubmissionUncheckedCreateInput>
+    /**
+     * In case the ContactFormSubmission was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ContactFormSubmissionUpdateInput, ContactFormSubmissionUncheckedUpdateInput>
+  }
+
+  /**
+   * ContactFormSubmission delete
+   */
+  export type ContactFormSubmissionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactFormSubmission
+     */
+    select?: ContactFormSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactFormSubmission
+     */
+    omit?: ContactFormSubmissionOmit<ExtArgs> | null
+    /**
+     * Filter which ContactFormSubmission to delete.
+     */
+    where: ContactFormSubmissionWhereUniqueInput
+  }
+
+  /**
+   * ContactFormSubmission deleteMany
+   */
+  export type ContactFormSubmissionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ContactFormSubmissions to delete
+     */
+    where?: ContactFormSubmissionWhereInput
+    /**
+     * Limit how many ContactFormSubmissions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ContactFormSubmission without action
+   */
+  export type ContactFormSubmissionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ContactFormSubmission
+     */
+    select?: ContactFormSubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ContactFormSubmission
+     */
+    omit?: ContactFormSubmissionOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -3231,6 +4317,17 @@ export namespace Prisma {
   };
 
   export type LinkedInPostImageScalarFieldEnum = (typeof LinkedInPostImageScalarFieldEnum)[keyof typeof LinkedInPostImageScalarFieldEnum]
+
+
+  export const ContactFormSubmissionScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    email: 'email',
+    message: 'message',
+    createdAt: 'createdAt'
+  };
+
+  export type ContactFormSubmissionScalarFieldEnum = (typeof ContactFormSubmissionScalarFieldEnum)[keyof typeof ContactFormSubmissionScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -3484,6 +4581,58 @@ export namespace Prisma {
     position?: IntNullableWithAggregatesFilter<"LinkedInPostImage"> | number | null
   }
 
+  export type ContactFormSubmissionWhereInput = {
+    AND?: ContactFormSubmissionWhereInput | ContactFormSubmissionWhereInput[]
+    OR?: ContactFormSubmissionWhereInput[]
+    NOT?: ContactFormSubmissionWhereInput | ContactFormSubmissionWhereInput[]
+    id?: StringFilter<"ContactFormSubmission"> | string
+    name?: StringFilter<"ContactFormSubmission"> | string
+    email?: StringFilter<"ContactFormSubmission"> | string
+    message?: StringFilter<"ContactFormSubmission"> | string
+    createdAt?: DateTimeFilter<"ContactFormSubmission"> | Date | string
+  }
+
+  export type ContactFormSubmissionOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    message?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ContactFormSubmissionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ContactFormSubmissionWhereInput | ContactFormSubmissionWhereInput[]
+    OR?: ContactFormSubmissionWhereInput[]
+    NOT?: ContactFormSubmissionWhereInput | ContactFormSubmissionWhereInput[]
+    name?: StringFilter<"ContactFormSubmission"> | string
+    email?: StringFilter<"ContactFormSubmission"> | string
+    message?: StringFilter<"ContactFormSubmission"> | string
+    createdAt?: DateTimeFilter<"ContactFormSubmission"> | Date | string
+  }, "id">
+
+  export type ContactFormSubmissionOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    message?: SortOrder
+    createdAt?: SortOrder
+    _count?: ContactFormSubmissionCountOrderByAggregateInput
+    _max?: ContactFormSubmissionMaxOrderByAggregateInput
+    _min?: ContactFormSubmissionMinOrderByAggregateInput
+  }
+
+  export type ContactFormSubmissionScalarWhereWithAggregatesInput = {
+    AND?: ContactFormSubmissionScalarWhereWithAggregatesInput | ContactFormSubmissionScalarWhereWithAggregatesInput[]
+    OR?: ContactFormSubmissionScalarWhereWithAggregatesInput[]
+    NOT?: ContactFormSubmissionScalarWhereWithAggregatesInput | ContactFormSubmissionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ContactFormSubmission"> | string
+    name?: StringWithAggregatesFilter<"ContactFormSubmission"> | string
+    email?: StringWithAggregatesFilter<"ContactFormSubmission"> | string
+    message?: StringWithAggregatesFilter<"ContactFormSubmission"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ContactFormSubmission"> | Date | string
+  }
+
   export type LinkedInPostCreateInput = {
     id: string
     authorUrn: string
@@ -3625,6 +4774,62 @@ export namespace Prisma {
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     altText?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type ContactFormSubmissionCreateInput = {
+    id?: string
+    name: string
+    email: string
+    message: string
+    createdAt?: Date | string
+  }
+
+  export type ContactFormSubmissionUncheckedCreateInput = {
+    id?: string
+    name: string
+    email: string
+    message: string
+    createdAt?: Date | string
+  }
+
+  export type ContactFormSubmissionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContactFormSubmissionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContactFormSubmissionCreateManyInput = {
+    id?: string
+    name: string
+    email: string
+    message: string
+    createdAt?: Date | string
+  }
+
+  export type ContactFormSubmissionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContactFormSubmissionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -3883,6 +5088,30 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type ContactFormSubmissionCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    message?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ContactFormSubmissionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    message?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ContactFormSubmissionMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    message?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type LinkedInPostImageCreateNestedManyWithoutPostInput = {

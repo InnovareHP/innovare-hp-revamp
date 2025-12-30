@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface NavigationProps {
   isFieldNotes?: boolean;
@@ -25,6 +25,25 @@ const navLinks = [
 
 const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY || window.pageYOffset;
+      setIsScrolled(scrollPosition > 0);
+    };
+
+    // Check initial scroll position
+    handleScroll();
+
+    // Add scroll event listener
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const linkVariants = {
     closed: { opacity: 0, y: 20 },
@@ -51,7 +70,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
             />
           </Link>
           <span
-            className={`uppercase font-light text-lg font-signika tracking-[0.55em] sm:block hidden ${isFieldNotes ? "text-black" : "text-white"}`}
+            className={`uppercase font-light text-lg font-signika tracking-[0.55em] sm:block hidden ${isFieldNotes || isScrolled ? "text-black" : "text-white"}`}
           >
             Innovare HP
           </span>
@@ -66,15 +85,39 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
         >
           <motion.span
             animate={isOpen ? { rotate: 45, y: 10 } : { rotate: 0, y: 0 }}
-            className={`w-full h-[2px] rounded-full transition-colors ${isOpen || !isFieldNotes ? "bg-blue-400" : "bg-black"}`}
+            className={`w-full h-[2px] rounded-full transition-colors ${
+              isOpen 
+                ? "bg-blue-400" 
+                : isScrolled 
+                  ? "bg-blue-400" 
+                  : isFieldNotes 
+                    ? "bg-black" 
+                    : "bg-white"
+            }`}
           />
           <motion.span
             animate={isOpen ? { opacity: 0, x: 20 } : { opacity: 1, x: 0 }}
-            className={`w-full h-[2px] rounded-full transition-colors ${isOpen || !isFieldNotes ? "bg-blue-400" : "bg-black"}`}
+            className={`w-full h-[2px] rounded-full transition-colors ${
+              isOpen 
+                ? "bg-blue-400" 
+                : isScrolled 
+                  ? "bg-blue-400" 
+                  : isFieldNotes 
+                    ? "bg-black" 
+                    : "bg-white"
+            }`}
           />
           <motion.span
             animate={isOpen ? { rotate: -45, y: -12 } : { rotate: 0, y: 0 }}
-            className={`w-full h-[2px] rounded-full transition-colors ${isOpen || !isFieldNotes ? "bg-blue-400" : "bg-black"}`}
+            className={`w-full h-[2px] rounded-full transition-colors ${
+              isOpen 
+                ? "bg-blue-400" 
+                : isScrolled 
+                  ? "bg-blue-400" 
+                  : isFieldNotes 
+                    ? "bg-black" 
+                    : "bg-white"
+            }`}
           />
         </button>
       </div>

@@ -40,13 +40,13 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative w-full min-h-[90vh] flex items-end overflow-hidden bg-gray-900">
+    <section className="relative w-full min-h-[100vh] flex items-end overflow-hidden bg-gray-900">
       <motion.div
         variants={bgVariants}
         initial="hidden"
         animate="visible"
         className="absolute inset-0 w-full h-full"
-      >
+      > 
         <Image
           src="/images/hero-section.jpg"
           alt="Hero Section"
@@ -59,7 +59,7 @@ const HeroSection = () => {
           className="object-cover object-[50%_20%] sm:object-center"
         />
         {/* 2. BETTER OVERLAY:
-            Added a gradient that is darker at the bottom to ensure text 
+            Added a gradient that is darker at the bottom to ensure text
             readability while keeping the top clearer for the image subjects. */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent sm:bg-black/60" />
       </motion.div>

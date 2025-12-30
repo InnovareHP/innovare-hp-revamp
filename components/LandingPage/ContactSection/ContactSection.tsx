@@ -163,6 +163,7 @@ export default function ContactSection() {
             <Turnstile
               sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
               theme="light"
+              size="flexible"
               onVerify={(token) => setTurnstileToken(token)}
               onExpire={() => setTurnstileToken(null)}
               onError={() => {

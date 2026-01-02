@@ -21,7 +21,7 @@ const LandingPage = ({ posts }: { posts: LinkedInPost[] }) => {
       <Partners />
       <Process />
       <WhatWeDo />
-      <WhatWeAreTalkingAbout posts={posts} />
+      <WhatWeAreTalkingAbout initialPosts={posts} />
       {/* <OtherService /> */}
       <MissionSection />
       <TeamSection />

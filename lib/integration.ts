@@ -31,6 +31,8 @@ export async function fetchLinkedInPosts() {
 
   const data = await res.json();
 
+  console.log("data", data);
+
   for (const post of data.elements ?? []) {
     await prisma.linkedInPost.upsert({
       where: { id: post.id },

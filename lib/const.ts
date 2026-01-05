@@ -50,3 +50,17 @@ export const KeyWords = [
   "healthcare marketing for providers",
   "healthcare marketing for clinics",
 ];
+
+export const spamKeywords = [
+  "seo",
+  "backlinks",
+  "link building",
+  "domain rating",
+  "dr ",
+  "guest post",
+  "manual links",
+  "insert",
+  "outreach",
+  "$600",
+  "$20/day",
+];

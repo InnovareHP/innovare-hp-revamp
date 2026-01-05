@@ -158,6 +158,25 @@ export default function ContactSection() {
             />
           </motion.div>
 
+          <FormField
+            control={form.control}
+            name="companyWebsite"
+            render={({ field }) => (
+              <FormItem className="hidden">
+                <FormControl>
+                  <Input
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    className="hidden"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           {/* TURNSTILE */}
           <motion.div variants={itemVariants}>
             <Turnstile

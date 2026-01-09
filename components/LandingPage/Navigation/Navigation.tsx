@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface NavigationProps {
@@ -20,12 +21,22 @@ const navLinks = [
   { name: "Client Review", href: "#reviews", title: "Client Review" },
   { name: "Contact", href: "#contact", title: "Contact" },
   { name: "Field Notes", href: "/field-notes", title: "Field Notes" },
-  // { name: "Privacy Policy", href: "/privacy-policy", title: "Privacy Policy" },
+  { name: "Privacy Policy", href: "/privacy-policy", title: "Privacy Policy" },
 ];
 
 const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+
+  // Helper function to get the correct href based on current path
+  const getHref = (href: string) => {
+    // If we're not on the home page and the link is a hash link, prepend "/"
+    if (pathname !== "/" && href.startsWith("#")) {
+      return `/${href}`;
+    }
+    return href;
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -86,36 +97,36 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
           <motion.span
             animate={isOpen ? { rotate: 45, y: 10 } : { rotate: 0, y: 0 }}
             className={`w-full h-[2px] rounded-full transition-colors ${
-              isOpen 
-                ? "bg-blue-400" 
-                : isScrolled 
-                  ? "bg-blue-400" 
-                  : isFieldNotes 
-                    ? "bg-black" 
+              isOpen
+                ? "bg-blue-400"
+                : isScrolled
+                  ? "bg-blue-400"
+                  : isFieldNotes
+                    ? "bg-black"
                     : "bg-white"
             }`}
           />
           <motion.span
             animate={isOpen ? { opacity: 0, x: 20 } : { opacity: 1, x: 0 }}
             className={`w-full h-[2px] rounded-full transition-colors ${
-              isOpen 
-                ? "bg-blue-400" 
-                : isScrolled 
-                  ? "bg-blue-400" 
-                  : isFieldNotes 
-                    ? "bg-black" 
+              isOpen
+                ? "bg-blue-400"
+                : isScrolled
+                  ? "bg-blue-400"
+                  : isFieldNotes
+                    ? "bg-black"
                     : "bg-white"
             }`}
           />
           <motion.span
             animate={isOpen ? { rotate: -45, y: -12 } : { rotate: 0, y: 0 }}
             className={`w-full h-[2px] rounded-full transition-colors ${
-              isOpen 
-                ? "bg-blue-400" 
-                : isScrolled 
-                  ? "bg-blue-400" 
-                  : isFieldNotes 
-                    ? "bg-black" 
+              isOpen
+                ? "bg-blue-400"
+                : isScrolled
+                  ? "bg-blue-400"
+                  : isFieldNotes
+                    ? "bg-black"
                     : "bg-white"
             }`}
           />
@@ -154,7 +165,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
                   exit="closed"
                 >
                   <Link
-                    href={link.href}
+                    href={getHref(link.href)}
                     onClick={() => setIsOpen(false)}
                     className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-400 transition-colors"
                   >

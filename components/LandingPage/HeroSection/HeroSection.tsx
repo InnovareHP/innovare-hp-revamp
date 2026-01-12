@@ -46,7 +46,7 @@ const HeroSection = () => {
         initial="hidden"
         animate="visible"
         className="absolute inset-0 w-full h-full"
-      > 
+      >
         <Image
           src="/images/hero-section.jpg"
           alt="Hero Section"
@@ -84,7 +84,7 @@ const HeroSection = () => {
 
           <motion.p
             variants={itemVariants}
-            className="text-lg sm:text-2xl md:text-3xl text-gray-200 max-w-xl tracking-wide"
+            className="text-lg sm:text-2xl md:text-3xl text-gray-100 max-w-xl tracking-wide"
           >
             <strong>Innovare HP</strong> delivers full-service healthcare
             marketing for organizations that want to lead—not follow.

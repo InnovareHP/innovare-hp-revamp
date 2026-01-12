@@ -118,10 +118,13 @@ const ContactInfoCard = () => {
                 <a
                   key={index}
                   href={href}
-                  className="text-white transition bg-blue-600 p-2 rounded-full"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Visit our ${title} page (opens in new tab)`}
+                  className="text-white transition bg-blue-600 p-2 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   title={title}
                 >
-                  <Icon className="w-6 h-6" />
+                  <Icon className="w-6 h-6" aria-hidden="true" />
                 </a>
               ))}
             </div>

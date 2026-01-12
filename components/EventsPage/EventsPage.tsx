@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { format } from "date-fns";
-import { CalendarDays, ExternalLink, MapPin } from "lucide-react";
+import { ExternalLink, MapPin } from "lucide-react";
 import { use } from "react";
 
 interface EventWithMedia {
@@ -21,22 +21,10 @@ interface EventWithMedia {
 const EventsPage = ({ events }: { events: Promise<EventWithMedia[]> }) => {
   const eventsData = use(events);
   return (
-    <div className="bg-background min-h-screen py-12 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-10 border-b pb-6">
-          <div>
-            <h1 className="text-3xl font-black tracking-tighter text-slate-900 uppercase">
-              Events <span className="text-primary">Calendar</span>
-            </h1>
-            <p className="text-muted-foreground text-sm mt-1">
-              Discover what's happening in your community.
-            </p>
-          </div>
-          <CalendarDays className="w-8 h-8 text-primary/40" />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-14">
-          {eventsData.map((event) => (
+    <div className="max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-14">
+        {eventsData.length > 0 ? (
+          eventsData.map((event) => (
             <div key={event.id} className="group flex flex-col cursor-pointer">
               <Card className="border-none shadow-none bg-transparent mb-5 overflow-hidden">
                 <CardContent className="p-0">
@@ -82,8 +70,12 @@ const EventsPage = ({ events }: { events: Promise<EventWithMedia[]> }) => {
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          ))
+        ) : (
+          <div className="text-center text-muted-foreground text-2xl font-bold">
+            No events found
+          </div>
+        )}
       </div>
     </div>
   );

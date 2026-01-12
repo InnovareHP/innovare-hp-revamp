@@ -56,6 +56,28 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
     };
   }, []);
 
+  // Handle keyboard navigation for mobile menu
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleKeyDown);
+      // Prevent body scroll when menu is open
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   const linkVariants = {
     closed: { opacity: 0, y: 20 },
     open: (i: number) => ({
@@ -66,118 +88,130 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 px-6 py-2 md:px-6 md:py-2 pointer-events-none bg-white">
-      <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">
-        {/* Logo Section */}
-        <nav className="flex items-center gap-2">
-          <Link href="/" title="Innovare HP">
-            <Image
-              src="/images/logo.png"
-              alt="Innovare HP"
-              width={100}
-              title="Innovare HP"
-              height={100}
-              className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
+    <>
+      {/* Skip to main content link for keyboard navigation */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      >
+        Skip to main content
+      </a>
+      <header className="fixed top-0 left-0 w-full z-50 px-6 py-2 md:px-6 md:py-2 pointer-events-none bg-white">
+        <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">
+          {/* Logo Section */}
+          <nav className="flex items-center gap-2">
+            <Link href="/" title="Innovare HP">
+              <Image
+                src="/images/logo.png"
+                alt="Innovare HP"
+                width={100}
+                title="Innovare HP"
+                height={100}
+                className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
+              />
+            </Link>
+            <span
+              className={`uppercase font-light text-lg font-signika tracking-[0.55em] sm:block hidden ${isFieldNotes || isScrolled ? "text-black" : "text-white"}`}
+            >
+              Innovare HP
+            </span>
+          </nav>
+
+          {/* Burger Icon */}
+
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="relative z-50 flex flex-col justify-between w-8 h-6 group"
+            aria-label="Toggle Menu"
+          >
+            <motion.span
+              animate={isOpen ? { rotate: 45, y: 10 } : { rotate: 0, y: 0 }}
+              className={`w-full h-[2px] rounded-full transition-colors ${
+                isOpen
+                  ? "bg-blue-600"
+                  : isScrolled
+                    ? "bg-blue-600"
+                    : isFieldNotes
+                      ? "bg-black"
+                      : "bg-white"
+              }`}
             />
-          </Link>
-          <span
-            className={`uppercase font-light text-lg font-signika tracking-[0.55em] sm:block hidden ${isFieldNotes || isScrolled ? "text-black" : "text-white"}`}
-          >
-            Innovare HP
-          </span>
-        </nav>
+            <motion.span
+              animate={isOpen ? { opacity: 0, x: 20 } : { opacity: 1, x: 0 }}
+              className={`w-full h-[2px] rounded-full transition-colors ${
+                isOpen
+                  ? "bg-blue-600"
+                  : isScrolled
+                    ? "bg-blue-600"
+                    : isFieldNotes
+                      ? "bg-black"
+                      : "bg-white"
+              }`}
+            />
+            <motion.span
+              animate={isOpen ? { rotate: -45, y: -12 } : { rotate: 0, y: 0 }}
+              className={`w-full h-[2px] rounded-full transition-colors ${
+                isOpen
+                  ? "bg-blue-600"
+                  : isScrolled
+                    ? "bg-blue-600"
+                    : isFieldNotes
+                      ? "bg-black"
+                      : "bg-white"
+              }`}
+            />
+          </button>
+        </div>
 
-        {/* Burger Icon */}
-
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="relative z-50 flex flex-col justify-between w-8 h-6 group"
-          aria-label="Toggle Menu"
-        >
-          <motion.span
-            animate={isOpen ? { rotate: 45, y: 10 } : { rotate: 0, y: 0 }}
-            className={`w-full h-[2px] rounded-full transition-colors ${
-              isOpen
-                ? "bg-blue-400"
-                : isScrolled
-                  ? "bg-blue-400"
-                  : isFieldNotes
-                    ? "bg-black"
-                    : "bg-white"
-            }`}
-          />
-          <motion.span
-            animate={isOpen ? { opacity: 0, x: 20 } : { opacity: 1, x: 0 }}
-            className={`w-full h-[2px] rounded-full transition-colors ${
-              isOpen
-                ? "bg-blue-400"
-                : isScrolled
-                  ? "bg-blue-400"
-                  : isFieldNotes
-                    ? "bg-black"
-                    : "bg-white"
-            }`}
-          />
-          <motion.span
-            animate={isOpen ? { rotate: -45, y: -12 } : { rotate: 0, y: 0 }}
-            className={`w-full h-[2px] rounded-full transition-colors ${
-              isOpen
-                ? "bg-blue-400"
-                : isScrolled
-                  ? "bg-blue-400"
-                  : isFieldNotes
-                    ? "bg-black"
-                    : "bg-white"
-            }`}
-          />
-        </button>
-      </div>
-
-      {/* Full Screen Menu Overlay */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            variants={{
-              closed: {
-                opacity: 0,
-                x: "100%",
-                transition: { duration: 0.5, ease: "easeInOut" },
-              },
-              open: {
-                opacity: 1,
-                x: 0,
-                transition: { duration: 0.5, ease: "easeInOut" },
-              },
-            }}
-            initial="closed"
-            animate="open"
-            exit="closed"
-            className="fixed inset-0 bg-black text-white z-40 flex flex-col justify-center items-center pointer-events-auto"
-          >
-            <div className="flex flex-col gap-6 text-center">
-              {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.name}
-                  custom={i}
-                  variants={linkVariants}
-                  initial="closed"
-                  animate="open"
-                  exit="closed"
-                >
-                  <Link
-                    href={getHref(link.href)}
-                    onClick={() => setIsOpen(false)}
-                    className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-400 transition-colors"
+        {/* Full Screen Menu Overlay */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              variants={{
+                closed: {
+                  opacity: 0,
+                  x: "100%",
+                  transition: { duration: 0.5, ease: "easeInOut" },
+                },
+                open: {
+                  opacity: 1,
+                  x: 0,
+                  transition: { duration: 0.5, ease: "easeInOut" },
+                },
+              }}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="fixed inset-0 bg-black text-white z-40 flex flex-col justify-center items-center pointer-events-auto"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation menu"
+            >
+              <div className="flex flex-col gap-6 text-center">
+                {navLinks.map((link, i) => (
+                  <motion.div
+                    key={link.name}
+                    custom={i}
+                    variants={linkVariants}
+                    initial="closed"
+                    animate="open"
+                    exit="closed"
                   >
-                    {link.name}
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
+                    <Link
+                      href={getHref(link.href)}
+                      onClick={() => setIsOpen(false)}
+                      className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-300 transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+    </>
   );
 };
 

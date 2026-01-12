@@ -33,7 +33,7 @@ const WorkWithUsButton = ({
         <Button
           variant="outline"
           className={cn(
-            "border-blue-400 text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-none px-8 py-6 text-sm font-semibold uppercase tracking-widest cursor-pointer",
+            "border-blue-600 text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-none px-8 py-6 text-sm font-semibold uppercase tracking-widest cursor-pointer",
             className
           )}
         >
@@ -48,7 +48,7 @@ const WorkWithUsButton = ({
       <Button
         variant="outline"
         className={cn(
-          "border-blue-400 text-blue-400 hover:bg-blue-50 hover:text-blue-500 rounded-none px-6 py-3 text-sm font-normal uppercase tracking-wide cursor-pointer",
+          "border-blue-600 text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-none px-6 py-3 text-sm font-normal uppercase tracking-wide cursor-pointer",
           className
         )}
       >

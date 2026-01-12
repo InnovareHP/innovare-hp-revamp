@@ -67,14 +67,14 @@ const PrivacyPolicy = () => {
           className="max-w-6xl mx-auto px-6 lg:px-12"
         >
           <div className="flex items-center gap-2 mb-6">
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">
               Legal Document
             </span>
           </div>
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
             Privacy Policy
           </h1>
-          <p className="text-lg text-slate-500 font-medium">
+          <p className="text-lg text-slate-700 font-medium">
             Innovare HP Healthcare Digital Marketing
           </p>
         </motion.div>
@@ -84,7 +84,7 @@ const PrivacyPolicy = () => {
         {/* --- SIDE NAVIGATION --- */}
         <aside className="lg:w-64 shrink-0">
           <div className="sticky top-12">
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-600 mb-6">
               Section Index
             </h4>
             <nav className="flex flex-col gap-4">
@@ -96,7 +96,7 @@ const PrivacyPolicy = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.05 * idx, ease: "easeOut" }}
                   whileHover={{ x: 5, color: "#2563eb" }}
-                  className="text-sm font-bold text-slate-500 transition-colors"
+                  className="text-sm font-bold text-slate-700 transition-colors"
                 >
                   {link.title}
                 </motion.a>
@@ -425,12 +425,12 @@ const PrivacyPolicy = () => {
       </div>
 
       <footer className="max-w-6xl mx-auto px-6 lg:px-12 py-16 border-t border-slate-100 flex justify-between items-center">
-        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+        <span className="text-[10px] font-black uppercase tracking-widest text-slate-600">
           © 2026 Innovare HP
         </span>
         <Link
           href="/"
-          className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-blue-600 transition-colors"
+          className="text-[10px] font-black uppercase tracking-widest text-slate-600 hover:text-blue-600 transition-colors"
         >
           Return Home
         </Link>

@@ -14,7 +14,7 @@ import WhatWeDo from "./WhatWeDo/WhatWeDo";
 const LandingPage = ({ posts }: { posts: LinkedInPost[] }) => {
   return (
     //sequence not yet finalized
-    <main className="relative">
+    <main id="main-content" className="relative" tabIndex={-1}>
       <Navigation />
       <HeroSection />
       <AboutSection />

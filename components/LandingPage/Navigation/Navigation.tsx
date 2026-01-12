@@ -70,7 +70,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
             />
           </Link>
           <span
-            className={`uppercase font-light text-lg font-signika tracking-[0.55em] sm:block hidden ${isFieldNotes || isScrolled ? "text-black" : "text-white"}`}
+            className={`uppercase font-light text-lg font-signika tracking-[0.55em] sm:block hidden ${isFieldNotes || isScrolled ? "text-black" : "text-black"}`}
           >
             Innovare HP
           </span>
@@ -86,36 +86,36 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
           <motion.span
             animate={isOpen ? { rotate: 45, y: 10 } : { rotate: 0, y: 0 }}
             className={`w-full h-[2px] rounded-full transition-colors ${
-              isOpen 
-                ? "bg-blue-400" 
-                : isScrolled 
-                  ? "bg-blue-400" 
-                  : isFieldNotes 
-                    ? "bg-black" 
+              isOpen
+                ? "bg-blue-400"
+                : isScrolled
+                  ? "bg-blue-400"
+                  : isFieldNotes
+                    ? "bg-black"
                     : "bg-white"
             }`}
           />
           <motion.span
             animate={isOpen ? { opacity: 0, x: 20 } : { opacity: 1, x: 0 }}
             className={`w-full h-[2px] rounded-full transition-colors ${
-              isOpen 
-                ? "bg-blue-400" 
-                : isScrolled 
-                  ? "bg-blue-400" 
-                  : isFieldNotes 
-                    ? "bg-black" 
+              isOpen
+                ? "bg-blue-400"
+                : isScrolled
+                  ? "bg-blue-400"
+                  : isFieldNotes
+                    ? "bg-black"
                     : "bg-white"
             }`}
           />
           <motion.span
             animate={isOpen ? { rotate: -45, y: -12 } : { rotate: 0, y: 0 }}
             className={`w-full h-[2px] rounded-full transition-colors ${
-              isOpen 
-                ? "bg-blue-400" 
-                : isScrolled 
-                  ? "bg-blue-400" 
-                  : isFieldNotes 
-                    ? "bg-black" 
+              isOpen
+                ? "bg-blue-400"
+                : isScrolled
+                  ? "bg-blue-400"
+                  : isFieldNotes
+                    ? "bg-black"
                     : "bg-white"
             }`}
           />

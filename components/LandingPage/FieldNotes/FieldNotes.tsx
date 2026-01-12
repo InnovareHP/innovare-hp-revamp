@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Navigation from "../Navigation/Navigation";
 
 const FieldNotes = () => {
@@ -178,7 +179,7 @@ const FieldNotes = () => {
                   </h3>
                   <div className="flex flex-wrap gap-4 mt-1">
                     {partner.links.map((link, i) => (
-                      <a
+                      <Link
                         key={i}
                         href={link.url}
                         target="_blank"
@@ -187,7 +188,7 @@ const FieldNotes = () => {
                         className="text-blue-600 hover:text-blue-800 hover:underline text-sm font-medium"
                       >
                         {link.label}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>

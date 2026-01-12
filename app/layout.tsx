@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     siteName: "Innovare HP",
     title: "Innovare HP | Healthcare Marketing & Growth Strategy",
     description:
-      "Strategic healthcare marketing rooted in trust, community, and measurable growth. Serving senior care, behavioral health, and clinical organizations.",
+      "Strategic healthcare marketing, serving senior care, behavioral health, and clinical organizations.",
     images: [
       {
         url: "/images/og-image.jpg", // 1200x630 recommended

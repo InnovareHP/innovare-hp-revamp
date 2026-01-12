@@ -90,12 +90,12 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
   return (
     <>
       {/* Skip to main content link for keyboard navigation */}
-      <a
+      <Link
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
       >
         Skip to main content
-      </a>
+      </Link>
       <header className="fixed top-0 left-0 w-full z-50 px-6 py-2 md:px-6 md:py-2 pointer-events-none bg-white">
         <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">
           {/* Logo Section */}

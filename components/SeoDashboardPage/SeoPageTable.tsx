@@ -1,7 +1,7 @@
 "use client";
 
 import { useSeoPages } from "@/hooks/useSeoOverview";
-import { ExternalLink } from "lucide-react"; // Optional: if you have lucide-react installed
+import { ExternalLink, Link } from "lucide-react"; // Optional: if you have lucide-react installed
 
 interface SeoPage {
   page: string;
@@ -67,14 +67,13 @@ export function SeoPageTable() {
                     <span className="font-medium text-blue-600 dark:text-blue-400 truncate max-w-[240px]">
                       {formatUrl(p.page)}
                     </span>
-                    <a
+                    <Link
                       href={p.page}
                       target="_blank"
-                      rel="noopener noreferrer"
                       className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-foreground"
                     >
                       <ExternalLink size={14} />
-                    </a>
+                    </Link>
                   </div>
                 </td>
                 <td className="px-4 py-3 text-right tabular-nums">

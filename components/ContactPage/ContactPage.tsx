@@ -1,5 +1,6 @@
 "use client"; // This must be a Client Component to use useState/useEffect
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ContactFormSubmission } from "../../generated/prisma/client";
 
@@ -119,7 +120,7 @@ const ContactPage = ({ initialSubmissions }: ContactPageProps) => {
                     {item.name}
                   </td>
                   <td className="px-6 py-4 text-blue-600 hover:underline">
-                    <a href={`mailto:${item.email}`}>{item.email}</a>
+                    <Link href={`mailto:${item.email}`}>{item.email}</Link>
                   </td>
                   <td className="px-6 py-4 min-w-[300px]">
                     <p className="line-clamp-2" title={item.message}>

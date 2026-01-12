@@ -10,6 +10,7 @@ import {
   Phone,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const contactDetails = [
   { label: "Phone", value: "(269) 501-4496", icon: Phone },
@@ -115,7 +116,7 @@ const ContactInfoCard = () => {
             <p className="text-sm font-semibold text-gray-700">Social Media</p>
             <div className="flex gap-3">
               {socialLinks.map(({ icon: Icon, href, title }, index) => (
-                <a
+                <Link
                   key={index}
                   href={href}
                   target="_blank"

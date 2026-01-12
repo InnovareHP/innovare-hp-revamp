@@ -62,14 +62,14 @@ const AboutSection = () => {
           }
           className="w-full max-w-2xl space-y-8"
         >
-          <motion.h1
+          <motion.h2
             variants={fadeInRight}
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-relaxed sm:leading-tight"
           >
             We are community resource educators who use creative and thoughtful
             communication methods and technology to help our healthcare partners
             grow in a meaningful way.
-          </motion.h1>
+          </motion.h2>
 
           <motion.p
             variants={fadeInRight}

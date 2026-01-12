@@ -412,12 +412,12 @@ const PrivacyPolicy = () => {
                 <span className="text-[10px] font-black uppercase tracking-widest opacity-60 block mb-2">
                   Primary Email
                 </span>
-                <a
+                <Link
                   href="mailto:info@innovarehp.com"
                   className="text-xl font-bold underline underline-offset-8 decoration-white/30"
                 >
                   info@innovarehp.com
-                </a>
+                </Link>
               </motion.div>
             </div>
           </motion.section>

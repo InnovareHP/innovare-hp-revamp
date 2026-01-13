@@ -116,6 +116,7 @@ model Event {
   status         String
   qrCode         String
   eventStartDate DateTime
+  maxGuests      Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -123,6 +124,19 @@ model Event {
   mediaId   String
   media     Media           @relation(fields: [mediaId], references: [id])
   attendees EventAttendee[]
+  guests    Guest[]
+}
+
+model Guest {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  phone     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
 }
 
 model EventAttendee {

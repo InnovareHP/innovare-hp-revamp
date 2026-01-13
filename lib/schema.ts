@@ -29,3 +29,17 @@ export const contactFormSchema = z.object({
 
 // Infer the TypeScript type
 export type ContactFormValues = z.infer<typeof contactFormSchema>;
+
+export const signInSchema = z.object({
+  email: z.email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+export type SignInValues = z.infer<typeof signInSchema>;
+
+export const signUpSchema = z.object({
+  email: z.email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+export type SignUpValues = z.infer<typeof signUpSchema>;

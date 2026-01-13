@@ -203,9 +203,20 @@ exports.Prisma.EventScalarFieldEnum = {
   status: 'status',
   qrCode: 'qrCode',
   eventStartDate: 'eventStartDate',
+  maxGuests: 'maxGuests',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   mediaId: 'mediaId'
+};
+
+exports.Prisma.GuestScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  eventId: 'eventId'
 };
 
 exports.Prisma.EventAttendeeScalarFieldEnum = {
@@ -261,6 +272,7 @@ exports.Prisma.ModelName = {
   Account: 'Account',
   Verification: 'Verification',
   Event: 'Event',
+  Guest: 'Guest',
   EventAttendee: 'EventAttendee',
   Media: 'Media'
 };

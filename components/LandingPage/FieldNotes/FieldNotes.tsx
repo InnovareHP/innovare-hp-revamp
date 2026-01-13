@@ -182,7 +182,8 @@ const FieldNotes = () => {
                         key={i}
                         href={link.url}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
+                        aria-label={`${link.label} (opens in new tab)`}
                         className="text-blue-600 hover:text-blue-800 hover:underline text-sm font-medium"
                       >
                         {link.label}

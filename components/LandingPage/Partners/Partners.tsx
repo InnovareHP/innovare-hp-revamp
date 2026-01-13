@@ -101,7 +101,7 @@ const LogoMarquee = ({
               {/* Extra 10% scale for impact */}
               <Image
                 src={`/images/testimonials/${n}.png`}
-                alt="Partner Logo"
+                alt={`Partner organization logo ${n}`}
                 fill
                 className="object-contain"
                 sizes="(max-width: 768px) 180px, 320px"

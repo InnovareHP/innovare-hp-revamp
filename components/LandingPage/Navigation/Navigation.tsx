@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface NavigationProps {
@@ -20,12 +21,22 @@ const navLinks = [
   { name: "Client Review", href: "#reviews", title: "Client Review" },
   { name: "Contact", href: "#contact", title: "Contact" },
   { name: "Field Notes", href: "/field-notes", title: "Field Notes" },
-  // { name: "Privacy Policy", href: "/privacy-policy", title: "Privacy Policy" },
+  { name: "Privacy Policy", href: "/privacy-policy", title: "Privacy Policy" },
 ];
 
 const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+
+  // Helper function to get the correct href based on current path
+  const getHref = (href: string) => {
+    // If we're not on the home page and the link is a hash link, prepend "/"
+    if (pathname !== "/" && href.startsWith("#")) {
+      return `/${href}`;
+    }
+    return href;
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,6 +55,28 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  // Handle keyboard navigation for mobile menu
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleKeyDown);
+      // Prevent body scroll when menu is open
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
   const linkVariants = {
     closed: { opacity: 0, y: 20 },
@@ -76,7 +109,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
           </span>
         </nav>
 
-        {/* Burger Icon */}
+          {/* Burger Icon */}
 
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -122,51 +155,55 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
         </button>
       </div>
 
-      {/* Full Screen Menu Overlay */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            variants={{
-              closed: {
-                opacity: 0,
-                x: "100%",
-                transition: { duration: 0.5, ease: "easeInOut" },
-              },
-              open: {
-                opacity: 1,
-                x: 0,
-                transition: { duration: 0.5, ease: "easeInOut" },
-              },
-            }}
-            initial="closed"
-            animate="open"
-            exit="closed"
-            className="fixed inset-0 bg-black text-white z-40 flex flex-col justify-center items-center pointer-events-auto"
-          >
-            <div className="flex flex-col gap-6 text-center">
-              {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.name}
-                  custom={i}
-                  variants={linkVariants}
-                  initial="closed"
-                  animate="open"
-                  exit="closed"
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-400 transition-colors"
+        {/* Full Screen Menu Overlay */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              variants={{
+                closed: {
+                  opacity: 0,
+                  x: "100%",
+                  transition: { duration: 0.5, ease: "easeInOut" },
+                },
+                open: {
+                  opacity: 1,
+                  x: 0,
+                  transition: { duration: 0.5, ease: "easeInOut" },
+                },
+              }}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="fixed inset-0 bg-black text-white z-40 flex flex-col justify-center items-center pointer-events-auto"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation menu"
+            >
+              <div className="flex flex-col gap-6 text-center">
+                {navLinks.map((link, i) => (
+                  <motion.div
+                    key={link.name}
+                    custom={i}
+                    variants={linkVariants}
+                    initial="closed"
+                    animate="open"
+                    exit="closed"
                   >
-                    {link.name}
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
+                    <Link
+                      href={getHref(link.href)}
+                      onClick={() => setIsOpen(false)}
+                      className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-300 transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+    </>
   );
 };
 

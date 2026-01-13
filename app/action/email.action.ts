@@ -1,5 +1,6 @@
 "use server";
 
+import { spamKeywords } from "@/lib/const";
 import { GetInTouch } from "@/lib/email";
 import { prisma } from "@/lib/prisma";
 import { resend } from "@/lib/resend";
@@ -18,10 +19,13 @@ export const createGetInTouch = async (
     websiteOrSocial,
     preferredContact,
     message,
+    companyWebsite,
     turnstileToken,
   } = formData;
 
-  if (!turnstileToken) {
+  const content = `${message}`.toLowerCase();
+  const isSpam = spamKeywords.some((keyword) => content.includes(keyword));
+  if (!turnstileToken || companyWebsite || isSpam) {
     return { success: false };
   }
 

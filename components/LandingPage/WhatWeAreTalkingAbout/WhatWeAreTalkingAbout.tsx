@@ -69,6 +69,8 @@ const WhatWeAreTalkingAbout = ({
           <Link
             href={`https://www.linkedin.com/embed/feed/update/${post.id}`}
             target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`View LinkedIn post by Innovare HP (opens in new tab)`}
             key={post.id}
           >
             <div className="break-inside-avoid group bg-slate-50 rounded-2xl border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all">
@@ -96,7 +98,7 @@ const WhatWeAreTalkingAbout = ({
                         year: "numeric",
                       })}
                     </span>
-                    <div className="text-xs text-slate-400">{post.timeAgo}</div>
+                    <div className="text-xs text-slate-600">{post.timeAgo}</div>
                   </div>
                   <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center shadow">
                     <div className="h-2 w-2 rounded-full bg-blue-600 animate-pulse" />

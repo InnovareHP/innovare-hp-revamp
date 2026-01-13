@@ -109,7 +109,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
           </span>
         </nav>
 
-          {/* Burger Icon */}
+        {/* Burger Icon */}
 
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -155,55 +155,54 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
         </button>
       </div>
 
-        {/* Full Screen Menu Overlay */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              variants={{
-                closed: {
-                  opacity: 0,
-                  x: "100%",
-                  transition: { duration: 0.5, ease: "easeInOut" },
-                },
-                open: {
-                  opacity: 1,
-                  x: 0,
-                  transition: { duration: 0.5, ease: "easeInOut" },
-                },
-              }}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="fixed inset-0 bg-black text-white z-40 flex flex-col justify-center items-center pointer-events-auto"
-              role="dialog"
-              aria-modal="true"
-              aria-label="Navigation menu"
-            >
-              <div className="flex flex-col gap-6 text-center">
-                {navLinks.map((link, i) => (
-                  <motion.div
-                    key={link.name}
-                    custom={i}
-                    variants={linkVariants}
-                    initial="closed"
-                    animate="open"
-                    exit="closed"
+      {/* Full Screen Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            variants={{
+              closed: {
+                opacity: 0,
+                x: "100%",
+                transition: { duration: 0.5, ease: "easeInOut" },
+              },
+              open: {
+                opacity: 1,
+                x: 0,
+                transition: { duration: 0.5, ease: "easeInOut" },
+              },
+            }}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            className="fixed inset-0 bg-black text-white z-40 flex flex-col justify-center items-center pointer-events-auto"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
+          >
+            <div className="flex flex-col gap-6 text-center">
+              {navLinks.map((link, i) => (
+                <motion.div
+                  key={link.name}
+                  custom={i}
+                  variants={linkVariants}
+                  initial="closed"
+                  animate="open"
+                  exit="closed"
+                >
+                  <Link
+                    href={getHref(link.href)}
+                    onClick={() => setIsOpen(false)}
+                    className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-300 transition-colors"
                   >
-                    <Link
-                      href={getHref(link.href)}
-                      onClick={() => setIsOpen(false)}
-                      className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-300 transition-colors"
-                    >
-                      {link.name}
-                    </Link>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
-    </>
+                    {link.name}
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
   );
 };
 

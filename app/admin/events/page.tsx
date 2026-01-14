@@ -1,5 +1,7 @@
+import AdminEventPage from "@/components/AdminEventsPage/AdminEventsPage";
+
 const page = () => {
-  return <div>page</div>;
+  return <AdminEventPage />;
 };
 
 export default page;

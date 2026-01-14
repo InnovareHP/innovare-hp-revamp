@@ -1,7 +1,5 @@
-import SignInPage from "@/components/RegisterPage/RegisterPage";
+import SignInForm from "@/components/Auth/SignInForm";
 
-const page = () => {
-  return <SignInPage />;
-};
-
-export default page;
+export default function SignInPage() {
+  return <SignInForm />;
+}

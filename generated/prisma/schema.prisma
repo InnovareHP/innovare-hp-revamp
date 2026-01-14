@@ -107,22 +107,31 @@ model Verification {
   @@map("verification")
 }
 
+enum EventStatus {
+  DRAFT
+  PUBLISHED
+  CANCELLED
+  COMPLETED
+}
+
 model Event {
-  id             String   @id @default(uuid())
-  title          String
-  description    String
-  date           DateTime
-  location       String
-  status         String
-  qrCode         String
-  eventStartDate DateTime
-  maxGuests      Int
+  id          String      @id @default(uuid())
+  title       String
+  description String
+  location    String
+  status      EventStatus @default(DRAFT)
+  qrCode      String?
+
+  eventStartDate       DateTime
+  eventEndDate         DateTime?
+  registrationDeadline DateTime?
+  maxGuests            Int       @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  mediaId   String
-  media     Media           @relation(fields: [mediaId], references: [id])
+  mediaId   String?
+  media     Media?          @relation(fields: [mediaId], references: [id])
   attendees EventAttendee[]
   guests    Guest[]
 }

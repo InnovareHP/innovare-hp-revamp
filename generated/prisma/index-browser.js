@@ -198,11 +198,12 @@ exports.Prisma.EventScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
-  date: 'date',
   location: 'location',
   status: 'status',
   qrCode: 'qrCode',
   eventStartDate: 'eventStartDate',
+  eventEndDate: 'eventEndDate',
+  registrationDeadline: 'registrationDeadline',
   maxGuests: 'maxGuests',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -261,7 +262,12 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.EventStatus = exports.$Enums.EventStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  CANCELLED: 'CANCELLED',
+  COMPLETED: 'COMPLETED'
+};
 
 exports.Prisma.ModelName = {
   LinkedInPost: 'LinkedInPost',

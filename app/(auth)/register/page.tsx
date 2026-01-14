@@ -1,7 +1,5 @@
-import Register from "@/components/RegisterPage/RegisterPage";
+import RegisterForm from "@/components/Auth/RegisterForm";
 
-const page = () => {
-  return <Register />;
-};
-
-export default page;
+export default function RegisterPage() {
+  return <RegisterForm />;
+}

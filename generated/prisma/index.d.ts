@@ -70,6 +70,25 @@ export type EventAttendee = $Result.DefaultSelection<Prisma.$EventAttendeePayloa
 export type Media = $Result.DefaultSelection<Prisma.$MediaPayload>
 
 /**
+ * Enums
+ */
+export namespace $Enums {
+  export const EventStatus: {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  CANCELLED: 'CANCELLED',
+  COMPLETED: 'COMPLETED'
+};
+
+export type EventStatus = (typeof EventStatus)[keyof typeof EventStatus]
+
+}
+
+export type EventStatus = $Enums.EventStatus
+
+export const EventStatus: typeof $Enums.EventStatus
+
+/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
@@ -9533,11 +9552,12 @@ export namespace Prisma {
     id: string | null
     title: string | null
     description: string | null
-    date: Date | null
     location: string | null
-    status: string | null
+    status: $Enums.EventStatus | null
     qrCode: string | null
     eventStartDate: Date | null
+    eventEndDate: Date | null
+    registrationDeadline: Date | null
     maxGuests: number | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -9548,11 +9568,12 @@ export namespace Prisma {
     id: string | null
     title: string | null
     description: string | null
-    date: Date | null
     location: string | null
-    status: string | null
+    status: $Enums.EventStatus | null
     qrCode: string | null
     eventStartDate: Date | null
+    eventEndDate: Date | null
+    registrationDeadline: Date | null
     maxGuests: number | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -9563,11 +9584,12 @@ export namespace Prisma {
     id: number
     title: number
     description: number
-    date: number
     location: number
     status: number
     qrCode: number
     eventStartDate: number
+    eventEndDate: number
+    registrationDeadline: number
     maxGuests: number
     createdAt: number
     updatedAt: number
@@ -9588,11 +9610,12 @@ export namespace Prisma {
     id?: true
     title?: true
     description?: true
-    date?: true
     location?: true
     status?: true
     qrCode?: true
     eventStartDate?: true
+    eventEndDate?: true
+    registrationDeadline?: true
     maxGuests?: true
     createdAt?: true
     updatedAt?: true
@@ -9603,11 +9626,12 @@ export namespace Prisma {
     id?: true
     title?: true
     description?: true
-    date?: true
     location?: true
     status?: true
     qrCode?: true
     eventStartDate?: true
+    eventEndDate?: true
+    registrationDeadline?: true
     maxGuests?: true
     createdAt?: true
     updatedAt?: true
@@ -9618,11 +9642,12 @@ export namespace Prisma {
     id?: true
     title?: true
     description?: true
-    date?: true
     location?: true
     status?: true
     qrCode?: true
     eventStartDate?: true
+    eventEndDate?: true
+    registrationDeadline?: true
     maxGuests?: true
     createdAt?: true
     updatedAt?: true
@@ -9720,15 +9745,16 @@ export namespace Prisma {
     id: string
     title: string
     description: string
-    date: Date
     location: string
-    status: string
-    qrCode: string
+    status: $Enums.EventStatus
+    qrCode: string | null
     eventStartDate: Date
+    eventEndDate: Date | null
+    registrationDeadline: Date | null
     maxGuests: number
     createdAt: Date
     updatedAt: Date
-    mediaId: string
+    mediaId: string | null
     _count: EventCountAggregateOutputType | null
     _avg: EventAvgAggregateOutputType | null
     _sum: EventSumAggregateOutputType | null
@@ -9754,16 +9780,17 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     description?: boolean
-    date?: boolean
     location?: boolean
     status?: boolean
     qrCode?: boolean
     eventStartDate?: boolean
+    eventEndDate?: boolean
+    registrationDeadline?: boolean
     maxGuests?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     mediaId?: boolean
-    media?: boolean | MediaDefaultArgs<ExtArgs>
+    media?: boolean | Event$mediaArgs<ExtArgs>
     attendees?: boolean | Event$attendeesArgs<ExtArgs>
     guests?: boolean | Event$guestsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
@@ -9773,67 +9800,70 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     description?: boolean
-    date?: boolean
     location?: boolean
     status?: boolean
     qrCode?: boolean
     eventStartDate?: boolean
+    eventEndDate?: boolean
+    registrationDeadline?: boolean
     maxGuests?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     mediaId?: boolean
-    media?: boolean | MediaDefaultArgs<ExtArgs>
+    media?: boolean | Event$mediaArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
     description?: boolean
-    date?: boolean
     location?: boolean
     status?: boolean
     qrCode?: boolean
     eventStartDate?: boolean
+    eventEndDate?: boolean
+    registrationDeadline?: boolean
     maxGuests?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     mediaId?: boolean
-    media?: boolean | MediaDefaultArgs<ExtArgs>
+    media?: boolean | Event$mediaArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectScalar = {
     id?: boolean
     title?: boolean
     description?: boolean
-    date?: boolean
     location?: boolean
     status?: boolean
     qrCode?: boolean
     eventStartDate?: boolean
+    eventEndDate?: boolean
+    registrationDeadline?: boolean
     maxGuests?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     mediaId?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "date" | "location" | "status" | "qrCode" | "eventStartDate" | "maxGuests" | "createdAt" | "updatedAt" | "mediaId", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "location" | "status" | "qrCode" | "eventStartDate" | "eventEndDate" | "registrationDeadline" | "maxGuests" | "createdAt" | "updatedAt" | "mediaId", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    media?: boolean | MediaDefaultArgs<ExtArgs>
+    media?: boolean | Event$mediaArgs<ExtArgs>
     attendees?: boolean | Event$attendeesArgs<ExtArgs>
     guests?: boolean | Event$guestsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    media?: boolean | MediaDefaultArgs<ExtArgs>
+    media?: boolean | Event$mediaArgs<ExtArgs>
   }
   export type EventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    media?: boolean | MediaDefaultArgs<ExtArgs>
+    media?: boolean | Event$mediaArgs<ExtArgs>
   }
 
   export type $EventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Event"
     objects: {
-      media: Prisma.$MediaPayload<ExtArgs>
+      media: Prisma.$MediaPayload<ExtArgs> | null
       attendees: Prisma.$EventAttendeePayload<ExtArgs>[]
       guests: Prisma.$GuestPayload<ExtArgs>[]
     }
@@ -9841,15 +9871,16 @@ export namespace Prisma {
       id: string
       title: string
       description: string
-      date: Date
       location: string
-      status: string
-      qrCode: string
+      status: $Enums.EventStatus
+      qrCode: string | null
       eventStartDate: Date
+      eventEndDate: Date | null
+      registrationDeadline: Date | null
       maxGuests: number
       createdAt: Date
       updatedAt: Date
-      mediaId: string
+      mediaId: string | null
     }, ExtArgs["result"]["event"]>
     composites: {}
   }
@@ -10244,7 +10275,7 @@ export namespace Prisma {
    */
   export interface Prisma__EventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    media<T extends MediaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MediaDefaultArgs<ExtArgs>>): Prisma__MediaClient<$Result.GetResult<Prisma.$MediaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    media<T extends Event$mediaArgs<ExtArgs> = {}>(args?: Subset<T, Event$mediaArgs<ExtArgs>>): Prisma__MediaClient<$Result.GetResult<Prisma.$MediaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     attendees<T extends Event$attendeesArgs<ExtArgs> = {}>(args?: Subset<T, Event$attendeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventAttendeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     guests<T extends Event$guestsArgs<ExtArgs> = {}>(args?: Subset<T, Event$guestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GuestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -10279,11 +10310,12 @@ export namespace Prisma {
     readonly id: FieldRef<"Event", 'String'>
     readonly title: FieldRef<"Event", 'String'>
     readonly description: FieldRef<"Event", 'String'>
-    readonly date: FieldRef<"Event", 'DateTime'>
     readonly location: FieldRef<"Event", 'String'>
-    readonly status: FieldRef<"Event", 'String'>
+    readonly status: FieldRef<"Event", 'EventStatus'>
     readonly qrCode: FieldRef<"Event", 'String'>
     readonly eventStartDate: FieldRef<"Event", 'DateTime'>
+    readonly eventEndDate: FieldRef<"Event", 'DateTime'>
+    readonly registrationDeadline: FieldRef<"Event", 'DateTime'>
     readonly maxGuests: FieldRef<"Event", 'Int'>
     readonly createdAt: FieldRef<"Event", 'DateTime'>
     readonly updatedAt: FieldRef<"Event", 'DateTime'>
@@ -10681,6 +10713,25 @@ export namespace Prisma {
      * Limit how many Events to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Event.media
+   */
+  export type Event$mediaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Media
+     */
+    select?: MediaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Media
+     */
+    omit?: MediaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MediaInclude<ExtArgs> | null
+    where?: MediaWhereInput
   }
 
   /**
@@ -14101,11 +14152,12 @@ export namespace Prisma {
     id: 'id',
     title: 'title',
     description: 'description',
-    date: 'date',
     location: 'location',
     status: 'status',
     qrCode: 'qrCode',
     eventStartDate: 'eventStartDate',
+    eventEndDate: 'eventEndDate',
+    registrationDeadline: 'registrationDeadline',
     maxGuests: 'maxGuests',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -14257,6 +14309,20 @@ export namespace Prisma {
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
+   * Reference to a field of type 'EventStatus'
+   */
+  export type EnumEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'EventStatus[]'
+   */
+  export type ListEnumEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventStatus[]'>
     
 
 
@@ -14759,16 +14825,17 @@ export namespace Prisma {
     id?: StringFilter<"Event"> | string
     title?: StringFilter<"Event"> | string
     description?: StringFilter<"Event"> | string
-    date?: DateTimeFilter<"Event"> | Date | string
     location?: StringFilter<"Event"> | string
-    status?: StringFilter<"Event"> | string
-    qrCode?: StringFilter<"Event"> | string
+    status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
+    qrCode?: StringNullableFilter<"Event"> | string | null
     eventStartDate?: DateTimeFilter<"Event"> | Date | string
+    eventEndDate?: DateTimeNullableFilter<"Event"> | Date | string | null
+    registrationDeadline?: DateTimeNullableFilter<"Event"> | Date | string | null
     maxGuests?: IntFilter<"Event"> | number
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
-    mediaId?: StringFilter<"Event"> | string
-    media?: XOR<MediaScalarRelationFilter, MediaWhereInput>
+    mediaId?: StringNullableFilter<"Event"> | string | null
+    media?: XOR<MediaNullableScalarRelationFilter, MediaWhereInput> | null
     attendees?: EventAttendeeListRelationFilter
     guests?: GuestListRelationFilter
   }
@@ -14777,15 +14844,16 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrder
-    date?: SortOrder
     location?: SortOrder
     status?: SortOrder
-    qrCode?: SortOrder
+    qrCode?: SortOrderInput | SortOrder
     eventStartDate?: SortOrder
+    eventEndDate?: SortOrderInput | SortOrder
+    registrationDeadline?: SortOrderInput | SortOrder
     maxGuests?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    mediaId?: SortOrder
+    mediaId?: SortOrderInput | SortOrder
     media?: MediaOrderByWithRelationInput
     attendees?: EventAttendeeOrderByRelationAggregateInput
     guests?: GuestOrderByRelationAggregateInput
@@ -14798,16 +14866,17 @@ export namespace Prisma {
     NOT?: EventWhereInput | EventWhereInput[]
     title?: StringFilter<"Event"> | string
     description?: StringFilter<"Event"> | string
-    date?: DateTimeFilter<"Event"> | Date | string
     location?: StringFilter<"Event"> | string
-    status?: StringFilter<"Event"> | string
-    qrCode?: StringFilter<"Event"> | string
+    status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
+    qrCode?: StringNullableFilter<"Event"> | string | null
     eventStartDate?: DateTimeFilter<"Event"> | Date | string
+    eventEndDate?: DateTimeNullableFilter<"Event"> | Date | string | null
+    registrationDeadline?: DateTimeNullableFilter<"Event"> | Date | string | null
     maxGuests?: IntFilter<"Event"> | number
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
-    mediaId?: StringFilter<"Event"> | string
-    media?: XOR<MediaScalarRelationFilter, MediaWhereInput>
+    mediaId?: StringNullableFilter<"Event"> | string | null
+    media?: XOR<MediaNullableScalarRelationFilter, MediaWhereInput> | null
     attendees?: EventAttendeeListRelationFilter
     guests?: GuestListRelationFilter
   }, "id">
@@ -14816,15 +14885,16 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrder
-    date?: SortOrder
     location?: SortOrder
     status?: SortOrder
-    qrCode?: SortOrder
+    qrCode?: SortOrderInput | SortOrder
     eventStartDate?: SortOrder
+    eventEndDate?: SortOrderInput | SortOrder
+    registrationDeadline?: SortOrderInput | SortOrder
     maxGuests?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    mediaId?: SortOrder
+    mediaId?: SortOrderInput | SortOrder
     _count?: EventCountOrderByAggregateInput
     _avg?: EventAvgOrderByAggregateInput
     _max?: EventMaxOrderByAggregateInput
@@ -14839,15 +14909,16 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Event"> | string
     title?: StringWithAggregatesFilter<"Event"> | string
     description?: StringWithAggregatesFilter<"Event"> | string
-    date?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     location?: StringWithAggregatesFilter<"Event"> | string
-    status?: StringWithAggregatesFilter<"Event"> | string
-    qrCode?: StringWithAggregatesFilter<"Event"> | string
+    status?: EnumEventStatusWithAggregatesFilter<"Event"> | $Enums.EventStatus
+    qrCode?: StringNullableWithAggregatesFilter<"Event"> | string | null
     eventStartDate?: DateTimeWithAggregatesFilter<"Event"> | Date | string
+    eventEndDate?: DateTimeNullableWithAggregatesFilter<"Event"> | Date | string | null
+    registrationDeadline?: DateTimeNullableWithAggregatesFilter<"Event"> | Date | string | null
     maxGuests?: IntWithAggregatesFilter<"Event"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
-    mediaId?: StringWithAggregatesFilter<"Event"> | string
+    mediaId?: StringNullableWithAggregatesFilter<"Event"> | string | null
   }
 
   export type GuestWhereInput = {
@@ -15566,15 +15637,16 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    date: Date | string
     location: string
-    status: string
-    qrCode: string
+    status?: $Enums.EventStatus
+    qrCode?: string | null
     eventStartDate: Date | string
-    maxGuests: number
+    eventEndDate?: Date | string | null
+    registrationDeadline?: Date | string | null
+    maxGuests?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    media: MediaCreateNestedOneWithoutEventsInput
+    media?: MediaCreateNestedOneWithoutEventsInput
     attendees?: EventAttendeeCreateNestedManyWithoutEventInput
     guests?: GuestCreateNestedManyWithoutEventInput
   }
@@ -15583,15 +15655,16 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    date: Date | string
     location: string
-    status: string
-    qrCode: string
+    status?: $Enums.EventStatus
+    qrCode?: string | null
     eventStartDate: Date | string
-    maxGuests: number
+    eventEndDate?: Date | string | null
+    registrationDeadline?: Date | string | null
+    maxGuests?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    mediaId: string
+    mediaId?: string | null
     attendees?: EventAttendeeUncheckedCreateNestedManyWithoutEventInput
     guests?: GuestUncheckedCreateNestedManyWithoutEventInput
   }
@@ -15600,15 +15673,16 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    qrCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    qrCode?: NullableStringFieldUpdateOperationsInput | string | null
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     maxGuests?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    media?: MediaUpdateOneRequiredWithoutEventsNestedInput
+    media?: MediaUpdateOneWithoutEventsNestedInput
     attendees?: EventAttendeeUpdateManyWithoutEventNestedInput
     guests?: GuestUpdateManyWithoutEventNestedInput
   }
@@ -15617,15 +15691,16 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    qrCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    qrCode?: NullableStringFieldUpdateOperationsInput | string | null
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     maxGuests?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    mediaId?: StringFieldUpdateOperationsInput | string
+    mediaId?: NullableStringFieldUpdateOperationsInput | string | null
     attendees?: EventAttendeeUncheckedUpdateManyWithoutEventNestedInput
     guests?: GuestUncheckedUpdateManyWithoutEventNestedInput
   }
@@ -15634,26 +15709,28 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    date: Date | string
     location: string
-    status: string
-    qrCode: string
+    status?: $Enums.EventStatus
+    qrCode?: string | null
     eventStartDate: Date | string
-    maxGuests: number
+    eventEndDate?: Date | string | null
+    registrationDeadline?: Date | string | null
+    maxGuests?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    mediaId: string
+    mediaId?: string | null
   }
 
   export type EventUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    qrCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    qrCode?: NullableStringFieldUpdateOperationsInput | string | null
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     maxGuests?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15663,15 +15740,16 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    qrCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    qrCode?: NullableStringFieldUpdateOperationsInput | string | null
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     maxGuests?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    mediaId?: StringFieldUpdateOperationsInput | string
+    mediaId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type GuestCreateInput = {
@@ -16355,6 +16433,13 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type EnumEventStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEventStatusFilter<$PrismaModel> | $Enums.EventStatus
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -16366,9 +16451,9 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type MediaScalarRelationFilter = {
-    is?: MediaWhereInput
-    isNot?: MediaWhereInput
+  export type MediaNullableScalarRelationFilter = {
+    is?: MediaWhereInput | null
+    isNot?: MediaWhereInput | null
   }
 
   export type EventAttendeeListRelationFilter = {
@@ -16395,11 +16480,12 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrder
-    date?: SortOrder
     location?: SortOrder
     status?: SortOrder
     qrCode?: SortOrder
     eventStartDate?: SortOrder
+    eventEndDate?: SortOrder
+    registrationDeadline?: SortOrder
     maxGuests?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -16414,11 +16500,12 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrder
-    date?: SortOrder
     location?: SortOrder
     status?: SortOrder
     qrCode?: SortOrder
     eventStartDate?: SortOrder
+    eventEndDate?: SortOrder
+    registrationDeadline?: SortOrder
     maxGuests?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -16429,11 +16516,12 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrder
-    date?: SortOrder
     location?: SortOrder
     status?: SortOrder
     qrCode?: SortOrder
     eventStartDate?: SortOrder
+    eventEndDate?: SortOrder
+    registrationDeadline?: SortOrder
     maxGuests?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -16442,6 +16530,16 @@ export namespace Prisma {
 
   export type EventSumOrderByAggregateInput = {
     maxGuests?: SortOrder
+  }
+
+  export type EnumEventStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEventStatusWithAggregatesFilter<$PrismaModel> | $Enums.EventStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEventStatusFilter<$PrismaModel>
+    _max?: NestedEnumEventStatusFilter<$PrismaModel>
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -16789,6 +16887,10 @@ export namespace Prisma {
     connect?: GuestWhereUniqueInput | GuestWhereUniqueInput[]
   }
 
+  export type EnumEventStatusFieldUpdateOperationsInput = {
+    set?: $Enums.EventStatus
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -16797,10 +16899,12 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type MediaUpdateOneRequiredWithoutEventsNestedInput = {
+  export type MediaUpdateOneWithoutEventsNestedInput = {
     create?: XOR<MediaCreateWithoutEventsInput, MediaUncheckedCreateWithoutEventsInput>
     connectOrCreate?: MediaCreateOrConnectWithoutEventsInput
     upsert?: MediaUpsertWithoutEventsInput
+    disconnect?: MediaWhereInput | boolean
+    delete?: MediaWhereInput | boolean
     connect?: MediaWhereUniqueInput
     update?: XOR<XOR<MediaUpdateToOneWithWhereWithoutEventsInput, MediaUpdateWithoutEventsInput>, MediaUncheckedUpdateWithoutEventsInput>
   }
@@ -17126,6 +17230,23 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumEventStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEventStatusFilter<$PrismaModel> | $Enums.EventStatus
+  }
+
+  export type NestedEnumEventStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEventStatusWithAggregatesFilter<$PrismaModel> | $Enums.EventStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEventStatusFilter<$PrismaModel>
+    _max?: NestedEnumEventStatusFilter<$PrismaModel>
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -17690,15 +17811,16 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    date: Date | string
     location: string
-    status: string
-    qrCode: string
+    status?: $Enums.EventStatus
+    qrCode?: string | null
     eventStartDate: Date | string
-    maxGuests: number
+    eventEndDate?: Date | string | null
+    registrationDeadline?: Date | string | null
+    maxGuests?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    media: MediaCreateNestedOneWithoutEventsInput
+    media?: MediaCreateNestedOneWithoutEventsInput
     attendees?: EventAttendeeCreateNestedManyWithoutEventInput
   }
 
@@ -17706,15 +17828,16 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    date: Date | string
     location: string
-    status: string
-    qrCode: string
+    status?: $Enums.EventStatus
+    qrCode?: string | null
     eventStartDate: Date | string
-    maxGuests: number
+    eventEndDate?: Date | string | null
+    registrationDeadline?: Date | string | null
+    maxGuests?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    mediaId: string
+    mediaId?: string | null
     attendees?: EventAttendeeUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -17738,15 +17861,16 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    qrCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    qrCode?: NullableStringFieldUpdateOperationsInput | string | null
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     maxGuests?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    media?: MediaUpdateOneRequiredWithoutEventsNestedInput
+    media?: MediaUpdateOneWithoutEventsNestedInput
     attendees?: EventAttendeeUpdateManyWithoutEventNestedInput
   }
 
@@ -17754,15 +17878,16 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    qrCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    qrCode?: NullableStringFieldUpdateOperationsInput | string | null
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     maxGuests?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    mediaId?: StringFieldUpdateOperationsInput | string
+    mediaId?: NullableStringFieldUpdateOperationsInput | string | null
     attendees?: EventAttendeeUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -17770,15 +17895,16 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    date: Date | string
     location: string
-    status: string
-    qrCode: string
+    status?: $Enums.EventStatus
+    qrCode?: string | null
     eventStartDate: Date | string
-    maxGuests: number
+    eventEndDate?: Date | string | null
+    registrationDeadline?: Date | string | null
+    maxGuests?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    media: MediaCreateNestedOneWithoutEventsInput
+    media?: MediaCreateNestedOneWithoutEventsInput
     guests?: GuestCreateNestedManyWithoutEventInput
   }
 
@@ -17786,15 +17912,16 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    date: Date | string
     location: string
-    status: string
-    qrCode: string
+    status?: $Enums.EventStatus
+    qrCode?: string | null
     eventStartDate: Date | string
-    maxGuests: number
+    eventEndDate?: Date | string | null
+    registrationDeadline?: Date | string | null
+    maxGuests?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    mediaId: string
+    mediaId?: string | null
     guests?: GuestUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -17818,15 +17945,16 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    qrCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    qrCode?: NullableStringFieldUpdateOperationsInput | string | null
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     maxGuests?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    media?: MediaUpdateOneRequiredWithoutEventsNestedInput
+    media?: MediaUpdateOneWithoutEventsNestedInput
     guests?: GuestUpdateManyWithoutEventNestedInput
   }
 
@@ -17834,15 +17962,16 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    qrCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    qrCode?: NullableStringFieldUpdateOperationsInput | string | null
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     maxGuests?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    mediaId?: StringFieldUpdateOperationsInput | string
+    mediaId?: NullableStringFieldUpdateOperationsInput | string | null
     guests?: GuestUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -17850,12 +17979,13 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    date: Date | string
     location: string
-    status: string
-    qrCode: string
+    status?: $Enums.EventStatus
+    qrCode?: string | null
     eventStartDate: Date | string
-    maxGuests: number
+    eventEndDate?: Date | string | null
+    registrationDeadline?: Date | string | null
+    maxGuests?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     attendees?: EventAttendeeCreateNestedManyWithoutEventInput
@@ -17866,12 +17996,13 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    date: Date | string
     location: string
-    status: string
-    qrCode: string
+    status?: $Enums.EventStatus
+    qrCode?: string | null
     eventStartDate: Date | string
-    maxGuests: number
+    eventEndDate?: Date | string | null
+    registrationDeadline?: Date | string | null
+    maxGuests?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     attendees?: EventAttendeeUncheckedCreateNestedManyWithoutEventInput
@@ -17911,15 +18042,16 @@ export namespace Prisma {
     id?: StringFilter<"Event"> | string
     title?: StringFilter<"Event"> | string
     description?: StringFilter<"Event"> | string
-    date?: DateTimeFilter<"Event"> | Date | string
     location?: StringFilter<"Event"> | string
-    status?: StringFilter<"Event"> | string
-    qrCode?: StringFilter<"Event"> | string
+    status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
+    qrCode?: StringNullableFilter<"Event"> | string | null
     eventStartDate?: DateTimeFilter<"Event"> | Date | string
+    eventEndDate?: DateTimeNullableFilter<"Event"> | Date | string | null
+    registrationDeadline?: DateTimeNullableFilter<"Event"> | Date | string | null
     maxGuests?: IntFilter<"Event"> | number
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
-    mediaId?: StringFilter<"Event"> | string
+    mediaId?: StringNullableFilter<"Event"> | string | null
   }
 
   export type LinkedInPostImageCreateManyPostInput = {
@@ -18130,12 +18262,13 @@ export namespace Prisma {
     id?: string
     title: string
     description: string
-    date: Date | string
     location: string
-    status: string
-    qrCode: string
+    status?: $Enums.EventStatus
+    qrCode?: string | null
     eventStartDate: Date | string
-    maxGuests: number
+    eventEndDate?: Date | string | null
+    registrationDeadline?: Date | string | null
+    maxGuests?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -18144,11 +18277,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    qrCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    qrCode?: NullableStringFieldUpdateOperationsInput | string | null
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     maxGuests?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18160,11 +18294,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    qrCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    qrCode?: NullableStringFieldUpdateOperationsInput | string | null
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     maxGuests?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18176,11 +18311,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    qrCode?: StringFieldUpdateOperationsInput | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    qrCode?: NullableStringFieldUpdateOperationsInput | string | null
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     maxGuests?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

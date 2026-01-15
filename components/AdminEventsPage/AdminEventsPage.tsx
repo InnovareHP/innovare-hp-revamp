@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { PencilIcon, TrashIcon } from "lucide-react";
 import Link from "next/link";
-import { use } from "react";
+import { use, useState } from "react";
 import ReusableTable, { ColumnDef } from "../ReusableTable/ReusableTable";
 import { Button } from "../ui/button";
 
@@ -21,10 +21,61 @@ export default function AdminEventPage({
   events: Promise<EventsResponse>;
 }) {
   const { events: eventsData, totalPages, page } = use(events);
+  const [selectedEvents, setSelectedEvents] = useState<Set<string>>(new Set());
+
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedEvents(new Set(eventsData.map((event) => event.id)));
+    } else {
+      setSelectedEvents(new Set());
+    }
+  };
+
+  const handleSelectEvent = (eventId: string, checked: boolean) => {
+    const newSelected = new Set(selectedEvents);
+    if (checked) {
+      newSelected.add(eventId);
+    } else {
+      newSelected.delete(eventId);
+    }
+    setSelectedEvents(newSelected);
+  };
+
+  const handleDelete = () => {
+    console.log("Deleting events:", Array.from(selectedEvents));
+  };
+
+  const isAllSelected =
+    eventsData.length > 0 && selectedEvents.size === eventsData.length;
+  const isIndeterminate =
+    selectedEvents.size > 0 && selectedEvents.size < eventsData.length;
 
   const columns: ColumnDef<
     Prisma.EventGetPayload<{ include: { media: true } }>
   >[] = [
+    {
+      key: "checkbox",
+      header: (
+        <input
+          type="checkbox"
+          checked={isAllSelected}
+          ref={(input) => {
+            if (input) input.indeterminate = isIndeterminate;
+          }}
+          onChange={(e) => handleSelectAll(e.target.checked)}
+          className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-2 cursor-pointer accent-blue-600"
+        />
+      ),
+      align: "center",
+      cell: (event) => (
+        <input
+          type="checkbox"
+          checked={selectedEvents.has(event.id)}
+          onChange={(e) => handleSelectEvent(event.id, e.target.checked)}
+          className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-2 cursor-pointer accent-blue-600"
+        />
+      ),
+    },
     {
       key: "title",
       header: "Title",
@@ -96,6 +147,18 @@ export default function AdminEventPage({
           <h3 className="text-lg font-semibold leading-none tracking-tight">
             Events Table
           </h3>
+          {selectedEvents.size > 0 && (
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">
+                {selectedEvents.size} event
+                {selectedEvents.size !== 1 ? "s" : ""} selected
+              </span>
+              <Button variant="destructive" size="sm" onClick={handleDelete}>
+                <TrashIcon className="w-4 h-4" />
+                Delete Selected
+              </Button>
+            </div>
+          )}
         </div>
 
         <div className="overflow-x-auto">

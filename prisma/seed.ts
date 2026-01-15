@@ -5,7 +5,6 @@ async function seedEvents() {
   console.log("🌱 Starting to seed events...");
 
   try {
-    // Create media records first
     const media1 = await prisma.media.create({
       data: {
         url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800",

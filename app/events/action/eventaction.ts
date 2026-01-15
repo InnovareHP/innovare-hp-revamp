@@ -51,11 +51,15 @@ export async function getEvents(
   }
 }
 
-export async function getEventById(
+export const getEventById = async (
   id: string
 ): Promise<
-  ActionResponse<Prisma.EventGetPayload<{ include: { media: true } }>>
-> {
+  ActionResponse<
+    Prisma.EventGetPayload<{
+      include: { media: true; attendees: true; guests: true };
+    }>
+  >
+> => {
   try {
     if (!id) {
       return { success: false, error: "Event ID is required" };
@@ -82,7 +86,7 @@ export async function getEventById(
       error: "Failed to fetch event",
     };
   }
-}
+};
 
 export async function createEvent(
   event: Omit<Prisma.EventCreateInput, "media"> & { mediaId?: string }

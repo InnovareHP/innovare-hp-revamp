@@ -11,6 +11,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Prisma } from "@/generated/prisma/client";
 import { isRegisteredForEvent } from "@/lib/event-registration-storage";
+import { formatDate, formatTime } from "@/lib/utils";
 import {
   Calendar,
   CalendarDays,
@@ -37,22 +38,6 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
   useEffect(() => {
     setUserIsRegistered(isRegisteredForEvent(event.id));
   }, [event.id]);
-
-  const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const formatTime = (date: Date) => {
-    return new Date(date).toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   const getStatusColor = (status: string) => {
     switch (status) {

@@ -21,3 +21,9 @@ export type EventCreateInput = {
   status: string;
   qrCode: string;
 };
+
+export type ActionResponse<T = void> = {
+  success: boolean;
+  data?: T;
+  error?: string;
+};

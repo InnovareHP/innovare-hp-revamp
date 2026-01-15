@@ -59,6 +59,7 @@ export const eventSchema = z.object({
   status: z.string().min(1, "Status is required"),
   eventStartDate: z.date({ message: "Start date is required" }).nullable(),
   maxGuests: z.number().int().min(1, "Must have at least 1 guest"),
+  media: z.instanceof(File).optional(),
 });
 
 export type EventFormValues = z.infer<typeof eventSchema>;

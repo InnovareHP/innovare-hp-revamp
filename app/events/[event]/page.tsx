@@ -41,7 +41,7 @@ const EventPage = async ({ params }: EventPageProps) => {
         <Card className="overflow-hidden">
           {event.media && (
             <div className="relative w-full h-64 md:h-96 bg-gradient-to-br from-primary/20 to-primary/5">
-              {event.media.type === "image" ? (
+              {event.media ? (
                 <img
                   src={event.media.url}
                   alt={event.title}

@@ -531,3 +531,156 @@ export function EventRegistrationNotification({
     </div>
   );
 }
+
+interface AdminCustomEmailProps {
+  recipientName: string;
+  subject: string;
+  message: string;
+  eventTitle?: string;
+  eventDate?: string;
+  eventLocation?: string;
+}
+
+export function AdminCustomEmail({
+  recipientName,
+  subject,
+  message,
+  eventTitle,
+  eventDate,
+  eventLocation,
+}: AdminCustomEmailProps) {
+  return (
+    <div
+      style={{
+        fontFamily: "Arial, sans-serif",
+        lineHeight: "1.6",
+        backgroundColor: "#f0f8ff",
+        padding: "24px",
+        borderRadius: "10px",
+        color: "#333",
+        maxWidth: "600px",
+        margin: "0 auto",
+        border: "1px solid #bde0fe",
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          textAlign: "center",
+          marginBottom: "24px",
+        }}
+      >
+        <h1
+          style={{
+            color: "skyblue",
+            marginBottom: "8px",
+            fontSize: "28px",
+          }}
+        >
+          {subject}
+        </h1>
+      </div>
+
+      {/* Greeting */}
+      <p style={{ fontSize: "16px", marginBottom: "24px" }}>
+        Hi <strong>{recipientName}</strong>,
+      </p>
+
+      {/* Message Content */}
+      <div
+        style={{
+          backgroundColor: "#ffffff",
+          padding: "20px",
+          borderRadius: "8px",
+          marginTop: "16px",
+          border: "1px solid #e0f0ff",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+        }}
+      >
+        <div
+          style={{
+            whiteSpace: "pre-wrap",
+            fontSize: "15px",
+            lineHeight: "1.8",
+          }}
+        >
+          {message}
+        </div>
+      </div>
+
+      {/* Event Details (if provided) */}
+      {eventTitle && (
+        <div
+          style={{
+            backgroundColor: "#fffbeb",
+            padding: "16px",
+            borderRadius: "8px",
+            marginTop: "20px",
+            border: "1px solid #fef3c7",
+          }}
+        >
+          <p style={{ margin: "0 0 12px 0", fontSize: "14px" }}>
+            <strong>📅 Event Information:</strong>
+          </p>
+          <p style={{ margin: "4px 0" }}>
+            <strong>Event:</strong> {eventTitle}
+          </p>
+          {eventDate && (
+            <p style={{ margin: "4px 0" }}>
+              <strong>Date:</strong> {eventDate}
+            </p>
+          )}
+          {eventLocation && (
+            <p style={{ margin: "4px 0" }}>
+              <strong>Location:</strong> {eventLocation}
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* Call to Action */}
+      {eventTitle && (
+        <div style={{ textAlign: "center", marginTop: "24px" }}>
+          <a
+            href="#"
+            style={{
+              display: "inline-block",
+              backgroundColor: "skyblue",
+              color: "white",
+              padding: "12px 32px",
+              borderRadius: "6px",
+              textDecoration: "none",
+              fontWeight: "bold",
+              fontSize: "16px",
+            }}
+          >
+            View Event Details
+          </a>
+        </div>
+      )}
+
+      {/* Footer */}
+      <div
+        style={{
+          marginTop: "32px",
+          paddingTop: "20px",
+          borderTop: "1px solid #e0e0e0",
+          textAlign: "center",
+        }}
+      >
+        <p style={{ fontSize: "13px", color: "#777", marginBottom: "8px" }}>
+          Questions or concerns?
+          <br />
+          <a href="#" style={{ color: "skyblue", textDecoration: "underline" }}>
+            Contact Support
+          </a>
+        </p>
+        <p style={{ fontSize: "12px", color: "#999", marginTop: "16px" }}>
+          This email was sent by Innovare HP Event Management.
+          <br />
+          You received this because you registered for our event.
+        </p>
+      </div>
+    </div>
+  );
+}

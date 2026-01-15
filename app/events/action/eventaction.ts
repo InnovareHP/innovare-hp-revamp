@@ -4,6 +4,7 @@ import { Prisma } from "@/generated/prisma/client";
 import { requireAuth } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
 import { sendEventRegistrationEmails } from "@/lib/send-event-email";
+import { revalidatePath } from "next/cache";
 
 type ActionResponse<T = void> = {
   success: boolean;
@@ -271,7 +272,7 @@ export async function joinEvent(
       }
     }
 
-    await prisma.eventAttendee.create({
+    const newAttendee = await prisma.eventAttendee.create({
       data: {
         eventId,
         name: attendeeData.name,
@@ -286,10 +287,12 @@ export async function joinEvent(
       attendeePhone: attendeeData.phone,
       event: {
         ...event,
+        attendees: [...event.attendees, newAttendee],
         media: event.media ?? null,
       },
     });
 
+    revalidatePath(`/events/${eventId}`);
     return { success: true };
   } catch (error) {
     console.error("Error joining event:", error);

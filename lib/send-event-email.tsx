@@ -1,5 +1,6 @@
 import { Prisma } from "@/generated/prisma/client";
 import {
+  AdminCustomEmail,
   EventRegistrationConfirmation,
   EventRegistrationNotification,
 } from "./email";
@@ -84,7 +85,7 @@ export async function sendEventRegistrationNotificationEmail({
 
     const { data, error } = await resend.emails.send({
       from: "Innovare HP <hello@innovarehp.com>",
-      to: ["hello@innovarehp.com", "info@innovarehp.com"],
+      to: ["markivor.glorioso@gmail.com"],
       subject: `New Registration: ${event.title}`,
       react: EventRegistrationNotification({
         attendeeName,
@@ -140,4 +141,57 @@ export async function getEventForEmail(eventId: string) {
       attendees: true,
     },
   });
+}
+
+export async function sendAdminCustomEmail({
+  recipients,
+  recipientNames,
+  subject,
+  message,
+  eventTitle,
+  eventDate,
+  eventLocation,
+}: {
+  recipients: string[];
+  recipientNames: string[];
+  subject: string;
+  message: string;
+  eventTitle?: string;
+  eventDate?: string;
+  eventLocation?: string;
+}) {
+  try {
+    const results = await Promise.allSettled(
+      recipients.map((email, index) =>
+        resend.emails.send({
+          from: "Innovare HP <hello@innovarehp.com>",
+          to: email,
+          subject,
+          react: AdminCustomEmail({
+            recipientName: recipientNames[index] || "Attendee",
+            subject,
+            message,
+            eventTitle,
+            eventDate,
+            eventLocation,
+          }),
+        })
+      )
+    );
+
+    const successful = results.filter((r) => r.status === "fulfilled").length;
+    const failed = results.filter((r) => r.status === "rejected").length;
+    console.log(
+      `Admin custom emails sent: ${successful} successful, ${failed} failed`
+    );
+    return {
+      success: failed === 0,
+      successful,
+      failed,
+      results,
+    };
+  } catch (error) {
+    console.error("Failed to send admin custom emails:", error);
+    return { success: false, error };
+  }
 }

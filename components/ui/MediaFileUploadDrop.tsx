@@ -7,7 +7,7 @@ import { useCallback, useState } from "react";
 import { toast } from "sonner";
 
 type MediaUploadDropperProps = {
-  value?: File; // uploaded image URL
+  value?: File | { url: string; type: string }; // uploaded image URL
   onUpload: (file: File) => Promise<string>; // must return URL
   onChange: (file: File | null) => void;
   accept?: string[];
@@ -66,7 +66,7 @@ export default function MediaUploadDropper({
       {value ? (
         <div className="relative w-full h-48 rounded-lg overflow-hidden border">
           <Image
-            src={URL.createObjectURL(value)}
+            src={value instanceof File ? URL.createObjectURL(value) : value.url}
             alt="Uploaded media"
             fill
             className="object-cover"

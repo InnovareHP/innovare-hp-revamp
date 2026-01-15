@@ -1,6 +1,7 @@
 "use client";
 
 import { createEvent } from "@/app/admin/events/action";
+import { updateEvent } from "@/app/events/action/eventaction";
 import { EventStatus } from "@/generated/prisma";
 import { EventFormValues, eventSchema } from "@/lib/schema";
 import { uploadFile } from "@/lib/storage";
@@ -41,50 +42,94 @@ import {
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 
-const AddEventButton = () => {
+type Props = {
+  type?: "add" | "edit";
+  event?: EventFormValues & { id: string };
+};
+
+const AddEventButton = ({ type = "add", event }: Props) => {
   const [open, setOpen] = useState(false);
+
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      location: "",
-      status: "draft",
-      maxGuests: 1,
-      date: null,
-      eventStartDate: null,
-    },
+    defaultValues: event
+      ? {
+          title: event.title,
+          description: event.description,
+          location: event.location,
+          status: event.status.toLowerCase() as EventStatus,
+          maxGuests: event.maxGuests,
+          date: event.date ?? null,
+          eventStartDate: event.eventStartDate ?? null,
+          media: event?.media,
+        }
+      : {
+          title: "",
+          description: "",
+          location: "",
+          status: EventStatus.DRAFT,
+          maxGuests: 1,
+          date: null,
+          eventStartDate: null,
+          media: undefined,
+        },
   });
 
   async function onSubmit(values: EventFormValues) {
     try {
       let mediaUrl: string | undefined;
-      if (values.media) {
+
+      if (values.media instanceof File) {
         const media = await uploadFile(values.media);
         mediaUrl = media.url;
       }
 
-      await createEvent({
-        title: values.title,
-        description: values.description,
-        location: values.location,
-        status: values.status.toUpperCase() as EventStatus,
-        maxGuests: values.maxGuests,
-        eventStartDate: values.eventStartDate ?? new Date(),
-        media: {
-          create: {
-            url: mediaUrl ?? "",
-            type: values.media?.type ?? "",
-          },
-        },
-      });
+      if (type === "add") {
+        await createEvent({
+          title: values.title,
+          description: values.description,
+          location: values.location,
+          status: values.status.toUpperCase() as EventStatus,
+          maxGuests: values.maxGuests,
+          eventStartDate: values.eventStartDate ?? new Date(),
+          media: mediaUrl
+            ? {
+                create: {
+                  url: mediaUrl,
+                  type: values.media?.type ?? "",
+                },
+              }
+            : undefined,
+        });
+
+        toast.success("Event created successfully!");
+      } else {
+        await updateEvent(event!.id, {
+          id: event!.id,
+          title: values.title,
+          description: values.description,
+          location: values.location,
+          status: values.status.toUpperCase() as EventStatus,
+          maxGuests: values.maxGuests,
+          eventStartDate: values.eventStartDate ?? new Date(),
+          media: mediaUrl
+            ? {
+                upsert: {
+                  create: { url: mediaUrl, type: values.media?.type ?? "" },
+                  update: { url: mediaUrl },
+                },
+              }
+            : undefined,
+        });
+
+        toast.success("Event updated successfully!");
+      }
 
       setOpen(false);
       form.reset();
-      toast.success("Event created successfully!");
     } catch (error) {
-      console.error("Error creating event:", error);
-      toast.error("Failed to create event. Please try again.");
+      console.error("Error saving event:", error);
+      toast.error("Failed to save event.");
     }
   }
 
@@ -92,15 +137,19 @@ const AddEventButton = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="cursor-pointer">
-          <Plus className="mr-2 h-4 w-4" />
-          Add Event
+          {type === "add" && <Plus className="mr-2 h-4 w-4" />}
+          {type === "add" ? "Add Event" : "Edit Event"}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Create Event</DialogTitle>
+          <DialogTitle>
+            {type === "add" ? "Create Event" : "Edit Event"}
+          </DialogTitle>
           <DialogDescription>
-            Fill in the details to create a new event.
+            {type === "add"
+              ? "Fill in the details to create a new event."
+              : "Fill in the details to edit the event."}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -264,6 +313,7 @@ const AddEventButton = () => {
                         <SelectItem value="draft">Draft</SelectItem>
                         <SelectItem value="published">Published</SelectItem>
                         <SelectItem value="cancelled">Cancelled</SelectItem>
+                        <SelectItem value="completed">Completed</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -304,7 +354,7 @@ const AddEventButton = () => {
                   <FormLabel>Media</FormLabel>
                   <FormControl>
                     <MediaUploadDropper
-                      value={field.value ?? undefined}
+                      value={field.value}
                       onChange={field.onChange}
                       onUpload={async (file) => {
                         const media = await uploadFile(file);
@@ -319,7 +369,13 @@ const AddEventButton = () => {
 
             <div className="flex justify-end gap-2">
               <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Creating..." : "Create Event"}
+                {form.formState.isSubmitting
+                  ? type === "add"
+                    ? "Creating..."
+                    : "Updating..."
+                  : type === "add"
+                    ? "Create Event"
+                    : "Update Event"}
               </Button>
               <Button
                 type="button"

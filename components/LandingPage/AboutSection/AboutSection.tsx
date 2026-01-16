@@ -39,9 +39,10 @@ const AboutSection = () => {
       >
         <Image
           src="/images/about/about-img.png"
-          alt="Innovare HP team members working together on healthcare marketing strategies"
-          title="Innovare HP team members working together on healthcare marketing strategies"
-          fill
+          alt="Innovare HP Team"
+          title="Innovare HP Team"
+          width={1000}
+          height={1000}
           className="object-cover"
           priority
           quality={100}

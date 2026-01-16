@@ -1,25 +1,27 @@
 "use client";
+
 import { LinkedInPost } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 const WhatWeAreTalkingAbout = ({
   initialPosts,
 }: {
-  initialPosts: LinkedInPost[];
+  initialPosts: Promise<LinkedInPost[]>;
 }) => {
-  const [posts, setPosts] = useState<LinkedInPost[]>(initialPosts);
+  const data = use(initialPosts);
+  const [posts, setPosts] = useState<LinkedInPost[]>(data);
   const [cursor, setCursor] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
   // ✅ set initial cursor from last post
   useEffect(() => {
-    if (initialPosts.length > 0) {
-      setCursor(initialPosts[initialPosts.length - 1].id);
+    if (data.length > 0) {
+      setCursor(data[data.length - 1].id);
     }
-  }, [initialPosts]);
+  }, [data]);
 
   const cleanText = (text: string | null) => {
     if (!text) return "";
@@ -87,7 +89,7 @@ const WhatWeAreTalkingAbout = ({
         aria-atomic="true"
       />
 
-      <div 
+      <div
         className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6"
         role="feed"
         aria-label="LinkedIn posts feed"
@@ -113,8 +115,10 @@ const WhatWeAreTalkingAbout = ({
                 <div className="relative aspect-square w-full">
                   <Image
                     src={post.images[0].imageUrl}
-                    alt={post.images[0].altText || `LinkedIn post image: ${cleanText(post.text).substring(0, 100)}`}
-                    fill
+                    alt="Post content"
+                    title="Post content"
+                    width={1000}
+                    height={1000}
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                 </div>
@@ -152,7 +156,9 @@ const WhatWeAreTalkingAbout = ({
             onClick={loadMore}
             disabled={loading}
             className="px-6 py-3 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            aria-label={loading ? "Loading more posts" : "Load more LinkedIn posts"}
+            aria-label={
+              loading ? "Loading more posts" : "Load more LinkedIn posts"
+            }
             aria-busy={loading}
           >
             {loading ? "Loading..." : "Load more"}

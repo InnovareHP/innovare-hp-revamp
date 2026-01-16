@@ -7,7 +7,8 @@ const Process = () => {
   return (
     <section
       id="process"
-      className="relative w-full h-[110vw] sm:h-[100vw] overflow-hidden bg-[#f8f9fa]" // Added a background color to prevent flicker
+      className="relative w-full h-[110vw] sm:h-[100vw] overflow-hidden bg-[#f8f9fa]"
+      aria-label="Process section"
     >
       <motion.div
         className="absolute bottom-0 left-0 w-full select-none pointer-events-none"
@@ -21,13 +22,13 @@ const Process = () => {
       >
         <Image
           src="/images/services/Services.png"
-          alt="Services Process"
+          alt="Innovare HP service offerings and process workflow diagram"
           width={1920}
           height={1080}
           sizes="100vw"
           className="w-full h-auto object-cover"
           priority
-          title="Services Process"
+          title="Innovare HP service offerings and process workflow diagram"
         />
       </motion.div>
     </section>

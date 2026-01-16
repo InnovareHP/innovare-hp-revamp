@@ -99,13 +99,13 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
       <header className="fixed top-0 left-0 w-full z-50 px-6 py-2 md:px-6 md:py-2 pointer-events-none bg-white">
         <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">
           {/* Logo Section */}
-          <nav className="flex items-center gap-2">
-            <Link href="/" title="Innovare HP">
+          <nav className="flex items-center gap-2" aria-label="Main navigation">
+            <Link href="/" title="Innovare HP" aria-label="Innovare HP home page">
               <Image
                 src="/images/logo.png"
-                alt="Innovare HP"
+                alt="Innovare HP logo"
                 width={100}
-                title="Innovare HP"
+                title="Innovare HP logo"
                 height={100}
                 className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
               />
@@ -122,7 +122,9 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="relative z-50 flex flex-col justify-between w-8 h-6 group"
-            aria-label="Toggle Menu"
+            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isOpen}
+            aria-controls="navigation-menu"
           >
             <motion.span
               animate={isOpen ? { rotate: 45, y: 10 } : { rotate: 0, y: 0 }}
@@ -186,6 +188,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
               role="dialog"
               aria-modal="true"
               aria-label="Navigation menu"
+              id="navigation-menu"
             >
               <div className="flex flex-col gap-6 text-center">
                 {navLinks.map((link, i) => (
@@ -200,7 +203,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
                     <Link
                       href={getHref(link.href)}
                       onClick={() => setIsOpen(false)}
-                      className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-300 transition-colors"
+                      className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black rounded"
                     >
                       {link.name}
                     </Link>

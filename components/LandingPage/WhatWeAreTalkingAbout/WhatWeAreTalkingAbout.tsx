@@ -57,6 +57,7 @@ const WhatWeAreTalkingAbout = ({
     <section
       id="what-we-are-talking-about"
       className="max-w-7xl mx-auto px-6 lg:px-12 py-20 bg-white"
+      aria-label="What we're talking about section"
     >
       <div className="mb-12">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-900">
@@ -64,7 +65,12 @@ const WhatWeAreTalkingAbout = ({
         </h2>
       </div>
 
-      <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+      <div 
+        className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6"
+        role="feed"
+        aria-label="LinkedIn posts feed"
+        aria-live="polite"
+      >
         {posts.map((post) => (
           <Link
             href={`https://www.linkedin.com/embed/feed/update/${post.id}`}
@@ -78,7 +84,7 @@ const WhatWeAreTalkingAbout = ({
                 <div className="relative aspect-square w-full">
                   <Image
                     src={post.images[0].imageUrl}
-                    alt="Post content"
+                    alt={post.images[0].altText || `LinkedIn post image: ${cleanText(post.text).substring(0, 100)}`}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
@@ -116,7 +122,9 @@ const WhatWeAreTalkingAbout = ({
           <button
             onClick={loadMore}
             disabled={loading}
-            className="px-6 py-3 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 disabled:opacity-50"
+            className="px-6 py-3 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            aria-label={loading ? "Loading more posts" : "Load more LinkedIn posts"}
+            aria-busy={loading}
           >
             {loading ? "Loading..." : "Load more"}
           </button>

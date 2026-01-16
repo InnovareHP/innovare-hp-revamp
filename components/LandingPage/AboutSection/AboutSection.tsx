@@ -27,6 +27,7 @@ const AboutSection = () => {
     <section
       id="about"
       className="flex flex-col lg:flex-row min-h-[70vh] overflow-hidden"
+      aria-label="About section"
     >
       {/* Left side - Image */}
       <motion.div
@@ -38,8 +39,8 @@ const AboutSection = () => {
       >
         <Image
           src="/images/about/about-img.png"
-          alt="Innovare HP Team"
-          title="Innovare HP Team"
+          alt="Innovare HP team members working together on healthcare marketing strategies"
+          title="Innovare HP team members working together on healthcare marketing strategies"
           fill
           className="object-cover"
           priority

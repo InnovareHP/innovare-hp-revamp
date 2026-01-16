@@ -13,11 +13,24 @@ import Image from "next/image";
 import Link from "next/link";
 
 const contactDetails = [
-  { label: "Phone", value: "(269) 501-4496", icon: Phone },
-  { label: "Email", value: "hello@innovarehp.com", icon: Mail },
+  {
+    label: "Phone",
+    value: "(269) 501-4496",
+    icon: Phone,
+    href: "tel:+12695014496",
+    type: "phone",
+  },
+  {
+    label: "Email",
+    value: "hello@innovarehp.com",
+    icon: Mail,
+    href: "mailto:hello@innovarehp.com",
+    type: "email",
+  },
   {
     label: "Address",
-    value: (
+    value: "4221 Bud Drive NE, Comstock Park, MI 49321",
+    displayValue: (
       <>
         4221 Bud Drive NE
         <br />
@@ -25,6 +38,8 @@ const contactDetails = [
       </>
     ),
     icon: MapPin,
+    href: "https://maps.google.com/?q=4221+Bud+Drive+NE+Comstock+Park+MI+49321",
+    type: "address",
   },
   // {
   //   label: "Policy",
@@ -74,9 +89,9 @@ const ContactInfoCard = () => {
       <div className="relative h-64 w-full">
         <Image
           src="/images/contact-form.jpg"
-          alt="Team collaboration"
+          alt="Innovare HP team members collaborating on healthcare marketing projects"
           fill
-          title="Team collaboration"
+          title="Innovare HP team members collaborating on healthcare marketing projects"
           className="object-cover rounded-t-lg"
         />
       </div>
@@ -84,10 +99,10 @@ const ContactInfoCard = () => {
       <div className="p-6 flex items-start gap-6">
         <Image
           src="/images/logo.png"
-          alt="Innovare HP"
+          alt="Innovare HP logo"
           width={100}
           height={100}
-          title="Innovare HP"
+          title="Innovare HP logo"
         />
 
         <div className="space-y-6">
@@ -97,24 +112,52 @@ const ContactInfoCard = () => {
             animate="show"
             className="space-y-4"
           >
-            {contactDetails.map(({ label, value, icon: Icon }) => (
-              <motion.div
-                key={label}
-                variants={item}
-                className="flex items-start gap-3"
-              >
-                <Icon className="w-5 h-5 text-blue-600 mt-0.5" />
-                <div>
-                  <p className="text-sm font-semibold text-gray-700">{label}</p>
-                  <p className="text-sm text-gray-500">{value}</p>
-                </div>
-              </motion.div>
-            ))}
+            {contactDetails.map(
+              ({ label, value, displayValue, icon: Icon, href, type }) => (
+                <motion.div
+                  key={label}
+                  variants={item}
+                  className="flex items-start gap-3"
+                >
+                  <Icon
+                    className="w-5 h-5 text-blue-600 mt-0.5"
+                    aria-hidden="true"
+                  />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-700">
+                      {label}
+                    </p>
+                    {href ? (
+                      <Link
+                        href={href}
+                        className="text-sm text-gray-500 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+                        aria-label={`${label}: ${value}${type === "phone" ? ". Call us" : type === "email" ? ". Email us" : ". View on map"}`}
+                      >
+                        {displayValue || value}
+                      </Link>
+                    ) : (
+                      <p className="text-sm text-gray-500">
+                        {displayValue || value}
+                      </p>
+                    )}
+                  </div>
+                </motion.div>
+              )
+            )}
           </motion.div>
 
           <div className="space-y-3">
-            <p className="text-sm font-semibold text-gray-700">Social Media</p>
-            <div className="flex gap-3">
+            <p
+              className="text-sm font-semibold text-gray-700"
+              id="social-media-heading"
+            >
+              Social Media
+            </p>
+            <div
+              className="flex gap-3"
+              role="list"
+              aria-labelledby="social-media-heading"
+            >
               {socialLinks.map(({ icon: Icon, href, title }, index) => (
                 <Link
                   key={index}
@@ -124,9 +167,10 @@ const ContactInfoCard = () => {
                   aria-label={`Visit our ${title} page (opens in new tab)`}
                   className="text-white transition bg-blue-600 p-2 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   title={title}
+                  role="listitem"
                 >
                   <Icon className="w-6 h-6" aria-hidden="true" />
-                </a>
+                </Link>
               ))}
             </div>
           </div>

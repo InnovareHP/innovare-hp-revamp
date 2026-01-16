@@ -159,3 +159,39 @@
   clip: auto;
   white-space: normal;
 }
+
+/* Ensure links are distinguishable without color - WCAG 2.1 Level A */
+a:not([class*="rounded-full"]):not([class*="button"]):not([class*="Button"]) {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+a:not([class*="rounded-full"]):not([class*="button"]):not([class*="Button"]):hover,
+a:not([class*="rounded-full"]):not([class*="button"]):not([class*="Button"]):focus {
+  text-decoration-thickness: 2px;
+}
+
+/* Ensure focus indicators are visible for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Improve keyboard navigation - ensure all interactive elements are focusable */
+button:not(:disabled),
+a[href],
+input:not(:disabled),
+select:not(:disabled),
+textarea:not(:disabled),
+[tabindex]:not([tabindex="-1"]) {
+  cursor: pointer;
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}

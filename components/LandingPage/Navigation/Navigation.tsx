@@ -56,11 +56,34 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
     };
   }, []);
 
-  // Handle keyboard navigation for mobile menu
+  // Handle keyboard navigation and focus management for mobile menu
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
         setIsOpen(false);
+        // Return focus to menu button
+        const menuButton = document.querySelector('[aria-controls="navigation-menu"]') as HTMLElement;
+        menuButton?.focus();
+      }
+      
+      // Trap focus within dialog when open
+      if (isOpen && e.key === "Tab") {
+        const dialog = document.getElementById("navigation-menu");
+        if (!dialog) return;
+        
+        const focusableElements = dialog.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        
+        if (e.shiftKey && document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement?.focus();
+        } else if (!e.shiftKey && document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement?.focus();
+        }
       }
     };
 
@@ -68,6 +91,12 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
       document.addEventListener("keydown", handleKeyDown);
       // Prevent body scroll when menu is open
       document.body.style.overflow = "hidden";
+      
+      // Focus first link in menu when it opens
+      setTimeout(() => {
+        const firstLink = document.querySelector('#navigation-menu a') as HTMLElement;
+        firstLink?.focus();
+      }, 100);
     } else {
       document.body.style.overflow = "";
     }
@@ -96,10 +125,13 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
       >
         Skip to main content
       </Link>
-      <header className="fixed top-0 left-0 w-full z-50 px-6 py-2 md:px-6 md:py-2 pointer-events-none bg-white">
+      <header 
+        className="fixed top-0 left-0 w-full z-50 px-6 py-2 md:px-6 md:py-2 pointer-events-none bg-white"
+        role="banner"
+      >
         <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">
           {/* Logo Section */}
-          <nav className="flex items-center gap-2" aria-label="Main navigation">
+          <nav className="flex items-center gap-2" aria-label="Main navigation" role="navigation">
             <Link href="/" title="Innovare HP" aria-label="Innovare HP home page">
               <Image
                 src="/images/logo.png"
@@ -190,7 +222,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
               aria-label="Navigation menu"
               id="navigation-menu"
             >
-              <div className="flex flex-col gap-6 text-center">
+              <nav className="flex flex-col gap-6 text-center" role="navigation" aria-label="Site navigation">
                 {navLinks.map((link, i) => (
                   <motion.div
                     key={link.name}
@@ -203,13 +235,13 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
                     <Link
                       href={getHref(link.href)}
                       onClick={() => setIsOpen(false)}
-                      className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black rounded"
+                      className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black rounded underline focus:no-underline"
                     >
                       {link.name}
                     </Link>
                   </motion.div>
                 ))}
-              </div>
+              </nav>
             </motion.div>
           )}
         </AnimatePresence>

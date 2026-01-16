@@ -54,9 +54,18 @@ export default function ContactSection() {
   });
 
   const onSubmit = async (values: ContactFormValues) => {
+    const announcement = document.getElementById("form-announcement");
+    
     if (!turnstileToken) {
       toast.error("Please verify you are human.");
+      if (announcement) {
+        announcement.textContent = "Error: Please verify you are human by completing the security verification.";
+      }
       return;
+    }
+
+    if (announcement) {
+      announcement.textContent = "Submitting form...";
     }
 
     const res = await createGetInTouch({
@@ -68,6 +77,9 @@ export default function ContactSection() {
       toast.error("Verification failed. Please try again.");
       turnstile.reset(); // 🔥 important
       setTurnstileToken(null);
+      if (announcement) {
+        announcement.textContent = "Error: Verification failed. Please try again.";
+      }
       return;
     }
 
@@ -75,6 +87,9 @@ export default function ContactSection() {
     form.reset(defaultValues);
     turnstile.reset();
     setTurnstileToken(null);
+    if (announcement) {
+      announcement.textContent = "Success: Your message has been sent successfully!";
+    }
   };
 
   return (
@@ -89,8 +104,21 @@ export default function ContactSection() {
         Stay in touch!
       </motion.h2>
 
+      {/* Screen reader announcements for form status */}
+      <div
+        id="form-announcement"
+        className="sr-only"
+        aria-live="polite"
+        aria-atomic="true"
+      />
+
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" aria-label="Contact form">
+        <form 
+          onSubmit={form.handleSubmit(onSubmit)} 
+          className="space-y-6" 
+          aria-label="Contact form"
+          noValidate
+        >
           {/* NAME */}
           <motion.div variants={itemVariants}>
             <FormField

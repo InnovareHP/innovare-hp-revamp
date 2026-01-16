@@ -37,6 +37,12 @@ const WhatWeAreTalkingAbout = ({
     if (!cursor || loading) return;
 
     setLoading(true);
+    
+    // Announce loading state to screen readers
+    const announcement = document.getElementById("posts-loading-announcement");
+    if (announcement) {
+      announcement.textContent = "Loading more posts...";
+    }
 
     const res = await fetch(`/api/posts?cursor=${cursor}`);
     const data = await res.json();
@@ -44,6 +50,9 @@ const WhatWeAreTalkingAbout = ({
     if (!data.posts || data.posts.length === 0) {
       setHasMore(false);
       setLoading(false);
+      if (announcement) {
+        announcement.textContent = "No more posts available.";
+      }
       return;
     }
 
@@ -51,6 +60,11 @@ const WhatWeAreTalkingAbout = ({
     setCursor(data.nextCursor);
     setHasMore(Boolean(data.nextCursor));
     setLoading(false);
+    
+    // Announce loaded posts to screen readers
+    if (announcement) {
+      announcement.textContent = `Loaded ${data.posts.length} more post${data.posts.length === 1 ? '' : 's'}.`;
+    }
   };
 
   return (
@@ -64,22 +78,37 @@ const WhatWeAreTalkingAbout = ({
           What we&apos;re talking about
         </h2>
       </div>
+      
+      {/* Screen reader announcements for dynamic content */}
+      <div
+        id="posts-loading-announcement"
+        className="sr-only"
+        aria-live="polite"
+        aria-atomic="true"
+      />
 
       <div 
         className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6"
         role="feed"
         aria-label="LinkedIn posts feed"
         aria-live="polite"
+        aria-busy={loading}
       >
-        {posts.map((post) => (
-          <Link
-            href={`https://www.linkedin.com/embed/feed/update/${post.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`View LinkedIn post by Innovare HP (opens in new tab)`}
+        {posts.map((post, index) => (
+          <article
             key={post.id}
+            role="article"
+            aria-posinset={index + 1}
+            aria-setsize={posts.length}
+            className="break-inside-avoid"
           >
-            <div className="break-inside-avoid group bg-slate-50 rounded-2xl border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all">
+            <Link
+              href={`https://www.linkedin.com/embed/feed/update/${post.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`View LinkedIn post ${index + 1} by Innovare HP: ${cleanText(post.text).substring(0, 50)}... (opens in new tab)`}
+              className="block group bg-slate-50 rounded-2xl border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 underline-offset-2 hover:underline"
+            >
               {post.images?.[0]?.imageUrl && (
                 <div className="relative aspect-square w-full">
                   <Image
@@ -111,8 +140,8 @@ const WhatWeAreTalkingAbout = ({
                   </div>
                 </div>
               </div>
-            </div>
           </Link>
+          </article>
         ))}
       </div>
 

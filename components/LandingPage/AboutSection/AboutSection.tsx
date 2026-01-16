@@ -27,6 +27,7 @@ const AboutSection = () => {
     <section
       id="about"
       className="flex flex-col lg:flex-row min-h-[70vh] overflow-hidden"
+      aria-label="About section"
     >
       {/* Left side - Image */}
       <motion.div

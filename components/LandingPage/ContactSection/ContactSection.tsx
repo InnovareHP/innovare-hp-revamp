@@ -83,13 +83,14 @@ export default function ContactSection() {
       initial="hidden"
       whileInView="visible"
       className="p-8 bg-white rounded-lg border shadow-sm"
+      aria-label="Contact form"
     >
       <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-4">
         Stay in touch!
       </motion.h2>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" aria-label="Contact form">
           {/* NAME */}
           <motion.div variants={itemVariants}>
             <FormField
@@ -179,17 +180,19 @@ export default function ContactSection() {
 
           {/* TURNSTILE */}
           <motion.div variants={itemVariants}>
-            <Turnstile
-              sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
-              theme="light"
-              size="flexible"
-              onVerify={(token) => setTurnstileToken(token)}
-              onExpire={() => setTurnstileToken(null)}
-              onError={() => {
-                toast.error("Turnstile error");
-                setTurnstileToken(null);
-              }}
-            />
+            <div aria-label="Security verification">
+              <Turnstile
+                sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                theme="light"
+                size="flexible"
+                onVerify={(token) => setTurnstileToken(token)}
+                onExpire={() => setTurnstileToken(null)}
+                onError={() => {
+                  toast.error("Turnstile error");
+                  setTurnstileToken(null);
+                }}
+              />
+            </div>
           </motion.div>
 
           {/* SUBMIT */}

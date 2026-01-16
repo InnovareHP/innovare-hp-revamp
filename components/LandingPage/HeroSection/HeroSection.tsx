@@ -40,7 +40,10 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative w-full min-h-[100vh] flex items-end overflow-hidden bg-gray-900">
+    <section 
+      className="relative w-full min-h-[100vh] flex items-end overflow-hidden bg-gray-900"
+      aria-label="Hero section"
+    >
       <motion.div
         variants={bgVariants}
         initial="hidden"
@@ -49,8 +52,8 @@ const HeroSection = () => {
       >
         <Image
           src="/images/hero-section.jpg"
-          alt="Hero Section"
-          title="Hero Section"
+          alt="Healthcare marketing professionals collaborating on strategic growth initiatives"
+          title="Healthcare marketing professionals collaborating on strategic growth initiatives"
           fill
           priority
           // 1. SHIFT IMAGE POSITION:
@@ -74,13 +77,13 @@ const HeroSection = () => {
           // to keep the text block compact at the very bottom.
           className="max-w-4xl space-y-3 sm:space-y-4 mb-6 sm:mb-0"
         >
-          <motion.h2
+          <motion.h1
             variants={itemVariants}
             className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight font-bold"
           >
             Marketing that empowers healthcare brands to stand apart and stay
             ahead.
-          </motion.h2>
+          </motion.h1>
 
           <motion.p
             variants={itemVariants}

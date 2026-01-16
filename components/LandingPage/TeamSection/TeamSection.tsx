@@ -74,6 +74,7 @@ const TeamSection = () => {
     <section
       id="team"
       className="bg-[#E5E1DA] py-8 sm:py-12 md:py-16 px-8 lg:px-12 xl:px-16 text-[#414141] overflow-hidden"
+      aria-label="Team section"
     >
       <div className="max-w-6xl mx-auto">
         {/* Header Content */}

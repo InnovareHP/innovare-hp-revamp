@@ -76,6 +76,7 @@ const WhatWeDo = () => {
     <section
       id="what-we-do"
       className="max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 py-16"
+      aria-label="What we do section"
     >
       <div>
         {/* Header Animation */}
@@ -125,6 +126,7 @@ const WhatWeDo = () => {
           )
         }
         className="border-blue-600 my-10 w-full text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-none px-8 py-6 text-sm font-semibold uppercase tracking-widest cursor-pointer"
+        aria-label="Download Innovare HP brochure PDF"
       >
         Download Brochure
       </Button>

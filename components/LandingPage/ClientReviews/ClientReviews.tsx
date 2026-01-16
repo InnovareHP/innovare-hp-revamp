@@ -53,7 +53,7 @@ const ClientReviews = () => {
   };
 
   return (
-    <section id="reviews" className="bg-gray-200 w-full overflow-hidden">
+    <section id="reviews" className="bg-gray-200 w-full overflow-hidden" aria-label="Client reviews section">
       <motion.div
         variants={containerVariants}
         initial="hidden"

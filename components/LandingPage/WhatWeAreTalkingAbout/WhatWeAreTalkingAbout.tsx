@@ -1,25 +1,27 @@
 "use client";
+
 import { LinkedInPost } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 const WhatWeAreTalkingAbout = ({
   initialPosts,
 }: {
-  initialPosts: LinkedInPost[];
+  initialPosts: Promise<LinkedInPost[]>;
 }) => {
-  const [posts, setPosts] = useState<LinkedInPost[]>(initialPosts);
+  const data = use(initialPosts);
+  const [posts, setPosts] = useState<LinkedInPost[]>(data);
   const [cursor, setCursor] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
   // ✅ set initial cursor from last post
   useEffect(() => {
-    if (initialPosts.length > 0) {
-      setCursor(initialPosts[initialPosts.length - 1].id);
+    if (data.length > 0) {
+      setCursor(data[data.length - 1].id);
     }
-  }, [initialPosts]);
+  }, [data]);
 
   const cleanText = (text: string | null) => {
     if (!text) return "";
@@ -79,7 +81,8 @@ const WhatWeAreTalkingAbout = ({
                   <Image
                     src={post.images[0].imageUrl}
                     alt="Post content"
-                    fill
+                    width={1000}
+                    height={1000}
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                 </div>

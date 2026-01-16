@@ -126,7 +126,7 @@ const ContactInfoCard = () => {
                   title={title}
                 >
                   <Icon className="w-6 h-6" aria-hidden="true" />
-                </a>
+                </Link>
               ))}
             </div>
           </div>

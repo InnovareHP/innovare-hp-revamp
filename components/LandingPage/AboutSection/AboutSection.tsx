@@ -40,7 +40,8 @@ const AboutSection = () => {
           src="/images/about/about-img.png"
           alt="Innovare HP Team"
           title="Innovare HP Team"
-          fill
+          width={1000}
+          height={1000}
           className="object-cover"
           priority
           quality={100}

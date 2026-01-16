@@ -11,7 +11,7 @@ import TeamSection from "./TeamSection/TeamSection";
 import WhatWeAreTalkingAbout from "./WhatWeAreTalkingAbout/WhatWeAreTalkingAbout";
 import WhatWeDo from "./WhatWeDo/WhatWeDo";
 
-const LandingPage = ({ posts }: { posts: LinkedInPost[] }) => {
+const LandingPage = async ({ posts }: { posts: Promise<LinkedInPost[]> }) => {
   return (
     //sequence not yet finalized
     <main id="main-content" className="relative" tabIndex={-1}>

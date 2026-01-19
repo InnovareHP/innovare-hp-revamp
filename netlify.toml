@@ -1,0 +1,3 @@
+[[functions]]
+  name = "cron"
+  schedule = "0 0 * * *" # Runs daily at midnight UTC

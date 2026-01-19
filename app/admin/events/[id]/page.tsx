@@ -1,6 +1,7 @@
 import { getEventById } from "@/app/events/action/eventaction";
 import AdminEventCard from "@/components/AdminSpecificEventPage/AdminEventCard";
 import { Button } from "@/components/ui/button";
+import { requireAdmin } from "@/lib/auth-utils";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -11,6 +12,8 @@ interface EventPageProps {
 }
 
 const page = async ({ params }: EventPageProps) => {
+  await requireAdmin();
+
   const { id } = await params;
 
   const response = getEventById(id);

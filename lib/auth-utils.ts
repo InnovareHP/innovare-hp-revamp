@@ -1,4 +1,5 @@
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { auth } from "./auth";
 
 /**
@@ -21,7 +22,7 @@ export async function requireAuth() {
   const session = await getSession();
 
   if (!session?.user) {
-    throw new Error("Unauthorized: Authentication required");
+    redirect("/");
   }
 
   return session.user;

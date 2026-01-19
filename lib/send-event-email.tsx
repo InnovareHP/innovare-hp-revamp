@@ -48,7 +48,7 @@ export async function sendEventConfirmationEmail({
           ? formatDate(event.eventEndDate)
           : undefined,
         location: event.location,
-        qrCode: event.qrCode || undefined,
+        eventId: event.id,
       }),
     });
 
@@ -95,6 +95,7 @@ export async function sendEventRegistrationNotificationEmail({
         eventStartDate: formatDate(event.eventStartDate),
         totalAttendees: event.attendees.length,
         maxGuests: event.maxGuests,
+        eventId: event.id,
       }),
     });
 

@@ -4,7 +4,9 @@ import { Prisma } from "@/generated/prisma/client";
 import { requireAuth } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
 import { sendEventRegistrationEmails } from "@/lib/send-event-email";
+import { validateWithRetry } from "@/lib/turnstile";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 
 type ActionResponse<T = void> = {
   success: boolean;
@@ -221,9 +223,20 @@ export async function updateEvent(
 
 export async function joinEvent(
   eventId: string,
-  attendeeData: { name: string; email: string; phone: string }
+  attendeeData: { name: string; email: string; phone: string },
+  turnstileToken: string
 ): Promise<ActionResponse> {
   try {
+    const headersList = await headers();
+    const ip =
+      headersList.get("cf-connecting-ip") ??
+      headersList.get("x-forwarded-for")?.split(",")[0] ??
+      undefined;
+    const verification = await validateWithRetry(turnstileToken, ip);
+    if (!verification?.success) {
+      console.error("Turnstile failed:", verification);
+      return { success: false };
+    }
     if (!eventId) {
       return { success: false, error: "Event ID is required" };
     }

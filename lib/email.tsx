@@ -1,3 +1,5 @@
+import { QRCodeSVG } from "qrcode.react";
+
 interface GetInTouchProps {
   FullName: string;
   PhoneNumber: string;
@@ -93,7 +95,7 @@ interface EventRegistrationConfirmationProps {
   eventStartDate: string;
   eventEndDate?: string;
   location: string;
-  qrCode?: string;
+  eventId: string;
 }
 
 export function EventRegistrationConfirmation({
@@ -103,7 +105,7 @@ export function EventRegistrationConfirmation({
   eventStartDate,
   eventEndDate,
   location,
-  qrCode,
+  eventId,
 }: EventRegistrationConfirmationProps) {
   return (
     <div
@@ -206,35 +208,36 @@ export function EventRegistrationConfirmation({
           {location}
         </p>
 
-        {qrCode && (
-          <div style={{ marginTop: "20px", textAlign: "center" }}>
-            <p style={{ marginBottom: "12px" }}>
-              <strong style={{ color: "#555" }}>🎫 Your QR Code:</strong>
-            </p>
-            <div
+        <div style={{ marginTop: "20px", textAlign: "center" }}>
+          <p style={{ marginBottom: "12px" }}>
+            <strong style={{ color: "#555" }}>🎫 Your QR Code:</strong>
+          </p>
+          <div
+            style={{
+              backgroundColor: "#f9f9f9",
+              padding: "16px",
+              borderRadius: "8px",
+              display: "inline-block",
+            }}
+          >
+            <QRCodeSVG
+              value={`${process.env.NEXT_PUBLIC_APP_URL}/event/${eventId}`}
+              size={160}
+              level="H"
+              includeMargin={true}
+            />
+            <p
               style={{
-                backgroundColor: "#f9f9f9",
-                padding: "16px",
-                borderRadius: "8px",
-                display: "inline-block",
+                fontSize: "12px",
+                color: "#999",
+                marginTop: "8px",
+                marginBottom: "0",
               }}
             >
-              <p style={{ fontSize: "14px", color: "#666" }}>
-                QR Code: {qrCode}
-              </p>
-              <p
-                style={{
-                  fontSize: "12px",
-                  color: "#999",
-                  marginTop: "8px",
-                  marginBottom: "0",
-                }}
-              >
-                Please present this at the event entrance
-              </p>
-            </div>
+              Please present this at the event entrance
+            </p>
           </div>
-        )}
+        </div>
       </div>
 
       {/* What to Bring / Reminders */}
@@ -318,6 +321,7 @@ interface EventRegistrationNotificationProps {
   eventStartDate: string;
   totalAttendees: number;
   maxGuests: number;
+  eventId: string;
 }
 
 export function EventRegistrationNotification({
@@ -328,6 +332,7 @@ export function EventRegistrationNotification({
   eventStartDate,
   totalAttendees,
   maxGuests,
+  eventId,
 }: EventRegistrationNotificationProps) {
   const capacityPercentage =
     maxGuests > 0 ? Math.round((totalAttendees / maxGuests) * 100) : 0;
@@ -485,7 +490,7 @@ export function EventRegistrationNotification({
       {/* Admin Actions */}
       <div style={{ textAlign: "center", marginTop: "24px" }}>
         <a
-          href="#"
+          href={process.env.NEXT_PUBLIC_APP_URL + `/admin/events/${eventId}`}
           style={{
             display: "inline-block",
             backgroundColor: "skyblue",
@@ -501,7 +506,7 @@ export function EventRegistrationNotification({
           View All Attendees
         </a>
         <a
-          href="#"
+          href={process.env.NEXT_PUBLIC_APP_URL + `/admin/events/${eventId}`}
           style={{
             display: "inline-block",
             backgroundColor: "#6b7280",

@@ -25,6 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle, UserPlus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import Turnstile, { useTurnstile } from "react-turnstile";
 import { toast } from "sonner";
 import * as z from "zod";
 
@@ -64,6 +65,9 @@ const EventRegistrationModal = ({
   isPastDeadline,
   onSuccess,
 }: EventRegistrationModalProps) => {
+  const turnstile = useTurnstile();
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isAlreadyRegistered, setIsAlreadyRegistered] = useState(false);
@@ -82,10 +86,15 @@ const EventRegistrationModal = ({
   });
 
   const onSubmit = async (data: RegistrationFormValues) => {
+    if (!turnstileToken) {
+      toast.error("Please verify you are human.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      const response = await joinEvent(eventId, data);
+      const response = await joinEvent(eventId, data, turnstileToken);
 
       if (response.success) {
         // Store registration in localStorage
@@ -246,6 +255,18 @@ const EventRegistrationModal = ({
                       <FormMessage />
                     </FormItem>
                   )}
+                />
+
+                <Turnstile
+                  sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                  theme="light"
+                  size="flexible"
+                  onVerify={(token) => setTurnstileToken(token)}
+                  onExpire={() => setTurnstileToken(null)}
+                  onError={() => {
+                    toast.error("Turnstile error");
+                    setTurnstileToken(null);
+                  }}
                 />
 
                 <DialogFooter className="gap-2 sm:gap-0">

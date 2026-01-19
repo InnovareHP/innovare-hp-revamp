@@ -1,6 +1,7 @@
 "use server";
 
 import { Prisma } from "@/generated/prisma";
+import { requireAdmin } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
 import { sendAdminCustomEmail } from "@/lib/send-event-email";
 import { formatDate } from "@/lib/utils";
@@ -28,6 +29,7 @@ export async function getEventsAuthenticated(
   }>
 > {
   try {
+    await requireAdmin();
     const offset = (page - 1) * limit;
 
     const [events, total] = await prisma.$transaction([
@@ -73,6 +75,7 @@ export async function getEventsAuthenticated(
 
 export const createEvent = async (event: Prisma.EventCreateInput) => {
   try {
+    await requireAdmin();
     const newEvent = await prisma.event.create({
       data: event,
     });
@@ -87,6 +90,7 @@ export const createEvent = async (event: Prisma.EventCreateInput) => {
 
 export const deleteEvent = async (ids: string[]) => {
   try {
+    await requireAdmin();
     await prisma.$transaction([
       prisma.eventAttendee.deleteMany({
         where: { eventId: { in: ids } },
@@ -121,6 +125,7 @@ export async function sendEventEmail({
   ActionResponse<{ successful: number; failed: number }>
 > {
   try {
+    await requireAdmin();
     // Fetch event and attendees
     const event = await prisma.event.findUnique({
       where: { id: eventId },

@@ -1,5 +1,6 @@
 import AddEventButton from "@/components/AdminEventsPage/AddEventButton";
 import AdminEventPage from "@/components/AdminEventsPage/AdminEventsPage";
+import { requireAdmin } from "@/lib/auth-utils";
 import { getEventsAuthenticated } from "./action";
 
 type Props = {
@@ -7,6 +8,8 @@ type Props = {
 };
 
 const page = async ({ searchParams }: Props) => {
+  await requireAdmin();
+
   const { page, limit } = (await searchParams) ?? { page: "1", limit: "10" };
   const events = getEventsAuthenticated(Number(limit ?? 10), Number(page ?? 1));
 

@@ -1,3 +1,2 @@
-[[functions]]
-  name = "linkedin-cron"
-  schedule = "0 0 * * *" # Runs daily at midnight UTC
+[functions]
+  directory = "netlify/functions"

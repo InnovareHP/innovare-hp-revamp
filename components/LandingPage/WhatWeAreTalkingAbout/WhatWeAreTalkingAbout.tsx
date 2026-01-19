@@ -39,6 +39,12 @@ const WhatWeAreTalkingAbout = ({
     if (!cursor || loading) return;
 
     setLoading(true);
+    
+    // Announce loading state to screen readers
+    const announcement = document.getElementById("posts-loading-announcement");
+    if (announcement) {
+      announcement.textContent = "Loading more posts...";
+    }
 
     const res = await fetch(`/api/posts?cursor=${cursor}`);
     const data = await res.json();
@@ -46,13 +52,34 @@ const WhatWeAreTalkingAbout = ({
     if (!data.posts || data.posts.length === 0) {
       setHasMore(false);
       setLoading(false);
+      if (announcement) {
+        announcement.textContent = "No more posts available.";
+      }
       return;
     }
 
+    const previousPostCount = posts.length;
     setPosts((prev) => [...prev, ...data.posts]);
     setCursor(data.nextCursor);
     setHasMore(Boolean(data.nextCursor));
     setLoading(false);
+    
+    // Announce loaded posts to screen readers
+    if (announcement) {
+      announcement.textContent = `Loaded ${data.posts.length} more post${data.posts.length === 1 ? '' : 's'}.`;
+    }
+    
+    // Focus management: Move focus to first new post for keyboard users
+    setTimeout(() => {
+      const allPosts = document.querySelectorAll('[role="article"]');
+      if (allPosts.length > previousPostCount) {
+        const firstNewPost = allPosts[previousPostCount] as HTMLElement;
+        const firstLink = firstNewPost?.querySelector('a[href]') as HTMLElement;
+        if (firstLink) {
+          firstLink.focus();
+        }
+      }
+    }, 100);
   };
 
   return (
@@ -66,22 +93,36 @@ const WhatWeAreTalkingAbout = ({
           What we&apos;re talking about
         </h2>
       </div>
+      
+      {/* Screen reader announcements for dynamic content */}
+      <div
+        id="posts-loading-announcement"
+        className="sr-only"
+        aria-live="polite"
+        aria-atomic="true"
+      />
 
       <div
         className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6"
         role="feed"
         aria-label="LinkedIn posts feed"
         aria-live="polite"
+        aria-busy={loading}
       >
-        {posts.map((post) => (
-          <Link
-            href={`https://www.linkedin.com/embed/feed/update/${post.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`View LinkedIn post by Innovare HP (opens in new tab)`}
+        {posts.map((post, index) => (
+          <article
             key={post.id}
+            aria-posinset={index + 1}
+            aria-setsize={posts.length}
+            className="break-inside-avoid"
           >
-            <div className="break-inside-avoid group bg-slate-50 rounded-2xl border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all">
+            <Link
+              href={`https://www.linkedin.com/embed/feed/update/${post.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`View LinkedIn post ${index + 1} by Innovare HP: ${cleanText(post.text).substring(0, 50)}... (opens in new tab)`}
+              className="block group bg-slate-50 rounded-2xl border-2 border-slate-200 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
               {post.images?.[0]?.imageUrl && (
                 <div className="relative aspect-square w-full">
                   <Image
@@ -102,21 +143,21 @@ const WhatWeAreTalkingAbout = ({
 
                 <div className="mt-8 flex justify-between items-center">
                   <div>
-                    <span className="text-[10px] uppercase tracking-widest font-bold text-blue-600">
+                    <span className="text-[10px] uppercase tracking-widest font-bold text-blue-700">
                       {new Date(post.publishedAt).toLocaleDateString("en-US", {
                         month: "long",
                         year: "numeric",
                       })}
                     </span>
-                    <div className="text-xs text-slate-600">{post.timeAgo}</div>
+                    <div className="text-xs text-slate-700">{post.timeAgo}</div>
                   </div>
                   <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center shadow">
                     <div className="h-2 w-2 rounded-full bg-blue-600 animate-pulse" />
                   </div>
                 </div>
               </div>
-            </div>
           </Link>
+          </article>
         ))}
       </div>
 

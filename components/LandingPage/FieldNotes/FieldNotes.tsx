@@ -116,9 +116,11 @@ const FieldNotes = () => {
   ];
 
   return (
-    <section id="field-notes" className="pt-20">
+    <>
       <Navigation isFieldNotes={true} />
-      <div className="max-w-4xl mx-auto px-6 py-12 bg-white font-sans text-gray-800">
+      <main id="main-content" className="relative" tabIndex={-1}>
+        <section id="field-notes" className="pt-20">
+          <div className="max-w-4xl mx-auto px-6 py-12 bg-white font-sans text-gray-800">
         {/* --- HEADER SECTION --- */}
 
         <header className="mb-12 border-b pb-8">
@@ -185,7 +187,7 @@ const FieldNotes = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`${link.label} (opens in new tab)`}
-                        className="text-blue-600 hover:text-blue-800 hover:underline text-sm font-medium"
+                        className="text-blue-700 hover:text-blue-800 underline text-sm font-medium"
                       >
                         {link.label}
                       </Link>
@@ -253,8 +255,10 @@ const FieldNotes = () => {
             </p>
           </div>
         </footer>
-      </div>
-    </section>
+        </div>
+      </section>
+      </main>
+    </>
   );
 };
 

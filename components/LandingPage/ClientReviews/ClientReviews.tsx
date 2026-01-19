@@ -107,10 +107,13 @@ const ClientReviews = () => {
                 />
               </div>
               <div className="space-y-4">
-                <blockquote className="text-gray-700 leading-relaxed text-base lg:text-xl font-sans italic">
+                <blockquote 
+                  className="text-gray-700 leading-relaxed text-base lg:text-xl font-sans italic"
+                  cite={`${reviews[0].company}`}
+                >
                   &ldquo;{reviews[0].quote}&rdquo;
                 </blockquote>
-                <div className="space-y-0.5">
+                <footer className="space-y-0.5">
                   <p className="font-bold text-gray-700 text-base lg:text-xl">
                     {reviews[0].name}
                   </p>
@@ -120,7 +123,7 @@ const ClientReviews = () => {
                   <p className="text-gray-700 text-base italic lg:text-xl">
                     {reviews[0].company}
                   </p>
-                </div>
+                </footer>
               </div>
             </motion.div>
           </div>
@@ -152,10 +155,13 @@ const ClientReviews = () => {
               </div>
               {/* Right Sub-column - Text Content */}
               <div className="space-y-4">
-                <blockquote className="text-gray-700 leading-relaxed sm:leading-normal text-base lg:text-xl font-sans font-normal mb-4">
+                <blockquote 
+                  className="text-gray-700 leading-relaxed sm:leading-normal text-base lg:text-xl font-sans font-normal mb-4"
+                  cite={`${reviews[1].company}`}
+                >
                   &ldquo;{reviews[1].quote}&rdquo;
                 </blockquote>
-                <div className="space-y-0.5">
+                <footer className="space-y-0.5">
                   <p className="font-bold text-gray-700 text-base lg:text-xl">
                     {reviews[1].name}
                   </p>
@@ -165,7 +171,7 @@ const ClientReviews = () => {
                   <p className="text-gray-700 text-base italic lg:text-xl">
                     {reviews[1].company}
                   </p>
-                </div>
+                </footer>
               </div>
             </div>
 
@@ -194,10 +200,13 @@ const ClientReviews = () => {
               </div>
               {/* Right Sub-column - Text Content */}
               <div className="space-y-4">
-                <blockquote className="text-gray-700 leading-relaxed sm:leading-normal text-base lg:text-xl font-sans font-normal mb-4">
+                <blockquote 
+                  className="text-gray-700 leading-relaxed sm:leading-normal text-base lg:text-xl font-sans font-normal mb-4"
+                  cite={`${reviews[2].company}`}
+                >
                   &ldquo;{reviews[2].quote}&rdquo;
                 </blockquote>
-                <div className="space-y-0.5">
+                <footer className="space-y-0.5">
                   <p className="font-bold text-gray-700 text-base lg:text-xl">
                     {reviews[2].name}
                   </p>
@@ -207,7 +216,7 @@ const ClientReviews = () => {
                   <p className="text-gray-700 text-base italic lg:text-xl">
                     {reviews[2].company}
                   </p>
-                </div>
+                </footer>
               </div>
             </div>
           </div>

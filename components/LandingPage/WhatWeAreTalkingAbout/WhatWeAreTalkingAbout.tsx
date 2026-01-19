@@ -1,7 +1,6 @@
 "use client";
 
 import { LinkedInPost } from "@/lib/types";
-import Image from "next/image";
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
 
@@ -125,7 +124,7 @@ const WhatWeAreTalkingAbout = ({
             >
               {post.images?.[0]?.imageUrl && (
                 <div className="relative aspect-square w-full">
-                  <Image
+                  <img
                     src={post.images[0].imageUrl}
                     alt="Post content"
                     title="Post content"

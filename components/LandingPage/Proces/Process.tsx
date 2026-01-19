@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 const Process = () => {
   return (
@@ -20,14 +19,12 @@ const Process = () => {
           ease: [0.22, 1, 0.36, 1], // Custom cubic-bezier for a smooth "boutique" feel
         }}
       >
-        <Image
+        <img
           src="/images/services/Services.png"
           alt="Innovare HP service offerings and process workflow diagram"
           width={1920}
           height={1080}
-          sizes="100vw"
           className="w-full h-auto object-cover"
-          priority
           title="Innovare HP service offerings and process workflow diagram"
         />
       </motion.div>

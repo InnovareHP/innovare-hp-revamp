@@ -9,7 +9,6 @@ import {
   MapPin,
   Phone,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 const contactDetails = [
@@ -87,22 +86,23 @@ const ContactInfoCard = () => {
   return (
     <div className="bg-white rounded-lg overflow-hidden lg:shadow-lg border">
       <div className="relative h-64 w-full">
-        <Image
+        <img
           src="/images/contact-form.jpg"
           alt="Innovare HP team members collaborating on healthcare marketing projects"
-          fill
           title="Innovare HP team members collaborating on healthcare marketing projects"
           className="object-cover rounded-t-lg"
+          width={1000}
+          height={1000}
         />
       </div>
 
       <div className="p-6 flex items-start gap-6">
-        <Image
+        <img
           src="/images/logo.png"
           alt="Innovare HP logo"
+          title="Innovare HP logo"
           width={100}
           height={100}
-          title="Innovare HP logo"
         />
 
         <div className="space-y-6">

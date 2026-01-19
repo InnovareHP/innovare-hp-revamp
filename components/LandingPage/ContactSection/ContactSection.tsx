@@ -191,12 +191,14 @@ export default function ContactSection() {
             name="companyWebsite"
             render={({ field }) => (
               <FormItem className="hidden">
+                <FormLabel className="sr-only">Company Website (leave blank)</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
                     tabIndex={-1}
                     autoComplete="off"
                     className="hidden"
+                    aria-label="Company Website (leave blank)"
                     {...field}
                   />
                 </FormControl>
@@ -207,7 +209,10 @@ export default function ContactSection() {
 
           {/* TURNSTILE */}
           <motion.div variants={itemVariants}>
-            <div aria-label="Security verification">
+            <div role="group" aria-labelledby="security-verification-label">
+              <label id="security-verification-label" className="sr-only">
+                Security verification
+              </label>
               <Turnstile
                 sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
                 theme="light"

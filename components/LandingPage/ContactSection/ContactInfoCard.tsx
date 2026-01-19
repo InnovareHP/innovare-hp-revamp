@@ -130,13 +130,13 @@ const ContactInfoCard = () => {
                     {href ? (
                       <Link
                         href={href}
-                        className="text-sm text-gray-500 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+                        className="text-sm text-gray-700 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
                         aria-label={`${label}: ${value}${type === "phone" ? ". Call us" : type === "email" ? ". Email us" : ". View on map"}`}
                       >
                         {displayValue || value}
                       </Link>
                     ) : (
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-gray-700">
                         {displayValue || value}
                       </p>
                     )}

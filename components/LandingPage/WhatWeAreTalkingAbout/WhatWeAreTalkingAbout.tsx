@@ -143,13 +143,13 @@ const WhatWeAreTalkingAbout = ({
 
                 <div className="mt-8 flex justify-between items-center">
                   <div>
-                    <span className="text-[10px] uppercase tracking-widest font-bold text-blue-600">
+                    <span className="text-[10px] uppercase tracking-widest font-bold text-blue-700">
                       {new Date(post.publishedAt).toLocaleDateString("en-US", {
                         month: "long",
                         year: "numeric",
                       })}
                     </span>
-                    <div className="text-xs text-slate-600">{post.timeAgo}</div>
+                    <div className="text-xs text-slate-700">{post.timeAgo}</div>
                   </div>
                   <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center shadow">
                     <div className="h-2 w-2 rounded-full bg-blue-600 animate-pulse" />

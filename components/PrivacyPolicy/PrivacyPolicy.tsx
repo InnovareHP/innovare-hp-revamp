@@ -58,6 +58,7 @@ const PrivacyPolicy = () => {
 
       <Navigation isFieldNotes={true} />
 
+      <main id="main-content" className="relative" tabIndex={-1}>
       {/* --- HERO SECTION --- */}
       <header className="py-20 border-b border-slate-100">
         <motion.div
@@ -435,6 +436,7 @@ const PrivacyPolicy = () => {
           Return Home
         </Link>
       </footer>
+      </main>
     </div>
   );
 };

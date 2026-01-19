@@ -58,6 +58,7 @@ const WhatWeAreTalkingAbout = ({
       return;
     }
 
+    const previousPostCount = posts.length;
     setPosts((prev) => [...prev, ...data.posts]);
     setCursor(data.nextCursor);
     setHasMore(Boolean(data.nextCursor));
@@ -67,6 +68,18 @@ const WhatWeAreTalkingAbout = ({
     if (announcement) {
       announcement.textContent = `Loaded ${data.posts.length} more post${data.posts.length === 1 ? '' : 's'}.`;
     }
+    
+    // Focus management: Move focus to first new post for keyboard users
+    setTimeout(() => {
+      const allPosts = document.querySelectorAll('[role="article"]');
+      if (allPosts.length > previousPostCount) {
+        const firstNewPost = allPosts[previousPostCount] as HTMLElement;
+        const firstLink = firstNewPost?.querySelector('a[href]') as HTMLElement;
+        if (firstLink) {
+          firstLink.focus();
+        }
+      }
+    }, 100);
   };
 
   return (
@@ -99,7 +112,6 @@ const WhatWeAreTalkingAbout = ({
         {posts.map((post, index) => (
           <article
             key={post.id}
-            role="article"
             aria-posinset={index + 1}
             aria-setsize={posts.length}
             className="break-inside-avoid"
@@ -109,7 +121,7 @@ const WhatWeAreTalkingAbout = ({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`View LinkedIn post ${index + 1} by Innovare HP: ${cleanText(post.text).substring(0, 50)}... (opens in new tab)`}
-              className="block group bg-slate-50 rounded-2xl border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 underline-offset-2 hover:underline"
+              className="block group bg-slate-50 rounded-2xl border-2 border-slate-200 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               {post.images?.[0]?.imageUrl && (
                 <div className="relative aspect-square w-full">

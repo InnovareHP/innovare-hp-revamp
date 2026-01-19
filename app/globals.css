@@ -162,13 +162,14 @@
 
 /* Ensure links are distinguishable without color - WCAG 2.1 Level A */
 a:not([class*="rounded-full"]):not([class*="button"]):not([class*="Button"]) {
-  text-decoration: underline;
+  text-decoration: underline !important;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
 }
 
 a:not([class*="rounded-full"]):not([class*="button"]):not([class*="Button"]):hover,
 a:not([class*="rounded-full"]):not([class*="button"]):not([class*="Button"]):focus {
+  text-decoration: underline !important;
   text-decoration-thickness: 2px;
 }
 

@@ -131,7 +131,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
       >
         <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">
           {/* Logo Section */}
-          <nav className="flex items-center gap-2" aria-label="Main navigation" role="navigation">
+          <nav className="flex items-center gap-2" aria-label="Main navigation">
             <Link href="/" title="Innovare HP" aria-label="Innovare HP home page">
               <Image
                 src="/images/logo.png"
@@ -222,7 +222,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
               aria-label="Navigation menu"
               id="navigation-menu"
             >
-              <nav className="flex flex-col gap-6 text-center" role="navigation" aria-label="Site navigation">
+              <nav className="flex flex-col gap-6 text-center" aria-label="Site navigation">
                 {navLinks.map((link, i) => (
                   <motion.div
                     key={link.name}
@@ -235,7 +235,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
                     <Link
                       href={getHref(link.href)}
                       onClick={() => setIsOpen(false)}
-                      className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black rounded underline focus:no-underline"
+                      className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black rounded underline"
                     >
                       {link.name}
                     </Link>

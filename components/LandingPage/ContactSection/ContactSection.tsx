@@ -116,7 +116,6 @@ export default function ContactSection() {
         <form 
           onSubmit={form.handleSubmit(onSubmit)} 
           className="space-y-6" 
-          aria-label="Contact form"
           noValidate
         >
           {/* NAME */}

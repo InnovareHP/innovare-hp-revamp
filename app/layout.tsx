@@ -84,6 +84,43 @@ export const metadata: Metadata = {
   category: "Healthcare Marketing",
 };
 
+function ADABanner() {
+  return (
+    <div className="bg-[#1a365d] text-white pt-3 pb-4 sm:py-3 md:py-2.5 px-3 sm:px-4 md:px-6 min-h-[52px] sm:min-h-[44px] md:min-h-[40px] flex items-center">
+      <div className="max-w-screen-xl mx-auto w-full flex items-center justify-center gap-2 text-[11px] sm:text-xs md:text-sm leading-snug sm:leading-normal text-center flex-wrap">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+          className="shrink-0 sm:w-4 sm:h-4"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 16v-4" />
+          <path d="M12 8h.01" />
+        </svg>
+        <span className="flex-1">
+          We are committed to ADA compliance and aim to make our website
+          accessible to all users. Email us at{" "}
+          <a
+            href="mailto:hello@innovarehp.com"
+            className="underline hover:text-gray-200 whitespace-nowrap"
+          >
+            hello@innovarehp.com
+          </a>{" "}
+          if you encounter any issues.
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -92,6 +129,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${workSans.variable} ${signika.variable} antialiased`}>
+        <ADABanner />
         <Provider>{children}</Provider>
         <Toaster />
       </body>

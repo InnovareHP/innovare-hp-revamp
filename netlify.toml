@@ -2,3 +2,6 @@
   directory = "netlify/functions"
 [build]
 command = "pnpm install --no-frozen-lockfile && pnpm build"
+
+[build.environment]
+NETLIFY_USE_PNPM_INSTALL = "false"

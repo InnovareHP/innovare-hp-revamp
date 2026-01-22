@@ -86,7 +86,7 @@ export const metadata: Metadata = {
 
 function ADABanner() {
   return (
-    <div className="bg-[#1a365d] text-white pt-3 pb-4 sm:py-3 md:py-2.5 px-3 sm:px-4 md:px-6 min-h-[52px] sm:min-h-[44px] md:min-h-[40px] flex items-center">
+    <div className="bg-blue-900 text-white pt-3 pb-4 sm:py-3 md:py-2.5 px-3 sm:px-4 md:px-6 min-h-[52px] sm:min-h-[44px] md:min-h-[40px] flex items-center">
       <div className="max-w-screen-xl mx-auto w-full flex items-center justify-center gap-2 text-[11px] sm:text-xs md:text-sm leading-snug sm:leading-normal text-center flex-wrap">
         <svg
           xmlns="http://www.w3.org/2000/svg"

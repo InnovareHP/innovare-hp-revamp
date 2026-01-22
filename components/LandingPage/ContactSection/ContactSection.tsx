@@ -54,9 +54,18 @@ export default function ContactSection() {
   });
 
   const onSubmit = async (values: ContactFormValues) => {
+    const announcement = document.getElementById("form-announcement");
+    
     if (!turnstileToken) {
       toast.error("Please verify you are human.");
+      if (announcement) {
+        announcement.textContent = "Error: Please verify you are human by completing the security verification.";
+      }
       return;
+    }
+
+    if (announcement) {
+      announcement.textContent = "Submitting form...";
     }
 
     const res = await createGetInTouch({
@@ -68,6 +77,9 @@ export default function ContactSection() {
       toast.error("Verification failed. Please try again.");
       turnstile.reset(); // 🔥 important
       setTurnstileToken(null);
+      if (announcement) {
+        announcement.textContent = "Error: Verification failed. Please try again.";
+      }
       return;
     }
 
@@ -75,6 +87,9 @@ export default function ContactSection() {
     form.reset(defaultValues);
     turnstile.reset();
     setTurnstileToken(null);
+    if (announcement) {
+      announcement.textContent = "Success: Your message has been sent successfully!";
+    }
   };
 
   return (
@@ -83,13 +98,26 @@ export default function ContactSection() {
       initial="hidden"
       whileInView="visible"
       className="p-8 bg-white rounded-lg border shadow-sm"
+      aria-label="Contact form"
     >
       <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-4">
         Stay in touch!
       </motion.h2>
 
+      {/* Screen reader announcements for form status */}
+      <div
+        id="form-announcement"
+        className="sr-only"
+        aria-live="polite"
+        aria-atomic="true"
+      />
+
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form 
+          onSubmit={form.handleSubmit(onSubmit)} 
+          className="space-y-6" 
+          noValidate
+        >
           {/* NAME */}
           <motion.div variants={itemVariants}>
             <FormField
@@ -163,12 +191,14 @@ export default function ContactSection() {
             name="companyWebsite"
             render={({ field }) => (
               <FormItem className="hidden">
+                <FormLabel className="sr-only">Company Website (leave blank)</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
                     tabIndex={-1}
                     autoComplete="off"
                     className="hidden"
+                    aria-label="Company Website (leave blank)"
                     {...field}
                   />
                 </FormControl>
@@ -179,17 +209,22 @@ export default function ContactSection() {
 
           {/* TURNSTILE */}
           <motion.div variants={itemVariants}>
-            <Turnstile
-              sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
-              theme="light"
-              size="flexible"
-              onVerify={(token) => setTurnstileToken(token)}
-              onExpire={() => setTurnstileToken(null)}
-              onError={() => {
-                toast.error("Turnstile error");
-                setTurnstileToken(null);
-              }}
-            />
+            <div role="group" aria-labelledby="security-verification-label">
+              <label id="security-verification-label" className="sr-only">
+                Security verification
+              </label>
+              <Turnstile
+                sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                theme="light"
+                size="flexible"
+                onVerify={(token) => setTurnstileToken(token)}
+                onExpire={() => setTurnstileToken(null)}
+                onError={() => {
+                  toast.error("Turnstile error");
+                  setTurnstileToken(null);
+                }}
+              />
+            </div>
           </motion.div>
 
           {/* SUBMIT */}

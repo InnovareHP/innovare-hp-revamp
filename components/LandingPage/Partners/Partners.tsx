@@ -38,9 +38,10 @@ const Partners = () => {
     <section
       id="partners"
       className="bg-muted/30 py-16 md:py-24 overflow-hidden"
+      aria-label="Partners section"
     >
       <div className="max-w-xs  sm:max-w-7xl sm:mx-auto px-10 sm:px-6 mb-16">
-        <motion.p
+        <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
@@ -48,7 +49,7 @@ const Partners = () => {
           className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-start sm:text-left"
         >
           Brands We Have Worked With
-        </motion.p>
+        </motion.h2>
       </div>
 
       <div className="relative flex flex-col gap-8 md:gap-12 [mask-image:linear-gradient(to_right,transparent,white_10%,white_90%,transparent)]">

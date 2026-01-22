@@ -1,5 +1,6 @@
 "use client"; // This must be a Client Component to use useState/useEffect
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ContactFormSubmission } from "../../generated/prisma/client";
 
@@ -58,7 +59,7 @@ const ContactPage = ({ initialSubmissions }: ContactPageProps) => {
           Contact Submissions
         </h1>
         <div className="flex gap-2 items-center">
-          <span className="text-sm text-gray-500 mr-2">Page {page}</span>
+          <span className="text-sm text-gray-700 mr-2">Page {page}</span>
           <button
             disabled={page <= 1 || loading}
             onClick={() => setPage((p) => p - 1)}
@@ -77,18 +78,18 @@ const ContactPage = ({ initialSubmissions }: ContactPageProps) => {
       </div>
 
       {loading && (
-        <div className="text-center py-4 text-blue-600">Loading entries...</div>
+        <div className="text-center py-4 text-blue-700">Loading entries...</div>
       )}
 
       {!loading && data.length === 0 ? (
         <div className="text-center py-10 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-          <p className="text-gray-500">No submissions found.</p>
+          <p className="text-gray-700">No submissions found.</p>
         </div>
       ) : (
         <div
           className={`relative overflow-x-auto shadow-md sm:rounded-lg ${loading ? "opacity-50" : ""}`}
         >
-          <table className="w-full text-sm text-left text-gray-500">
+          <table className="w-full text-sm text-left text-gray-700">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
                 <th scope="col" className="px-6 py-3">
@@ -119,7 +120,7 @@ const ContactPage = ({ initialSubmissions }: ContactPageProps) => {
                     {item.name}
                   </td>
                   <td className="px-6 py-4 text-blue-600 hover:underline">
-                    <a href={`mailto:${item.email}`}>{item.email}</a>
+                    <Link href={`mailto:${item.email}`}>{item.email}</Link>
                   </td>
                   <td className="px-6 py-4 min-w-[300px]">
                     <p className="line-clamp-2" title={item.message}>

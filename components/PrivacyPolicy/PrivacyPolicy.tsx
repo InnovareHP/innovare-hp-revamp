@@ -58,6 +58,7 @@ const PrivacyPolicy = () => {
 
       <Navigation isFieldNotes={true} />
 
+      <main id="main-content" className="relative" tabIndex={-1}>
       {/* --- HERO SECTION --- */}
       <header className="py-20 border-b border-slate-100">
         <motion.div
@@ -412,12 +413,12 @@ const PrivacyPolicy = () => {
                 <span className="text-[10px] font-black uppercase tracking-widest opacity-60 block mb-2">
                   Primary Email
                 </span>
-                <a
+                <Link
                   href="mailto:info@innovarehp.com"
                   className="text-xl font-bold underline underline-offset-8 decoration-white/30"
                 >
                   info@innovarehp.com
-                </a>
+                </Link>
               </motion.div>
             </div>
           </motion.section>
@@ -435,6 +436,7 @@ const PrivacyPolicy = () => {
           Return Home
         </Link>
       </footer>
+      </main>
     </div>
   );
 };

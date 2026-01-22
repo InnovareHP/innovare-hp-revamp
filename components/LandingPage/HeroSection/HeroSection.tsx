@@ -39,7 +39,10 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative w-full min-h-[100vh] flex items-end overflow-hidden bg-gray-900">
+    <section 
+      className="relative w-full min-h-[100vh] flex items-end overflow-hidden bg-gray-900"
+      aria-label="Hero section"
+    >
       <motion.div
         variants={bgVariants}
         initial="hidden"

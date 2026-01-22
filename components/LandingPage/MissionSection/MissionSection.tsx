@@ -37,6 +37,7 @@ const MissionSection = () => {
     <section
       id="mission"
       className="bg-[#414141] text-white py-16 px-8 lg:px-12 xl:px-16 overflow-hidden"
+      aria-label="Mission section"
     >
       <div className="max-w-7xl mx-auto">
         <motion.div
@@ -91,8 +92,8 @@ const MissionSection = () => {
         >
           <img
             src="/images/mission.jpg"
-            alt="Mission Section"
-            title="Mission Section"
+            alt="Innovare HP team working on healthcare marketing mission and values"
+            title="Innovare HP team working on healthcare marketing mission and values"
             className="object-cover"
           />
         </motion.div>

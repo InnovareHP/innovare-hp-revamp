@@ -40,8 +40,6 @@ const AboutSection = () => {
           alt="Innovare HP Team"
           title="Innovare HP Team"
           className="object-cover w-full border-2 min-h-[80vh]"
-      
-    
         />
       </motion.div>
 

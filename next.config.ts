@@ -7,13 +7,6 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "10mb",
     },
   },
-  images: {
-    domains: [
-      "media.licdn.com",
-      "images.unsplash.com",
-      "xxldcsnneqmdwebkxgnl.supabase.co",
-    ],
-  },
 };
 
 export default nextConfig;

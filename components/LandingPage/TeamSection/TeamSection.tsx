@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
-import Image from "next/image";
 
 const TeamSection = () => {
   // Container variants for the grid
@@ -111,12 +110,10 @@ const TeamSection = () => {
             >
               {/* Profile Image */}
               <div className="w-[121px] h-[145px] bg-gray-400 shrink-0 overflow-hidden shadow-sm relative">
-                <Image
+                <img
                   src={member.image}
                   alt={member.name}
-                  fill
-                  className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-110 group-hover:scale-100"
-                  sizes="121px"
+                  className="object-cover w-full border-2 min-h-[145px] grayscale group-hover:grayscale-0 transition-all duration-500 scale-110 group-hover:scale-100"
                   title={member.imageTitle}
                 />
               </div>
@@ -142,7 +139,7 @@ const TeamSection = () => {
           transition={{ delay: 0.5 }}
           className="mt-20 flex justify-end items-center gap-2"
         >
-          <Image
+          <img
             src="/images/logo-black.png"
             alt="Innovare HP"
             width={50}

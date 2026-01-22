@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { UploadCloud, X } from "lucide-react";
-import Image from "next/image";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
 
@@ -65,10 +64,9 @@ export default function MediaUploadDropper({
     <div className={cn("space-y-2", className)}>
       {value ? (
         <div className="relative w-full h-48 rounded-lg overflow-hidden border">
-          <Image
+          <img
             src={value instanceof File ? URL.createObjectURL(value) : value.url}
             alt="Uploaded media"
-            fill
             className="object-cover"
           />
 

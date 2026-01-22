@@ -1,6 +1,5 @@
 import { Prisma } from "@/generated/prisma";
 import { ActionResponse } from "@/lib/types";
-import Image from "next/image";
 import { use } from "react";
 import {
   Card,
@@ -28,7 +27,7 @@ const AdminEventCard = ({ event }: Props) => {
       {eventData.data?.media && (
         <div className="relative w-full h-64 md:h-96 bg-gradient-to-br from-primary/20 to-primary/5">
           {eventData.data.media ? (
-            <Image
+            <img
               width={1000}
               height={1000}
               src={eventData.data.media.url}

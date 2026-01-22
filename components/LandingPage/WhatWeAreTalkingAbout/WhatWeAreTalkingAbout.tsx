@@ -1,6 +1,5 @@
 "use client";
 import { LinkedInPost } from "@/lib/types";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -71,15 +70,16 @@ const WhatWeAreTalkingAbout = ({
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`View LinkedIn post by Innovare HP (opens in new tab)`}
+            className="m-2"
             key={post.id}
           >
             <div className="break-inside-avoid group bg-slate-50 rounded-2xl border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all">
               {post.images?.[0]?.imageUrl && (
                 <div className="relative aspect-square w-full">
-                  <Image
+                  <img
                     src={post.images[0].imageUrl}
-                    alt="Post content"
-                    fill
+                    alt={post.images[0].altText || `${post.id} image`}
+                    title={post.images[0].altText || `${post.id} image`}
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                 </div>

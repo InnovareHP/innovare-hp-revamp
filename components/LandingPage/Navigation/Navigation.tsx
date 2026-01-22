@@ -1,7 +1,6 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -93,13 +92,11 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
         {/* Logo Section */}
         <nav className="flex items-center gap-2">
           <Link href="/" title="Innovare HP">
-            <Image
+            <img
               src="/images/logo.png"
               alt="Innovare HP"
-              width={100}
-              title="Innovare HP"
-              height={100}
               className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
+              title="Innovare HP"
             />
           </Link>
           <span

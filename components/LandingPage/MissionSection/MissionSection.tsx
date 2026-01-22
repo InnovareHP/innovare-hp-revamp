@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
-import Image from "next/image";
 
 const MissionSection = () => {
   // Animation variants with strict typing
@@ -49,7 +48,7 @@ const MissionSection = () => {
         >
           {/* Logo Animation */}
           <motion.div variants={fadeInUp} className="flex items-center gap-3">
-            <Image
+            <img
               src="/images/logo-white-2.png"
               alt="Innovare HP"
               width={50}
@@ -90,13 +89,11 @@ const MissionSection = () => {
           viewport={{ once: true }}
           className="w-full aspect-[21/9] bg-gray-300 relative overflow-hidden rounded-sm"
         >
-          <Image
+          <img
             src="/images/mission.jpg"
             alt="Mission Section"
             title="Mission Section"
-            fill
             className="object-cover"
-            priority
           />
         </motion.div>
       </div>

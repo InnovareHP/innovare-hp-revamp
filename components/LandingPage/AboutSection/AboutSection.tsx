@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, Variants } from "framer-motion"; // Import Variants type
-import Image from "next/image";
 
 const AboutSection = () => {
   // Explicitly typing variants fixes the "ease" string error
@@ -36,15 +35,13 @@ const AboutSection = () => {
         variants={fadeInLeft}
         className="w-full lg:w-1/2 bg-gray-200 flex items-center justify-center relative min-h-[400px] lg:min-h-[70vh]"
       >
-        <Image
+        <img
           src="/images/about/about-img.png"
           alt="Innovare HP Team"
           title="Innovare HP Team"
-          fill
-          className="object-cover"
-          priority
-          quality={100}
-          sizes="(max-width: 1024px) 100vw, 50vw"
+          className="object-cover w-full border-2 min-h-[80vh]"
+      
+    
         />
       </motion.div>
 

@@ -428,7 +428,7 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
               <div className="flex flex-col items-center gap-3">
                 <div className="bg-white p-4 rounded-lg shadow-sm border-2 border-primary/10">
                   <QRCodeSVG
-                    value={`${window.location.origin}/event/${event.id}`}
+                    value={`${window.location.origin}/events/${event.id}`}
                     size={160}
                     level="H"
                     includeMargin={true}
@@ -449,7 +449,7 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
               </Button>
             </CardContent>
           </Card>
-          ]
+
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-bold flex items-center gap-2">

@@ -2,6 +2,7 @@ import { LinkedInPost } from "@/lib/types";
 import AboutSection from "./AboutSection/AboutSection";
 import ClientReviews from "./ClientReviews/ClientReviews";
 import ContactPage from "./ContactSection/ContactPage";
+import EventSection from "./EventSection/EventSection";
 import HeroSection from "./HeroSection/HeroSection";
 import MissionSection from "./MissionSection/MissionSection";
 import Navigation from "./Navigation/Navigation";
@@ -19,6 +20,7 @@ const LandingPage = async ({ posts }: { posts: Promise<LinkedInPost[]> }) => {
       <main id="main-content" className="relative" tabIndex={-1}>
         <HeroSection />
         <AboutSection />
+        <EventSection />
         <Partners />
         <Process />
         <WhatWeDo />

@@ -7,7 +7,7 @@ const s3 = new S3Client({
   endpoint: process.env.AWS_ENDPOINT!,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_ID!,
-    secretAccessKey: process.env.AWS_SECRET_KEY!,
+    secretAccessKey: process.env.AWS_SECRET!,
   },
 });
 export const uploadFile = async (file: File) => {

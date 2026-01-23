@@ -12,3 +12,18 @@ export type LinkedInPost = {
     position: number;
   }[];
 };
+
+export type EventCreateInput = {
+  title: string;
+  description: string;
+  date: Date;
+  location: string;
+  status: string;
+  qrCode: string;
+};
+
+export type ActionResponse<T = void> = {
+  success: boolean;
+  data?: T;
+  error?: string;
+};

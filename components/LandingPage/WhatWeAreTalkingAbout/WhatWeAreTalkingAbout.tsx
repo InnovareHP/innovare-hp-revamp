@@ -108,7 +108,7 @@ const WhatWeAreTalkingAbout = ({
         aria-live="polite"
         aria-busy={loading}
       >
-        {posts.map((post, index) => (
+        {posts.map((post: LinkedInPost, index: number) => (
           <article
             key={post.id}
             aria-posinset={index + 1}
@@ -126,8 +126,8 @@ const WhatWeAreTalkingAbout = ({
                 <div className="relative aspect-square w-full">
                   <img
                     src={post.images[0].imageUrl}
-                    alt="Post content"
-                    title="Post content"
+                    alt={post.images[0].altText || `Innovare HP LinkedIn post ${index + 1} content`}
+                    title={post.images[0].altText || `Innovare HP LinkedIn post ${index + 1} content`}
                     width={1000}
                     height={1000}
                     className="object-cover group-hover:scale-110 transition-transform duration-700"

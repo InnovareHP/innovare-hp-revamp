@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
-import Image from "next/image";
 
 const ClientReviews = () => {
   const reviews = [
@@ -87,7 +86,7 @@ const ClientReviews = () => {
               className="grid grid-cols-1 sm:grid-cols-2 gap-4"
             >
               <div className="flex flex-row items-start gap-3">
-                <Image
+                <img
                   src={reviews[0].headshot}
                   alt={reviews[0].name}
                   width={120}
@@ -96,7 +95,7 @@ const ClientReviews = () => {
                   title={reviews[0].name}
                   className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[36px] sm:mt-[18px]"
                 />
-                <Image
+                <img
                   src={reviews[0].logo}
                   alt={`${reviews[0].company} logo`}
                   width={182}
@@ -134,7 +133,7 @@ const ClientReviews = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Left Sub-column - Headshot and Logo */}
               <div className="flex flex-row items-start gap-3">
-                <Image
+                <img
                   src={reviews[1].headshot}
                   alt={reviews[1].name}
                   width={120}
@@ -143,7 +142,7 @@ const ClientReviews = () => {
                   title={reviews[1].name}
                   className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[36px] sm:mt-[18px]"
                 />
-                <Image
+                <img
                   src={reviews[1].logo}
                   alt={`${reviews[1].company} logo`}
                   width={182}
@@ -179,7 +178,7 @@ const ClientReviews = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Left Sub-column - Headshot and Logo */}
               <div className="flex flex-row items-start gap-3">
-                <Image
+                <img
                   src={reviews[2].headshot}
                   alt={reviews[2].name}
                   width={120}
@@ -188,7 +187,7 @@ const ClientReviews = () => {
                   sizes="(max-width: 640px) 80px, 120px"
                   className="rounded-full object-cover shrink-0 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] mt-[36px] sm:mt-[18px]"
                 />
-                <Image
+                <img
                   src={reviews[2].logo}
                   alt={`${reviews[2].company} logo`}
                   width={182}

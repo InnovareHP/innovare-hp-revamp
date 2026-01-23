@@ -1,8 +1,10 @@
 import ContactPage from "@/components/ContactPage/ContactPage";
+import { requireAdmin } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
-import { ContactFormSubmission } from "../../../generated/prisma/client";
+import { ContactFormSubmission } from "../../../../generated/prisma/client";
 
 const page = async () => {
+  await requireAdmin();
   const submissions: ContactFormSubmission[] =
     await prisma.contactFormSubmission.findMany({
       orderBy: {

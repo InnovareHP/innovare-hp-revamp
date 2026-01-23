@@ -2,7 +2,6 @@
 
 import WorkWithUsButton from "@/components/ui/work-with-us-button";
 import { motion, Variants } from "framer-motion";
-import Image from "next/image";
 
 const HeroSection = () => {
   const containerVariants: Variants = {
@@ -50,16 +49,12 @@ const HeroSection = () => {
         animate="visible"
         className="absolute inset-0 w-full h-full"
       >
-        <Image
+        <img
           src="/images/hero-section.jpg"
-          alt="Healthcare marketing professionals collaborating on strategic growth initiatives"
-          title="Healthcare marketing professionals collaborating on strategic growth initiatives"
-          fill
-          priority
-          // 1. SHIFT IMAGE POSITION:
-          // 'object-top' or '50% 20%' ensures the subjects are pushed
-          // toward the top of the screen on mobile, away from the bottom-aligned text.
-          className="object-cover object-[50%_20%] sm:object-center"
+          alt="Hero Section"
+          title="Hero Section"
+ 
+          className="object-cover w-full border-2 min-h-[100vh]"
         />
         {/* 2. BETTER OVERLAY:
             Added a gradient that is darker at the bottom to ensure text

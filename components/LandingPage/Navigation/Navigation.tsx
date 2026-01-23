@@ -1,7 +1,6 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -135,12 +134,10 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
           {/* Logo Section */}
           <nav className="flex items-center gap-2" aria-label="Main navigation">
             <Link href="/" title="Innovare HP" aria-label="Innovare HP home page">
-              <Image
+              <img
                 src="/images/logo.png"
                 alt="Innovare HP logo"
-                width={100}
                 title="Innovare HP logo"
-                height={100}
                 className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
               />
             </Link>
@@ -151,7 +148,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
             </span>
           </nav>
 
-          {/* Burger Icon */}
+        {/* Burger Icon */}
 
           <button
             onClick={() => setIsOpen(!isOpen)}

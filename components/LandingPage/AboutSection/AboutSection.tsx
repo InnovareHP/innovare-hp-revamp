@@ -26,7 +26,6 @@ const AboutSection = () => {
     <section
       id="about"
       className="flex flex-col lg:flex-row min-h-[70vh] overflow-hidden"
-      aria-label="About section"
     >
       {/* Left side - Image */}
       <motion.div
@@ -34,15 +33,13 @@ const AboutSection = () => {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={fadeInLeft}
-        className="w-full lg:w-1/2 bg-gray-200 flex items-center justify-center relative min-h-[400px] lg:min-h-[70vh]"
+        className="w-full lg:w-1/2 bg-gray-200 flex items-center justify-center relative min-h-[400px] lg:min-h-[60vh]"
       >
         <img
           src="/images/about/about-img.png"
           alt="Innovare HP Team"
           title="Innovare HP Team"
-          width={1000}
-          height={1000}
-          className="object-cover"
+          className="object-cover w-full border-2 min-h-[90vh]"
         />
       </motion.div>
 
@@ -60,14 +57,14 @@ const AboutSection = () => {
           }
           className="w-full max-w-2xl space-y-8"
         >
-          <motion.h2
+          <motion.h1
             variants={fadeInRight}
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-relaxed sm:leading-tight"
           >
             We are community resource educators who use creative and thoughtful
             communication methods and technology to help our healthcare partners
             grow in a meaningful way.
-          </motion.h2>
+          </motion.h1>
 
           <motion.p
             variants={fadeInRight}

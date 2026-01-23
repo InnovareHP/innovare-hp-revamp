@@ -1,8 +1,10 @@
+import { requireAdmin } from "@/lib/auth-utils";
 import { auth } from "@/lib/google";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
+    await requireAdmin();
     const { access_token } = await auth.authorize();
     if (!access_token) throw new Error("No access token");
 

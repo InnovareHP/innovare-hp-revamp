@@ -29,3 +29,40 @@ export const contactFormSchema = z.object({
 
 // Infer the TypeScript type
 export type ContactFormValues = z.infer<typeof contactFormSchema>;
+
+export const signInSchema = z.object({
+  email: z.email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+export type SignInValues = z.infer<typeof signInSchema>;
+
+export const signUpSchema = z
+  .object({
+    email: z.email("Invalid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+
+export type SignUpValues = z.infer<typeof signUpSchema>;
+
+// lib/schema.ts
+export const eventSchema = z.object({
+  title: z.string().min(2, "Title is required"),
+  description: z.string().min(10, "Description must be at least 10 characters"),
+  date: z.date({ message: "A date is required" }).nullable(),
+  location: z.string().min(2, "Location is required"),
+  status: z.string().min(1, "Status is required"),
+  eventStartDate: z.date({ message: "Start date is required" }).nullable(),
+  maxGuests: z.number().int().min(1, "Must have at least 1 guest"),
+  media: z
+    .instanceof(File)
+    .or(z.object({ url: z.string(), type: z.string() }))
+    .optional(),
+});
+
+export type EventFormValues = z.infer<typeof eventSchema>;

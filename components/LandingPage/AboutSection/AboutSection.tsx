@@ -33,13 +33,13 @@ const AboutSection = () => {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={fadeInLeft}
-        className="w-full lg:w-1/2 bg-gray-200 flex items-center justify-center relative min-h-[400px] lg:min-h-[70vh]"
+        className="w-full lg:w-1/2 bg-gray-200 flex items-center justify-center relative min-h-[400px] lg:min-h-[60vh]"
       >
         <img
           src="/images/about/about-img.png"
           alt="Innovare HP Team"
           title="Innovare HP Team"
-          className="object-cover w-full border-2 min-h-[80vh]"
+          className="object-cover w-full border-2 min-h-[90vh]"
         />
       </motion.div>
 

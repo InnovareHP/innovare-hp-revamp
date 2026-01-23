@@ -7,8 +7,9 @@ import Link from "next/link";
 export default function EventSection() {
   return (
     <section
-      className="relative w-full min-h-[60vh] flex items-center justify-center overflow-hidden"
+      className="relative w-full min-h-[70vh] flex items-center justify-center overflow-hidden"
       aria-label="Events section"
+      id="events"
     >
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
@@ -33,7 +34,7 @@ export default function EventSection() {
 
           <div className="pt-2 sm:pt-4 flex justify-center">
             <Link
-              href="#events"
+              href="/events"
               title="Explore our Event Calendar"
               aria-label="Explore our Event Calendar"
             >

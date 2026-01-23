@@ -41,7 +41,8 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY || window.pageYOffset;
       // Banner height varies: 52px mobile, 44px tablet, 40px desktop
-      const bannerHeight = window.innerWidth < 640 ? 52 : window.innerWidth < 768 ? 44 : 40;
+      const bannerHeight =
+        window.innerWidth < 640 ? 52 : window.innerWidth < 768 ? 44 : 40;
       setIsScrolled(scrollPosition > bannerHeight);
     };
 
@@ -63,21 +64,23 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
       if (e.key === "Escape" && isOpen) {
         setIsOpen(false);
         // Return focus to menu button
-        const menuButton = document.querySelector('[aria-controls="navigation-menu"]') as HTMLElement;
+        const menuButton = document.querySelector(
+          '[aria-controls="navigation-menu"]'
+        ) as HTMLElement;
         menuButton?.focus();
       }
-      
+
       // Trap focus within dialog when open
       if (isOpen && e.key === "Tab") {
         const dialog = document.getElementById("navigation-menu");
         if (!dialog) return;
-        
+
         const focusableElements = dialog.querySelectorAll<HTMLElement>(
           'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
         );
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
-        
+
         if (e.shiftKey && document.activeElement === firstElement) {
           e.preventDefault();
           lastElement?.focus();
@@ -92,10 +95,12 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
       document.addEventListener("keydown", handleKeyDown);
       // Prevent body scroll when menu is open
       document.body.style.overflow = "hidden";
-      
+
       // Focus first link in menu when it opens
       setTimeout(() => {
-        const firstLink = document.querySelector('#navigation-menu a') as HTMLElement;
+        const firstLink = document.querySelector(
+          "#navigation-menu a"
+        ) as HTMLElement;
         firstLink?.focus();
       }, 100);
     } else {
@@ -126,14 +131,18 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
       >
         Skip to main content
       </Link>
-      <header 
-        className={`fixed left-0 w-full z-50 px-6 py-2 md:px-6 md:py-2 pointer-events-none bg-white transition-[top] duration-200 ${isScrolled ? "top-0" : "top-[52px] sm:top-[44px] md:top-[40px]"}`}
+      <header
+        className={`fixed left-0 w-full z-50 px-6 py-2 md:px-6 md:py-2 pointer-events-none bg-white transition-[top] duration-200 ${isScrolled ? "top-0" : "top-[52px] sm:top-[60px] md:top-[70px]"}`}
         role="banner"
       >
         <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">
           {/* Logo Section */}
           <nav className="flex items-center gap-2" aria-label="Main navigation">
-            <Link href="/" title="Innovare HP" aria-label="Innovare HP home page">
+            <Link
+              href="/"
+              title="Innovare HP"
+              aria-label="Innovare HP home page"
+            >
               <img
                 src="/images/logo.png"
                 alt="Innovare HP logo"
@@ -148,12 +157,14 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
             </span>
           </nav>
 
-        {/* Burger Icon */}
+          {/* Burger Icon */}
 
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="relative z-50 flex flex-col justify-between w-8 h-6 group"
-            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-label={
+              isOpen ? "Close navigation menu" : "Open navigation menu"
+            }
             aria-expanded={isOpen}
             aria-controls="navigation-menu"
           >
@@ -221,7 +232,10 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
               aria-label="Navigation menu"
               id="navigation-menu"
             >
-              <nav className="flex flex-col gap-6 text-center" aria-label="Site navigation">
+              <nav
+                className="flex flex-col gap-6 text-center"
+                aria-label="Site navigation"
+              >
                 {navLinks.map((link, i) => (
                   <motion.div
                     key={link.name}

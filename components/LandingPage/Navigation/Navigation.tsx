@@ -132,7 +132,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
         Skip to main content
       </Link>
       <header
-        className={`fixed left-0 w-full z-50 px-6 py-2 md:px-6 md:py-2 pointer-events-none bg-white transition-[top] duration-200 ${isScrolled ? "top-0" : "top-[52px] sm:top-[60px] md:top-[70px]"}`}
+        className={`fixed left-0 w-full z-50 px-6 py-2 md:px-6 md:py-2 pointer-events-none bg-white transition-[top] duration-200 ${isScrolled ? "top-0" : "top-[40px] sm:top-[60px] md:top-[60px]"}`}
         role="banner"
       >
         <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">

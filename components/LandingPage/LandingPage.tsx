@@ -11,6 +11,7 @@ import Process from "./Proces/Process";
 import TeamSection from "./TeamSection/TeamSection";
 import WhatWeAreTalkingAbout from "./WhatWeAreTalkingAbout/WhatWeAreTalkingAbout";
 import WhatWeDo from "./WhatWeDo/WhatWeDo";
+
 function ADABanner() {
   return (
     <div className="bg-blue-900 text-white pt-3 pb-4 sm:py-3 md:py-2.5 px-3 sm:px-4 md:px-6 min-h-[52px] sm:min-h-[52px] md:min-h-[52px] flex items-center">

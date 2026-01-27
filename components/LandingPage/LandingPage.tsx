@@ -1,4 +1,7 @@
+"use client";
+
 import { LinkedInPost } from "@/lib/types";
+import { useState } from "react";
 import AboutSection from "./AboutSection/AboutSection";
 import ClientReviews from "./ClientReviews/ClientReviews";
 import ContactPage from "./ContactSection/ContactPage";
@@ -12,82 +15,99 @@ import WhatWeAreTalkingAbout from "./WhatWeAreTalkingAbout/WhatWeAreTalkingAbout
 import WhatWeDo from "./WhatWeDo/WhatWeDo";
 
 function ADABanner() {
+  const [isVisible, setIsVisible] = useState(true);
+
+  if (!isVisible) return null;
+
   return (
-    <div className="bg-blue-900 text-white pt-3 pb-4 sm:py-3 md:py-2.5 px-3 sm:px-4 md:px-6 min-h-[52px] sm:min-h-[52px] md:min-h-[52px] flex items-center">
-      <div className="max-w-screen-xl mx-auto w-full flex flex-col sm:flex-row items-center justify-center gap-2 text-[11px] sm:text-xs md:text-sm leading-snug sm:leading-normal text-center flex-wrap">
-        {/* NEW EVENTS NOTICE */}
-        {/* <div className="flex items-center gap-2">
-          <span className="inline-flex items-center rounded-full bg-white/10 px-2 py-0.5 text-[10px] sm:text-xs font-semibold tracking-wide">
-            NEW
-          </span>
-          <a
-            href="/events"
-            className="underline hover:text-gray-200 font-medium whitespace-nowrap"
-          >
-            Check out our new Events feature →
-          </a>
-        </div> */}
-
-        {/* Divider (hidden on mobile) */}
-        {/* <span className="hidden sm:inline-block mx-3 text-white/40">|</span> */}
-
-        {/* ADA NOTICE */}
-        <div className="flex items-center gap-2">
+    <aside
+      className="fixed bottom-0 left-0 right-0 z-[100] bg-blue-900/95 backdrop-blur-md text-white border-t border-white/20 shadow-[0_-4px_20px_rgba(0,0,0,0.3)]"
+      aria-label="Accessibility Notice"
+    >
+      <div className="max-w-screen-xl mx-auto px-4 py-3 sm:px-6 md:px-8 flex items-center justify-between gap-4">
+        {/* ADA CONTENT */}
+        <div className="flex items-center gap-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="14"
-            height="14"
+            width="18"
+            height="18"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            aria-hidden="true"
-            className="shrink-0 sm:w-4 sm:h-4"
+            aria-labelledby="ada-icon-title"
+            className="shrink-0 text-blue-300"
           >
+            <title id="ada-icon-title">ADA Compliance Information</title>
             <circle cx="12" cy="12" r="10" />
             <path d="M12 16v-4" />
             <path d="M12 8h.01" />
           </svg>
 
-          <span>
+          <p className="text-[11px] sm:text-xs md:text-sm leading-snug">
             We are committed to ADA compliance and aim to make our website
             accessible to all users. Email us at{" "}
             <a
               href="mailto:hello@innovarehp.com"
-              className="underline hover:text-gray-200 whitespace-nowrap"
+              className="underline font-medium hover:text-blue-200 transition-colors"
             >
               hello@innovarehp.com
             </a>{" "}
             if you encounter any issues.
-          </span>
+          </p>
         </div>
+
+        {/* CLOSE BUTTON */}
+        <button
+          type="button"
+          onClick={() => setIsVisible(false)}
+          className="flex items-center gap-2 p-1.5 hover:bg-white/10 rounded-lg transition-colors group shrink-0"
+          aria-label="Close accessibility notice"
+        >
+          <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-wider opacity-60 group-hover:opacity-100">
+            Close
+          </span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-labelledby="close-btn-title"
+          >
+            <title id="close-btn-title">Close icon</title>
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
       </div>
-    </div>
+    </aside>
   );
 }
 
-const LandingPage = async ({ posts }: { posts: Promise<LinkedInPost[]> }) => {
+const LandingPage = ({ posts }: { posts: Promise<LinkedInPost[]> }) => {
   return (
     <>
-      <ADABanner />
       <Navigation />
-      {/*sequence not yet finalized*/}
-      <main id="main-content" className="relative" tabIndex={-1}>
+      <main id="main-content" className="relative pb-16 md:pb-12" tabIndex={-1}>
         <HeroSection />
         <AboutSection />
-        {/* <EventSection /> */}
         <Partners />
         <Process />
         <WhatWeDo />
         <WhatWeAreTalkingAbout initialPosts={posts} />
-        {/* <OtherService /> */}
         <MissionSection />
         <TeamSection />
         <ClientReviews />
         <ContactPage />
       </main>
+      <ADABanner />
     </>
   );
 };

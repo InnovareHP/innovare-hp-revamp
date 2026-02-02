@@ -3,6 +3,6 @@ import { LinkInPost } from "./action/landing-page";
 
 export default async function Home() {
   const postsWithRelativeTime = LinkInPost();
-
+  //test
   return <LandingPage posts={postsWithRelativeTime} />;
 }

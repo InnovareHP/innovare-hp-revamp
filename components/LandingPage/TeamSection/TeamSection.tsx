@@ -67,6 +67,12 @@ const TeamSection = () => {
       image: "/images/team/team-4.png",
       imageTitle: "Shiela Veran",
     },
+    {
+      name: "Dyllan Esther Ermino",
+      role: "Sales Manager",
+      image: "/images/team/team-8.png",
+      imageTitle: "Dyllan Esther Ermino",
+    },
   ];
 
   return (

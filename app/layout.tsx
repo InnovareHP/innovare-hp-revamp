@@ -1,7 +1,7 @@
 import { Provider } from "@/components/Provider";
 import { Toaster } from "@/components/ui/sonner";
 import { KeyWords } from "@/lib/const";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Signika, Work_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -18,7 +18,7 @@ const signika = Signika({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.innovarehp.com"), // 🔁 CHANGE
+  metadataBase: new URL("https://www.innovarehp.com"),
   title: {
     default: "Innovare HP | Healthcare Marketing & Growth Strategy",
     template: "%s | Innovare HP",
@@ -82,6 +82,12 @@ export const metadata: Metadata = {
   },
 
   category: "Healthcare Marketing",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({

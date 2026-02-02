@@ -39,7 +39,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section 
+    <section
       className="relative w-full min-h-[100vh] flex items-end overflow-hidden bg-gray-900"
       aria-label="Hero section"
     >
@@ -51,10 +51,9 @@ const HeroSection = () => {
       >
         <img
           src="/images/hero-section.jpg"
-          alt="Hero Section"
-          title="Hero Section"
- 
+          alt="Healthcare marketing team at Innovare HP: professionals collaborating on growth strategy for senior care and behavioral health organizations"
           className="object-cover w-full border-2 min-h-[100vh]"
+          fetchPriority="high"
         />
         {/* 2. BETTER OVERLAY:
             Added a gradient that is darker at the bottom to ensure text

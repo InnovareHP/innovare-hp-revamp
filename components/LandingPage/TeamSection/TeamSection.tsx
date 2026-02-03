@@ -68,10 +68,10 @@ const TeamSection = () => {
       imageTitle: "Shiela Veran",
     },
     {
-      name: "Dyllan Esther Ermino",
+      name: "Dyllan Ermino",
       role: "Sales Manager",
       image: "/images/team/team-8.png",
-      imageTitle: "Dyllan Esther Ermino",
+      imageTitle: "Dyllan Ermino",
     },
   ];
 
@@ -122,6 +122,7 @@ const TeamSection = () => {
                   alt={member.name}
                   className="object-cover w-full border-2 min-h-[145px] grayscale group-hover:grayscale-0 transition-all duration-500 scale-110 group-hover:scale-100"
                   title={member.imageTitle}
+                  fetchPriority="high"
                 />
               </div>
 

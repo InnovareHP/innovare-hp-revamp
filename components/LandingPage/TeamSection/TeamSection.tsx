@@ -108,9 +108,9 @@ const TeamSection = () => {
           viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10"
         >
-          {team.map((member, index) => (
+          {team.map((member) => (
             <motion.div
-              key={index}
+              key={member.name}
               variants={memberVariants}
               whileHover={{ x: 5 }} // Slight nudge on hover
               className="flex items-start gap-6 group"

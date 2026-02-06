@@ -5,6 +5,7 @@ import { useState } from "react";
 import AboutSection from "./AboutSection/AboutSection";
 import ClientReviews from "./ClientReviews/ClientReviews";
 import ContactPage from "./ContactSection/ContactPage";
+import EventSection from "./EventSection/EventSection";
 import HeroSection from "./HeroSection/HeroSection";
 import MissionSection from "./MissionSection/MissionSection";
 import Navigation from "./Navigation/Navigation";
@@ -103,6 +104,7 @@ const LandingPage = ({ posts }: { posts: Promise<LinkedInPost[]> }) => {
         <WhatWeDo />
         <WhatWeAreTalkingAbout initialPosts={posts} />
         <MissionSection />
+        <EventSection />
         <TeamSection />
         <ClientReviews />
         <ContactPage />

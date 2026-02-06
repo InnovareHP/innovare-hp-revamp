@@ -124,7 +124,6 @@ model Event {
   eventStartDate DateTime
   eventEndDate DateTime?
   registrationDeadline DateTime?
-  maxGuests Int @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

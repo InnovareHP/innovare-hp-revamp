@@ -94,7 +94,6 @@ export async function sendEventRegistrationNotificationEmail({
         eventTitle: event.title,
         eventStartDate: formatDate(event.eventStartDate),
         totalAttendees: event.attendees.length,
-        maxGuests: event.maxGuests,
         eventId: event.id,
       }),
     });
@@ -152,6 +151,7 @@ export async function sendAdminCustomEmail({
   eventTitle,
   eventDate,
   eventLocation,
+  eventId,
 }: {
   recipients: string[];
   recipientNames: string[];
@@ -160,6 +160,7 @@ export async function sendAdminCustomEmail({
   eventTitle?: string;
   eventDate?: string;
   eventLocation?: string;
+  eventId?: string;
 }) {
   try {
     const results = await Promise.allSettled(
@@ -175,6 +176,7 @@ export async function sendAdminCustomEmail({
             eventTitle,
             eventDate,
             eventLocation,
+            eventId,
           }),
         })
       )

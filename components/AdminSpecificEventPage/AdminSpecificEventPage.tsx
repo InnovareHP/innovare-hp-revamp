@@ -100,8 +100,8 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
   };
 
   const attendanceRate =
-    event.maxGuests > 0
-      ? Math.round((event.attendees.length / event.maxGuests) * 100)
+    event.attendees.length > 0
+      ? Math.round((event.attendees.length / event.attendees.length) * 100)
       : 100;
 
   const handleDelete = async (ids: string[]) => {
@@ -402,9 +402,7 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
                   <span className="text-3xl font-black">
                     {event.attendees.length}
                   </span>
-                  <span className="text-sm text-muted-foreground">
-                    / {event.maxGuests || "∞"} Booked
-                  </span>
+                  <span className="text-sm text-muted-foreground">Booked</span>
                 </div>
                 <div className="w-full bg-slate-200 rounded-full h-2">
                   <div

@@ -1,7 +1,7 @@
 import { getEventById } from "@/app/events/action/eventaction";
 import EventDetailClient from "@/components/EventDetail/EventDetailClient";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Prisma } from "@prisma/client";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -19,7 +19,6 @@ interface EventPageProps {
 
 const EventPage = async ({ params }: EventPageProps) => {
   const { event: eventId } = await params;
-
   const response = await getEventById(eventId);
 
   if (!response.success || !response.data) {
@@ -29,35 +28,44 @@ const EventPage = async ({ params }: EventPageProps) => {
   const event = response.data;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        <Link href="/events">
-          <Button variant="outline" className="mb-6 gap-2">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Events
-          </Button>
-        </Link>
+    <div className="relative min-h-screen overflow-hidden">
+      {/* 🎥 Video Background */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source
+          src="/FREE VIDEO People Talking _ Free Talking Video _ Free Stock Footage.mp4"
+          type="video/mp4"
+        />
+      </video>
 
-        <Card className="overflow-hidden">
+      {/* 🌑 Dark overlay for readability */}
+      <div className="absolute inset-0 bg-black/50" />
+
+      {/* 📦 Page Content */}
+      <div className="relative z-10 px-4 lg:px-20 py-8 bg-transparent backdrop-blur-sm">
+        <Card className="overflow-hidden shadow-xl border-0 bg-blue-50/90 backdrop-blur">
+          <Link href="/events">
+            <Button variant="secondary" className="m-2">
+              <ArrowLeft className="w-4 h-4" />
+              Back to Events
+            </Button>
+          </Link>
           {event.media && (
-            <div className="relative w-full h-64 md:h-96 bg-gradient-to-br from-primary/20 to-primary/5">
-              {event.media ? (
-                <img
-                  src={event.media.url}
-                  alt={event.title}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="flex items-center justify-center h-full">
-                  <p className="text-muted-foreground">Event Media</p>
-                </div>
-              )}
+            <div className="relative w-full h-72 md:h-[500px] overflow-hidden">
+              <img
+                src={event.media.url}
+                alt={event.title}
+                className="w-full h-full object-contain"
+              />
             </div>
           )}
 
-          <CardHeader className="border-b">
-            <EventDetailClient event={event as EventWithRelations} />
-          </CardHeader>
+          <EventDetailClient event={event as EventWithRelations} />
         </Card>
       </div>
     </div>

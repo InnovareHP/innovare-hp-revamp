@@ -271,7 +271,7 @@ export function EventRegistrationConfirmation({
       {/* Call to Action */}
       <div style={{ textAlign: "center", marginTop: "24px" }}>
         <a
-          href="#"
+          href={process.env.NEXT_PUBLIC_APP_URL + `/events/${eventId}`}
           style={{
             display: "inline-block",
             backgroundColor: "skyblue",
@@ -299,7 +299,10 @@ export function EventRegistrationConfirmation({
         <p style={{ fontSize: "13px", color: "#777", marginBottom: "8px" }}>
           Need to cancel or modify your registration?
           <br />
-          <a href="#" style={{ color: "skyblue", textDecoration: "underline" }}>
+          <a
+            href={process.env.NEXT_PUBLIC_APP_URL + `/contact`}
+            style={{ color: "skyblue", textDecoration: "underline" }}
+          >
             Contact Support
           </a>
         </p>
@@ -320,7 +323,6 @@ interface EventRegistrationNotificationProps {
   eventTitle: string;
   eventStartDate: string;
   totalAttendees: number;
-  maxGuests: number;
   eventId: string;
 }
 
@@ -331,12 +333,8 @@ export function EventRegistrationNotification({
   eventTitle,
   eventStartDate,
   totalAttendees,
-  maxGuests,
   eventId,
 }: EventRegistrationNotificationProps) {
-  const capacityPercentage =
-    maxGuests > 0 ? Math.round((totalAttendees / maxGuests) * 100) : 0;
-
   return (
     <div
       style={{
@@ -450,41 +448,9 @@ export function EventRegistrationNotification({
               <strong style={{ fontSize: "18px", color: "skyblue" }}>
                 {totalAttendees}
               </strong>
-              {maxGuests > 0 && (
-                <>
-                  {" "}
-                  / {maxGuests} attendees
-                  <br />
-                  <span style={{ color: "#666", fontSize: "13px" }}>
-                    ({capacityPercentage}% capacity)
-                  </span>
-                </>
-              )}
-              {maxGuests === 0 && (
-                <span style={{ color: "#666", fontSize: "13px" }}>
-                  {" "}
-                  registered (unlimited capacity)
-                </span>
-              )}
             </p>
           </div>
         </div>
-
-        {maxGuests > 0 && totalAttendees >= maxGuests && (
-          <div
-            style={{
-              backgroundColor: "#fef2f2",
-              border: "1px solid #fecaca",
-              padding: "12px",
-              borderRadius: "6px",
-              marginTop: "12px",
-            }}
-          >
-            <p style={{ margin: "0", color: "#dc2626", fontSize: "14px" }}>
-              <strong>⚠️ Event is now at full capacity!</strong>
-            </p>
-          </div>
-        )}
       </div>
 
       {/* Admin Actions */}
@@ -544,6 +510,7 @@ interface AdminCustomEmailProps {
   eventTitle?: string;
   eventDate?: string;
   eventLocation?: string;
+  eventId?: string;
 }
 
 export function AdminCustomEmail({
@@ -553,6 +520,7 @@ export function AdminCustomEmail({
   eventTitle,
   eventDate,
   eventLocation,
+  eventId,
 }: AdminCustomEmailProps) {
   return (
     <div
@@ -647,7 +615,7 @@ export function AdminCustomEmail({
       {eventTitle && (
         <div style={{ textAlign: "center", marginTop: "24px" }}>
           <a
-            href="#"
+            href={process.env.NEXT_PUBLIC_APP_URL + `/events/${eventId}`}
             style={{
               display: "inline-block",
               backgroundColor: "skyblue",
@@ -676,7 +644,10 @@ export function AdminCustomEmail({
         <p style={{ fontSize: "13px", color: "#777", marginBottom: "8px" }}>
           Questions or concerns?
           <br />
-          <a href="#" style={{ color: "skyblue", textDecoration: "underline" }}>
+          <a
+            href={process.env.NEXT_PUBLIC_APP_URL + `#contact`}
+            style={{ color: "skyblue", textDecoration: "underline" }}
+          >
             Contact Support
           </a>
         </p>

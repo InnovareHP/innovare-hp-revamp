@@ -260,10 +260,6 @@ export async function joinEvent(
       return { success: false, error: "Event not found" };
     }
 
-    if (event.maxGuests > 0 && event.attendees.length >= event.maxGuests) {
-      return { success: false, error: "Event has reached maximum capacity" };
-    }
-
     const existingAttendee = await prisma.eventAttendee.findFirst({
       where: {
         eventId,

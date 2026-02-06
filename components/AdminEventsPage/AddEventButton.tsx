@@ -90,7 +90,6 @@ const AddEventButton = ({ type = "add", event }: Props) => {
           description: values.description,
           location: values.location,
           status: values.status.toUpperCase() as EventStatus,
-          maxGuests: values.maxGuests,
           eventStartDate: values.eventStartDate ?? new Date(),
           media: mediaUrl
             ? {
@@ -110,7 +109,7 @@ const AddEventButton = ({ type = "add", event }: Props) => {
           description: values.description,
           location: values.location,
           status: values.status.toUpperCase() as EventStatus,
-          maxGuests: values.maxGuests,
+
           eventStartDate: values.eventStartDate ?? new Date(),
           media: mediaUrl
             ? {

@@ -53,7 +53,6 @@ type RegistrationFormValues = z.infer<typeof registrationSchema>;
 interface EventRegistrationModalProps {
   eventId: string;
   eventTitle: string;
-  isEventFull: boolean;
   isPastDeadline: boolean;
   onSuccess?: () => void;
 }
@@ -61,7 +60,6 @@ interface EventRegistrationModalProps {
 const EventRegistrationModal = ({
   eventId,
   eventTitle,
-  isEventFull,
   isPastDeadline,
   onSuccess,
 }: EventRegistrationModalProps) => {
@@ -127,30 +125,25 @@ const EventRegistrationModal = ({
     }
   };
 
-  const isDisabled = isEventFull || isPastDeadline;
+  const isDisabled = isPastDeadline;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           size="lg"
-          className="w-full sm:w-auto"
+          className="w-full sm:w-auto min-w-[200px] bg-white text-blue-600 hover:bg-blue-50 font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200"
           disabled={isDisabled}
-          variant={isAlreadyRegistered ? "outline" : "default"}
         >
           {isAlreadyRegistered ? (
             <>
-              <CheckCircle className="w-4 h-4 mr-2" />
+              <CheckCircle className="w-5 h-5 mr-2" />
               Already Registered
             </>
           ) : (
             <>
-              <UserPlus className="w-4 h-4 mr-2" />
-              {isEventFull
-                ? "Event Full"
-                : isPastDeadline
-                  ? "Registration Closed"
-                  : "Register Now"}
+              <UserPlus className="w-5 h-5 mr-2" />
+              {isPastDeadline ? "Registration Closed" : "Register Now"}
             </>
           )}
         </Button>

@@ -4,3 +4,4 @@
   command = "pnpm install --no-frozen-lockfile && pnpm prisma generate && pnpm build"
 [build.environment]
   NETLIFY_USE_PNPM_INSTALL = "false"
+  NEXT_DISABLE_TURBOPACK = 1

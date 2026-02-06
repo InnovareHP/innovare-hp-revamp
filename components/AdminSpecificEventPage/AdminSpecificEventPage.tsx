@@ -418,40 +418,37 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
               </div>
             </CardContent>
           </Card>
-
-          {event.qrCode && (
-            <Card className="border-primary/20 bg-primary/5">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-bold flex items-center gap-2">
-                  <QrCode className="w-4 h-4 text-primary" /> Event QR Code
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex flex-col items-center gap-3">
-                  <div className="bg-white p-4 rounded-lg shadow-sm border-2 border-primary/10">
-                    <QRCodeSVG
-                      value={`${window.location.origin}/event/${event.id}`}
-                      size={160}
-                      level="H"
-                      includeMargin={true}
-                    />
-                  </div>
-                  <p className="text-xs text-center text-muted-foreground">
-                    Scan to view event details
-                  </p>
+          <Card className="border-primary/20 bg-primary/5">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-bold flex items-center gap-2">
+                <QrCode className="w-4 h-4 text-primary" /> Event QR Code
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex flex-col items-center gap-3">
+                <div className="bg-white p-4 rounded-lg shadow-sm border-2 border-primary/10">
+                  <QRCodeSVG
+                    value={`${window.location.origin}/events/${event.id}`}
+                    size={160}
+                    level="H"
+                    includeMargin={true}
+                  />
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full gap-2"
-                  onClick={handlePrintQRCode}
-                >
-                  <Printer className="w-4 h-4" />
-                  Print QR Code
-                </Button>
-              </CardContent>
-            </Card>
-          )}
+                <p className="text-xs text-center text-muted-foreground">
+                  Scan to view event details
+                </p>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full gap-2"
+                onClick={handlePrintQRCode}
+              >
+                <Printer className="w-4 h-4" />
+                Print QR Code
+              </Button>
+            </CardContent>
+          </Card>
 
           <Card>
             <CardHeader className="pb-2">

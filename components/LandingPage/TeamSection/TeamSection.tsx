@@ -67,6 +67,12 @@ const TeamSection = () => {
       image: "/images/team/team-4.png",
       imageTitle: "Shiela Veran",
     },
+    {
+      name: "Dyllan Ermino",
+      role: "Sales Manager",
+      image: "/images/team/team-8.png",
+      imageTitle: "Dyllan Ermino",
+    },
   ];
 
   return (
@@ -102,9 +108,9 @@ const TeamSection = () => {
           viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10"
         >
-          {team.map((member, index) => (
+          {team.map((member) => (
             <motion.div
-              key={index}
+              key={member.name}
               variants={memberVariants}
               whileHover={{ x: 5 }} // Slight nudge on hover
               className="flex items-start gap-6 group"
@@ -116,6 +122,7 @@ const TeamSection = () => {
                   alt={member.name}
                   className="object-cover w-full border-2 min-h-[145px] grayscale group-hover:grayscale-0 transition-all duration-500 scale-110 group-hover:scale-100"
                   title={member.imageTitle}
+                  fetchPriority="high"
                 />
               </div>
 

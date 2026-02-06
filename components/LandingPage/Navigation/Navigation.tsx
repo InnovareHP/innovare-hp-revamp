@@ -40,22 +40,12 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY || window.pageYOffset;
-      // Banner height varies: 52px mobile, 44px tablet, 40px desktop
-      const bannerHeight =
-        window.innerWidth < 640 ? 52 : window.innerWidth < 768 ? 44 : 40;
-      setIsScrolled(scrollPosition > bannerHeight);
+      setIsScrolled(scrollPosition > 0);
     };
 
-    // Check initial scroll position
     handleScroll();
-
-    // Add scroll event listener
     window.addEventListener("scroll", handleScroll, { passive: true });
-
-    // Cleanup
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Handle keyboard navigation and focus management for mobile menu
@@ -132,7 +122,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
         Skip to main content
       </Link>
       <header
-        className={`fixed left-0 w-full z-50 px-6 py-2 md:px-6 md:py-2 pointer-events-none bg-white transition-[top] duration-200 ${isScrolled ? "top-0" : "top-[52px] sm:top-[60px] md:top-[70px]"}`}
+        className="fixed top-0 left-0 w-full z-50 px-6 py-2 md:px-6 md:py-2 pointer-events-none bg-white"
         role="banner"
       >
         <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">

@@ -14,7 +14,7 @@ const page = async ({ searchParams }: Props) => {
   const events = getEventsAuthenticated(Number(limit ?? 10), Number(page ?? 1));
 
   return (
-    <section className="space-y-6">
+    <section className="space-y-6 mt-24">
       <div className="flex items-center justify-between">
         <div className="space-y-6">
           <h2 className="text-2xl font-bold">List of All Events</h2>

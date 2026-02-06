@@ -96,7 +96,7 @@ const ContactInfoCard = () => {
         />
       </div>
 
-      <div className="p-6 flex items-start gap-6">
+      <div className="p-6 flex flex-col xl:flex-row items-start gap-6">
         <img
           src="/images/logo.png"
           alt="Innovare HP logo"

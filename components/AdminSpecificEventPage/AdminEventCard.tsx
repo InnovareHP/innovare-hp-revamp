@@ -1,5 +1,5 @@
-import { Prisma } from "@/generated/prisma";
 import { ActionResponse } from "@/lib/types";
+import { Prisma } from "@prisma/client";
 import { use } from "react";
 import {
   Card,

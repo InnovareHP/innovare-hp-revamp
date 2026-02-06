@@ -1,8 +1,8 @@
 "use client"; // This must be a Client Component to use useState/useEffect
 
+import { ContactFormSubmission } from "@prisma/client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ContactFormSubmission } from "../../generated/prisma/client";
 
 const formatDate = (dateString: Date | string) => {
   const date = new Date(dateString);

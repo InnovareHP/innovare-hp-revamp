@@ -1,10 +1,10 @@
 "use server";
 
-import { Prisma } from "@/generated/prisma";
 import { requireAdmin } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
 import { sendAdminCustomEmail } from "@/lib/send-event-email";
 import { formatDate } from "@/lib/utils";
+import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 type ActionResponse<T = void> = {

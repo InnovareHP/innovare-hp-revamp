@@ -2,7 +2,7 @@ import { getEventById } from "@/app/events/action/eventaction";
 import EventDetailClient from "@/components/EventDetail/EventDetailClient";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
-import { Prisma } from "@/generated/prisma";
+import { Prisma } from "@prisma/client";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";

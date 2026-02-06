@@ -30,8 +30,8 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { Media, Prisma } from "@/generated/prisma/client";
 import { formatDate } from "@/lib/utils";
+import { Media, Prisma } from "@prisma/client";
 import {
   AlertCircle,
   Clock,

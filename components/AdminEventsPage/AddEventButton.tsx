@@ -2,11 +2,11 @@
 
 import { createEvent } from "@/app/admin/events/action";
 import { updateEvent } from "@/app/events/action/eventaction";
-import { EventStatus } from "@/generated/prisma";
 import { EventFormValues, eventSchema } from "@/lib/schema";
 import { uploadFile } from "@/lib/storage";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { EventStatus } from "@prisma/client";
 import { format } from "date-fns";
 import { CalendarIcon, Plus } from "lucide-react";
 import { useState } from "react";

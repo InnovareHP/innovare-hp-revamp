@@ -9,9 +9,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Prisma } from "@/generated/prisma/client";
 import { isRegisteredForEvent } from "@/lib/event-registration-storage";
 import { formatDate, formatTime } from "@/lib/utils";
+import { Prisma } from "@prisma/client";
 import {
   Calendar,
   CalendarDays,

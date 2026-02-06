@@ -9,7 +9,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Prisma } from "@/generated/prisma";
+import { Prisma } from "@prisma/client";
 import { format } from "date-fns";
 import { ExternalLink, MapPin } from "lucide-react";
 import Link from "next/link";

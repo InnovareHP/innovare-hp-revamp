@@ -61,16 +61,20 @@ const ContactPage = ({ initialSubmissions }: ContactPageProps) => {
         <div className="flex gap-2 items-center">
           <span className="text-sm text-gray-700 mr-2">Page {page}</span>
           <button
+            type="button"
             disabled={page <= 1 || loading}
             onClick={() => setPage((p) => p - 1)}
             className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300 transition"
+            aria-label="Previous page"
           >
             Prev
           </button>
           <button
+            type="button"
             disabled={page >= Math.ceil(total / limit) || loading}
             onClick={() => setPage((p) => p + 1)}
             className="px-3 py-1 bg-blue-600 text-white rounded disabled:opacity-50 hover:bg-blue-700 transition"
+            aria-label="Next page"
           >
             Next
           </button>

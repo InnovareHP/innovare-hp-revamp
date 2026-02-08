@@ -128,7 +128,7 @@ export default function ContactSection() {
                 <FormItem>
                   <FormLabel>Name *</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} required aria-required="true" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -145,7 +145,7 @@ export default function ContactSection() {
                 <FormItem>
                   <FormLabel>Phone *</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} required aria-required="true" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -162,7 +162,7 @@ export default function ContactSection() {
                 <FormItem>
                   <FormLabel>Email *</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} required aria-required="true" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -179,7 +179,7 @@ export default function ContactSection() {
                 <FormItem>
                   <FormLabel>Message *</FormLabel>
                   <FormControl>
-                    <Textarea className="min-h-[120px]" {...field} />
+                    <Textarea className="min-h-[120px]" {...field} required aria-required="true" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

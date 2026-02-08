@@ -136,7 +136,7 @@ const ContactInfoCard = () => {
                       >
                         {displayValue || value}
                         {type === "email" && (
-                          <span className="sr-only"> (opens your email application)</span>
+                          <span> (opens your email application)</span>
                         )}
                       </Link>
                     ) : (

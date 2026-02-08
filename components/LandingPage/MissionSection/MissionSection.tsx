@@ -3,11 +3,10 @@
 import { motion, Variants } from "framer-motion";
 
 const MissionSection = () => {
-  // Animation variants with strict typing
+  /* Transform-only animation so content is never "visually hidden" (opacity 0) while exposed to AT */
   const textContainer: Variants = {
-    hidden: { opacity: 0 },
+    hidden: {},
     visible: {
-      opacity: 1,
       transition: {
         staggerChildren: 0.2,
         delayChildren: 0.1,
@@ -16,20 +15,18 @@ const MissionSection = () => {
   };
 
   const fadeInUp: Variants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { y: 30 },
     visible: {
-      opacity: 1,
       y: 0,
       transition: { duration: 0.8, ease: "easeOut" },
     },
   };
 
   const imageReveal: Variants = {
-    hidden: { opacity: 0, scale: 1.1 },
+    hidden: { scale: 1.1 },
     visible: {
-      opacity: 1,
       scale: 1,
-      transition: { duration: 1.5, ease: [0.16, 1, 0.3, 1] }, // Smooth cinematic ease
+      transition: { duration: 1.5, ease: [0.16, 1, 0.3, 1] },
     },
   };
 

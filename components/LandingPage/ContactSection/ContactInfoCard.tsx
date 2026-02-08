@@ -134,12 +134,11 @@ const ContactInfoCard = () => {
                         href={href}
                         className="text-sm text-gray-700 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
                         title={type === "email" ? "This link opens your email application." : undefined}
+                        aria-label={type === "email" ? `Opens your email application: ${value}` : undefined}
                       >
-                        {type === "email" ? (
-                          <>Opens your email application: {displayValue || value}</>
-                        ) : (
-                          displayValue || value
-                        )}
+                        {type === "email"
+                          ? `Opens your email application: ${displayValue ?? value}`
+                          : displayValue || value}
                       </Link>
                     ) : (
                       <p className="text-sm text-gray-700">

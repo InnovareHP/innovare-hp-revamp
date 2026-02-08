@@ -16,7 +16,7 @@ import type { ContactFormValues } from "@/lib/schema";
 import { contactFormSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, type Variants } from "framer-motion";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import Turnstile, { useTurnstile } from "react-turnstile";
 import { toast } from "sonner";
@@ -44,9 +44,19 @@ const itemVariants: Variants = {
   visible: { y: 0 },
 };
 
+const TURNSTILE_IFRAME_TITLE = "Security verification to confirm you are human (Cloudflare Turnstile)";
+
 export default function ContactSection() {
   const turnstile = useTurnstile();
+  const turnstileContainerRef = useRef<HTMLDivElement>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+
+  const labelTurnstileIframe = () => {
+    const iframe = turnstileContainerRef.current?.querySelector("iframe");
+    if (iframe && !iframe.getAttribute("title")) {
+      iframe.setAttribute("title", TURNSTILE_IFRAME_TITLE);
+    }
+  };
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -215,9 +225,11 @@ export default function ContactSection() {
                 Security verification
               </legend>
               <Turnstile
+                userRef={turnstileContainerRef as React.MutableRefObject<HTMLDivElement>}
                 sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? ""}
                 theme="light"
                 size="flexible"
+                onLoad={labelTurnstileIframe}
                 onVerify={(token) => setTurnstileToken(token)}
                 onExpire={() => setTurnstileToken(null)}
                 onError={() => {

@@ -52,6 +52,7 @@ function ADABanner() {
             <a
               href="mailto:hello@innovarehp.com"
               className="underline font-medium hover:text-blue-200 transition-colors"
+              aria-label="hello@innovarehp.com (opens your email application)"
             >
               hello@innovarehp.com
             </a>{" "}
@@ -96,7 +97,6 @@ const LandingPage = ({ posts }: { posts: Promise<LinkedInPost[]> }) => {
     <>
       <Navigation />
       <main id="main-content" className="relative pb-16 md:pb-12" tabIndex={-1}>
-        <span className="sr-only">Innovare HP: Healthcare marketing and growth strategy. Primary content.</span>
         <HeroSection />
         <AboutSection />
         <Partners />
@@ -107,6 +107,7 @@ const LandingPage = ({ posts }: { posts: Promise<LinkedInPost[]> }) => {
         <TeamSection />
         <ClientReviews />
         <ContactPage />
+        <span className="sr-only">Innovare HP: Healthcare marketing and growth strategy. Primary content.</span>
       </main>
       <ADABanner />
     </>

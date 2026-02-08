@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import {
   Facebook,
   Instagram,
@@ -9,6 +9,7 @@ import {
   MapPin,
   Phone,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const contactDetails = [
@@ -86,18 +87,19 @@ const ContactInfoCard = () => {
   return (
     <div className="bg-white rounded-lg overflow-hidden lg:shadow-lg border">
       <div className="relative h-64 w-full">
-        <img
+        <Image
           src="/images/contact-form.jpg"
           alt="Innovare HP team members collaborating on healthcare marketing projects"
           title="Innovare HP team members collaborating on healthcare marketing projects"
           className="object-cover rounded-t-lg"
           width={1000}
           height={1000}
+          sizes="(max-width: 1024px) 100vw, 1024px"
         />
       </div>
 
       <div className="p-6 flex flex-col xl:flex-row items-start gap-6">
-        <img
+        <Image
           src="/images/logo.png"
           alt="Innovare HP logo"
           title="Innovare HP logo"
@@ -131,9 +133,11 @@ const ContactInfoCard = () => {
                       <Link
                         href={href}
                         className="text-sm text-gray-700 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
-                        aria-label={`${label}: ${value}${type === "phone" ? ". Call us" : type === "email" ? ". Email us" : ". View on map"}`}
                       >
                         {displayValue || value}
+                        {type === "email" && (
+                          <span className="sr-only"> Opens your email application.</span>
+                        )}
                       </Link>
                     ) : (
                       <p className="text-sm text-gray-700">
@@ -146,21 +150,14 @@ const ContactInfoCard = () => {
             )}
           </motion.div>
 
-          <div className="space-y-3">
-            <p
-              className="text-sm font-semibold text-gray-700"
-              id="social-media-heading"
-            >
+          <fieldset className="space-y-3 border-0 p-0 m-0 min-w-0">
+            <legend className="text-sm font-semibold text-gray-700">
               Social Media
-            </p>
-            <div
-              role="group"
-              className="flex gap-3"
-              aria-labelledby="social-media-heading"
-            >
-              {socialLinks.map(({ icon: Icon, href, title }, index) => (
+            </legend>
+            <div className="flex gap-3">
+              {socialLinks.map(({ icon: Icon, href, title }) => (
                 <Link
-                  key={index}
+                  key={title}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -172,7 +169,7 @@ const ContactInfoCard = () => {
                 </Link>
               ))}
             </div>
-          </div>
+          </fieldset>
         </div>
       </div>
     </div>

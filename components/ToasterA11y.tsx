@@ -19,11 +19,16 @@ export function ToasterA11y() {
         sonnerSection.setAttribute("aria-hidden", hasToasts ? "false" : "true");
       }
 
-      // Next.js route announcer: hide from AT when no announcement text
-      const routeAnnouncer = document.getElementById("__next-route-announcer__");
-      if (routeAnnouncer) {
-        const hasContent = (routeAnnouncer.textContent ?? "").trim().length > 0;
-        routeAnnouncer.setAttribute("aria-hidden", hasContent ? "false" : "true");
+      // Next.js route announcer (div and custom element): hide from AT when no announcement text
+      const routeAnnouncerDiv = document.getElementById("__next-route-announcer__");
+      const hasAnnouncerContent =
+        (routeAnnouncerDiv?.textContent ?? "").trim().length > 0;
+      if (routeAnnouncerDiv) {
+        routeAnnouncerDiv.setAttribute("aria-hidden", hasAnnouncerContent ? "false" : "true");
+      }
+      const routeAnnouncerElement = document.querySelector<HTMLElement>("next-route-announcer");
+      if (routeAnnouncerElement) {
+        routeAnnouncerElement.setAttribute("aria-hidden", hasAnnouncerContent ? "false" : "true");
       }
     };
 

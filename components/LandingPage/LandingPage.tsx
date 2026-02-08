@@ -52,10 +52,10 @@ function ADABanner() {
             <a
               href="mailto:hello@innovarehp.com"
               className="underline font-medium hover:text-blue-200 transition-colors"
-              title="This link opens your email application."
-              aria-label="Opens your email application: hello@innovarehp.com"
+              title="This link opens your email application (mailto)."
+              aria-label="Opens your email application (mailto): hello@innovarehp.com"
             >
-              Opens your email application: hello@innovarehp.com
+              Opens your email application (mailto): hello@innovarehp.com
             </a>{" "}
             if you encounter any issues.
           </p>

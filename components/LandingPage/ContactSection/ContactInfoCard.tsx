@@ -41,15 +41,6 @@ const contactDetails = [
     href: "https://maps.google.com/?q=4221+Bud+Drive+NE+Comstock+Park+MI+49321",
     type: "address",
   },
-  // {
-  //   label: "Policy",
-  //   value: (
-  //     <Link href="/privacy-policy" className="text-blue-600">
-  //       Privacy Policy
-  //     </Link>
-  //   ),
-  //   icon: File,
-  // },
 ];
 
 const socialLinks = [
@@ -92,9 +83,9 @@ const ContactInfoCard = () => {
           alt="Innovare HP team members collaborating on healthcare marketing projects"
           title="Innovare HP team members collaborating on healthcare marketing projects"
           className="object-cover rounded-t-lg"
-          width={1000}
-          height={1000}
+          fill
           sizes="(max-width: 1024px) 100vw, 1024px"
+          priority
         />
       </div>
 
@@ -132,13 +123,29 @@ const ContactInfoCard = () => {
                     {href ? (
                       <Link
                         href={href}
-                        className="text-sm text-gray-700 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
-                        title={type === "email" ? "This link opens your email application (mailto)." : undefined}
-                        aria-label={type === "email" ? `Opens your email application (mailto): ${value}` : undefined}
+                        className="text-sm text-gray-700 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded transition-colors"
+                        aria-label={
+                          type === "email"
+                            ? `Send an email to ${value} (opens email application)`
+                            : type === "phone"
+                              ? `Call ${value} (opens phone app)`
+                              : undefined
+                        }
                       >
-                        {type === "email"
-                          ? `Opens your email application (mailto): ${displayValue ?? value}`
-                          : displayValue || value}
+                        {displayValue || value}
+                        {/* Hidden text for accessibility scanners and screen readers */}
+                        {type === "email" && (
+                          <span className="sr-only">
+                            {" "}
+                            (opens email application)
+                          </span>
+                        )}
+                        {type === "phone" && (
+                          <span className="sr-only">
+                            {" "}
+                            (initiates a phone call)
+                          </span>
+                        )}
                       </Link>
                     ) : (
                       <p className="text-sm text-gray-700">

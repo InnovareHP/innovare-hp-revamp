@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useScroll, useSpring, Variants } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
+import type { Variants } from "framer-motion";
 import Link from "next/link";
 import Navigation from "../LandingPage/Navigation/Navigation";
 
@@ -88,7 +89,7 @@ const PrivacyPolicy = () => {
             <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-600 mb-6">
               Section Index
             </h4>
-            <nav className="flex flex-col gap-4">
+            <nav aria-label="Section index" className="flex flex-col gap-4">
               {navLinks.map((link, idx) => (
                 <motion.a
                   key={link.id}
@@ -167,9 +168,9 @@ const PrivacyPolicy = () => {
                 "Company or organization name",
                 "Business or mailing address",
                 "Other information provided voluntarily",
-              ].map((item, i) => (
+              ].map((item) => (
                 <motion.div
-                  key={i}
+                  key={item}
                   variants={fadeInUp}
                   transition={transitionBase}
                   className="flex items-center gap-4 p-4 bg-white border border-slate-100 rounded-xl shadow-sm"
@@ -207,9 +208,9 @@ const PrivacyPolicy = () => {
                 "Communicate with providers on your behalf",
                 "Analyze usage trends",
                 "Comply with legal obligations",
-              ].map((item, i) => (
+              ].map((item) => (
                 <motion.div
-                  key={i}
+                  key={item}
                   variants={fadeInUp}
                   transition={transitionBase}
                   className="flex items-center gap-4 p-4 bg-white border border-slate-100 rounded-xl shadow-sm"

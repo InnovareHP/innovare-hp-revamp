@@ -25,7 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle, UserPlus } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import Turnstile, { useTurnstile } from "react-turnstile";
+import Turnstile from "react-turnstile";
 import { toast } from "sonner";
 import * as z from "zod";
 
@@ -65,7 +65,6 @@ const EventRegistrationModal = ({
   isPastDeadline,
   onSuccess,
 }: EventRegistrationModalProps) => {
-  const turnstile = useTurnstile();
   const turnstileContainerRef = useRef<HTMLDivElement>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
@@ -131,7 +130,7 @@ const EventRegistrationModal = ({
           description: "Please try again or contact support.",
         });
       }
-    } catch (error) {
+    } catch {
       toast.error("An unexpected error occurred", {
         description: "Please try again later.",
       });
@@ -272,7 +271,7 @@ const EventRegistrationModal = ({
 
                 <Turnstile
                   userRef={turnstileContainerRef as React.MutableRefObject<HTMLDivElement>}
-                  sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                  sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? ""}
                   theme="light"
                   size="flexible"
                   onLoad={labelTurnstileIframe}

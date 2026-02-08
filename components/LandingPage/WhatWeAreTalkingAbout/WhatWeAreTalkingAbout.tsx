@@ -104,7 +104,7 @@ const WhatWeAreTalkingAbout = ({
         aria-busy={loading}
       >
         {posts.map((post: LinkedInPost, index: number) => (
-          <article
+          <div
             key={post.id}
             data-feed-item
             className="break-inside-avoid"
@@ -151,7 +151,7 @@ const WhatWeAreTalkingAbout = ({
               </div>
               <span className="sr-only">(opens in new tab)</span>
           </Link>
-          </article>
+          </div>
         ))}
       </div>
 

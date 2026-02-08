@@ -30,24 +30,23 @@ const defaultValues: Partial<ContactFormValues> = {
   message: "",
 };
 
+/* Use transform-only animation so content is never "visually hidden" (opacity 0) and exposed to AT */
 const containerVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { y: 20 },
   visible: {
-    opacity: 1,
     y: 0,
     transition: { staggerChildren: 0.1 },
   },
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0 },
+  hidden: { y: 10 },
+  visible: { y: 0 },
 };
 
 export default function ContactSection() {
   const turnstile = useTurnstile();
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
-  const [hasBecomeVisible, setHasBecomeVisible] = useState(false);
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -99,22 +98,19 @@ export default function ContactSection() {
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
-      onAnimationComplete={() => setHasBecomeVisible(true)}
       className="p-8 bg-white rounded-lg border shadow-sm"
       aria-label="Contact form"
-      aria-hidden={!hasBecomeVisible}
     >
       <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-4">
         Stay in touch!
       </motion.h2>
 
-      {/* Screen reader announcements for form status - intentionally exposed to AT when visible */}
+      {/* Screen reader announcements for form status */}
       <div
         id="form-announcement"
         className="sr-only"
         aria-live="polite"
         aria-atomic="true"
-        aria-hidden={!hasBecomeVisible}
       />
 
       <Form {...form}>
@@ -124,7 +120,7 @@ export default function ContactSection() {
           noValidate
         >
           {/* NAME */}
-          <motion.div variants={itemVariants} aria-hidden={!hasBecomeVisible}>
+          <motion.div variants={itemVariants}>
             <FormField
               control={form.control}
               name="name"
@@ -141,7 +137,7 @@ export default function ContactSection() {
           </motion.div>
 
           {/* PHONE */}
-          <motion.div variants={itemVariants} aria-hidden={!hasBecomeVisible}>
+          <motion.div variants={itemVariants}>
             <FormField
               control={form.control}
               name="phoneNumber"
@@ -158,7 +154,7 @@ export default function ContactSection() {
           </motion.div>
 
           {/* EMAIL */}
-          <motion.div variants={itemVariants} aria-hidden={!hasBecomeVisible}>
+          <motion.div variants={itemVariants}>
             <FormField
               control={form.control}
               name="email"
@@ -175,7 +171,7 @@ export default function ContactSection() {
           </motion.div>
 
           {/* MESSAGE */}
-          <motion.div variants={itemVariants} aria-hidden={!hasBecomeVisible}>
+          <motion.div variants={itemVariants}>
             <FormField
               control={form.control}
               name="message"
@@ -213,7 +209,7 @@ export default function ContactSection() {
           />
 
           {/* TURNSTILE */}
-          <motion.div variants={itemVariants} aria-hidden={!hasBecomeVisible}>
+          <motion.div variants={itemVariants}>
             <fieldset className="border-0 p-0 m-0 min-w-0">
               <legend id="security-verification-legend" className="sr-only">
                 Security verification
@@ -233,7 +229,7 @@ export default function ContactSection() {
           </motion.div>
 
           {/* SUBMIT */}
-          <motion.div variants={itemVariants} aria-hidden={!hasBecomeVisible}>
+          <motion.div variants={itemVariants}>
             <Button
               type="submit"
               disabled={form.formState.isSubmitting || !turnstileToken}

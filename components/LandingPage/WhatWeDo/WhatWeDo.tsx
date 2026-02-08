@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { motion, Variants } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 const services = [
   {
@@ -100,9 +100,9 @@ const WhatWeDo = () => {
           viewport={{ once: true, margin: "-100px" }}
           className="space-y-12 lg:space-y-20 mx-0 sm:mx-4 md:mx-6 lg:mx-10"
         >
-          {services.map((service, index) => (
+          {services.map((service) => (
             <motion.div
-              key={index}
+              key={service.title}
               variants={itemVariants}
               className="space-y-4 group"
             >
@@ -126,9 +126,9 @@ const WhatWeDo = () => {
           )
         }
         className="border-blue-600 my-10 w-full text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-none px-8 py-6 text-sm font-semibold uppercase tracking-widest cursor-pointer"
-        aria-label="Download Innovare HP brochure PDF"
       >
         Download Brochure
+        <span className="sr-only"> (PDF)</span>
       </Button>
     </section>
   );

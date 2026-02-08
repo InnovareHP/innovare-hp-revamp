@@ -118,7 +118,7 @@
   }
   html {
     /* Prevent sticky header from obscuring focused elements (WCAG 2.2) */
-    scroll-padding-top: 5rem;
+    scroll-padding-top: 8rem;
   }
   body {
     @apply bg-background text-foreground;
@@ -171,7 +171,7 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 [tabindex]:not([tabindex="-1"]):focus-visible {
-  scroll-margin-top: 7rem;
+  scroll-margin-top: 8rem;
 }
 
 /* Ensure links are distinguishable without color - WCAG 2.1 Level A */

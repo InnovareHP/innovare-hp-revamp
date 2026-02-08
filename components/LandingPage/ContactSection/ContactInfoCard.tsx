@@ -153,10 +153,10 @@ const ContactInfoCard = () => {
             >
               Social Media
             </p>
-            <nav
+            <div
+              role="group"
               className="flex gap-3"
               aria-labelledby="social-media-heading"
-              aria-label="Social media links"
             >
               {socialLinks.map(({ icon: Icon, href, title }, index) => (
                 <Link
@@ -171,7 +171,7 @@ const ContactInfoCard = () => {
                   <Icon className="w-6 h-6" aria-hidden="true" />
                 </Link>
               ))}
-            </nav>
+            </div>
           </div>
         </div>
       </div>

@@ -126,8 +126,8 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
         role="banner"
       >
         <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">
-          {/* Logo Section */}
-          <nav className="flex items-center gap-2" aria-label="Main navigation">
+          {/* Logo / brand - main nav is the menu panel */}
+          <div className="flex items-center gap-2">
             <Link
               href="/"
               title="Innovare HP"
@@ -145,7 +145,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
             >
               Innovare HP
             </span>
-          </nav>
+          </div>
 
           {/* Burger Icon */}
 
@@ -197,31 +197,31 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
           </button>
         </div>
 
-        {/* Full Screen Menu Overlay */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              variants={{
-                closed: {
-                  opacity: 0,
-                  x: "100%",
-                  transition: { duration: 0.5, ease: "easeInOut" },
-                },
-                open: {
-                  opacity: 1,
-                  x: 0,
-                  transition: { duration: 0.5, ease: "easeInOut" },
-                },
-              }}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="fixed inset-0 bg-black text-white z-40 flex flex-col justify-center items-center pointer-events-auto"
-              role="dialog"
-              aria-modal="true"
-              aria-label="Navigation menu"
-              id="navigation-menu"
-            >
+        {/* Full Screen Menu Overlay - wrapper always in DOM so aria-controls is valid */}
+        <div id="navigation-menu">
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                variants={{
+                  closed: {
+                    opacity: 0,
+                    x: "100%",
+                    transition: { duration: 0.5, ease: "easeInOut" },
+                  },
+                  open: {
+                    opacity: 1,
+                    x: 0,
+                    transition: { duration: 0.5, ease: "easeInOut" },
+                  },
+                }}
+                initial="closed"
+                animate="open"
+                exit="closed"
+                className="fixed inset-0 bg-black text-white z-40 flex flex-col justify-center items-center pointer-events-auto"
+                role="dialog"
+                aria-modal="true"
+                aria-label="Navigation menu"
+              >
               <nav
                 className="flex flex-col gap-6 text-center"
                 aria-label="Site navigation"
@@ -248,6 +248,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
             </motion.div>
           )}
         </AnimatePresence>
+        </div>
       </header>
     </>
   );

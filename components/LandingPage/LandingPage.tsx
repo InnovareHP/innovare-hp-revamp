@@ -96,6 +96,7 @@ const LandingPage = ({ posts }: { posts: Promise<LinkedInPost[]> }) => {
     <>
       <Navigation />
       <main id="main-content" className="relative pb-16 md:pb-12" tabIndex={-1}>
+        <span className="sr-only">Innovare HP: Healthcare marketing and growth strategy. Primary content.</span>
         <HeroSection />
         <AboutSection />
         <Partners />

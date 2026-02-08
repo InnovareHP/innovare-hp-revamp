@@ -46,6 +46,7 @@ const itemVariants: Variants = {
 export default function ContactSection() {
   const turnstile = useTurnstile();
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [hasBecomeVisible, setHasBecomeVisible] = useState(false);
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -97,8 +98,10 @@ export default function ContactSection() {
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
+      onAnimationComplete={() => setHasBecomeVisible(true)}
       className="p-8 bg-white rounded-lg border shadow-sm"
       aria-label="Contact form"
+      aria-hidden={!hasBecomeVisible}
     >
       <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-4">
         Stay in touch!

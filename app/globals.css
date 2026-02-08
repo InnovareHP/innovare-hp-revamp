@@ -160,6 +160,16 @@
   white-space: normal;
 }
 
+/* Prevent sticky header from obscuring focused elements - WCAG 2.2 (Motor) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  scroll-margin-top: 7rem;
+}
+
 /* Ensure links are distinguishable without color - WCAG 2.1 Level A */
 a:not([class*="rounded-full"]):not([class*="button"]):not([class*="Button"]) {
   text-decoration: underline !important;

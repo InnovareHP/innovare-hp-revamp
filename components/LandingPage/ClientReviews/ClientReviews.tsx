@@ -112,7 +112,7 @@ const ClientReviews = () => {
                 >
                   &ldquo;{reviews[0].quote}&rdquo;
                 </blockquote>
-                <footer className="space-y-0.5">
+                <div className="space-y-0.5">
                   <p className="font-bold text-gray-700 text-base lg:text-xl">
                     {reviews[0].name}
                   </p>
@@ -122,7 +122,7 @@ const ClientReviews = () => {
                   <p className="text-gray-700 text-base italic lg:text-xl">
                     {reviews[0].company}
                   </p>
-                </footer>
+                </div>
               </div>
             </motion.div>
           </div>
@@ -160,7 +160,7 @@ const ClientReviews = () => {
                 >
                   &ldquo;{reviews[1].quote}&rdquo;
                 </blockquote>
-                <footer className="space-y-0.5">
+                <div className="space-y-0.5">
                   <p className="font-bold text-gray-700 text-base lg:text-xl">
                     {reviews[1].name}
                   </p>
@@ -170,7 +170,7 @@ const ClientReviews = () => {
                   <p className="text-gray-700 text-base italic lg:text-xl">
                     {reviews[1].company}
                   </p>
-                </footer>
+                </div>
               </div>
             </div>
 
@@ -205,7 +205,7 @@ const ClientReviews = () => {
                 >
                   &ldquo;{reviews[2].quote}&rdquo;
                 </blockquote>
-                <footer className="space-y-0.5">
+                <div className="space-y-0.5">
                   <p className="font-bold text-gray-700 text-base lg:text-xl">
                     {reviews[2].name}
                   </p>
@@ -215,7 +215,7 @@ const ClientReviews = () => {
                   <p className="text-gray-700 text-base italic lg:text-xl">
                     {reviews[2].company}
                   </p>
-                </footer>
+                </div>
               </div>
             </div>
           </div>

@@ -70,7 +70,7 @@ const WhatWeAreTalkingAbout = ({
     
     // Focus management: Move focus to first new post for keyboard users
     setTimeout(() => {
-      const allPosts = document.querySelectorAll('[role="article"]');
+      const allPosts = document.querySelectorAll('[data-feed-item]');
       if (allPosts.length > previousPostCount) {
         const firstNewPost = allPosts[previousPostCount] as HTMLElement;
         const firstLink = firstNewPost?.querySelector('a[href]') as HTMLElement;
@@ -109,17 +109,16 @@ const WhatWeAreTalkingAbout = ({
         aria-busy={loading}
       >
         {posts.map((post: LinkedInPost, index: number) => (
-          <article
+          <div
             key={post.id}
-            aria-posinset={index + 1}
-            aria-setsize={posts.length}
+            role="group"
+            data-feed-item
             className="break-inside-avoid"
           >
             <Link
               href={`https://www.linkedin.com/embed/feed/update/${post.id}`}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`View LinkedIn post ${index + 1} by Innovare HP: ${cleanText(post.text).substring(0, 50)}... (opens in new tab)`}
               className="block group bg-slate-50 rounded-2xl border-2 border-slate-200 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               {post.images?.[0]?.imageUrl && (
@@ -155,8 +154,9 @@ const WhatWeAreTalkingAbout = ({
                   </div>
                 </div>
               </div>
+              <span className="sr-only">(opens in new tab)</span>
           </Link>
-          </article>
+          </div>
         ))}
       </div>
 
@@ -164,12 +164,10 @@ const WhatWeAreTalkingAbout = ({
       {hasMore && (
         <div className="mt-14 flex justify-center">
           <button
+            type="button"
             onClick={loadMore}
             disabled={loading}
             className="px-6 py-3 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            aria-label={
-              loading ? "Loading more posts" : "Load more LinkedIn posts"
-            }
             aria-busy={loading}
           >
             {loading ? "Loading..." : "Load more"}

@@ -52,10 +52,15 @@ export default function ContactSection() {
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const labelTurnstileIframe = () => {
-    const iframe = turnstileContainerRef.current?.querySelector("iframe");
-    if (iframe && !iframe.getAttribute("title")) {
-      iframe.setAttribute("title", TURNSTILE_IFRAME_TITLE);
-    }
+    const setTitle = () => {
+      const iframe = turnstileContainerRef.current?.querySelector("iframe");
+      if (iframe && !iframe.getAttribute("title")) {
+        iframe.setAttribute("title", TURNSTILE_IFRAME_TITLE);
+      }
+    };
+    setTitle();
+    // Fallback: iframe may be injected shortly after onLoad (audit-friendly)
+    setTimeout(setTitle, 100);
   };
 
   const form = useForm<ContactFormValues>({

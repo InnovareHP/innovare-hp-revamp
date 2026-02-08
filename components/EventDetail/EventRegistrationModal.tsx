@@ -70,10 +70,15 @@ const EventRegistrationModal = ({
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const labelTurnstileIframe = () => {
-    const iframe = turnstileContainerRef.current?.querySelector("iframe");
-    if (iframe && !iframe.getAttribute("title")) {
-      iframe.setAttribute("title", "Security verification for event registration (Cloudflare Turnstile)");
-    }
+    const TITLE = "Security verification for event registration (Cloudflare Turnstile)";
+    const setTitle = () => {
+      const iframe = turnstileContainerRef.current?.querySelector("iframe");
+      if (iframe && !iframe.getAttribute("title")) {
+        iframe.setAttribute("title", TITLE);
+      }
+    };
+    setTitle();
+    setTimeout(setTitle, 100);
   };
 
   const [open, setOpen] = useState(false);

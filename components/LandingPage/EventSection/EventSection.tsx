@@ -33,16 +33,13 @@ export default function EventSection() {
           </h1>
 
           <div className="pt-2 sm:pt-4 flex justify-center">
-            <Link
-              href="/events"
-              title="Explore our Event Calendar"
-              aria-label="Explore our Event Calendar"
-            >
+            <Link href="/events" title="Explore our Event Calendar">
               <Button
                 variant="outline"
                 className="border-white bg-transparent text-white hover:bg-white/10 hover:text-white rounded-none px-6 py-5 sm:px-8 sm:py-6 md:px-10 md:py-7 text-lg font-semibold uppercase tracking-widest cursor-pointer"
               >
                 Explore our Event Calendar
+                <span className="sr-only"> (go to events page)</span>
               </Button>
             </Link>
           </div>

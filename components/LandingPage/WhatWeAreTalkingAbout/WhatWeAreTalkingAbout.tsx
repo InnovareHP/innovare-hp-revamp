@@ -1,8 +1,9 @@
 "use client";
 
-import { LinkedInPost } from "@/lib/types";
+import type { LinkedInPost } from "@/lib/types";
+import Image from "next/image";
 import Link from "next/link";
-import { use, useEffect, useState } from "react";
+import { use, useState } from "react";
 
 const WhatWeAreTalkingAbout = ({
   initialPosts,
@@ -11,16 +12,11 @@ const WhatWeAreTalkingAbout = ({
 }) => {
   const data = use(initialPosts);
   const [posts, setPosts] = useState<LinkedInPost[]>(data);
-  const [cursor, setCursor] = useState<string | null>(null);
+  const [cursor, setCursor] = useState<string | null>(() =>
+    data.length > 0 ? data[data.length - 1].id : null
+  );
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-
-  // ✅ set initial cursor from last post
-  useEffect(() => {
-    if (data.length > 0) {
-      setCursor(data[data.length - 1].id);
-    }
-  }, [data]);
 
   const cleanText = (text: string | null) => {
     if (!text) return "";
@@ -70,7 +66,7 @@ const WhatWeAreTalkingAbout = ({
     
     // Focus management: Move focus to first new post for keyboard users
     setTimeout(() => {
-      const allPosts = document.querySelectorAll('[role="article"]');
+      const allPosts = document.querySelectorAll('[data-feed-item]');
       if (allPosts.length > previousPostCount) {
         const firstNewPost = allPosts[previousPostCount] as HTMLElement;
         const firstLink = firstNewPost?.querySelector('a[href]') as HTMLElement;
@@ -82,10 +78,9 @@ const WhatWeAreTalkingAbout = ({
   };
 
   return (
-    <section
+    <div
       id="what-we-are-talking-about"
       className="max-w-7xl mx-auto px-6 lg:px-12 py-20 bg-white"
-      aria-label="What we're talking about section"
     >
       <div className="mb-12">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-900">
@@ -109,28 +104,27 @@ const WhatWeAreTalkingAbout = ({
         aria-busy={loading}
       >
         {posts.map((post: LinkedInPost, index: number) => (
-          <article
+          <div
             key={post.id}
-            aria-posinset={index + 1}
-            aria-setsize={posts.length}
+            data-feed-item
             className="break-inside-avoid"
           >
             <Link
               href={`https://www.linkedin.com/embed/feed/update/${post.id}`}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`View LinkedIn post ${index + 1} by Innovare HP: ${cleanText(post.text).substring(0, 50)}... (opens in new tab)`}
               className="block group bg-slate-50 rounded-2xl border-2 border-slate-200 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               {post.images?.[0]?.imageUrl && (
                 <div className="relative aspect-square w-full">
-                  <img
+                  <Image
                     src={post.images[0].imageUrl}
-                    alt={post.images[0].altText || `Innovare HP LinkedIn post ${index + 1} content`}
-                    title={post.images[0].altText || `Innovare HP LinkedIn post ${index + 1} content`}
+                    alt={post.images[0].altText ?? `Innovare HP LinkedIn post ${index + 1} content`}
+                    title={post.images[0].altText ?? `Innovare HP LinkedIn post ${index + 1} content`}
                     width={1000}
                     height={1000}
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    unoptimized
                   />
                 </div>
               )}
@@ -155,8 +149,9 @@ const WhatWeAreTalkingAbout = ({
                   </div>
                 </div>
               </div>
+              <span className="sr-only">(opens in new tab)</span>
           </Link>
-          </article>
+          </div>
         ))}
       </div>
 
@@ -164,19 +159,17 @@ const WhatWeAreTalkingAbout = ({
       {hasMore && (
         <div className="mt-14 flex justify-center">
           <button
+            type="button"
             onClick={loadMore}
             disabled={loading}
             className="px-6 py-3 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            aria-label={
-              loading ? "Loading more posts" : "Load more LinkedIn posts"
-            }
             aria-busy={loading}
           >
             {loading ? "Loading..." : "Load more"}
           </button>
         </div>
       )}
-    </section>
+    </div>
   );
 };
 

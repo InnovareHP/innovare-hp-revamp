@@ -23,9 +23,9 @@ import { Input } from "@/components/ui/input";
 import { storeEventRegistration } from "@/lib/event-registration-storage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle, UserPlus } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import Turnstile, { useTurnstile } from "react-turnstile";
+import Turnstile from "react-turnstile";
 import { toast } from "sonner";
 import * as z from "zod";
 
@@ -65,8 +65,20 @@ const EventRegistrationModal = ({
   isPastDeadline,
   onSuccess,
 }: EventRegistrationModalProps) => {
-  const turnstile = useTurnstile();
+  const turnstileContainerRef = useRef<HTMLDivElement>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+
+  const labelTurnstileIframe = () => {
+    const TITLE = "Security verification for event registration (Cloudflare Turnstile)";
+    const setTitle = () => {
+      const iframe = turnstileContainerRef.current?.querySelector("iframe");
+      if (iframe && !iframe.getAttribute("title")) {
+        iframe.setAttribute("title", TITLE);
+      }
+    };
+    setTitle();
+    setTimeout(setTitle, 100);
+  };
 
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -118,7 +130,7 @@ const EventRegistrationModal = ({
           description: "Please try again or contact support.",
         });
       }
-    } catch (error) {
+    } catch {
       toast.error("An unexpected error occurred", {
         description: "Please try again later.",
       });
@@ -258,9 +270,11 @@ const EventRegistrationModal = ({
                 />
 
                 <Turnstile
-                  sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                  userRef={turnstileContainerRef as React.MutableRefObject<HTMLDivElement>}
+                  sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? ""}
                   theme="light"
                   size="flexible"
+                  onLoad={labelTurnstileIframe}
                   onVerify={(token) => setTurnstileToken(token)}
                   onExpire={() => setTurnstileToken(null)}
                   onError={() => {

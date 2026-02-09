@@ -13,11 +13,7 @@ const WorkWithUsButton = ({
 }: WorkWithUsButtonProps) => {
   if (variant === "hero") {
     return (
-      <Link
-        href="#contact"
-        title="Work With Us"
-        aria-label="Work with us - navigate to contact section"
-      >
+      <Link href="#contact" title="Work With Us">
         <Button
           variant="outline"
           className={cn(
@@ -26,6 +22,7 @@ const WorkWithUsButton = ({
           )}
         >
           WORK WITH US
+          <span className="sr-only"> (navigate to contact section)</span>
         </Button>
       </Link>
     );
@@ -33,11 +30,7 @@ const WorkWithUsButton = ({
 
   if (variant === "service") {
     return (
-      <Link
-        href="#contact"
-        title="Work With Us"
-        aria-label="Work with us - navigate to contact section"
-      >
+      <Link href="#contact" title="Work With Us">
         <Button
           variant="outline"
           className={cn(
@@ -46,17 +39,14 @@ const WorkWithUsButton = ({
           )}
         >
           WORK WITH US
+          <span className="sr-only"> (navigate to contact section)</span>
         </Button>
       </Link>
     );
   }
 
   return (
-    <Link
-      href="#contact"
-      title="Work With Us"
-      aria-label="Work with us - navigate to contact section"
-    >
+    <Link href="#contact" title="Work With Us">
       <Button
         variant="outline"
         className={cn(
@@ -65,6 +55,7 @@ const WorkWithUsButton = ({
         )}
       >
         WORK WITH US
+        <span className="sr-only"> (navigate to contact section)</span>
       </Button>
     </Link>
   );

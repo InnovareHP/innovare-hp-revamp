@@ -12,10 +12,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { contactFormSchema, ContactFormValues } from "@/lib/schema";
+import type { ContactFormValues } from "@/lib/schema";
+import { contactFormSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { motion, Variants } from "framer-motion";
-import { useState } from "react";
+import { motion, type Variants } from "framer-motion";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import Turnstile, { useTurnstile } from "react-turnstile";
 import { toast } from "sonner";
@@ -29,23 +30,38 @@ const defaultValues: Partial<ContactFormValues> = {
   message: "",
 };
 
+/* Use transform-only animation so content is never "visually hidden" (opacity 0) and exposed to AT */
 const containerVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { y: 20 },
   visible: {
-    opacity: 1,
     y: 0,
     transition: { staggerChildren: 0.1 },
   },
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0 },
+  hidden: { y: 10 },
+  visible: { y: 0 },
 };
+
+const TURNSTILE_IFRAME_TITLE = "Security verification to confirm you are human (Cloudflare Turnstile)";
 
 export default function ContactSection() {
   const turnstile = useTurnstile();
+  const turnstileContainerRef = useRef<HTMLDivElement>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+
+  const labelTurnstileIframe = () => {
+    const setTitle = () => {
+      const iframe = turnstileContainerRef.current?.querySelector("iframe");
+      if (iframe && !iframe.getAttribute("title")) {
+        iframe.setAttribute("title", TURNSTILE_IFRAME_TITLE);
+      }
+    };
+    setTitle();
+    // Fallback: iframe may be injected shortly after onLoad (audit-friendly)
+    setTimeout(setTitle, 100);
+  };
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -127,7 +143,7 @@ export default function ContactSection() {
                 <FormItem>
                   <FormLabel>Name *</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} required aria-required="true" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -144,7 +160,7 @@ export default function ContactSection() {
                 <FormItem>
                   <FormLabel>Phone *</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} required aria-required="true" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -161,7 +177,7 @@ export default function ContactSection() {
                 <FormItem>
                   <FormLabel>Email *</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} required aria-required="true" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -178,7 +194,7 @@ export default function ContactSection() {
                 <FormItem>
                   <FormLabel>Message *</FormLabel>
                   <FormControl>
-                    <Textarea className="min-h-[120px]" {...field} />
+                    <Textarea className="min-h-[120px]" {...field} required aria-required="true" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -209,14 +225,16 @@ export default function ContactSection() {
 
           {/* TURNSTILE */}
           <motion.div variants={itemVariants}>
-            <div role="group" aria-labelledby="security-verification-label">
-              <label id="security-verification-label" className="sr-only">
+            <fieldset className="border-0 p-0 m-0 min-w-0">
+              <legend id="security-verification-legend" className="sr-only">
                 Security verification
-              </label>
+              </legend>
               <Turnstile
-                sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                userRef={turnstileContainerRef as React.MutableRefObject<HTMLDivElement>}
+                sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? ""}
                 theme="light"
                 size="flexible"
+                onLoad={labelTurnstileIframe}
                 onVerify={(token) => setTurnstileToken(token)}
                 onExpire={() => setTurnstileToken(null)}
                 onError={() => {
@@ -224,7 +242,7 @@ export default function ContactSection() {
                   setTurnstileToken(null);
                 }}
               />
-            </div>
+            </fieldset>
           </motion.div>
 
           {/* SUBMIT */}

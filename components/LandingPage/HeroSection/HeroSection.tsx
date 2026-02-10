@@ -52,8 +52,11 @@ const HeroSection = () => {
         <img
           src="/images/hero-section.jpg"
           alt="Healthcare marketing team at Innovare HP: professionals collaborating on growth strategy for senior care and behavioral health organizations"
+          width={1920}
+          height={1080}
           className="object-cover w-full border-2 min-h-[100vh]"
           fetchPriority="high"
+          sizes="100vw"
         />
         {/* 2. BETTER OVERLAY:
             Added a gradient that is darker at the bottom to ensure text

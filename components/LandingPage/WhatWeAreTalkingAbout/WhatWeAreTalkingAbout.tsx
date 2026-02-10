@@ -162,8 +162,9 @@ const WhatWeAreTalkingAbout = ({
             type="button"
             onClick={loadMore}
             disabled={loading}
-            className="px-6 py-3 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="px-6 py-3 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             aria-busy={loading}
+            aria-label={loading ? "Loading more posts" : "Load more posts"}
           >
             {loading ? "Loading..." : "Load more"}
           </button>

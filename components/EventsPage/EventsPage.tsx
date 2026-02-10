@@ -63,7 +63,7 @@ const EventsPage = ({ events }: { events: Promise<EventsResponse> }) => {
                       {format(event.eventEndDate ?? new Date(), "h:mm a")}
                     </span>
                     {event.qrCode && (
-                      <ExternalLink className="w-3 h-3 text-primary" />
+                      <ExternalLink className="w-3 h-3 text-primary" aria-hidden />
                     )}
                   </div>
 
@@ -72,7 +72,7 @@ const EventsPage = ({ events }: { events: Promise<EventsResponse> }) => {
                   </h3>
 
                   <div className="flex items-center gap-1.5 pt-1 text-xs text-muted-foreground/80">
-                    <MapPin className="w-3.5 h-3.5" />
+                    <MapPin className="w-3.5 h-3.5" aria-hidden />
                     <span className="truncate">{event.location}</span>
                   </div>
                 </div>

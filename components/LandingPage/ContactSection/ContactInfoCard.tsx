@@ -129,7 +129,9 @@ const ContactInfoCard = () => {
                             ? `Send an email to ${value} (opens email application)`
                             : type === "phone"
                               ? `Call ${value} (opens phone app)`
-                              : undefined
+                              : type === "address"
+                                ? "Open address in Google Maps (opens in new tab)"
+                                : undefined
                         }
                       >
                         {displayValue || value}

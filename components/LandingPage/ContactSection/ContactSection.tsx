@@ -143,7 +143,7 @@ export default function ContactSection() {
                 <FormItem>
                   <FormLabel>Name *</FormLabel>
                   <FormControl>
-                    <Input {...field} required aria-required="true" />
+                    <Input {...field} required aria-required="true" type="text" autoComplete="name" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -160,7 +160,7 @@ export default function ContactSection() {
                 <FormItem>
                   <FormLabel>Phone *</FormLabel>
                   <FormControl>
-                    <Input {...field} required aria-required="true" />
+                    <Input {...field} required aria-required="true" type="tel" autoComplete="tel" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -177,7 +177,7 @@ export default function ContactSection() {
                 <FormItem>
                   <FormLabel>Email *</FormLabel>
                   <FormControl>
-                    <Input {...field} required aria-required="true" />
+                    <Input {...field} required aria-required="true" type="email" autoComplete="email" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -250,6 +250,7 @@ export default function ContactSection() {
             <Button
               type="submit"
               disabled={form.formState.isSubmitting || !turnstileToken}
+              aria-busy={form.formState.isSubmitting}
             >
               {form.formState.isSubmitting ? "Submitting..." : "Submit"}
             </Button>

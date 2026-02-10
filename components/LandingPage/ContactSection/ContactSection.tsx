@@ -54,8 +54,14 @@ export default function ContactSection() {
   const labelTurnstileIframe = () => {
     const setTitle = () => {
       const iframe = turnstileContainerRef.current?.querySelector("iframe");
-      if (iframe && !iframe.getAttribute("title")) {
-        iframe.setAttribute("title", TURNSTILE_IFRAME_TITLE);
+      if (iframe) {
+        if (!iframe.getAttribute("title")) {
+          iframe.setAttribute("title", TURNSTILE_IFRAME_TITLE);
+        }
+        // Also set aria-label for better accessibility (WCAG 2.0 requirement)
+        if (!iframe.getAttribute("aria-label")) {
+          iframe.setAttribute("aria-label", TURNSTILE_IFRAME_TITLE);
+        }
       }
     };
     setTitle();

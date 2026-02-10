@@ -72,8 +72,14 @@ const EventRegistrationModal = ({
     const TITLE = "Security verification for event registration (Cloudflare Turnstile)";
     const setTitle = () => {
       const iframe = turnstileContainerRef.current?.querySelector("iframe");
-      if (iframe && !iframe.getAttribute("title")) {
-        iframe.setAttribute("title", TITLE);
+      if (iframe) {
+        if (!iframe.getAttribute("title")) {
+          iframe.setAttribute("title", TITLE);
+        }
+        // Also set aria-label for better accessibility (WCAG 2.0 requirement)
+        if (!iframe.getAttribute("aria-label")) {
+          iframe.setAttribute("aria-label", TITLE);
+        }
       }
     };
     setTitle();
@@ -186,10 +192,10 @@ const EventRegistrationModal = ({
               </p>
               <div className="text-sm text-green-800 space-y-1">
                 <p>
-                  <strong>Name:</strong> {registrationDetails?.name}
+                  <span className="font-semibold">Name:</span> {registrationDetails?.name}
                 </p>
                 <p>
-                  <strong>Email:</strong> {registrationDetails?.email}
+                  <span className="font-semibold">Email:</span> {registrationDetails?.email}
                 </p>
               </div>
             </div>

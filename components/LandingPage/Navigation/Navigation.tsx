@@ -223,6 +223,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
                 aria-label="Menu"
               >
               <nav
+                role="navigation"
                 className="flex flex-col gap-6 text-center"
                 aria-label="Site navigation"
               >

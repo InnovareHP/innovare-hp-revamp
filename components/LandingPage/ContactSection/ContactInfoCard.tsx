@@ -129,13 +129,11 @@ const ContactInfoCard = () => {
                             ? `Send an email to ${value} (opens email application)`
                             : type === "phone"
                               ? `Call ${value} (opens phone app)`
-                              : type === "address"
-                                ? "Open address in Google Maps (opens in new tab)"
-                                : undefined
+                              : undefined
                         }
                       >
                         {displayValue || value}
-                        {/* Hidden text for accessibility scanners and screen readers */}
+                        {/* Screen-reader-only context: do not override visible text (WCAG 2.1) */}
                         {type === "email" && (
                           <span className="sr-only">
                             {" "}
@@ -146,6 +144,12 @@ const ContactInfoCard = () => {
                           <span className="sr-only">
                             {" "}
                             (initiates a phone call)
+                          </span>
+                        )}
+                        {type === "address" && (
+                          <span className="sr-only">
+                            {" "}
+                            (opens in new tab)
                           </span>
                         )}
                       </Link>

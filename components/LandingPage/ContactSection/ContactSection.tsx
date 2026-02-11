@@ -213,8 +213,10 @@ export default function ContactSection() {
             name="companyWebsite"
             render={({ field }) => (
               <FormItem className="hidden" aria-hidden="true">
-                <FormLabel className="sr-only">Company Website (leave blank)</FormLabel>
-                <FormControl>
+                <FormLabel className="sr-only" aria-hidden="true">
+                  Company Website (leave blank)
+                </FormLabel>
+                <FormControl aria-hidden="true">
                   <Input
                     type="text"
                     tabIndex={-1}

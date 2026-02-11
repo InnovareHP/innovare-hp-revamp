@@ -112,7 +112,11 @@ const ContactInfoCard = () => {
                   variants={item}
                   className="flex items-start gap-3"
                 >
-                  <Icon className="w-5 h-5 text-blue-600 mt-0.5" />
+                  <Icon
+                    className="w-5 h-5 text-blue-600 mt-0.5"
+                    role="img"
+                    aria-hidden={false}
+                  />
                   <div>
                     <p className="text-sm font-semibold text-gray-700">
                       {label}
@@ -176,7 +180,11 @@ const ContactInfoCard = () => {
                   className="text-white transition bg-blue-600 p-2 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   title={title}
                 >
-                  <Icon className="w-6 h-6" />
+                  <Icon
+                    className="w-6 h-6"
+                    role="img"
+                    aria-hidden={false}
+                  />
                 </Link>
               ))}
             </div>

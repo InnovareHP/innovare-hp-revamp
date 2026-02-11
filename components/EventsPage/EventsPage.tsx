@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Pagination,
@@ -10,7 +11,6 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Prisma } from "@/generated/prisma";
-import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { DollarSign, ExternalLink, MapPin } from "lucide-react";
 import Link from "next/link";
@@ -64,7 +64,10 @@ const EventsPage = ({ events }: { events: Promise<EventsResponse> }) => {
                       {format(event.eventEndDate ?? new Date(), "h:mm a")}
                     </span>
                     {event.qrCode && (
-                      <ExternalLink className="w-3 h-3 text-primary" aria-hidden />
+                      <ExternalLink
+                        className="w-3 h-3 text-primary"
+                        aria-hidden
+                      />
                     )}
                   </div>
 
@@ -72,27 +75,27 @@ const EventsPage = ({ events }: { events: Promise<EventsResponse> }) => {
                     {event.title}
                   </h3>
 
-<<<<<<< HEAD
                   <div className="flex items-center gap-2 pt-1">
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground/80">
                       <MapPin className="w-3.5 h-3.5" />
                       <span className="truncate">{event.location}</span>
                     </div>
                     {event.isPaid && Number(event.price) > 0 ? (
-                      <Badge variant="secondary" className="gap-0.5 text-[10px] px-1.5 py-0">
+                      <Badge
+                        variant="secondary"
+                        className="gap-0.5 text-[10px] px-1.5 py-0"
+                      >
                         <DollarSign className="w-2.5 h-2.5" />
                         {Number(event.price).toFixed(2)}
                       </Badge>
                     ) : (
-                      <Badge variant="outline" className="text-green-600 border-green-300 text-[10px] px-1.5 py-0">
+                      <Badge
+                        variant="outline"
+                        className="text-green-600 border-green-300 text-[10px] px-1.5 py-0"
+                      >
                         Free
                       </Badge>
                     )}
-=======
-                  <div className="flex items-center gap-1.5 pt-1 text-xs text-muted-foreground/80">
-                    <MapPin className="w-3.5 h-3.5" aria-hidden />
-                    <span className="truncate">{event.location}</span>
->>>>>>> c005634cd67d4ebd9dcb8f00d4612a4ef9c9f53e
                   </div>
                 </div>
               </div>

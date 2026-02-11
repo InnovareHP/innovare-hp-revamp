@@ -3,22 +3,19 @@
 import { motion, Variants } from "framer-motion";
 
 const TeamSection = () => {
-  // Container variants for the grid
+  // Transform-only animation so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
   const containerVariants: Variants = {
-    hidden: { opacity: 0 },
+    hidden: {},
     visible: {
-      opacity: 1,
       transition: {
-        staggerChildren: 0.1, // Each member appears 0.1s after the previous one
+        staggerChildren: 0.1,
       },
     },
   };
 
-  // Individual member variants
   const memberVariants: Variants = {
-    hidden: { opacity: 0, x: -20 },
+    hidden: { x: -20 },
     visible: {
-      opacity: 1,
       x: 0,
       transition: { duration: 0.6, ease: "easeOut" },
     },
@@ -82,10 +79,10 @@ const TeamSection = () => {
       aria-label="Team section"
     >
       <div className="max-w-6xl mx-auto">
-        {/* Header Content */}
+        {/* Header Content - transform only so never visually hidden while in a11y tree */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ y: 20 }}
+          whileInView={{ y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
           className="mb-8 sm:mb-12 md:mb-16"
@@ -139,13 +136,13 @@ const TeamSection = () => {
           ))}
         </motion.div>
 
-        {/* Footer Logo */}
+        {/* Footer Logo - transform only so never visually hidden while in a11y tree */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 0.8 }}
+          initial={{ translateY: 8 }}
+          whileInView={{ translateY: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-          className="mt-20 flex justify-end items-center gap-2"
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="mt-20 flex justify-end items-center gap-2 opacity-80"
         >
           <img
             src="/images/logo-black.png"

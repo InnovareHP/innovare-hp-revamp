@@ -26,8 +26,9 @@ export function SiteHeader() {
           variant="ghost"
           size="icon"
           onClick={toggleSidebar}
+          aria-label="Toggle sidebar"
         >
-          <SidebarIcon />
+          <SidebarIcon aria-hidden />
         </Button>
         <Separator orientation="vertical" className="mr-2 h-4" />
         <Breadcrumb className="hidden sm:block">

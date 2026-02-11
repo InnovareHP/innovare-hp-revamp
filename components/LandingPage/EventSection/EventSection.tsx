@@ -27,16 +27,16 @@ export default function EventSection() {
       {/* Content */}
       <div className="relative z-10 w-full px-8 sm:px-6 md:px-12 lg:px-20 py-20">
         <div className="max-w-4xl mx-auto text-center space-y-6 sm:space-y-8">
-          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight font-bold">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight font-bold">
             Curated gatherings designed to connect healthcare professionals,
             spark ideas, and strengthen community partnerships.
-          </h1>
+          </h2>
 
           <div className="pt-2 sm:pt-4 flex justify-center">
-            <Link href="/events" title="Explore our Event Calendar">
+            <Link href="/events" title="Explore our Event Calendar" aria-label="Explore our Event Calendar (go to events page)">
               <Button
                 variant="outline"
-                className="border-white bg-transparent text-white hover:bg-white/10 hover:text-white rounded-none px-6 py-5 sm:px-8 sm:py-6 md:px-10 md:py-7 text-lg font-semibold uppercase tracking-widest cursor-pointer"
+                className="border-white bg-transparent text-white hover:bg-white/10 hover:text-white rounded-none px-6 py-5 sm:px-8 sm:py-6 md:px-10 md:py-7 text-lg font-semibold uppercase tracking-widest cursor-pointer focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
               >
                 Explore our Event Calendar
                 <span className="sr-only"> (go to events page)</span>

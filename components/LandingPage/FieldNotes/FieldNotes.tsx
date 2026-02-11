@@ -163,10 +163,13 @@ const FieldNotes = () => {
                 <figure className="w-full h-64 md:h-80 overflow-hidden rounded-lg shadow-md relative group">
                   <img
                     src={partner.image}
-                    alt={partner.category}
+                    alt={(partner as { imageAlt?: string }).imageAlt ?? partner.category}
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                    title={partner.imageTitle}
+                    title={(partner as { imageTitle?: string }).imageTitle}
                   />
+                  <figcaption className="sr-only">
+                    {(partner as { imageAlt?: string }).imageAlt ?? partner.category}
+                  </figcaption>
                 </figure>
               )}
 
@@ -180,9 +183,9 @@ const FieldNotes = () => {
                     {partner.organization}
                   </h3>
                   <div className="flex flex-wrap gap-4 mt-1">
-                    {partner.links.map((link, i) => (
+                    {partner.links.map((link) => (
                       <Link
-                        key={i}
+                        key={link.url}
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -198,7 +201,7 @@ const FieldNotes = () => {
                 {/* Map over content paragraphs */}
                 <div className="text-gray-700 leading-relaxed space-y-4">
                   {partner.content.map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
+                    <p key={`${partner.id}-p-${index}`}>{paragraph}</p>
                   ))}
                 </div>
               </div>

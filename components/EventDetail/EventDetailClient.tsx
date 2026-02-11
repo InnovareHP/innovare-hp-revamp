@@ -103,7 +103,7 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
               </Badge>
               {isEventFull && (
                 <Badge variant="destructive">
-                  <Users className="w-3 h-3" />
+                  <Users className="w-3 h-3" aria-hidden />
                   Full
                 </Badge>
               )}

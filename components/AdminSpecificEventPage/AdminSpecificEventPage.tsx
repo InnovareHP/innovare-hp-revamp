@@ -348,8 +348,8 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
           <div class="container">
             <h1>${event.title}</h1>
             <div class="event-details">
-              <p><strong>Location:</strong> ${event.location}</p>
-              <p><strong>Date:</strong> ${formatDate(event.eventStartDate)}</p>
+              <p><span style="font-weight: 600;">Location:</span> ${event.location}</p>
+              <p><span style="font-weight: 600;">Date:</span> ${formatDate(event.eventStartDate)}</p>
             </div>
             <div class="qr-container">
               <div id="qr-code"></div>
@@ -468,8 +468,8 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
                         cell: (attendee: any) => (
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon">
-                                <MoreVertical className="w-4 h-4" />
+                              <Button variant="ghost" size="icon" aria-label={`Actions for ${attendee.name}`}>
+                                <MoreVertical className="w-4 h-4" aria-hidden />
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">

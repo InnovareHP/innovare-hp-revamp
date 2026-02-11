@@ -33,19 +33,15 @@ const ClientReviews = () => {
     },
   ];
 
-  // Animation Variants
+  // Transform-only so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
   const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.3 },
-    },
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.3 } },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { y: 20 },
     visible: {
-      opacity: 1,
       y: 0,
       transition: { duration: 0.8, ease: "easeOut" },
     },

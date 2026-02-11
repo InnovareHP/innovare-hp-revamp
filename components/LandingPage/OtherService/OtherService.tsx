@@ -32,28 +32,22 @@ const services = [
 ];
 
 const OtherService = () => {
-  // Container variants for staggered entrance
+  // Transform-only so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
   const containerVariants: Variants = {
-    hidden: { opacity: 0 },
+    hidden: {},
     visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
     },
   };
 
-  // Individual card variants (Slide up + Fade)
   const cardVariants: Variants = {
-    hidden: { opacity: 0, y: 40, scale: 0.95 },
+    hidden: { y: 40, scale: 0.95 },
     visible: {
-      opacity: 1,
       y: 0,
       scale: 1,
       transition: {
         duration: 0.7,
-        ease: [0.21, 1.11, 0.81, 0.99], // Slight "springy" custom ease
+        ease: [0.21, 1.11, 0.81, 0.99],
       },
     },
   };
@@ -65,8 +59,8 @@ const OtherService = () => {
     >
       {/* Header Section */}
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ y: -20 }}
+        whileInView={{ y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
         className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-6"

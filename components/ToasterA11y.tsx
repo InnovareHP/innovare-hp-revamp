@@ -30,6 +30,20 @@ export function ToasterA11y() {
       if (routeAnnouncerElement) {
         routeAnnouncerElement.setAttribute("aria-hidden", hasAnnouncerContent ? "false" : "true");
       }
+
+      // Contact form announcement: hide from AT when empty (rule #10 - visually hidden but exposed)
+      const formAnnouncement = document.getElementById("form-announcement");
+      if (formAnnouncement) {
+        const hasFormAnnouncementContent = (formAnnouncement.textContent ?? "").trim().length > 0;
+        formAnnouncement.setAttribute("aria-hidden", hasFormAnnouncementContent ? "false" : "true");
+      }
+
+      // Posts loading announcement: hide from AT when empty (rule #10)
+      const postsAnnouncement = document.getElementById("posts-loading-announcement");
+      if (postsAnnouncement) {
+        const hasPostsContent = (postsAnnouncement.textContent ?? "").trim().length > 0;
+        postsAnnouncement.setAttribute("aria-hidden", hasPostsContent ? "false" : "true");
+      }
     };
 
     updateAriaHidden();

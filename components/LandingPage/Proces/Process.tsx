@@ -11,12 +11,12 @@ const Process = () => {
     >
       <motion.div
         className="absolute bottom-0 left-0 w-full select-none pointer-events-none"
-        initial={{ opacity: 0, y: 100, scale: 0.95 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: true, amount: 0.2 }} // Triggers when 20% of the image is visible
+        initial={{ y: 100, scale: 0.95 }}
+        whileInView={{ y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.2 }}
         transition={{
           duration: 1.2,
-          ease: [0.22, 1, 0.36, 1], // Custom cubic-bezier for a smooth "boutique" feel
+          ease: [0.22, 1, 0.36, 1],
         }}
       >
         <img

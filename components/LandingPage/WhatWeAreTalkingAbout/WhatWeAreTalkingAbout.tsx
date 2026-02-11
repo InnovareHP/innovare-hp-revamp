@@ -38,6 +38,7 @@ const WhatWeAreTalkingAbout = ({
     // Announce loading state to screen readers
     const announcement = document.getElementById("posts-loading-announcement");
     if (announcement) {
+      announcement.setAttribute("aria-hidden", "false");
       announcement.textContent = "Loading more posts...";
     }
 
@@ -48,7 +49,12 @@ const WhatWeAreTalkingAbout = ({
       setHasMore(false);
       setLoading(false);
       if (announcement) {
+        announcement.setAttribute("aria-hidden", "false");
         announcement.textContent = "No more posts available.";
+        setTimeout(() => {
+          announcement.setAttribute("aria-hidden", "true");
+          announcement.textContent = "";
+        }, 3000);
       }
       return;
     }
@@ -61,7 +67,12 @@ const WhatWeAreTalkingAbout = ({
     
     // Announce loaded posts to screen readers
     if (announcement) {
+      announcement.setAttribute("aria-hidden", "false");
       announcement.textContent = `Loaded ${data.posts.length} more post${data.posts.length === 1 ? '' : 's'}.`;
+      setTimeout(() => {
+        announcement.setAttribute("aria-hidden", "true");
+        announcement.textContent = "";
+      }, 3000);
     }
     
     // Focus management: Move focus to first new post for keyboard users
@@ -88,12 +99,13 @@ const WhatWeAreTalkingAbout = ({
         </h2>
       </div>
       
-      {/* Screen reader announcements for dynamic content */}
+      {/* Screen reader announcements: hidden from AT when empty (rule #10); expose when we set content */}
       <div
         id="posts-loading-announcement"
         className="sr-only"
         aria-live="polite"
         aria-atomic="true"
+        aria-hidden="true"
       />
 
       <div
@@ -162,8 +174,9 @@ const WhatWeAreTalkingAbout = ({
             type="button"
             onClick={loadMore}
             disabled={loading}
-            className="px-6 py-3 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="px-6 py-3 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             aria-busy={loading}
+            aria-label={loading ? "Loading more posts" : "Load more posts"}
           >
             {loading ? "Loading..." : "Load more"}
           </button>

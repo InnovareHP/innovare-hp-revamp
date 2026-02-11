@@ -81,12 +81,18 @@ export default function ContactSection() {
     if (!turnstileToken) {
       toast.error("Please verify you are human.");
       if (announcement) {
+        announcement.setAttribute("aria-hidden", "false");
         announcement.textContent = "Error: Please verify you are human by completing the security verification.";
+        setTimeout(() => {
+          announcement.setAttribute("aria-hidden", "true");
+          announcement.textContent = "";
+        }, 5000);
       }
       return;
     }
 
     if (announcement) {
+      announcement.setAttribute("aria-hidden", "false");
       announcement.textContent = "Submitting form...";
     }
 
@@ -100,7 +106,12 @@ export default function ContactSection() {
       turnstile.reset(); // 🔥 important
       setTurnstileToken(null);
       if (announcement) {
+        announcement.setAttribute("aria-hidden", "false");
         announcement.textContent = "Error: Verification failed. Please try again.";
+        setTimeout(() => {
+          announcement.setAttribute("aria-hidden", "true");
+          announcement.textContent = "";
+        }, 5000);
       }
       return;
     }
@@ -110,7 +121,12 @@ export default function ContactSection() {
     turnstile.reset();
     setTurnstileToken(null);
     if (announcement) {
+      announcement.setAttribute("aria-hidden", "false");
       announcement.textContent = "Success: Your message has been sent successfully!";
+      setTimeout(() => {
+        announcement.setAttribute("aria-hidden", "true");
+        announcement.textContent = "";
+      }, 3000);
     }
   };
 
@@ -126,12 +142,13 @@ export default function ContactSection() {
         Stay in touch!
       </motion.h2>
 
-      {/* Screen reader announcements for form status */}
+      {/* Screen reader announcements: hidden from AT when empty (rule #10); expose when we set content */}
       <div
         id="form-announcement"
         className="sr-only"
         aria-live="polite"
         aria-atomic="true"
+        aria-hidden="true"
       />
 
       <Form {...form}>

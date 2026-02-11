@@ -4,26 +4,19 @@ import WorkWithUsButton from "@/components/ui/work-with-us-button";
 import { motion, Variants } from "framer-motion";
 
 const HeroSection = () => {
+  // Transform-only so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
   const containerVariants: Variants = {
-    hidden: { opacity: 0 },
+    hidden: {},
     visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
-      },
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
     },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { y: 20 },
     visible: {
-      opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
+      transition: { duration: 0.6, ease: "easeOut" },
     },
   };
 

@@ -225,8 +225,8 @@ export default function ContactSection() {
             />
           </motion.div>
 
-          {/* Honeypot: no label element (avoids rule #10 failure); wrapper + input fully hidden from AT. */}
-          <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
+          {/* Honeypot: fully hidden from view and AT (rule #10). Native hidden + aria-hidden so input never exposed. */}
+          <div className="hidden" aria-hidden="true" style={{ display: "none" }} data-honeypot-wrapper>
             <FormField
               control={form.control}
               name="companyWebsite"
@@ -234,12 +234,13 @@ export default function ContactSection() {
                 <FormItem className="hidden" aria-hidden="true">
                   <FormControl aria-hidden="true">
                     <Input
+                      {...field}
                       type="text"
                       tabIndex={-1}
                       autoComplete="off"
                       className="hidden"
                       aria-hidden="true"
-                      {...field}
+                      hidden
                     />
                   </FormControl>
                   <FormMessage />
@@ -248,10 +249,13 @@ export default function ContactSection() {
             />
           </div>
 
-          {/* TURNSTILE */}
+          {/* TURNSTILE: fieldset labeled via aria-label; legend hidden from AT to avoid rule #10 (visually hidden but exposed). */}
           <motion.div variants={itemVariants}>
-            <fieldset className="border-0 p-0 m-0 min-w-0">
-              <legend id="security-verification-legend" className="sr-only">
+            <fieldset
+              className="border-0 p-0 m-0 min-w-0"
+              aria-label="Security verification"
+            >
+              <legend id="security-verification-legend" className="sr-only" aria-hidden="true">
                 Security verification
               </legend>
               <Turnstile

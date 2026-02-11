@@ -3,20 +3,18 @@
 import { motion, Variants } from "framer-motion"; // Import Variants type
 
 const AboutSection = () => {
-  // Explicitly typing variants fixes the "ease" string error
+  // Transform-only so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
   const fadeInRight: Variants = {
-    hidden: { opacity: 0, x: 50 },
+    hidden: { x: 50 },
     visible: {
-      opacity: 1,
       x: 0,
       transition: { duration: 0.8, ease: "easeOut" },
     },
   };
 
   const fadeInLeft: Variants = {
-    hidden: { opacity: 0, x: -50 },
+    hidden: { x: -50 },
     visible: {
-      opacity: 1,
       x: 0,
       transition: { duration: 0.8, ease: "easeOut" },
     },

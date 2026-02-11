@@ -50,25 +50,17 @@ const handleDownloadFile = (url: string, filename?: string) => {
 
 const WhatWeDo = () => {
   // Fixes the "ease" string type error by using the Variants type
+  // Transform-only so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
   const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15, // Delay between each service reveal
-      },
-    },
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.15 } },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { y: 30 },
     visible: {
-      opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut", // Properly typed via Variants
-      },
+      transition: { duration: 0.8, ease: "easeOut" },
     },
   };
 
@@ -81,8 +73,8 @@ const WhatWeDo = () => {
       <div>
         {/* Header Animation */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ y: -20 }}
+          whileInView={{ y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="mb-12 lg:mb-16"

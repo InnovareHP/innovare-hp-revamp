@@ -124,7 +124,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
       </Link>
       <header className="fixed top-0 left-0 w-full z-50 px-6 py-2 md:px-6 md:py-2 pointer-events-none bg-white">
         <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">
-          {/* Logo / brand - main nav is the menu panel */}
+          {/* Logo and menu button; main navigation links are in the menu panel below */}
           <div className="flex items-center gap-2">
             <Link
               href="/"
@@ -224,7 +224,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
               >
               <nav
                 className="flex flex-col gap-6 text-center"
-                aria-label="Site navigation"
+                aria-label="Main navigation"
               >
                 {navLinks.map((link, i) => (
                   <motion.div

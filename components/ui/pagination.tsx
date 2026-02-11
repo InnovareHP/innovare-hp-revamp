@@ -11,6 +11,7 @@ import { buttonVariants, type Button } from "@/components/ui/button"
 function Pagination({ className, ...props }: ComponentProps<"nav">) {
   return (
     <nav
+      role="navigation"
       aria-label="Pagination"
       data-slot="pagination"
       className={cn("mx-auto flex w-full justify-center", className)}

@@ -62,17 +62,17 @@ const socialLinks = [
 ];
 
 const ContactInfoCard = () => {
+  // Transform-only so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
   const container: Variants = {
-    hidden: { opacity: 0 },
+    hidden: {},
     show: {
-      opacity: 1,
       transition: { staggerChildren: 0.1, delayChildren: 0.3 },
     },
   };
 
   const item: Variants = {
-    hidden: { opacity: 0, x: -10 },
-    show: { opacity: 1, x: 0 },
+    hidden: { x: -10 },
+    show: { x: 0, transition: { duration: 0.4 } },
   };
 
   return (
@@ -112,9 +112,10 @@ const ContactInfoCard = () => {
                   variants={item}
                   className="flex items-start gap-3"
                 >
+                  {/* Decorative: role="presentation" so not announced as image; no aria-hidden (rule #9: visible content must stay in AT) */}
                   <Icon
-                    className="w-5 h-5 text-blue-600 mt-0.5"
-                    aria-hidden="true"
+                    className="w-5 h-5 text-blue-600 mt-0.5 shrink-0"
+                    role="presentation"
                   />
                   <div>
                     <p className="text-sm font-semibold text-gray-700">
@@ -133,7 +134,7 @@ const ContactInfoCard = () => {
                         }
                       >
                         {displayValue || value}
-                        {/* Hidden text for accessibility scanners and screen readers */}
+                        {/* Screen-reader-only context: do not override visible text (WCAG 2.1) */}
                         {type === "email" && (
                           <span className="sr-only">
                             {" "}
@@ -144,6 +145,12 @@ const ContactInfoCard = () => {
                           <span className="sr-only">
                             {" "}
                             (initiates a phone call)
+                          </span>
+                        )}
+                        {type === "address" && (
+                          <span className="sr-only">
+                            {" "}
+                            (opens in new tab)
                           </span>
                         )}
                       </Link>
@@ -173,7 +180,8 @@ const ContactInfoCard = () => {
                   className="text-white transition bg-blue-600 p-2 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   title={title}
                 >
-                  <Icon className="w-6 h-6" aria-hidden="true" />
+                  {/* Decorative: role="presentation" so not announced as image; no aria-hidden (rule #9: visible content must stay in AT) */}
+                  <Icon className="w-6 h-6" role="presentation" />
                 </Link>
               ))}
             </div>

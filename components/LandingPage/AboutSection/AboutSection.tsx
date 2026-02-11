@@ -3,20 +3,18 @@
 import { motion, Variants } from "framer-motion"; // Import Variants type
 
 const AboutSection = () => {
-  // Explicitly typing variants fixes the "ease" string error
+  // Transform-only so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
   const fadeInRight: Variants = {
-    hidden: { opacity: 0, x: 50 },
+    hidden: { x: 50 },
     visible: {
-      opacity: 1,
       x: 0,
       transition: { duration: 0.8, ease: "easeOut" },
     },
   };
 
   const fadeInLeft: Variants = {
-    hidden: { opacity: 0, x: -50 },
+    hidden: { x: -50 },
     visible: {
-      opacity: 1,
       x: 0,
       transition: { duration: 0.8, ease: "easeOut" },
     },
@@ -26,6 +24,7 @@ const AboutSection = () => {
     <section
       id="about"
       className="flex flex-col lg:flex-row min-h-[70vh] overflow-hidden"
+      aria-label="About us"
     >
       {/* Left side - Image */}
       <motion.div
@@ -57,14 +56,14 @@ const AboutSection = () => {
           }
           className="w-full max-w-2xl space-y-8"
         >
-          <motion.h1
+          <motion.h2
             variants={fadeInRight}
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-relaxed sm:leading-tight"
           >
             We are community resource educators who use creative and thoughtful
             communication methods and technology to help our healthcare partners
             grow in a meaningful way.
-          </motion.h1>
+          </motion.h2>
 
           <motion.p
             variants={fadeInRight}

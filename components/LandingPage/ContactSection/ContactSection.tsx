@@ -225,16 +225,13 @@ export default function ContactSection() {
             />
           </motion.div>
 
-          {/* Honeypot: visually hidden and excluded from AT (rule #10). Wrapper ensures no descendant is exposed. */}
+          {/* Honeypot: no label element (avoids rule #10 failure); wrapper + input fully hidden from AT. */}
           <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
             <FormField
               control={form.control}
               name="companyWebsite"
               render={({ field }) => (
                 <FormItem className="hidden" aria-hidden="true">
-                  <FormLabel className="sr-only" aria-hidden="true">
-                    Company Website (leave blank)
-                  </FormLabel>
                   <FormControl aria-hidden="true">
                     <Input
                       type="text"

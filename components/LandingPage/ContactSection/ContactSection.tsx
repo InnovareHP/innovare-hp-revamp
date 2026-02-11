@@ -225,8 +225,15 @@ export default function ContactSection() {
             />
           </motion.div>
 
-          {/* Honeypot: fully hidden from view and AT (rule #10). Native hidden + aria-hidden so input never exposed. */}
-          <div className="hidden" aria-hidden="true" style={{ display: "none" }} data-honeypot-wrapper>
+          {/* Honeypot: inert + hidden so subtree is fully out of a11y tree (rule #10). */}
+          <div
+            className="hidden"
+            aria-hidden="true"
+            hidden
+            inert
+            style={{ display: "none" }}
+            data-honeypot-wrapper
+          >
             <FormField
               control={form.control}
               name="companyWebsite"

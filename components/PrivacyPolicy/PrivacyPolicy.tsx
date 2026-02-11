@@ -88,7 +88,11 @@ const PrivacyPolicy = () => {
               <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-600 mb-6">
                 Section Index
               </h4>
-              <nav role="navigation" aria-label="Table of contents" className="flex flex-col gap-4">
+              <nav
+                role="navigation"
+                aria-label="Table of contents"
+                className="flex flex-col gap-4"
+              >
                 {navLinks.map((link, idx) => (
                   <motion.a
                     key={link.id}

@@ -1,9 +1,9 @@
 "use client";
 
 import { deleteEvent } from "@/app/admin/events/action";
-import { EventStatus, Prisma } from "@/generated/prisma";
 import { EventFormValues } from "@/lib/schema";
 import { cn } from "@/lib/utils";
+import { EventStatus, Prisma } from "@prisma/client";
 import { format } from "date-fns";
 import { TrashIcon } from "lucide-react";
 import Link from "next/link";

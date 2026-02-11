@@ -1,6 +1,5 @@
 "use server";
 
-import { Prisma } from "@/generated/prisma";
 import { requireAdmin } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
 import {
@@ -9,6 +8,7 @@ import {
 } from "@/lib/send-event-email";
 import { stripe } from "@/lib/stripe";
 import { formatDate } from "@/lib/utils";
+import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 type ActionResponse<T = void> = {
@@ -203,7 +203,10 @@ export async function refundAttendee(
     }
 
     if (!attendee.stripeSessionId) {
-      return { success: false, error: "No Stripe session found for this attendee" };
+      return {
+        success: false,
+        error: "No Stripe session found for this attendee",
+      };
     }
 
     // Retrieve the checkout session to get the payment intent

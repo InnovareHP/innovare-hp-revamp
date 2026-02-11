@@ -1,10 +1,10 @@
 "use server";
 
-import { Prisma } from "@/generated/prisma/client";
 import { requireAuth } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
 import { sendEventRegistrationEmails } from "@/lib/send-event-email";
 import { validateWithRetry } from "@/lib/turnstile";
+import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 

@@ -1,4 +1,4 @@
-import { Prisma } from "@/generated/prisma/client";
+import { Prisma } from "@prisma/client";
 import {
   AdminCustomEmail,
   EventRegistrationConfirmation,
@@ -86,7 +86,7 @@ export async function sendEventRegistrationNotificationEmail({
 
     const { data, error } = await resend.emails.send({
       from: "Innovare HP <hello@innovarehp.com>",
-      to: ["info@innovarehp.com","hello@innovarehp.com"],
+      to: ["info@innovarehp.com", "hello@innovarehp.com"],
       subject: `New Registration: ${event.title}`,
       react: EventRegistrationNotification({
         attendeeName,

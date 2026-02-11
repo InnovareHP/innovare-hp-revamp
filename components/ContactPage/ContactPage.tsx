@@ -1,8 +1,8 @@
 "use client"; // This must be a Client Component to use useState/useEffect
 
+import { ContactFormSubmission } from "@prisma/client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ContactFormSubmission } from "../../generated/prisma/client";
 
 const formatDate = (dateString: Date | string) => {
   const date = new Date(dateString);
@@ -91,7 +91,9 @@ const ContactPage = ({ initialSubmissions }: ContactPageProps) => {
         </div>
       ) : (
         <div
-          className={`relative overflow-x-auto shadow-md sm:rounded-lg ${loading ? "opacity-50" : ""}`}
+          className={`relative overflow-x-auto shadow-md sm:rounded-lg ${
+            loading ? "opacity-50" : ""
+          }`}
         >
           <table className="w-full text-sm text-left text-gray-700">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50">

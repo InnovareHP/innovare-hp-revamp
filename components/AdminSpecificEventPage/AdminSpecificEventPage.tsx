@@ -331,8 +331,8 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
                         cell: (attendee: any) => (
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon">
-                                <MoreVertical className="w-4 h-4" />
+                              <Button variant="ghost" size="icon" aria-label={`Actions for ${attendee.name}`}>
+                                <MoreVertical className="w-4 h-4" aria-hidden />
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">

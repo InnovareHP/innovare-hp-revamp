@@ -167,6 +167,9 @@ const FieldNotes = () => {
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                     title={(partner as { imageTitle?: string }).imageTitle}
                   />
+                  <figcaption className="sr-only">
+                    {(partner as { imageAlt?: string }).imageAlt ?? partner.category}
+                  </figcaption>
                 </figure>
               )}
 

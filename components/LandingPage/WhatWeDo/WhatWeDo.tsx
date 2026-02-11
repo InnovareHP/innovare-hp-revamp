@@ -128,7 +128,7 @@ const WhatWeDo = () => {
         className="border-blue-600 my-10 w-full text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-none px-8 py-6 text-sm font-semibold uppercase tracking-widest cursor-pointer"
       >
         Download Brochure
-        <span className="sr-only"> (PDF)</span>
+        <span className="sr-only"> (PDF, downloads file)</span>
       </Button>
     </section>
   );

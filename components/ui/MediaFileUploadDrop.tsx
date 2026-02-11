@@ -73,9 +73,10 @@ export default function MediaUploadDropper({
           <button
             type="button"
             onClick={() => onChange(null)}
-            className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 hover:bg-black"
+            className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 hover:bg-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-transparent"
+            aria-label="Remove image"
           >
-            <X className="h-4 w-4" />
+            <X className="h-4 w-4" aria-hidden />
           </button>
         </div>
       ) : (

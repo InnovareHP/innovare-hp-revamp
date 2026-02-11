@@ -61,6 +61,9 @@ const AddEventButton = ({ type = "add", event }: Props) => {
           maxGuests: event.maxGuests,
           date: event.date ?? null,
           eventStartDate: event.eventStartDate ?? null,
+          isPaid: event.isPaid ?? false,
+          price: event.price ?? null,
+          currency: event.currency ?? "USD",
           media: event?.media,
         }
       : {
@@ -71,9 +74,14 @@ const AddEventButton = ({ type = "add", event }: Props) => {
           maxGuests: 1,
           date: null,
           eventStartDate: null,
+          isPaid: false,
+          price: null,
+          currency: "USD",
           media: undefined,
         },
   });
+
+  const isPaid = form.watch("isPaid");
 
   async function onSubmit(values: EventFormValues) {
     try {
@@ -92,6 +100,9 @@ const AddEventButton = ({ type = "add", event }: Props) => {
           status: values.status.toUpperCase() as EventStatus,
           maxGuests: values.maxGuests,
           eventStartDate: values.eventStartDate ?? new Date(),
+          isPaid: values.isPaid ?? false,
+          price: values.isPaid && values.price ? values.price : 0,
+          currency: values.currency ?? "USD",
           media: mediaUrl
             ? {
                 create: {
@@ -112,6 +123,9 @@ const AddEventButton = ({ type = "add", event }: Props) => {
           status: values.status.toUpperCase() as EventStatus,
           maxGuests: values.maxGuests,
           eventStartDate: values.eventStartDate ?? new Date(),
+          isPaid: values.isPaid ?? false,
+          price: values.isPaid && values.price ? values.price : 0,
+          currency: values.currency ?? "USD",
           media: mediaUrl
             ? {
                 upsert: {
@@ -346,6 +360,65 @@ const AddEventButton = ({ type = "add", event }: Props) => {
                 </FormItem>
               )}
             />
+
+            {/* PAID EVENT */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="isPaid"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Paid Event</FormLabel>
+                    <Select
+                      onValueChange={(val) => field.onChange(val === "true")}
+                      value={field.value ? "true" : "false"}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Is this a paid event?" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="false">Free</SelectItem>
+                        <SelectItem value="true">Paid</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {isPaid && (
+                <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Price (USD)</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          placeholder="e.g. 25.00"
+                          {...field}
+                          value={field.value ?? ""}
+                          onChange={(e) =>
+                            field.onChange(
+                              e.target.value === ""
+                                ? null
+                                : Number(e.target.value)
+                            )
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+            </div>
+
             <FormField
               control={form.control}
               name="media"

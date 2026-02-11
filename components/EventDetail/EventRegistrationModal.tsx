@@ -55,6 +55,8 @@ interface EventRegistrationModalProps {
   eventTitle: string;
   isEventFull: boolean;
   isPastDeadline: boolean;
+  eventPrice?: number | null;
+  isPaidEvent?: boolean;
   onSuccess?: () => void;
 }
 
@@ -63,6 +65,8 @@ const EventRegistrationModal = ({
   eventTitle,
   isEventFull,
   isPastDeadline,
+  eventPrice,
+  isPaidEvent,
   onSuccess,
 }: EventRegistrationModalProps) => {
   const turnstileContainerRef = useRef<HTMLDivElement>(null);
@@ -106,29 +110,59 @@ const EventRegistrationModal = ({
     setIsSubmitting(true);
 
     try {
-      const response = await joinEvent(eventId, data, turnstileToken);
-
-      if (response.success) {
-        // Store registration in localStorage
-        storeEventRegistration(eventId, data.email, data.name);
-
-        toast.success("Successfully registered for the event!", {
-          description: "You will receive a confirmation email shortly.",
+      if (isPaidEvent && eventPrice && eventPrice > 0) {
+        // Paid event: redirect to Stripe Checkout
+        const res = await fetch("/api/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            eventId,
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            turnstileToken,
+          }),
         });
 
-        // Update local state
-        setIsAlreadyRegistered(true);
-        setRegistrationDetails({
-          name: data.name,
-          email: data.email,
-        });
+        const result = await res.json();
 
-        form.reset();
-        onSuccess?.();
+        if (!res.ok) {
+          toast.error(result.error || "Failed to start payment", {
+            description: "Please try again or contact support.",
+          });
+          return;
+        }
+
+        if (result.url) {
+          // Store registration before redirect so user is recognized when they return
+          storeEventRegistration(eventId, data.email, data.name);
+          window.location.href = result.url;
+          return;
+        }
       } else {
-        toast.error(response.error || "Failed to register for event", {
-          description: "Please try again or contact support.",
-        });
+        // Free event: existing flow
+        const response = await joinEvent(eventId, data, turnstileToken);
+
+        if (response.success) {
+          storeEventRegistration(eventId, data.email, data.name);
+
+          toast.success("Successfully registered for the event!", {
+            description: "You will receive a confirmation email shortly.",
+          });
+
+          setIsAlreadyRegistered(true);
+          setRegistrationDetails({
+            name: data.name,
+            email: data.email,
+          });
+
+          form.reset();
+          onSuccess?.();
+        } else {
+          toast.error(response.error || "Failed to register for event", {
+            description: "Please try again or contact support.",
+          });
+        }
       }
     } catch {
       toast.error("An unexpected error occurred", {
@@ -140,6 +174,13 @@ const EventRegistrationModal = ({
   };
 
   const isDisabled = isEventFull || isPastDeadline;
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(price);
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -162,7 +203,9 @@ const EventRegistrationModal = ({
                 ? "Event Full"
                 : isPastDeadline
                   ? "Registration Closed"
-                  : "Register Now"}
+                  : isPaidEvent && eventPrice
+                    ? `Register - ${formatPrice(eventPrice)}`
+                    : "Register Now"}
             </>
           )}
         </Button>
@@ -205,6 +248,13 @@ const EventRegistrationModal = ({
               <DialogDescription>
                 Complete the form below to register for{" "}
                 <strong>{eventTitle}</strong>. All fields are required.
+                {isPaidEvent && eventPrice && eventPrice > 0 && (
+                  <>
+                    {" "}
+                    Registration fee: <strong>{formatPrice(eventPrice)}</strong>.
+                    You will be redirected to a secure payment page.
+                  </>
+                )}
               </DialogDescription>
             </DialogHeader>
 
@@ -296,7 +346,13 @@ const EventRegistrationModal = ({
                     Cancel
                   </Button>
                   <Button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Registering..." : "Register"}
+                    {isSubmitting
+                      ? isPaidEvent
+                        ? "Redirecting to payment..."
+                        : "Registering..."
+                      : isPaidEvent && eventPrice
+                        ? `Pay ${formatPrice(eventPrice)}`
+                        : "Register"}
                   </Button>
                 </DialogFooter>
               </form>

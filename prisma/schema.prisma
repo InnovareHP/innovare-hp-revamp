@@ -116,11 +116,16 @@ enum EventStatus {
 
 model Event {
   id String @id @default(uuid())
+  
   title String
   description String
   location String
   status EventStatus @default(DRAFT)
   qrCode String?
+
+  isPaid               Boolean         @default(false)
+  price                Decimal?        @default(0) // Use Decimal for currency
+  currency             String          @default("USD")
 
   eventStartDate DateTime
   eventEndDate DateTime?
@@ -155,6 +160,13 @@ model EventAttendee {
   name String
   email String
   phone String
+
+  paymentStatus   PaymentStatus  @default(PENDING)
+  stripeSessionId String?        @unique // To verify the payment later
+  amountPaid      Decimal?
+  note            String?        // Admin note (e.g. refund reason, decline reason)
+
+
   event Event @relation(fields: [eventId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -169,4 +181,11 @@ model Media {
   updatedAt DateTime @updatedAt
 
   events Event[]
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
 }

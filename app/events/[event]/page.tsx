@@ -6,6 +6,7 @@ import { Prisma } from "@/generated/prisma";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 type EventWithRelations = Prisma.EventGetPayload<{
   include: { media: true; attendees: true; guests: true };
@@ -56,7 +57,9 @@ const EventPage = async ({ params }: EventPageProps) => {
           )}
 
           <CardHeader className="border-b">
-            <EventDetailClient event={event as EventWithRelations} />
+            <Suspense>
+              <EventDetailClient event={event as EventWithRelations} />
+            </Suspense>
           </CardHeader>
         </Card>
       </div>

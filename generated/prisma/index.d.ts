@@ -82,11 +82,25 @@ export namespace $Enums {
 
 export type EventStatus = (typeof EventStatus)[keyof typeof EventStatus]
 
+
+export const PaymentStatus: {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
+};
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
 }
 
 export type EventStatus = $Enums.EventStatus
 
 export const EventStatus: typeof $Enums.EventStatus
+
+export type PaymentStatus = $Enums.PaymentStatus
+
+export const PaymentStatus: typeof $Enums.PaymentStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -364,8 +378,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.2.0
-   * Query Engine version: 0c8ef2ce45c83248ab3df073180d5eda9e8be7a3
+   * Prisma Client JS version: 7.3.0
+   * Query Engine version: 9d6ad21cbbceab97458517b147a6a09ff43aa735
    */
   export type PrismaVersion = {
     client: string
@@ -9541,10 +9555,12 @@ export namespace Prisma {
   }
 
   export type EventAvgAggregateOutputType = {
+    price: Decimal | null
     maxGuests: number | null
   }
 
   export type EventSumAggregateOutputType = {
+    price: Decimal | null
     maxGuests: number | null
   }
 
@@ -9555,6 +9571,9 @@ export namespace Prisma {
     location: string | null
     status: $Enums.EventStatus | null
     qrCode: string | null
+    isPaid: boolean | null
+    price: Decimal | null
+    currency: string | null
     eventStartDate: Date | null
     eventEndDate: Date | null
     registrationDeadline: Date | null
@@ -9571,6 +9590,9 @@ export namespace Prisma {
     location: string | null
     status: $Enums.EventStatus | null
     qrCode: string | null
+    isPaid: boolean | null
+    price: Decimal | null
+    currency: string | null
     eventStartDate: Date | null
     eventEndDate: Date | null
     registrationDeadline: Date | null
@@ -9587,6 +9609,9 @@ export namespace Prisma {
     location: number
     status: number
     qrCode: number
+    isPaid: number
+    price: number
+    currency: number
     eventStartDate: number
     eventEndDate: number
     registrationDeadline: number
@@ -9599,10 +9624,12 @@ export namespace Prisma {
 
 
   export type EventAvgAggregateInputType = {
+    price?: true
     maxGuests?: true
   }
 
   export type EventSumAggregateInputType = {
+    price?: true
     maxGuests?: true
   }
 
@@ -9613,6 +9640,9 @@ export namespace Prisma {
     location?: true
     status?: true
     qrCode?: true
+    isPaid?: true
+    price?: true
+    currency?: true
     eventStartDate?: true
     eventEndDate?: true
     registrationDeadline?: true
@@ -9629,6 +9659,9 @@ export namespace Prisma {
     location?: true
     status?: true
     qrCode?: true
+    isPaid?: true
+    price?: true
+    currency?: true
     eventStartDate?: true
     eventEndDate?: true
     registrationDeadline?: true
@@ -9645,6 +9678,9 @@ export namespace Prisma {
     location?: true
     status?: true
     qrCode?: true
+    isPaid?: true
+    price?: true
+    currency?: true
     eventStartDate?: true
     eventEndDate?: true
     registrationDeadline?: true
@@ -9748,6 +9784,9 @@ export namespace Prisma {
     location: string
     status: $Enums.EventStatus
     qrCode: string | null
+    isPaid: boolean
+    price: Decimal | null
+    currency: string
     eventStartDate: Date
     eventEndDate: Date | null
     registrationDeadline: Date | null
@@ -9783,6 +9822,9 @@ export namespace Prisma {
     location?: boolean
     status?: boolean
     qrCode?: boolean
+    isPaid?: boolean
+    price?: boolean
+    currency?: boolean
     eventStartDate?: boolean
     eventEndDate?: boolean
     registrationDeadline?: boolean
@@ -9803,6 +9845,9 @@ export namespace Prisma {
     location?: boolean
     status?: boolean
     qrCode?: boolean
+    isPaid?: boolean
+    price?: boolean
+    currency?: boolean
     eventStartDate?: boolean
     eventEndDate?: boolean
     registrationDeadline?: boolean
@@ -9820,6 +9865,9 @@ export namespace Prisma {
     location?: boolean
     status?: boolean
     qrCode?: boolean
+    isPaid?: boolean
+    price?: boolean
+    currency?: boolean
     eventStartDate?: boolean
     eventEndDate?: boolean
     registrationDeadline?: boolean
@@ -9837,6 +9885,9 @@ export namespace Prisma {
     location?: boolean
     status?: boolean
     qrCode?: boolean
+    isPaid?: boolean
+    price?: boolean
+    currency?: boolean
     eventStartDate?: boolean
     eventEndDate?: boolean
     registrationDeadline?: boolean
@@ -9846,7 +9897,7 @@ export namespace Prisma {
     mediaId?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "location" | "status" | "qrCode" | "eventStartDate" | "eventEndDate" | "registrationDeadline" | "maxGuests" | "createdAt" | "updatedAt" | "mediaId", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "location" | "status" | "qrCode" | "isPaid" | "price" | "currency" | "eventStartDate" | "eventEndDate" | "registrationDeadline" | "maxGuests" | "createdAt" | "updatedAt" | "mediaId", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     media?: boolean | Event$mediaArgs<ExtArgs>
     attendees?: boolean | Event$attendeesArgs<ExtArgs>
@@ -9874,6 +9925,9 @@ export namespace Prisma {
       location: string
       status: $Enums.EventStatus
       qrCode: string | null
+      isPaid: boolean
+      price: Prisma.Decimal | null
+      currency: string
       eventStartDate: Date
       eventEndDate: Date | null
       registrationDeadline: Date | null
@@ -10313,6 +10367,9 @@ export namespace Prisma {
     readonly location: FieldRef<"Event", 'String'>
     readonly status: FieldRef<"Event", 'EventStatus'>
     readonly qrCode: FieldRef<"Event", 'String'>
+    readonly isPaid: FieldRef<"Event", 'Boolean'>
+    readonly price: FieldRef<"Event", 'Decimal'>
+    readonly currency: FieldRef<"Event", 'String'>
     readonly eventStartDate: FieldRef<"Event", 'DateTime'>
     readonly eventEndDate: FieldRef<"Event", 'DateTime'>
     readonly registrationDeadline: FieldRef<"Event", 'DateTime'>
@@ -11891,8 +11948,18 @@ export namespace Prisma {
 
   export type AggregateEventAttendee = {
     _count: EventAttendeeCountAggregateOutputType | null
+    _avg: EventAttendeeAvgAggregateOutputType | null
+    _sum: EventAttendeeSumAggregateOutputType | null
     _min: EventAttendeeMinAggregateOutputType | null
     _max: EventAttendeeMaxAggregateOutputType | null
+  }
+
+  export type EventAttendeeAvgAggregateOutputType = {
+    amountPaid: Decimal | null
+  }
+
+  export type EventAttendeeSumAggregateOutputType = {
+    amountPaid: Decimal | null
   }
 
   export type EventAttendeeMinAggregateOutputType = {
@@ -11901,6 +11968,10 @@ export namespace Prisma {
     name: string | null
     email: string | null
     phone: string | null
+    paymentStatus: $Enums.PaymentStatus | null
+    stripeSessionId: string | null
+    amountPaid: Decimal | null
+    note: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -11911,6 +11982,10 @@ export namespace Prisma {
     name: string | null
     email: string | null
     phone: string | null
+    paymentStatus: $Enums.PaymentStatus | null
+    stripeSessionId: string | null
+    amountPaid: Decimal | null
+    note: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -11921,11 +11996,23 @@ export namespace Prisma {
     name: number
     email: number
     phone: number
+    paymentStatus: number
+    stripeSessionId: number
+    amountPaid: number
+    note: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
+
+  export type EventAttendeeAvgAggregateInputType = {
+    amountPaid?: true
+  }
+
+  export type EventAttendeeSumAggregateInputType = {
+    amountPaid?: true
+  }
 
   export type EventAttendeeMinAggregateInputType = {
     id?: true
@@ -11933,6 +12020,10 @@ export namespace Prisma {
     name?: true
     email?: true
     phone?: true
+    paymentStatus?: true
+    stripeSessionId?: true
+    amountPaid?: true
+    note?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -11943,6 +12034,10 @@ export namespace Prisma {
     name?: true
     email?: true
     phone?: true
+    paymentStatus?: true
+    stripeSessionId?: true
+    amountPaid?: true
+    note?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -11953,6 +12048,10 @@ export namespace Prisma {
     name?: true
     email?: true
     phone?: true
+    paymentStatus?: true
+    stripeSessionId?: true
+    amountPaid?: true
+    note?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -11996,6 +12095,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: EventAttendeeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EventAttendeeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: EventAttendeeMinAggregateInputType
@@ -12026,6 +12137,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: EventAttendeeCountAggregateInputType | true
+    _avg?: EventAttendeeAvgAggregateInputType
+    _sum?: EventAttendeeSumAggregateInputType
     _min?: EventAttendeeMinAggregateInputType
     _max?: EventAttendeeMaxAggregateInputType
   }
@@ -12036,9 +12149,15 @@ export namespace Prisma {
     name: string
     email: string
     phone: string
+    paymentStatus: $Enums.PaymentStatus
+    stripeSessionId: string | null
+    amountPaid: Decimal | null
+    note: string | null
     createdAt: Date
     updatedAt: Date
     _count: EventAttendeeCountAggregateOutputType | null
+    _avg: EventAttendeeAvgAggregateOutputType | null
+    _sum: EventAttendeeSumAggregateOutputType | null
     _min: EventAttendeeMinAggregateOutputType | null
     _max: EventAttendeeMaxAggregateOutputType | null
   }
@@ -12063,6 +12182,10 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     phone?: boolean
+    paymentStatus?: boolean
+    stripeSessionId?: boolean
+    amountPaid?: boolean
+    note?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
@@ -12074,6 +12197,10 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     phone?: boolean
+    paymentStatus?: boolean
+    stripeSessionId?: boolean
+    amountPaid?: boolean
+    note?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
@@ -12085,6 +12212,10 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     phone?: boolean
+    paymentStatus?: boolean
+    stripeSessionId?: boolean
+    amountPaid?: boolean
+    note?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
@@ -12096,11 +12227,15 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     phone?: boolean
+    paymentStatus?: boolean
+    stripeSessionId?: boolean
+    amountPaid?: boolean
+    note?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type EventAttendeeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "name" | "email" | "phone" | "createdAt" | "updatedAt", ExtArgs["result"]["eventAttendee"]>
+  export type EventAttendeeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "name" | "email" | "phone" | "paymentStatus" | "stripeSessionId" | "amountPaid" | "note" | "createdAt" | "updatedAt", ExtArgs["result"]["eventAttendee"]>
   export type EventAttendeeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
   }
@@ -12122,6 +12257,10 @@ export namespace Prisma {
       name: string
       email: string
       phone: string
+      paymentStatus: $Enums.PaymentStatus
+      stripeSessionId: string | null
+      amountPaid: Prisma.Decimal | null
+      note: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["eventAttendee"]>
@@ -12553,6 +12692,10 @@ export namespace Prisma {
     readonly name: FieldRef<"EventAttendee", 'String'>
     readonly email: FieldRef<"EventAttendee", 'String'>
     readonly phone: FieldRef<"EventAttendee", 'String'>
+    readonly paymentStatus: FieldRef<"EventAttendee", 'PaymentStatus'>
+    readonly stripeSessionId: FieldRef<"EventAttendee", 'String'>
+    readonly amountPaid: FieldRef<"EventAttendee", 'Decimal'>
+    readonly note: FieldRef<"EventAttendee", 'String'>
     readonly createdAt: FieldRef<"EventAttendee", 'DateTime'>
     readonly updatedAt: FieldRef<"EventAttendee", 'DateTime'>
   }
@@ -14155,6 +14298,9 @@ export namespace Prisma {
     location: 'location',
     status: 'status',
     qrCode: 'qrCode',
+    isPaid: 'isPaid',
+    price: 'price',
+    currency: 'currency',
     eventStartDate: 'eventStartDate',
     eventEndDate: 'eventEndDate',
     registrationDeadline: 'registrationDeadline',
@@ -14186,6 +14332,10 @@ export namespace Prisma {
     name: 'name',
     email: 'email',
     phone: 'phone',
+    paymentStatus: 'paymentStatus',
+    stripeSessionId: 'stripeSessionId',
+    amountPaid: 'amountPaid',
+    note: 'note',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -14323,6 +14473,34 @@ export namespace Prisma {
    * Reference to a field of type 'EventStatus[]'
    */
   export type ListEnumEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal'
+   */
+  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal[]'
+   */
+  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PaymentStatus'
+   */
+  export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PaymentStatus[]'
+   */
+  export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>
     
 
 
@@ -14828,6 +15006,9 @@ export namespace Prisma {
     location?: StringFilter<"Event"> | string
     status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
     qrCode?: StringNullableFilter<"Event"> | string | null
+    isPaid?: BoolFilter<"Event"> | boolean
+    price?: DecimalNullableFilter<"Event"> | Decimal | DecimalJsLike | number | string | null
+    currency?: StringFilter<"Event"> | string
     eventStartDate?: DateTimeFilter<"Event"> | Date | string
     eventEndDate?: DateTimeNullableFilter<"Event"> | Date | string | null
     registrationDeadline?: DateTimeNullableFilter<"Event"> | Date | string | null
@@ -14847,6 +15028,9 @@ export namespace Prisma {
     location?: SortOrder
     status?: SortOrder
     qrCode?: SortOrderInput | SortOrder
+    isPaid?: SortOrder
+    price?: SortOrderInput | SortOrder
+    currency?: SortOrder
     eventStartDate?: SortOrder
     eventEndDate?: SortOrderInput | SortOrder
     registrationDeadline?: SortOrderInput | SortOrder
@@ -14869,6 +15053,9 @@ export namespace Prisma {
     location?: StringFilter<"Event"> | string
     status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
     qrCode?: StringNullableFilter<"Event"> | string | null
+    isPaid?: BoolFilter<"Event"> | boolean
+    price?: DecimalNullableFilter<"Event"> | Decimal | DecimalJsLike | number | string | null
+    currency?: StringFilter<"Event"> | string
     eventStartDate?: DateTimeFilter<"Event"> | Date | string
     eventEndDate?: DateTimeNullableFilter<"Event"> | Date | string | null
     registrationDeadline?: DateTimeNullableFilter<"Event"> | Date | string | null
@@ -14888,6 +15075,9 @@ export namespace Prisma {
     location?: SortOrder
     status?: SortOrder
     qrCode?: SortOrderInput | SortOrder
+    isPaid?: SortOrder
+    price?: SortOrderInput | SortOrder
+    currency?: SortOrder
     eventStartDate?: SortOrder
     eventEndDate?: SortOrderInput | SortOrder
     registrationDeadline?: SortOrderInput | SortOrder
@@ -14912,6 +15102,9 @@ export namespace Prisma {
     location?: StringWithAggregatesFilter<"Event"> | string
     status?: EnumEventStatusWithAggregatesFilter<"Event"> | $Enums.EventStatus
     qrCode?: StringNullableWithAggregatesFilter<"Event"> | string | null
+    isPaid?: BoolWithAggregatesFilter<"Event"> | boolean
+    price?: DecimalNullableWithAggregatesFilter<"Event"> | Decimal | DecimalJsLike | number | string | null
+    currency?: StringWithAggregatesFilter<"Event"> | string
     eventStartDate?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     eventEndDate?: DateTimeNullableWithAggregatesFilter<"Event"> | Date | string | null
     registrationDeadline?: DateTimeNullableWithAggregatesFilter<"Event"> | Date | string | null
@@ -14995,6 +15188,10 @@ export namespace Prisma {
     name?: StringFilter<"EventAttendee"> | string
     email?: StringFilter<"EventAttendee"> | string
     phone?: StringFilter<"EventAttendee"> | string
+    paymentStatus?: EnumPaymentStatusFilter<"EventAttendee"> | $Enums.PaymentStatus
+    stripeSessionId?: StringNullableFilter<"EventAttendee"> | string | null
+    amountPaid?: DecimalNullableFilter<"EventAttendee"> | Decimal | DecimalJsLike | number | string | null
+    note?: StringNullableFilter<"EventAttendee"> | string | null
     createdAt?: DateTimeFilter<"EventAttendee"> | Date | string
     updatedAt?: DateTimeFilter<"EventAttendee"> | Date | string
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
@@ -15006,6 +15203,10 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     phone?: SortOrder
+    paymentStatus?: SortOrder
+    stripeSessionId?: SortOrderInput | SortOrder
+    amountPaid?: SortOrderInput | SortOrder
+    note?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     event?: EventOrderByWithRelationInput
@@ -15013,6 +15214,7 @@ export namespace Prisma {
 
   export type EventAttendeeWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    stripeSessionId?: string
     AND?: EventAttendeeWhereInput | EventAttendeeWhereInput[]
     OR?: EventAttendeeWhereInput[]
     NOT?: EventAttendeeWhereInput | EventAttendeeWhereInput[]
@@ -15020,10 +15222,13 @@ export namespace Prisma {
     name?: StringFilter<"EventAttendee"> | string
     email?: StringFilter<"EventAttendee"> | string
     phone?: StringFilter<"EventAttendee"> | string
+    paymentStatus?: EnumPaymentStatusFilter<"EventAttendee"> | $Enums.PaymentStatus
+    amountPaid?: DecimalNullableFilter<"EventAttendee"> | Decimal | DecimalJsLike | number | string | null
+    note?: StringNullableFilter<"EventAttendee"> | string | null
     createdAt?: DateTimeFilter<"EventAttendee"> | Date | string
     updatedAt?: DateTimeFilter<"EventAttendee"> | Date | string
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
-  }, "id">
+  }, "id" | "stripeSessionId">
 
   export type EventAttendeeOrderByWithAggregationInput = {
     id?: SortOrder
@@ -15031,11 +15236,17 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     phone?: SortOrder
+    paymentStatus?: SortOrder
+    stripeSessionId?: SortOrderInput | SortOrder
+    amountPaid?: SortOrderInput | SortOrder
+    note?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: EventAttendeeCountOrderByAggregateInput
+    _avg?: EventAttendeeAvgOrderByAggregateInput
     _max?: EventAttendeeMaxOrderByAggregateInput
     _min?: EventAttendeeMinOrderByAggregateInput
+    _sum?: EventAttendeeSumOrderByAggregateInput
   }
 
   export type EventAttendeeScalarWhereWithAggregatesInput = {
@@ -15047,6 +15258,10 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"EventAttendee"> | string
     email?: StringWithAggregatesFilter<"EventAttendee"> | string
     phone?: StringWithAggregatesFilter<"EventAttendee"> | string
+    paymentStatus?: EnumPaymentStatusWithAggregatesFilter<"EventAttendee"> | $Enums.PaymentStatus
+    stripeSessionId?: StringNullableWithAggregatesFilter<"EventAttendee"> | string | null
+    amountPaid?: DecimalNullableWithAggregatesFilter<"EventAttendee"> | Decimal | DecimalJsLike | number | string | null
+    note?: StringNullableWithAggregatesFilter<"EventAttendee"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"EventAttendee"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"EventAttendee"> | Date | string
   }
@@ -15640,6 +15855,9 @@ export namespace Prisma {
     location: string
     status?: $Enums.EventStatus
     qrCode?: string | null
+    isPaid?: boolean
+    price?: Decimal | DecimalJsLike | number | string | null
+    currency?: string
     eventStartDate: Date | string
     eventEndDate?: Date | string | null
     registrationDeadline?: Date | string | null
@@ -15658,6 +15876,9 @@ export namespace Prisma {
     location: string
     status?: $Enums.EventStatus
     qrCode?: string | null
+    isPaid?: boolean
+    price?: Decimal | DecimalJsLike | number | string | null
+    currency?: string
     eventStartDate: Date | string
     eventEndDate?: Date | string | null
     registrationDeadline?: Date | string | null
@@ -15676,6 +15897,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currency?: StringFieldUpdateOperationsInput | string
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
     eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15694,6 +15918,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currency?: StringFieldUpdateOperationsInput | string
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
     eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15712,6 +15939,9 @@ export namespace Prisma {
     location: string
     status?: $Enums.EventStatus
     qrCode?: string | null
+    isPaid?: boolean
+    price?: Decimal | DecimalJsLike | number | string | null
+    currency?: string
     eventStartDate: Date | string
     eventEndDate?: Date | string | null
     registrationDeadline?: Date | string | null
@@ -15728,6 +15958,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currency?: StringFieldUpdateOperationsInput | string
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
     eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15743,6 +15976,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currency?: StringFieldUpdateOperationsInput | string
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
     eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15826,6 +16062,10 @@ export namespace Prisma {
     name: string
     email: string
     phone: string
+    paymentStatus?: $Enums.PaymentStatus
+    stripeSessionId?: string | null
+    amountPaid?: Decimal | DecimalJsLike | number | string | null
+    note?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     event: EventCreateNestedOneWithoutAttendeesInput
@@ -15837,6 +16077,10 @@ export namespace Prisma {
     name: string
     email: string
     phone: string
+    paymentStatus?: $Enums.PaymentStatus
+    stripeSessionId?: string | null
+    amountPaid?: Decimal | DecimalJsLike | number | string | null
+    note?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -15846,6 +16090,10 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    stripeSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    amountPaid?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutAttendeesNestedInput
@@ -15857,6 +16105,10 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    stripeSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    amountPaid?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15867,6 +16119,10 @@ export namespace Prisma {
     name: string
     email: string
     phone: string
+    paymentStatus?: $Enums.PaymentStatus
+    stripeSessionId?: string | null
+    amountPaid?: Decimal | DecimalJsLike | number | string | null
+    note?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -15876,6 +16132,10 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    stripeSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    amountPaid?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15886,6 +16146,10 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    stripeSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    amountPaid?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16440,6 +16704,17 @@ export namespace Prisma {
     not?: NestedEnumEventStatusFilter<$PrismaModel> | $Enums.EventStatus
   }
 
+  export type DecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -16483,6 +16758,9 @@ export namespace Prisma {
     location?: SortOrder
     status?: SortOrder
     qrCode?: SortOrder
+    isPaid?: SortOrder
+    price?: SortOrder
+    currency?: SortOrder
     eventStartDate?: SortOrder
     eventEndDate?: SortOrder
     registrationDeadline?: SortOrder
@@ -16493,6 +16771,7 @@ export namespace Prisma {
   }
 
   export type EventAvgOrderByAggregateInput = {
+    price?: SortOrder
     maxGuests?: SortOrder
   }
 
@@ -16503,6 +16782,9 @@ export namespace Prisma {
     location?: SortOrder
     status?: SortOrder
     qrCode?: SortOrder
+    isPaid?: SortOrder
+    price?: SortOrder
+    currency?: SortOrder
     eventStartDate?: SortOrder
     eventEndDate?: SortOrder
     registrationDeadline?: SortOrder
@@ -16519,6 +16801,9 @@ export namespace Prisma {
     location?: SortOrder
     status?: SortOrder
     qrCode?: SortOrder
+    isPaid?: SortOrder
+    price?: SortOrder
+    currency?: SortOrder
     eventStartDate?: SortOrder
     eventEndDate?: SortOrder
     registrationDeadline?: SortOrder
@@ -16529,6 +16814,7 @@ export namespace Prisma {
   }
 
   export type EventSumOrderByAggregateInput = {
+    price?: SortOrder
     maxGuests?: SortOrder
   }
 
@@ -16540,6 +16826,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumEventStatusFilter<$PrismaModel>
     _max?: NestedEnumEventStatusFilter<$PrismaModel>
+  }
+
+  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -16593,14 +16895,29 @@ export namespace Prisma {
     eventId?: SortOrder
   }
 
+  export type EnumPaymentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentStatus | EnumPaymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentStatusFilter<$PrismaModel> | $Enums.PaymentStatus
+  }
+
   export type EventAttendeeCountOrderByAggregateInput = {
     id?: SortOrder
     eventId?: SortOrder
     name?: SortOrder
     email?: SortOrder
     phone?: SortOrder
+    paymentStatus?: SortOrder
+    stripeSessionId?: SortOrder
+    amountPaid?: SortOrder
+    note?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type EventAttendeeAvgOrderByAggregateInput = {
+    amountPaid?: SortOrder
   }
 
   export type EventAttendeeMaxOrderByAggregateInput = {
@@ -16609,6 +16926,10 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     phone?: SortOrder
+    paymentStatus?: SortOrder
+    stripeSessionId?: SortOrder
+    amountPaid?: SortOrder
+    note?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16619,8 +16940,26 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     phone?: SortOrder
+    paymentStatus?: SortOrder
+    stripeSessionId?: SortOrder
+    amountPaid?: SortOrder
+    note?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type EventAttendeeSumOrderByAggregateInput = {
+    amountPaid?: SortOrder
+  }
+
+  export type EnumPaymentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentStatus | EnumPaymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentStatusWithAggregatesFilter<$PrismaModel> | $Enums.PaymentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPaymentStatusFilter<$PrismaModel>
+    _max?: NestedEnumPaymentStatusFilter<$PrismaModel>
   }
 
   export type EventListRelationFilter = {
@@ -16891,6 +17230,14 @@ export namespace Prisma {
     set?: $Enums.EventStatus
   }
 
+  export type NullableDecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string | null
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -16983,6 +17330,10 @@ export namespace Prisma {
     create?: XOR<EventCreateWithoutAttendeesInput, EventUncheckedCreateWithoutAttendeesInput>
     connectOrCreate?: EventCreateOrConnectWithoutAttendeesInput
     connect?: EventWhereUniqueInput
+  }
+
+  export type EnumPaymentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PaymentStatus
   }
 
   export type EventUpdateOneRequiredWithoutAttendeesNestedInput = {
@@ -17239,6 +17590,17 @@ export namespace Prisma {
     not?: NestedEnumEventStatusFilter<$PrismaModel> | $Enums.EventStatus
   }
 
+  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
   export type NestedEnumEventStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
     in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
@@ -17247,6 +17609,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumEventStatusFilter<$PrismaModel>
     _max?: NestedEnumEventStatusFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -17274,6 +17652,23 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedEnumPaymentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentStatus | EnumPaymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentStatusFilter<$PrismaModel> | $Enums.PaymentStatus
+  }
+
+  export type NestedEnumPaymentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentStatus | EnumPaymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentStatusWithAggregatesFilter<$PrismaModel> | $Enums.PaymentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPaymentStatusFilter<$PrismaModel>
+    _max?: NestedEnumPaymentStatusFilter<$PrismaModel>
   }
 
   export type LinkedInPostImageCreateWithoutPostInput = {
@@ -17671,6 +18066,10 @@ export namespace Prisma {
     name: string
     email: string
     phone: string
+    paymentStatus?: $Enums.PaymentStatus
+    stripeSessionId?: string | null
+    amountPaid?: Decimal | DecimalJsLike | number | string | null
+    note?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17680,6 +18079,10 @@ export namespace Prisma {
     name: string
     email: string
     phone: string
+    paymentStatus?: $Enums.PaymentStatus
+    stripeSessionId?: string | null
+    amountPaid?: Decimal | DecimalJsLike | number | string | null
+    note?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17774,6 +18177,10 @@ export namespace Prisma {
     name?: StringFilter<"EventAttendee"> | string
     email?: StringFilter<"EventAttendee"> | string
     phone?: StringFilter<"EventAttendee"> | string
+    paymentStatus?: EnumPaymentStatusFilter<"EventAttendee"> | $Enums.PaymentStatus
+    stripeSessionId?: StringNullableFilter<"EventAttendee"> | string | null
+    amountPaid?: DecimalNullableFilter<"EventAttendee"> | Decimal | DecimalJsLike | number | string | null
+    note?: StringNullableFilter<"EventAttendee"> | string | null
     createdAt?: DateTimeFilter<"EventAttendee"> | Date | string
     updatedAt?: DateTimeFilter<"EventAttendee"> | Date | string
   }
@@ -17814,6 +18221,9 @@ export namespace Prisma {
     location: string
     status?: $Enums.EventStatus
     qrCode?: string | null
+    isPaid?: boolean
+    price?: Decimal | DecimalJsLike | number | string | null
+    currency?: string
     eventStartDate: Date | string
     eventEndDate?: Date | string | null
     registrationDeadline?: Date | string | null
@@ -17831,6 +18241,9 @@ export namespace Prisma {
     location: string
     status?: $Enums.EventStatus
     qrCode?: string | null
+    isPaid?: boolean
+    price?: Decimal | DecimalJsLike | number | string | null
+    currency?: string
     eventStartDate: Date | string
     eventEndDate?: Date | string | null
     registrationDeadline?: Date | string | null
@@ -17864,6 +18277,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currency?: StringFieldUpdateOperationsInput | string
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
     eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17881,6 +18297,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currency?: StringFieldUpdateOperationsInput | string
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
     eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17898,6 +18317,9 @@ export namespace Prisma {
     location: string
     status?: $Enums.EventStatus
     qrCode?: string | null
+    isPaid?: boolean
+    price?: Decimal | DecimalJsLike | number | string | null
+    currency?: string
     eventStartDate: Date | string
     eventEndDate?: Date | string | null
     registrationDeadline?: Date | string | null
@@ -17915,6 +18337,9 @@ export namespace Prisma {
     location: string
     status?: $Enums.EventStatus
     qrCode?: string | null
+    isPaid?: boolean
+    price?: Decimal | DecimalJsLike | number | string | null
+    currency?: string
     eventStartDate: Date | string
     eventEndDate?: Date | string | null
     registrationDeadline?: Date | string | null
@@ -17948,6 +18373,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currency?: StringFieldUpdateOperationsInput | string
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
     eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17965,6 +18393,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currency?: StringFieldUpdateOperationsInput | string
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
     eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17982,6 +18413,9 @@ export namespace Prisma {
     location: string
     status?: $Enums.EventStatus
     qrCode?: string | null
+    isPaid?: boolean
+    price?: Decimal | DecimalJsLike | number | string | null
+    currency?: string
     eventStartDate: Date | string
     eventEndDate?: Date | string | null
     registrationDeadline?: Date | string | null
@@ -17999,6 +18433,9 @@ export namespace Prisma {
     location: string
     status?: $Enums.EventStatus
     qrCode?: string | null
+    isPaid?: boolean
+    price?: Decimal | DecimalJsLike | number | string | null
+    currency?: string
     eventStartDate: Date | string
     eventEndDate?: Date | string | null
     registrationDeadline?: Date | string | null
@@ -18045,6 +18482,9 @@ export namespace Prisma {
     location?: StringFilter<"Event"> | string
     status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
     qrCode?: StringNullableFilter<"Event"> | string | null
+    isPaid?: BoolFilter<"Event"> | boolean
+    price?: DecimalNullableFilter<"Event"> | Decimal | DecimalJsLike | number | string | null
+    currency?: StringFilter<"Event"> | string
     eventStartDate?: DateTimeFilter<"Event"> | Date | string
     eventEndDate?: DateTimeNullableFilter<"Event"> | Date | string | null
     registrationDeadline?: DateTimeNullableFilter<"Event"> | Date | string | null
@@ -18191,6 +18631,10 @@ export namespace Prisma {
     name: string
     email: string
     phone: string
+    paymentStatus?: $Enums.PaymentStatus
+    stripeSessionId?: string | null
+    amountPaid?: Decimal | DecimalJsLike | number | string | null
+    note?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -18209,6 +18653,10 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    stripeSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    amountPaid?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -18218,6 +18666,10 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    stripeSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    amountPaid?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -18227,6 +18679,10 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    stripeSessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    amountPaid?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -18265,6 +18721,9 @@ export namespace Prisma {
     location: string
     status?: $Enums.EventStatus
     qrCode?: string | null
+    isPaid?: boolean
+    price?: Decimal | DecimalJsLike | number | string | null
+    currency?: string
     eventStartDate: Date | string
     eventEndDate?: Date | string | null
     registrationDeadline?: Date | string | null
@@ -18280,6 +18739,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currency?: StringFieldUpdateOperationsInput | string
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
     eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18297,6 +18759,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currency?: StringFieldUpdateOperationsInput | string
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
     eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18314,6 +18779,9 @@ export namespace Prisma {
     location?: StringFieldUpdateOperationsInput | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     qrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currency?: StringFieldUpdateOperationsInput | string
     eventStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
     eventEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

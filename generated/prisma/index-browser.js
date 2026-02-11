@@ -24,12 +24,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 7.2.0
- * Query Engine version: 0c8ef2ce45c83248ab3df073180d5eda9e8be7a3
+ * Prisma Client JS version: 7.3.0
+ * Query Engine version: 9d6ad21cbbceab97458517b147a6a09ff43aa735
  */
 Prisma.prismaVersion = {
-  client: "7.2.0",
-  engine: "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3"
+  client: "7.3.0",
+  engine: "9d6ad21cbbceab97458517b147a6a09ff43aa735"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -201,6 +201,9 @@ exports.Prisma.EventScalarFieldEnum = {
   location: 'location',
   status: 'status',
   qrCode: 'qrCode',
+  isPaid: 'isPaid',
+  price: 'price',
+  currency: 'currency',
   eventStartDate: 'eventStartDate',
   eventEndDate: 'eventEndDate',
   registrationDeadline: 'registrationDeadline',
@@ -226,6 +229,10 @@ exports.Prisma.EventAttendeeScalarFieldEnum = {
   name: 'name',
   email: 'email',
   phone: 'phone',
+  paymentStatus: 'paymentStatus',
+  stripeSessionId: 'stripeSessionId',
+  amountPaid: 'amountPaid',
+  note: 'note',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -267,6 +274,13 @@ exports.EventStatus = exports.$Enums.EventStatus = {
   PUBLISHED: 'PUBLISHED',
   CANCELLED: 'CANCELLED',
   COMPLETED: 'COMPLETED'
+};
+
+exports.PaymentStatus = exports.$Enums.PaymentStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
 };
 
 exports.Prisma.ModelName = {

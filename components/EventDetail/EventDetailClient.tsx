@@ -16,11 +16,14 @@ import {
   Calendar,
   CalendarDays,
   Clock,
+  DollarSign,
   MapPin,
   QrCode,
   Users,
 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import EventRegistrationModal from "./EventRegistrationModal";
 
 type EventWithRelations = Prisma.EventGetPayload<{
@@ -33,11 +36,29 @@ interface EventDetailClientProps {
 
 const EventDetailClient = ({ event }: EventDetailClientProps) => {
   const [userIsRegistered, setUserIsRegistered] = useState(false);
+  const searchParams = useSearchParams();
 
   // Check localStorage on mount
   useEffect(() => {
     setUserIsRegistered(isRegisteredForEvent(event.id));
   }, [event.id]);
+
+  // Handle payment query params
+  useEffect(() => {
+    const payment = searchParams.get("payment");
+    if (payment === "success") {
+      setUserIsRegistered(true);
+      toast.success("Payment successful!", {
+        description: "You have been registered for the event. Check your email for confirmation.",
+      });
+      window.history.replaceState({}, "", `/events/${event.id}`);
+    } else if (payment === "cancelled") {
+      toast.info("Payment cancelled", {
+        description: "Your registration was not completed.",
+      });
+      window.history.replaceState({}, "", `/events/${event.id}`);
+    }
+  }, [searchParams, event.id]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -62,6 +83,15 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
     ? new Date() > new Date(event.registrationDeadline)
     : false;
 
+  const eventPrice = event.price ? Number(event.price) : null;
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(price);
+  };
+
   return (
     <>
       <CardHeader className="space-y-4">
@@ -75,6 +105,16 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
                 <Badge variant="destructive">
                   <Users className="w-3 h-3" />
                   Full
+                </Badge>
+              )}
+              {event.isPaid && eventPrice && eventPrice > 0 ? (
+                <Badge variant="secondary" className="gap-1">
+                  <DollarSign className="w-3 h-3" />
+                  {formatPrice(eventPrice)}
+                </Badge>
+              ) : (
+                <Badge variant="outline" className="text-green-600 border-green-300">
+                  Free
                 </Badge>
               )}
             </div>
@@ -235,6 +275,8 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
                 eventTitle={event.title}
                 isEventFull={isEventFull}
                 isPastDeadline={isPastDeadline}
+                eventPrice={eventPrice}
+                isPaidEvent={event.isPaid}
               />
             )}
           </div>

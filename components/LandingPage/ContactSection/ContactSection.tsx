@@ -212,7 +212,7 @@ export default function ContactSection() {
             control={form.control}
             name="companyWebsite"
             render={({ field }) => (
-              <FormItem className="hidden">
+              <FormItem className="hidden" aria-hidden="true">
                 <FormLabel className="sr-only">Company Website (leave blank)</FormLabel>
                 <FormControl>
                   <Input
@@ -220,7 +220,7 @@ export default function ContactSection() {
                     tabIndex={-1}
                     autoComplete="off"
                     className="hidden"
-                    aria-label="Company Website (leave blank)"
+                    aria-hidden="true"
                     {...field}
                   />
                 </FormControl>

@@ -123,8 +123,8 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
         Skip to main content
       </Link>
       <header className="fixed top-0 left-0 w-full z-50 px-6 py-2 md:px-6 md:py-2 pointer-events-none bg-white">
-        <nav role="navigation" aria-label="Main navigation" className="flex justify-between items-center mx-auto w-full pointer-events-auto">
-          {/* Logo / brand - main nav is the menu panel */}
+        <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">
+          {/* Logo and menu button; main navigation links are in the menu panel below */}
           <div className="flex items-center gap-2">
             <Link
               href="/"
@@ -195,7 +195,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
               }`}
             />
           </button>
-        </nav>
+        </div>
 
         {/* Full Screen Menu Overlay - wrapper always in DOM so aria-controls is valid */}
         <div id="navigation-menu">
@@ -223,9 +223,8 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
                 aria-label="Menu"
               >
               <nav
-                role="navigation"
                 className="flex flex-col gap-6 text-center"
-                aria-label="Site navigation"
+                aria-label="Main navigation"
               >
                 {navLinks.map((link, i) => (
                   <motion.div

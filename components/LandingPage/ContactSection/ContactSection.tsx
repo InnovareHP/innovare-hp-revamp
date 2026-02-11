@@ -208,28 +208,31 @@ export default function ContactSection() {
             />
           </motion.div>
 
-          <FormField
-            control={form.control}
-            name="companyWebsite"
-            render={({ field }) => (
-              <FormItem className="hidden" aria-hidden="true">
-                <FormLabel className="sr-only" aria-hidden="true">
-                  Company Website (leave blank)
-                </FormLabel>
-                <FormControl aria-hidden="true">
-                  <Input
-                    type="text"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    className="hidden"
-                    aria-hidden="true"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {/* Honeypot: visually hidden and excluded from AT (rule #10). Wrapper ensures no descendant is exposed. */}
+          <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
+            <FormField
+              control={form.control}
+              name="companyWebsite"
+              render={({ field }) => (
+                <FormItem className="hidden" aria-hidden="true">
+                  <FormLabel className="sr-only" aria-hidden="true">
+                    Company Website (leave blank)
+                  </FormLabel>
+                  <FormControl aria-hidden="true">
+                    <Input
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      className="hidden"
+                      aria-hidden="true"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           {/* TURNSTILE */}
           <motion.div variants={itemVariants}>

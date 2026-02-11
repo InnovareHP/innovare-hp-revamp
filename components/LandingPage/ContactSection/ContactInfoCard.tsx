@@ -62,17 +62,17 @@ const socialLinks = [
 ];
 
 const ContactInfoCard = () => {
+  // Transform-only so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
   const container: Variants = {
-    hidden: { opacity: 0 },
+    hidden: {},
     show: {
-      opacity: 1,
       transition: { staggerChildren: 0.1, delayChildren: 0.3 },
     },
   };
 
   const item: Variants = {
-    hidden: { opacity: 0, x: -10 },
-    show: { opacity: 1, x: 0 },
+    hidden: { x: -10 },
+    show: { x: 0, transition: { duration: 0.4 } },
   };
 
   return (

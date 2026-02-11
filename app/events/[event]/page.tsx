@@ -2,7 +2,7 @@ import { getEventById } from "@/app/events/action/eventaction";
 import EventDetailClient from "@/components/EventDetail/EventDetailClient";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
-import { Prisma } from "@/generated/prisma";
+import { Prisma } from "@prisma/client";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -33,7 +33,10 @@ const EventPage = async ({ params }: EventPageProps) => {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <div className="max-w-5xl mx-auto px-4 py-8">
         <Link href="/events" aria-label="Back to events list">
-          <Button variant="outline" className="mb-6 gap-2 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+          <Button
+            variant="outline"
+            className="mb-6 gap-2 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          >
             <ArrowLeft className="w-4 h-4" aria-hidden />
             Back to Events
           </Button>

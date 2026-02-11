@@ -1,5 +1,5 @@
-import { EventStatus } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
+import { EventStatus } from "@prisma/client";
 
 async function seedEvents() {
   console.log("🌱 Starting to seed events...");

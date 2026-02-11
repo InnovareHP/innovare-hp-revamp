@@ -9,9 +9,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Prisma } from "@/generated/prisma/client";
 import { isRegisteredForEvent } from "@/lib/event-registration-storage";
 import { formatDate, formatTime } from "@/lib/utils";
+import { Prisma } from "@prisma/client";
 import {
   Calendar,
   CalendarDays,
@@ -49,7 +49,8 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
     if (payment === "success") {
       setUserIsRegistered(true);
       toast.success("Payment successful!", {
-        description: "You have been registered for the event. Check your email for confirmation.",
+        description:
+          "You have been registered for the event. Check your email for confirmation.",
       });
       window.history.replaceState({}, "", `/events/${event.id}`);
     } else if (payment === "cancelled") {
@@ -113,7 +114,10 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
                   {formatPrice(eventPrice)}
                 </Badge>
               ) : (
-                <Badge variant="outline" className="text-green-600 border-green-300">
+                <Badge
+                  variant="outline"
+                  className="text-green-600 border-green-300"
+                >
                   Free
                 </Badge>
               )}
@@ -259,8 +263,8 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
                 {isEventFull
                   ? "This event has reached maximum capacity."
                   : isPastDeadline
-                    ? "Registration deadline has passed."
-                    : "Register now to secure your spot!"}
+                  ? "Registration deadline has passed."
+                  : "Register now to secure your spot!"}
               </p>
             </div>
             {userIsRegistered ? (

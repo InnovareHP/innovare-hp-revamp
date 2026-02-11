@@ -34,8 +34,8 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { Media, Prisma } from "@/generated/prisma/client";
 import { formatDate } from "@/lib/utils";
+import { Media, Prisma } from "@prisma/client";
 import {
   AlertCircle,
   Clock,
@@ -348,8 +348,12 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
           <div class="container">
             <h1>${event.title}</h1>
             <div class="event-details">
-              <p><span style="font-weight: 600;">Location:</span> ${event.location}</p>
-              <p><span style="font-weight: 600;">Date:</span> ${formatDate(event.eventStartDate)}</p>
+              <p><span style="font-weight: 600;">Location:</span> ${
+                event.location
+              }</p>
+              <p><span style="font-weight: 600;">Date:</span> ${formatDate(
+                event.eventStartDate
+              )}</p>
             </div>
             <div class="qr-container">
               <div id="qr-code"></div>
@@ -468,7 +472,11 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
                         cell: (attendee: any) => (
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon" aria-label={`Actions for ${attendee.name}`}>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                aria-label={`Actions for ${attendee.name}`}
+                              >
                                 <MoreVertical className="w-4 h-4" aria-hidden />
                               </Button>
                             </DropdownMenuTrigger>

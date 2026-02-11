@@ -112,14 +112,11 @@ const ContactInfoCard = () => {
                   variants={item}
                   className="flex items-start gap-3"
                 >
-                  {/* Decorative: wrapper + icon hidden from AT to avoid clutter (WCAG 2.1 rules #37/#38/#40) */}
-                  <span aria-hidden="true" className="shrink-0">
-                    <Icon
-                      className="w-5 h-5 text-blue-600 mt-0.5"
-                      role="presentation"
-                      aria-hidden="true"
-                    />
-                  </span>
+                  {/* Decorative: role="presentation" so not announced as image; no aria-hidden (rule #9: visible content must stay in AT) */}
+                  <Icon
+                    className="w-5 h-5 text-blue-600 mt-0.5 shrink-0"
+                    role="presentation"
+                  />
                   <div>
                     <p className="text-sm font-semibold text-gray-700">
                       {label}
@@ -183,14 +180,8 @@ const ContactInfoCard = () => {
                   className="text-white transition bg-blue-600 p-2 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   title={title}
                 >
-                  {/* Decorative: wrapper + icon hidden from AT to avoid clutter (WCAG 2.1 rules #37/#38/#40) */}
-                  <span aria-hidden="true">
-                    <Icon
-                      className="w-6 h-6"
-                      role="presentation"
-                      aria-hidden="true"
-                    />
-                  </span>
+                  {/* Decorative: role="presentation" so not announced as image; no aria-hidden (rule #9: visible content must stay in AT) */}
+                  <Icon className="w-6 h-6" role="presentation" />
                 </Link>
               ))}
             </div>

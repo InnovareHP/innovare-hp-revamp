@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://www.innovarehp.com",
-    siteName: "Innovare HP",
+    siteName: "Innovare HP | Healthcare Marketing & Growth Strategy",
     title: "Innovare HP | Healthcare Marketing & Growth Strategy",
     description:
       "Strategic healthcare marketing, serving senior care, behavioral health, and clinical organizations.",

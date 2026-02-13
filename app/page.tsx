@@ -6,11 +6,11 @@ import { LinkInPost } from "./action/landing-page";
 const SITE_URL = "https://www.innovarehp.com";
 
 export const metadata: Metadata = {
-  title: "Healthcare Marketing & Growth Strategy",
+  title: "Innovare HP | Healthcare Marketing & Growth Strategy",
   description:
     "Innovare HP delivers intelligent healthcare marketing, community outreach, referral development, and brand strategy for senior care, behavioral health, and clinical organizations.",
   openGraph: {
-    title: "Healthcare Marketing & Growth Strategy",
+    title: "Innovare HP | Healthcare Marketing & Growth Strategy",
     description:
       "Full-service healthcare marketing for senior care, behavioral health, and clinical organizations.",
     url: SITE_URL,
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Innovare HP",
+  name: "Innovare HP | Healthcare Marketing & Growth Strategy",
   url: SITE_URL,
   logo: `${SITE_URL}/images/logo.png`,
   description:
@@ -50,13 +50,13 @@ const organizationJsonLd = {
 const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Innovare HP",
+  name: "Innovare HP | Healthcare Marketing & Growth Strategy",
   url: SITE_URL,
   description:
     "Healthcare marketing and growth strategy for senior care, behavioral health, and clinical organizations.",
   publisher: {
     "@type": "Organization",
-    name: "Innovare HP",
+    name: "Innovare HP | Healthcare Marketing & Growth Strategy",
     logo: `${SITE_URL}/images/logo.png`,
   },
   inLanguage: "en-US",

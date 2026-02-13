@@ -2,7 +2,10 @@
   directory = "netlify/functions"
 [build]
   command = "pnpm install --no-frozen-lockfile && pnpm prisma generate && pnpm build"
+<<<<<<< HEAD
   publish = ".next"
+=======
+>>>>>>> e66acf5ff6cc032a082b8c32905eb494667fd0da
 [build.environment]
   NETLIFY_USE_PNPM_INSTALL = "false"
   NEXT_DISABLE_TURBOPACK = "1"

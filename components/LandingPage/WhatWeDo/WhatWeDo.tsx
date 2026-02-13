@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { motion, Variants } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 const services = [
   {
@@ -50,25 +50,17 @@ const handleDownloadFile = (url: string, filename?: string) => {
 
 const WhatWeDo = () => {
   // Fixes the "ease" string type error by using the Variants type
+  // Transform-only so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
   const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15, // Delay between each service reveal
-      },
-    },
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.15 } },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { y: 30 },
     visible: {
-      opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut", // Properly typed via Variants
-      },
+      transition: { duration: 0.8, ease: "easeOut" },
     },
   };
 
@@ -81,8 +73,8 @@ const WhatWeDo = () => {
       <div>
         {/* Header Animation */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ y: -20 }}
+          whileInView={{ y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="mb-12 lg:mb-16"
@@ -100,9 +92,9 @@ const WhatWeDo = () => {
           viewport={{ once: true, margin: "-100px" }}
           className="space-y-12 lg:space-y-20 mx-0 sm:mx-4 md:mx-6 lg:mx-10"
         >
-          {services.map((service, index) => (
+          {services.map((service) => (
             <motion.div
-              key={index}
+              key={service.title}
               variants={itemVariants}
               className="space-y-4 group"
             >
@@ -126,9 +118,9 @@ const WhatWeDo = () => {
           )
         }
         className="border-blue-600 my-10 w-full text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-none px-8 py-6 text-sm font-semibold uppercase tracking-widest cursor-pointer"
-        aria-label="Download Innovare HP brochure PDF"
       >
         Download Brochure
+        <span className="sr-only"> (PDF, downloads file)</span>
       </Button>
     </section>
   );

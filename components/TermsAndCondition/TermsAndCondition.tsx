@@ -99,7 +99,11 @@ const TermsAndConditions = () => {
                 Section Index
               </h4>
 
-              <nav className="flex flex-col gap-4">
+              <nav
+                role="navigation"
+                aria-label="Table of contents"
+                className="flex flex-col gap-4"
+              >
                 {navLinks.map((link, idx) => (
                   <motion.a
                     key={link.id}

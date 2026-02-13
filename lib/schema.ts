@@ -59,6 +59,9 @@ export const eventSchema = z.object({
   status: z.string().min(1, "Status is required"),
   eventStartDate: z.date({ message: "Start date is required" }).nullable(),
   maxGuests: z.number().int().min(1, "Must have at least 1 guest"),
+  isPaid: z.boolean().optional(),
+  price: z.number().min(0).nullable().optional(),
+  currency: z.string().optional(),
   media: z
     .instanceof(File)
     .or(z.object({ url: z.string(), type: z.string() }))

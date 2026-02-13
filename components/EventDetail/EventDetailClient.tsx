@@ -1,6 +1,5 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { isRegisteredForEvent } from "@/lib/event-registration-storage";
@@ -10,14 +9,17 @@ import {
   Calendar,
   CalendarDays,
   Clock,
+  DollarSign,
   ExternalLink,
   MapPin,
   Navigation,
   QrCode,
-  Users,
 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { Badge } from "../ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -43,11 +45,28 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
     lon: number;
   } | null>(null);
   const [isLoadingMap, setIsLoadingMap] = useState(true);
-
+  const searchParams = useSearchParams();
   // Check localStorage on mount
   useEffect(() => {
     setUserIsRegistered(isRegisteredForEvent(event.id));
   }, [event.id]);
+
+  useEffect(() => {
+    const payment = searchParams.get("payment");
+    if (payment === "success") {
+      setUserIsRegistered(true);
+      toast.success("Payment successful!", {
+        description:
+          "You have been registered for the event. Check your email for confirmation.",
+      });
+      window.history.replaceState({}, "", `/events/${event.id}`);
+    } else if (payment === "cancelled") {
+      toast.info("Payment cancelled", {
+        description: "Your registration was not completed.",
+      });
+      window.history.replaceState({}, "", `/events/${event.id}`);
+    }
+  }, [searchParams, event.id]);
 
   // Geocode location using Nominatim (free OpenStreetMap service)
   useEffect(() => {
@@ -81,21 +100,6 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
     geocodeLocation();
   }, [event.location]);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "PUBLISHED":
-        return "default";
-      case "DRAFT":
-        return "secondary";
-      case "CANCELLED":
-        return "destructive";
-      case "COMPLETED":
-        return "outline";
-      default:
-        return "default";
-    }
-  };
-
   const isPastDeadline = event.registrationDeadline
     ? new Date() > new Date(event.registrationDeadline)
     : false;
@@ -104,22 +108,36 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
   const encodedLocation = encodeURIComponent(event.location);
   const googleMapsDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodedLocation}`;
 
+  const eventPrice = event.price ? Number(event.price) : null;
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(price);
+  };
+
   return (
-    <CardContent className="p-0 bg-none">
+    <CardContent className="p-4 bg-none">
       {/* Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
         {/* Left Column - Event Details */}
         <div className="space-y-6 p-8 lg:pr-6">
           {/* Header */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 flex-wrap">
-              <Badge
-                variant={getStatusColor(event.status)}
-                className="text-xs font-semibold px-3 py-1"
-              >
-                {event.status}
+            {event.isPaid && eventPrice && eventPrice > 0 ? (
+              <Badge variant="secondary" className="gap-1">
+                <DollarSign className="w-3 h-3" />
+                {formatPrice(eventPrice)}
               </Badge>
-            </div>
+            ) : (
+              <Badge
+                variant="outline"
+                className="text-green-600 border-green-300"
+              >
+                Free
+              </Badge>
+            )}
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
               {event.title}
             </h1>
@@ -174,42 +192,6 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
               </Card>
             )}
 
-            <Card className="border-0 bg-gradient-to-br from-blue-50 via-sky-50/80 to-blue-100/30 shadow-md hover:shadow-lg transition-all duration-300">
-              <CardContent className="pt-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-xl bg-white/80 backdrop-blur-sm shadow-sm">
-                    <MapPin className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div className="space-y-1 flex-1">
-                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                      Location
-                    </p>
-                    <p className="text-lg font-bold text-slate-900 leading-snug">
-                      {event.location}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-0 bg-gradient-to-br from-blue-50 via-cyan-50/80 to-blue-100/30 shadow-md hover:shadow-lg transition-all duration-300">
-              <CardContent className="pt-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-xl bg-white/80 backdrop-blur-sm shadow-sm">
-                    <Users className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div className="space-y-1 flex-1">
-                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                      Registered Attendees
-                    </p>
-                    <p className="text-xl font-bold text-slate-900">
-                      {event.attendees.length}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
             {event.registrationDeadline && (
               <Card className="border-0 bg-gradient-to-br from-blue-50 via-indigo-50/80 to-blue-100/30 shadow-md hover:shadow-lg transition-all duration-300">
                 <CardContent className="pt-6">
@@ -232,6 +214,7 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
                 </CardContent>
               </Card>
             )}
+
             <Dialog>
               <DialogTrigger asChild>
                 <Card className="border-0 cursor-pointer bg-gradient-to-br from-blue-50 via-slate-50/80 to-blue-100/30 shadow-md hover:shadow-lg transition-all duration-300">
@@ -273,85 +256,6 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
               </DialogContent>
             </Dialog>
           </div>
-          {event.status === "PUBLISHED" && (
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 p-6 md:p-8 shadow-2xl">
-              {/* Decorative Background Pattern */}
-              <div className="absolute inset-0 opacity-10">
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                  }}
-                />
-              </div>
-
-              <div className="relative z-10 flex flex-col items-center gap-4 text-center">
-                <div className="space-y-2">
-                  <h3 className="text-2xl md:text-3xl font-bold text-white">
-                    {userIsRegistered ? "You're All Set!" : "Ready to Join?"}
-                  </h3>
-                  <p className="text-blue-100 text-sm md:text-base">
-                    {userIsRegistered
-                      ? "You're registered! See you there!"
-                      : isPastDeadline
-                        ? "Registration deadline has passed."
-                        : "Register now to secure your spot!"}
-                  </p>
-                </div>
-
-                {!userIsRegistered && (
-                  <EventRegistrationModal
-                    eventId={event.id}
-                    eventTitle={event.title}
-                    isPastDeadline={isPastDeadline}
-                  />
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Right Column - How to Join, Map, Registration */}
-        <div className="space-y-6 p-8 lg:pl-6 bg-gradient-to-br from-slate-50/50 to-blue-50/30 lg:border-l border-slate-200">
-          {/* How to Join Section */}
-          {event.status === "PUBLISHED" && (
-            <div className="space-y-3">
-              <h3 className="text-xl font-bold text-slate-900">How to Join</h3>
-              <Card className="border-l-4 border-l-blue-600 bg-gradient-to-r from-blue-50 to-white shadow-sm">
-                <CardContent className="pt-4 pb-4">
-                  <div className="space-y-3">
-                    <div className="flex gap-2 items-start">
-                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
-                        1
-                      </div>
-                      <p className="text-slate-700 text-sm">
-                        <span className="font-semibold">Register:</span> Fill
-                        out the form below
-                      </p>
-                    </div>
-                    <div className="flex gap-2 items-start">
-                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
-                        2
-                      </div>
-                      <p className="text-slate-700 text-sm">
-                        <span className="font-semibold">Confirm:</span> Check
-                        your email
-                      </p>
-                    </div>
-                    <div className="flex gap-2 items-start">
-                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
-                        3
-                      </div>
-                      <p className="text-slate-700 text-sm">
-                        <span className="font-semibold">Attend:</span> Arrive
-                        10-15 min early
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
 
           {/* Location Map Section */}
           <div className="space-y-4">
@@ -426,7 +330,129 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
               )}
             </Card>
           </div>
+        </div>
 
+        {/* Right Column - How to Join, Map, Registration */}
+        <div className="space-y-6 p-8 lg:pl-6 bg-gradient-to-br from-slate-50/50 to-blue-50/30 lg:border-l border-slate-200">
+          {/* How to Join Section */}
+
+          {event.status === "PUBLISHED" && (
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 p-6 md:p-8 shadow-2xl">
+              {/* Decorative Background Pattern */}
+              <div className="absolute inset-0 opacity-10">
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                  }}
+                />
+              </div>
+
+              <div className="relative z-10 flex flex-col items-center gap-4 text-center">
+                <div className="space-y-2">
+                  <h3 className="text-2xl md:text-3xl font-bold text-white">
+                    {userIsRegistered ? "You're All Set!" : "Ready to Join?"}
+                  </h3>
+                  <p className="text-blue-100 text-sm md:text-base">
+                    {userIsRegistered
+                      ? "You're registered! See you there!"
+                      : isPastDeadline
+                        ? "Registration deadline has passed."
+                        : "Register now to secure your spot!"}
+                  </p>
+                </div>
+
+                {!userIsRegistered && (
+                  <EventRegistrationModal
+                    eventId={event.id}
+                    eventTitle={event.title}
+                    isPastDeadline={isPastDeadline}
+                    eventPrice={eventPrice}
+                    isPaidEvent={event.isPaid}
+                  />
+                )}
+              </div>
+            </div>
+          )}
+          {event.status === "PUBLISHED" && (
+            <div className="space-y-3">
+              <h3 className="text-xl font-bold text-slate-900">How to Join</h3>
+              <Card className="border-l-4 border-l-blue-600 bg-gradient-to-r from-blue-50 to-white shadow-sm">
+                <CardContent className="pt-4 pb-4">
+                  <div className="space-y-3">
+                    <div className="flex gap-2 items-start">
+                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
+                        1
+                      </div>
+                      <p className="text-slate-700 text-sm">
+                        <span className="font-semibold">Register:</span> Fill
+                        out the form below
+                      </p>
+                    </div>
+                    <div className="flex gap-2 items-start">
+                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
+                        2
+                      </div>
+                      <p className="text-slate-700 text-sm">
+                        <span className="font-semibold">Confirm:</span> Check
+                        your email
+                      </p>
+                    </div>
+                    <div className="flex gap-2 items-start">
+                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
+                        3
+                      </div>
+                      <p className="text-slate-700 text-sm">
+                        <span className="font-semibold">Attend:</span> Be
+                        present at the event location
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {/* Location Map Section */}
+
+          <div className="space-y-3">
+            <h3 className="text-xl font-bold text-slate-900">What to Expect</h3>
+            <Card className="border-l-4 border-l-blue-600 bg-gradient-to-r from-blue-50 to-white shadow-sm">
+              <CardContent className="pt-4 pb-4">
+                <div className="space-y-3">
+                  <div className="flex gap-2 items-start">
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
+                      1
+                    </div>
+                    <p className="text-slate-700 text-sm">
+                      <span className="font-semibold">Registration:</span> Fill
+                      out the form below to register for the event.
+                    </p>
+                  </div>
+
+                  <div className="flex gap-2 items-start">
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
+                      2
+                    </div>
+                    <p className="text-slate-700 text-sm">
+                      <span className="font-semibold">Confirm:</span> Check your
+                      email for a confirmation message with event details.
+                    </p>
+                  </div>
+
+                  <div className="flex gap-2 items-start">
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
+                      3
+                    </div>
+                    <p className="text-slate-700 text-sm">
+                      <span className="font-semibold">Attend:</span> Be present
+                      at the event location
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
           {/* Registration CTA Section */}
         </div>
       </div>

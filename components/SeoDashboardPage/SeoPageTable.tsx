@@ -1,7 +1,8 @@
 "use client";
 
 import { useSeoPages } from "@/hooks/useSeoOverview";
-import { ExternalLink, Link } from "lucide-react"; // Optional: if you have lucide-react installed
+import { ExternalLink } from "lucide-react";
+import Link from "next/link";
 
 interface SeoPage {
   page: string;
@@ -70,9 +71,11 @@ export function SeoPageTable() {
                     <Link
                       href={p.page}
                       target="_blank"
+                      rel="noopener noreferrer"
                       className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-foreground"
+                      aria-label={`Open ${formatUrl(p.page)} in new tab`}
                     >
-                      <ExternalLink size={14} />
+                      <ExternalLink size={14} aria-hidden />
                     </Link>
                   </div>
                 </td>

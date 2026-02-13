@@ -56,7 +56,7 @@ const EventPage = async ({ params }: EventPageProps) => {
             </Button>
           </Link>
           {event.media && (
-            <div className="relative w-full h-72 md:h-[500px] overflow-hidden">
+            <div className="relative w-full h-72 md:h-[200px] overflow-hidden">
               <img
                 src={event.media.url}
                 alt={event.title}

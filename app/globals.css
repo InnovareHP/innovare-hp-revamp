@@ -116,6 +116,10 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    /* Prevent sticky header from obscuring focused elements (WCAG 2.2) */
+    scroll-padding-top: 8rem;
+  }
   body {
     @apply bg-background text-foreground;
   }
@@ -160,16 +164,36 @@
   white-space: normal;
 }
 
+/* Prevent sticky header from obscuring focused elements - WCAG 2.2 (Motor) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  scroll-margin-top: 8rem;
+}
+
 /* Ensure links are distinguishable without color - WCAG 2.1 Level A */
-a:not([class*="rounded-full"]):not([class*="button"]):not([class*="Button"]) {
-  text-decoration: underline !important;
+html
+  body
+  a:not([class*="rounded-full"]):not([class*="button"]):not([class*="Button"]) {
+  text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
 }
 
-a:not([class*="rounded-full"]):not([class*="button"]):not([class*="Button"]):hover,
-a:not([class*="rounded-full"]):not([class*="button"]):not([class*="Button"]):focus {
-  text-decoration: underline !important;
+html
+  body
+  a:not([class*="rounded-full"]):not([class*="button"]):not(
+    [class*="Button"]
+  ):hover,
+html
+  body
+  a:not([class*="rounded-full"]):not([class*="button"]):not(
+    [class*="Button"]
+  ):focus {
+  text-decoration: underline;
   text-decoration-thickness: 2px;
 }
 
@@ -201,7 +225,18 @@ textarea:disabled {
 /* Ensure text spacing can be adjusted without loss of content or functionality */
 /* Users should be able to set letter-spacing to at least 0.12 times the font size */
 /* Users should be able to set word-spacing to at least 0.16 times the font size */
-p, span, div, li, td, th, label, a, button, input, textarea, select {
+p,
+span,
+div,
+li,
+td,
+th,
+label,
+a,
+button,
+input,
+textarea,
+select {
   /* Use relative units to allow adjustment */
   letter-spacing: 0;
   word-spacing: 0;
@@ -213,13 +248,29 @@ p, span, div, li, td, th, label, a, button, input, textarea, select {
 /* WCAG 2.1 Level AA: Text line height must be adjustable */
 /* Users should be able to set line-height to at least 1.5 times the font size */
 /* Ensure line-height can be adjusted without loss of content or functionality */
-p, span, div, li, td, th, label, a, button, input, textarea, select {
+p,
+span,
+div,
+li,
+td,
+th,
+label,
+a,
+button,
+input,
+textarea,
+select {
   /* Minimum line-height of 1.5 for body text */
   line-height: 1.5;
 }
 
 /* Headings can have tighter line-height but must still be adjustable */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   line-height: 1.2;
   /* Ensure headings remain readable when line-height is increased */
   overflow-wrap: break-word;
@@ -234,30 +285,13 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Interactive background animations */
-@keyframes blob {
-  0% {
-    transform: translate(0px, 0px) scale(1);
+/* WCAG 2.1 Level AAA: Respect prefers-reduced-motion for vestibular and cognitive accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
-  33% {
-    transform: translate(30px, -50px) scale(1.1);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-  100% {
-    transform: translate(0px, 0px) scale(1);
-  }
-}
-
-.animate-blob {
-  animation: blob 7s infinite;
-}
-
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
-
-.animation-delay-4000 {
-  animation-delay: 4s;
 }

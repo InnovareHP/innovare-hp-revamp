@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import {
   Facebook,
   Instagram,
@@ -9,6 +9,7 @@ import {
   MapPin,
   Phone,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const contactDetails = [
@@ -40,15 +41,6 @@ const contactDetails = [
     href: "https://maps.google.com/?q=4221+Bud+Drive+NE+Comstock+Park+MI+49321",
     type: "address",
   },
-  // {
-  //   label: "Policy",
-  //   value: (
-  //     <Link href="/privacy-policy" className="text-blue-600">
-  //       Privacy Policy
-  //     </Link>
-  //   ),
-  //   icon: File,
-  // },
 ];
 
 const socialLinks = [
@@ -70,34 +62,35 @@ const socialLinks = [
 ];
 
 const ContactInfoCard = () => {
+  // Transform-only so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
   const container: Variants = {
-    hidden: { opacity: 0 },
+    hidden: {},
     show: {
-      opacity: 1,
       transition: { staggerChildren: 0.1, delayChildren: 0.3 },
     },
   };
 
   const item: Variants = {
-    hidden: { opacity: 0, x: -10 },
-    show: { opacity: 1, x: 0 },
+    hidden: { x: -10 },
+    show: { x: 0, transition: { duration: 0.4 } },
   };
 
   return (
     <div className="bg-white rounded-lg overflow-hidden lg:shadow-lg border">
       <div className="relative h-64 w-full">
-        <img
+        <Image
           src="/images/contact-form.jpg"
           alt="Innovare HP team members collaborating on healthcare marketing projects"
           title="Innovare HP team members collaborating on healthcare marketing projects"
           className="object-cover rounded-t-lg"
-          width={1000}
-          height={1000}
+          fill
+          sizes="(max-width: 1024px) 100vw, 1024px"
+          priority
         />
       </div>
 
       <div className="p-6 flex flex-col xl:flex-row items-start gap-6">
-        <img
+        <Image
           src="/images/logo.png"
           alt="Innovare HP logo"
           title="Innovare HP logo"
@@ -119,9 +112,10 @@ const ContactInfoCard = () => {
                   variants={item}
                   className="flex items-start gap-3"
                 >
+                  {/* Decorative: role="presentation" so not announced as image; no aria-hidden (rule #9: visible content must stay in AT) */}
                   <Icon
-                    className="w-5 h-5 text-blue-600 mt-0.5"
-                    aria-hidden="true"
+                    className="w-5 h-5 text-blue-600 mt-0.5 shrink-0"
+                    role="presentation"
                   />
                   <div>
                     <p className="text-sm font-semibold text-gray-700">
@@ -130,10 +124,35 @@ const ContactInfoCard = () => {
                     {href ? (
                       <Link
                         href={href}
-                        className="text-sm text-gray-700 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
-                        aria-label={`${label}: ${value}${type === "phone" ? ". Call us" : type === "email" ? ". Email us" : ". View on map"}`}
+                        className="text-sm text-gray-700 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded transition-colors"
+                        aria-label={
+                          type === "email"
+                            ? `Send an email to ${value} (opens email application)`
+                            : type === "phone"
+                              ? `Call ${value} (opens phone app)`
+                              : undefined
+                        }
                       >
                         {displayValue || value}
+                        {/* Screen-reader-only context: do not override visible text (WCAG 2.1) */}
+                        {type === "email" && (
+                          <span className="sr-only">
+                            {" "}
+                            (opens email application)
+                          </span>
+                        )}
+                        {type === "phone" && (
+                          <span className="sr-only">
+                            {" "}
+                            (initiates a phone call)
+                          </span>
+                        )}
+                        {type === "address" && (
+                          <span className="sr-only">
+                            {" "}
+                            (opens in new tab)
+                          </span>
+                        )}
                       </Link>
                     ) : (
                       <p className="text-sm text-gray-700">
@@ -146,21 +165,14 @@ const ContactInfoCard = () => {
             )}
           </motion.div>
 
-          <div className="space-y-3">
-            <p
-              className="text-sm font-semibold text-gray-700"
-              id="social-media-heading"
-            >
+          <fieldset className="space-y-3 border-0 p-0 m-0 min-w-0">
+            <legend className="text-sm font-semibold text-gray-700">
               Social Media
-            </p>
-            <nav
-              className="flex gap-3"
-              aria-labelledby="social-media-heading"
-              aria-label="Social media links"
-            >
-              {socialLinks.map(({ icon: Icon, href, title }, index) => (
+            </legend>
+            <div className="flex gap-3">
+              {socialLinks.map(({ icon: Icon, href, title }) => (
                 <Link
-                  key={index}
+                  key={title}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -168,11 +180,12 @@ const ContactInfoCard = () => {
                   className="text-white transition bg-blue-600 p-2 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   title={title}
                 >
-                  <Icon className="w-6 h-6" aria-hidden="true" />
+                  {/* Decorative: role="presentation" so not announced as image; no aria-hidden (rule #9: visible content must stay in AT) */}
+                  <Icon className="w-6 h-6" role="presentation" />
                 </Link>
               ))}
-            </nav>
-          </div>
+            </div>
+          </fieldset>
         </div>
       </div>
     </div>

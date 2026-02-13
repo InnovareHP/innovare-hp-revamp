@@ -10,6 +10,7 @@ import Link from "next/link";
 import { use, useState } from "react";
 import { toast } from "sonner";
 import ReusableTable, { ColumnDef } from "../ReusableTable/ReusableTable";
+import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import AddEventButton from "./AddEventButton";
 import RemoveEvent from "./RemoveEvent";
@@ -130,9 +131,22 @@ export default function AdminEventPage({
       cell: (event) => (event as any).totalAttendees ?? 0,
     },
     {
-      key: "maxGuests",
-      header: "Max Guests",
+      key: "price",
+      header: "Price",
       align: "right",
+      cell: (event) =>
+        event.isPaid && Number(event.price) > 0 ? (
+          <Badge variant="secondary" className="text-xs">
+            ${Number(event.price).toFixed(2)}
+          </Badge>
+        ) : (
+          <Badge
+            variant="outline"
+            className="text-green-600 border-green-300 text-xs"
+          >
+            Free
+          </Badge>
+        ),
     },
     {
       key: "actions",

@@ -3,6 +3,7 @@ import {
   AdminCustomEmail,
   EventRegistrationConfirmation,
   EventRegistrationNotification,
+  RefundConfirmationEmail,
 } from "./email";
 import { prisma } from "./prisma";
 import { resend } from "./resend";
@@ -141,6 +142,48 @@ export async function getEventForEmail(eventId: string) {
       attendees: true,
     },
   });
+}
+
+export async function sendRefundConfirmationEmail({
+  attendeeName,
+  attendeeEmail,
+  eventTitle,
+  refundAmount,
+  eventId,
+  reason,
+}: {
+  attendeeName: string;
+  attendeeEmail: string;
+  eventTitle: string;
+  refundAmount: string;
+  eventId: string;
+  reason?: string;
+}) {
+  try {
+    const { data, error } = await resend.emails.send({
+      from: "Innovare HP <hello@innovarehp.com>",
+      to: [attendeeEmail],
+      subject: `Refund Processed: ${eventTitle}`,
+      react: RefundConfirmationEmail({
+        attendeeName,
+        eventTitle,
+        refundAmount,
+        eventId,
+        reason,
+      }),
+    });
+
+    if (error) {
+      console.error("Error sending refund confirmation email:", error);
+      return { success: false, error };
+    }
+
+    console.log("Refund confirmation email sent:", data);
+    return { success: true, data };
+  } catch (error) {
+    console.error("Failed to send refund confirmation email:", error);
+    return { success: false, error };
+  }
 }
 
 export async function sendAdminCustomEmail({

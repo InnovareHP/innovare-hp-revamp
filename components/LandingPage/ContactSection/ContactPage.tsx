@@ -6,10 +6,9 @@ import ContactSection from "./ContactSection";
 
 const ContactPage = () => {
   return (
-    <div
+    <footer
       id="contact"
       className="container mx-auto p-4 md:p-8 lg:p-12 overflow-hidden"
-      aria-label="Contact section"
     >
       <motion.div
         initial="hidden"
@@ -25,7 +24,7 @@ const ContactPage = () => {
           <ContactSection />
         </div>
       </motion.div>
-    </div>
+    </footer>
   );
 };
 

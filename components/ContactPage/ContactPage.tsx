@@ -54,18 +54,21 @@ const ContactPage = ({ initialSubmissions }: ContactPageProps) => {
         </h1>
         <div className="flex gap-2 items-center">
           <span className="text-sm text-gray-700 mr-2">Page {page}</span>
-          <button
+          <Button
             type="button"
             disabled={page <= 1 || loading}
             onClick={() => setPage((p) => p - 1)}
             className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50 hover:bg-gray-300 transition"
+            aria-label="Previous page"
           >
             Prev
-          </button>
+          </Button>
           <Button
+            type="button"
             disabled={page >= Math.ceil(total / limit) || loading}
             onClick={() => setPage((p) => p + 1)}
             className="px-3 py-1 bg-blue-600 text-white rounded disabled:opacity-50 hover:bg-blue-700 transition"
+            aria-label="Next page"
           >
             Next
           </Button>
@@ -82,7 +85,9 @@ const ContactPage = ({ initialSubmissions }: ContactPageProps) => {
         </div>
       ) : (
         <div
-          className={`relative overflow-x-auto shadow-md sm:rounded-lg ${loading ? "opacity-50" : ""}`}
+          className={`relative overflow-x-auto shadow-md sm:rounded-lg ${
+            loading ? "opacity-50" : ""
+          }`}
         >
           <table className="w-full text-sm text-left text-gray-700">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50">

@@ -1,6 +1,10 @@
 "use client";
 
-import { deleteEvent, sendEventEmail } from "@/app/admin/events/action";
+import {
+  deleteEvent,
+  refundAttendee,
+  sendEventEmail,
+} from "@/app/admin/events/action";
 import ReusableTable from "@/components/ReusableTable/ReusableTable";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -35,12 +39,14 @@ import { Media, Prisma } from "@prisma/client";
 import {
   AlertCircle,
   Clock,
+  DollarSign,
   Download,
   Mail,
   MapPin,
   MoreVertical,
   Printer,
   QrCode,
+  RotateCcw,
   Send,
   Users,
 } from "lucide-react";
@@ -74,6 +80,49 @@ type EmailDialogState = {
   attendee?: { name: string; email: string };
 };
 
+const getPaymentStatusBadge = (status: string | null) => {
+  switch (status) {
+    case "PAID":
+      return (
+        <Badge
+          className="bg-green-500/10 text-green-600 border-green-200"
+          variant="outline"
+        >
+          Paid
+        </Badge>
+      );
+    case "PENDING":
+      return (
+        <Badge
+          className="bg-yellow-500/10 text-yellow-600 border-yellow-200"
+          variant="outline"
+        >
+          Pending
+        </Badge>
+      );
+    case "REFUNDED":
+      return (
+        <Badge
+          className="bg-blue-500/10 text-blue-600 border-blue-200"
+          variant="outline"
+        >
+          Refunded
+        </Badge>
+      );
+    case "FAILED":
+      return (
+        <Badge
+          className="bg-red-500/10 text-red-600 border-red-200"
+          variant="outline"
+        >
+          Failed
+        </Badge>
+      );
+    default:
+      return <Badge variant="outline">Free</Badge>;
+  }
+};
+
 const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
   const [emailDialog, setEmailDialog] = useState<EmailDialogState>({
     isOpen: false,
@@ -85,6 +134,72 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
   });
   const [isSending, setIsSending] = useState(false);
   const [showQRDialog, setShowQRDialog] = useState(false);
+  const [isRefunding, setIsRefunding] = useState<string | null>(null);
+  const [refundReason, setRefundReason] = useState("");
+  const [refundDialog, setRefundDialog] = useState<{
+    isOpen: boolean;
+    attendeeId: string;
+    attendeeName: string;
+    attendeeEmail: string;
+    amount: string;
+  }>({
+    isOpen: false,
+    attendeeId: "",
+    attendeeName: "",
+    attendeeEmail: "",
+    amount: "",
+  });
+
+  const openRefundDialog = (attendee: any) => {
+    const amount = attendee.amountPaid
+      ? new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(Number(attendee.amountPaid))
+      : "Full amount";
+    setRefundDialog({
+      isOpen: true,
+      attendeeId: attendee.id,
+      attendeeName: attendee.name,
+      attendeeEmail: attendee.email,
+      amount,
+    });
+    setRefundReason("");
+  };
+
+  const closeRefundDialog = () => {
+    setRefundDialog({
+      isOpen: false,
+      attendeeId: "",
+      attendeeName: "",
+      attendeeEmail: "",
+      amount: "",
+    });
+    setRefundReason("");
+  };
+
+  const handleRefund = async () => {
+    setIsRefunding(refundDialog.attendeeId);
+    try {
+      const result = await refundAttendee(
+        refundDialog.attendeeId,
+        refundReason.trim() || undefined
+      );
+      if (result.success) {
+        toast.success(
+          "Refund processed successfully. The attendee will receive a confirmation email."
+        );
+      } else {
+        toast.error(result.error || "Failed to process refund");
+      }
+    } catch (error) {
+      console.error("Error refunding attendee:", error);
+      toast.error("Failed to process refund");
+    } finally {
+      setIsRefunding(null);
+      closeRefundDialog();
+    }
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -98,11 +213,6 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
         return "secondary";
     }
   };
-
-  const attendanceRate =
-    event.attendees.length > 0
-      ? Math.round((event.attendees.length / event.attendees.length) * 100)
-      : 100;
 
   const handleDelete = async (ids: string[]) => {
     try {
@@ -238,8 +348,12 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
           <div class="container">
             <h1>${event.title}</h1>
             <div class="event-details">
-              <p><strong>Location:</strong> ${event.location}</p>
-              <p><strong>Date:</strong> ${formatDate(event.eventStartDate)}</p>
+              <p><span style="font-weight: 600;">Location:</span> ${
+                event.location
+              }</p>
+              <p><span style="font-weight: 600;">Date:</span> ${formatDate(
+                event.eventStartDate
+              )}</p>
             </div>
             <div class="qr-container">
               <div id="qr-code"></div>
@@ -324,6 +438,33 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
                         cell: (row: any) =>
                           new Date(row.createdAt).toLocaleDateString(),
                       },
+                      ...(event.isPaid
+                        ? [
+                            {
+                              key: "payment",
+                              header: "Payment",
+                              cell: (row: any) =>
+                                getPaymentStatusBadge(row.paymentStatus),
+                            },
+                            {
+                              key: "note",
+                              header: "Note",
+                              cell: (row: any) =>
+                                row.note ? (
+                                  <span
+                                    className="text-xs text-muted-foreground max-w-[200px] truncate block"
+                                    title={row.note}
+                                  >
+                                    {row.note}
+                                  </span>
+                                ) : (
+                                  <span className="text-xs text-muted-foreground/50">
+                                    —
+                                  </span>
+                                ),
+                            },
+                          ]
+                        : []),
                       {
                         key: "actions",
                         header: "",
@@ -331,8 +472,12 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
                         cell: (attendee: any) => (
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon">
-                                <MoreVertical className="w-4 h-4" />
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                aria-label={`Actions for ${attendee.name}`}
+                              >
+                                <MoreVertical className="w-4 h-4" aria-hidden />
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
@@ -347,6 +492,14 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
                                 <Mail className="w-4 h-4 mr-2" />
                                 Email Attendee
                               </DropdownMenuItem>
+                              {attendee.paymentStatus === "PAID" && (
+                                <DropdownMenuItem
+                                  onClick={() => openRefundDialog(attendee)}
+                                >
+                                  <RotateCcw className="w-4 h-4 mr-2" />
+                                  Refund Payment
+                                </DropdownMenuItem>
+                              )}
                             </DropdownMenuContent>
                           </DropdownMenu>
                         ),
@@ -403,19 +556,88 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
                     {event.attendees.length}
                   </span>
                   <span className="text-sm text-muted-foreground">Booked</span>
+                  <span className="text-sm text-muted-foreground">Booked</span>
                 </div>
                 <div className="w-full bg-slate-200 rounded-full h-2">
                   <div
                     className="bg-amber-500 h-2 rounded-full transition-all"
-                    style={{ width: `${Math.min(attendanceRate, 100)}%` }}
+                    style={{
+                      width: `${Math.min(
+                        (event.attendees.length / (event.maxGuests || 1)) * 100,
+                        100
+                      )}%`,
+                    }}
                   />
                 </div>
                 <p className="text-xs text-amber-700 font-medium">
-                  {attendanceRate}% of capacity reached
+                  {Math.min(event.attendees.length * 100, 100)}% of capacity
+                  reached
                 </p>
               </div>
             </CardContent>
           </Card>
+          {event.isPaid && (
+            <Card className="border-green-200 bg-green-50/30">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-bold flex items-center gap-2">
+                  <DollarSign className="w-4 h-4 text-green-600" /> Revenue
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-end">
+                    <span className="text-3xl font-black">
+                      $
+                      {event.attendees
+                        .filter((a: any) => a.paymentStatus === "PAID")
+                        .reduce(
+                          (sum: number, a: any) =>
+                            sum + (Number(a.amountPaid) || 0),
+                          0
+                        )
+                        .toFixed(2)}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      Total Revenue
+                    </span>
+                  </div>
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <div className="flex justify-between">
+                      <span>Paid</span>
+                      <span>
+                        {
+                          event.attendees.filter(
+                            (a: any) => a.paymentStatus === "PAID"
+                          ).length
+                        }
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Pending</span>
+                      <span>
+                        {
+                          event.attendees.filter(
+                            (a: any) => a.paymentStatus === "PENDING"
+                          ).length
+                        }
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Refunded</span>
+                      <span>
+                        {
+                          event.attendees.filter(
+                            (a: any) => a.paymentStatus === "REFUNDED"
+                          ).length
+                        }
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           <Card className="border-primary/20 bg-primary/5">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-bold flex items-center gap-2">
@@ -472,6 +694,85 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
           </Card>
         </div>
       </div>
+
+      {/* Refund Confirmation Dialog */}
+      <Dialog
+        open={refundDialog.isOpen}
+        onOpenChange={(open) => {
+          if (!open) closeRefundDialog();
+        }}
+      >
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Confirm Refund</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to refund{" "}
+              <strong>{refundDialog.attendeeName}</strong>? This action cannot
+              be undone.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-2">
+            <p className="text-sm font-medium text-amber-900">
+              Refund Details:
+            </p>
+            <div className="text-sm text-amber-800 space-y-1">
+              <p>
+                <strong>Attendee:</strong> {refundDialog.attendeeName}
+              </p>
+              <p>
+                <strong>Email:</strong> {refundDialog.attendeeEmail}
+              </p>
+              <p>
+                <strong>Amount:</strong> {refundDialog.amount}
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="refundReason">Reason / Note (optional)</Label>
+            <Textarea
+              id="refundReason"
+              placeholder="e.g. Event cancelled, duplicate registration, customer request..."
+              value={refundReason}
+              onChange={(e) => setRefundReason(e.target.value)}
+              rows={3}
+              className="resize-none"
+            />
+            <p className="text-xs text-muted-foreground">
+              This note will be stored on the attendee record and included in
+              the refund confirmation email sent to the attendee.
+            </p>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={closeRefundDialog}
+              disabled={isRefunding !== null}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleRefund}
+              disabled={isRefunding !== null}
+            >
+              {isRefunding ? (
+                <>
+                  <RotateCcw className="w-4 h-4 mr-2 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <RotateCcw className="w-4 h-4 mr-2" />
+                  Confirm Refund
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Email Dialog */}
       <Dialog open={emailDialog.isOpen} onOpenChange={closeEmailDialog}>

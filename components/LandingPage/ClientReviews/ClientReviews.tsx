@@ -33,19 +33,15 @@ const ClientReviews = () => {
     },
   ];
 
-  // Animation Variants
+  // Transform-only so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
   const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.3 },
-    },
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.3 } },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { y: 20 },
     visible: {
-      opacity: 1,
       y: 0,
       transition: { duration: 0.8, ease: "easeOut" },
     },
@@ -112,7 +108,7 @@ const ClientReviews = () => {
                 >
                   &ldquo;{reviews[0].quote}&rdquo;
                 </blockquote>
-                <footer className="space-y-0.5">
+                <div className="space-y-0.5">
                   <p className="font-bold text-gray-700 text-base lg:text-xl">
                     {reviews[0].name}
                   </p>
@@ -122,7 +118,7 @@ const ClientReviews = () => {
                   <p className="text-gray-700 text-base italic lg:text-xl">
                     {reviews[0].company}
                   </p>
-                </footer>
+                </div>
               </div>
             </motion.div>
           </div>
@@ -160,7 +156,7 @@ const ClientReviews = () => {
                 >
                   &ldquo;{reviews[1].quote}&rdquo;
                 </blockquote>
-                <footer className="space-y-0.5">
+                <div className="space-y-0.5">
                   <p className="font-bold text-gray-700 text-base lg:text-xl">
                     {reviews[1].name}
                   </p>
@@ -170,7 +166,7 @@ const ClientReviews = () => {
                   <p className="text-gray-700 text-base italic lg:text-xl">
                     {reviews[1].company}
                   </p>
-                </footer>
+                </div>
               </div>
             </div>
 
@@ -205,7 +201,7 @@ const ClientReviews = () => {
                 >
                   &ldquo;{reviews[2].quote}&rdquo;
                 </blockquote>
-                <footer className="space-y-0.5">
+                <div className="space-y-0.5">
                   <p className="font-bold text-gray-700 text-base lg:text-xl">
                     {reviews[2].name}
                   </p>
@@ -215,7 +211,7 @@ const ClientReviews = () => {
                   <p className="text-gray-700 text-base italic lg:text-xl">
                     {reviews[2].company}
                   </p>
-                </footer>
+                </div>
               </div>
             </div>
           </div>

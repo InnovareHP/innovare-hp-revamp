@@ -2,7 +2,11 @@
 
 import { requireAdmin } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
-import { sendAdminCustomEmail } from "@/lib/send-event-email";
+import {
+  sendAdminCustomEmail,
+  sendRefundConfirmationEmail,
+} from "@/lib/send-event-email";
+import { stripe } from "@/lib/stripe";
 import { formatDate } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
@@ -177,5 +181,91 @@ export async function sendEventEmail({
   } catch (error) {
     console.error("Error sending event email:", error);
     return { success: false, error: "Failed to send emails" };
+  }
+}
+
+export async function refundAttendee(
+  attendeeId: string,
+  reason?: string
+): Promise<ActionResponse> {
+  try {
+    await requireAdmin();
+
+    const attendee = await prisma.eventAttendee.findUnique({
+      where: { id: attendeeId },
+    });
+
+    if (!attendee) {
+      return { success: false, error: "Attendee not found" };
+    }
+
+    if (attendee.paymentStatus !== "PAID") {
+      return { success: false, error: "Only paid attendees can be refunded" };
+    }
+
+    if (!attendee.stripeSessionId) {
+      return {
+        success: false,
+        error: "No Stripe session found for this attendee",
+      };
+    }
+
+    // Retrieve the checkout session to get the payment intent
+    const session = await stripe.checkout.sessions.retrieve(
+      attendee.stripeSessionId
+    );
+
+    const paymentIntentId =
+      typeof session.payment_intent === "string"
+        ? session.payment_intent
+        : session.payment_intent?.id;
+
+    if (!paymentIntentId) {
+      return { success: false, error: "No payment intent found" };
+    }
+
+    // Create Stripe refund
+    await stripe.refunds.create({
+      payment_intent: paymentIntentId,
+    });
+
+    // Update attendee payment status and store reason
+    await prisma.eventAttendee.update({
+      where: { id: attendeeId },
+      data: {
+        paymentStatus: "REFUNDED",
+        note: reason || null,
+      },
+    });
+
+    // Get event details for the refund email
+    const event = await prisma.event.findUnique({
+      where: { id: attendee.eventId },
+    });
+
+    // Send refund confirmation email to attendee
+    if (event) {
+      const refundAmount = attendee.amountPaid
+        ? new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          }).format(Number(attendee.amountPaid))
+        : "Full refund";
+
+      await sendRefundConfirmationEmail({
+        attendeeName: attendee.name,
+        attendeeEmail: attendee.email,
+        eventTitle: event.title,
+        refundAmount,
+        eventId: event.id,
+        reason: reason || undefined,
+      });
+    }
+
+    revalidatePath(`/admin/events/${attendee.eventId}`);
+    return { success: true };
+  } catch (error) {
+    console.error("Error refunding attendee:", error);
+    return { success: false, error: "Failed to process refund" };
   }
 }

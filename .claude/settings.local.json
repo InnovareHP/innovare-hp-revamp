@@ -4,7 +4,12 @@
       "Bash(powershell -Command:*)",
       "Bash(dir:*)",
       "Bash(findstr:*)",
+<<<<<<< HEAD
       "Bash(test:*)"
+=======
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)"
+>>>>>>> e66acf5ff6cc032a082b8c32905eb494667fd0da
     ]
   }
 }

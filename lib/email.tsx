@@ -503,6 +503,150 @@ export function EventRegistrationNotification({
   );
 }
 
+interface RefundConfirmationProps {
+  attendeeName: string;
+  eventTitle: string;
+  refundAmount: string;
+  eventId: string;
+  reason?: string;
+}
+
+export function RefundConfirmationEmail({
+  attendeeName,
+  eventTitle,
+  refundAmount,
+  eventId,
+  reason,
+}: RefundConfirmationProps) {
+  return (
+    <div
+      style={{
+        fontFamily: "Arial, sans-serif",
+        lineHeight: "1.6",
+        backgroundColor: "#f0f8ff",
+        padding: "24px",
+        borderRadius: "10px",
+        color: "#333",
+        maxWidth: "600px",
+        margin: "0 auto",
+        border: "1px solid #bde0fe",
+      }}
+    >
+      <div style={{ textAlign: "center", marginBottom: "24px" }}>
+        <div
+          style={{
+            backgroundColor: "#3b82f6",
+            color: "white",
+            display: "inline-block",
+            padding: "8px 16px",
+            borderRadius: "20px",
+            fontSize: "14px",
+            fontWeight: "bold",
+            marginBottom: "16px",
+          }}
+        >
+          Refund Processed
+        </div>
+        <h1
+          style={{
+            color: "skyblue",
+            marginBottom: "8px",
+            fontSize: "28px",
+          }}
+        >
+          Your Refund Has Been Processed
+        </h1>
+      </div>
+
+      <p style={{ fontSize: "16px", marginBottom: "24px" }}>
+        Hi <strong>{attendeeName}</strong>,
+        <br />
+        <br />
+        We&apos;ve processed a refund for your registration to{" "}
+        <strong>{eventTitle}</strong>.
+      </p>
+
+      <div
+        style={{
+          backgroundColor: "#ffffff",
+          padding: "20px",
+          borderRadius: "8px",
+          border: "1px solid #e0f0ff",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+        }}
+      >
+        <h3 style={{ color: "skyblue", marginTop: "0", marginBottom: "16px" }}>
+          Refund Details
+        </h3>
+
+        <p style={{ marginBottom: "12px" }}>
+          <strong style={{ color: "#555" }}>Event:</strong>
+          <br />
+          {eventTitle}
+        </p>
+
+        <p style={{ marginBottom: "12px" }}>
+          <strong style={{ color: "#555" }}>Refund Amount:</strong>
+          <br />
+          <span style={{ fontSize: "20px", fontWeight: "bold", color: "#22c55e" }}>
+            {refundAmount}
+          </span>
+        </p>
+
+        {reason && (
+          <p style={{ marginBottom: "12px" }}>
+            <strong style={{ color: "#555" }}>Reason:</strong>
+            <br />
+            <span style={{ color: "#666" }}>{reason}</span>
+          </p>
+        )}
+
+        <p style={{ marginBottom: "0", fontSize: "14px", color: "#666" }}>
+          The refund will appear in your account within 5-10 business days,
+          depending on your bank or card issuer.
+        </p>
+      </div>
+
+      <div
+        style={{
+          backgroundColor: "#fffbeb",
+          padding: "16px",
+          borderRadius: "8px",
+          marginTop: "20px",
+          border: "1px solid #fef3c7",
+        }}
+      >
+        <p style={{ margin: "0", fontSize: "14px" }}>
+          <strong>Have questions about this refund?</strong>
+          <br />
+          Please contact us at{" "}
+          <a
+            href="mailto:hello@innovarehp.com"
+            style={{ color: "skyblue", textDecoration: "underline" }}
+          >
+            hello@innovarehp.com
+          </a>
+        </p>
+      </div>
+
+      <div
+        style={{
+          marginTop: "32px",
+          paddingTop: "20px",
+          borderTop: "1px solid #e0e0e0",
+          textAlign: "center",
+        }}
+      >
+        <p style={{ fontSize: "12px", color: "#999" }}>
+          This email was sent automatically by the event management system.
+          <br />
+          Please do not reply to this email.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 interface AdminCustomEmailProps {
   recipientName: string;
   subject: string;

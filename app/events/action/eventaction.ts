@@ -44,7 +44,16 @@ export async function getEvents(
 
     const totalPages = Math.ceil(total / limit);
 
-    return { success: true, data: { events, totalPages, page } };
+    // Convert Decimal fields to plain numbers for client component serialization
+    const serializedEvents = events.map((event) => ({
+      ...event,
+      attendees: event.attendees.map((attendee) => ({
+        ...attendee,
+        amountPaid: attendee.amountPaid ? Number(attendee.amountPaid) : null,
+      })),
+    }));
+
+    return { success: true, data: { events: serializedEvents as typeof events, totalPages, page } };
   } catch (error) {
     console.error("Error fetching events:", error);
     return {
@@ -81,7 +90,16 @@ export const getEventById = async (
       return { success: false, error: "Event not found" };
     }
 
-    return { success: true, data: event };
+    // Convert Decimal fields to plain numbers for client component serialization
+    const serializedEvent = {
+      ...event,
+      attendees: event.attendees.map((attendee) => ({
+        ...attendee,
+        amountPaid: attendee.amountPaid ? Number(attendee.amountPaid) : null,
+      })),
+    };
+
+    return { success: true, data: serializedEvent as typeof event };
   } catch (error) {
     console.error("Error fetching event:", error);
     return {

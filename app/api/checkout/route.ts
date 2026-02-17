@@ -53,14 +53,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Check capacity
-    if (event.maxGuests > 0 && event.attendees.length >= event.maxGuests) {
-      return NextResponse.json(
-        { error: "Event has reached maximum capacity" },
-        { status: 400 }
-      );
-    }
-
     // Check registration deadline
     if (event.registrationDeadline && new Date() > event.registrationDeadline) {
       return NextResponse.json(

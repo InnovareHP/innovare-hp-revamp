@@ -10,7 +10,7 @@ import { EventStatus } from "@prisma/client";
 import { format } from "date-fns";
 import { CalendarIcon, ImagePlus, Plus } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Resolver, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
@@ -52,7 +52,7 @@ const AddEventButton = ({ type = "add", event }: Props) => {
   const [showMedia, setShowMedia] = useState(!!event?.media);
 
   const form = useForm<EventFormValues>({
-    resolver: zodResolver(eventSchema),
+    resolver: zodResolver(eventSchema) as Resolver<EventFormValues>,
     defaultValues: event
       ? {
           title: event.title,
@@ -65,7 +65,7 @@ const AddEventButton = ({ type = "add", event }: Props) => {
             : "",
           eventEndDate: event.eventEndDate ?? null,
           isPaid: event.isPaid ?? false,
-          price: event.price ?? null,
+          price: event.price ?? 0,
           currency: event.currency ?? "USD",
           media: event?.media,
         }
@@ -78,7 +78,7 @@ const AddEventButton = ({ type = "add", event }: Props) => {
           eventStartTime: "",
           eventEndDate: null,
           isPaid: false,
-          price: null,
+          price: 0,
           currency: "USD",
           media: undefined,
         },
@@ -99,7 +99,7 @@ const AddEventButton = ({ type = "add", event }: Props) => {
   async function onSubmit(values: EventFormValues) {
     try {
       let mediaUrl: string | undefined;
-      console.log(values.media);
+
       if (values.media instanceof File) {
         const media = await uploadFile(values.media);
         mediaUrl = media.url;

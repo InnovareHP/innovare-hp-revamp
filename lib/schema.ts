@@ -60,7 +60,12 @@ export const eventSchema = z.object({
   eventStartTime: z.string().optional(),
   eventEndDate: z.date({ message: "End date is required" }).nullable(),
   isPaid: z.boolean().optional(),
-  price: z.number().min(0).nullable().optional(),
+  price: z
+    .preprocess(
+      (val) => (val === "" || val === null ? 0 : Number(val)),
+      z.number().min(0)
+    )
+    .optional(),
   currency: z.string().optional(),
   media: z
     .instanceof(File)

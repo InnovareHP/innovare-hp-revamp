@@ -117,7 +117,6 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
       currency: "USD",
     }).format(price);
   };
-  console.log(event.media?.url);
 
   return (
     <CardContent className="p-4 h-full">

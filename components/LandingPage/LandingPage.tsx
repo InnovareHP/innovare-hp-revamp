@@ -51,11 +51,11 @@ function ADABanner() {
             We are committed to ADA compliance and aim to make our website
             accessible to all users. Email us at{" "}
             <a
-              href="mailto:hello@innovarehp.com"
+              href="mailto:info@innovarehp.com"
               className="underline font-medium hover:text-blue-200 transition-colors"
-              aria-label="Send an email to hello@innovarehp.com (opens email application)"
+              aria-label="Send an email to info@innovarehp.com (opens email application)"
             >
-              hello@innovarehp.com
+              info@innovarehp.com
             </a>{" "}
             if you encounter any issues.
           </p>
@@ -108,7 +108,10 @@ const LandingPage = ({ posts }: { posts: Promise<LinkedInPost[]> }) => {
         <MissionSection />
         <TeamSection />
         <ClientReviews />
-        <span className="sr-only">Innovare HP: Healthcare marketing and growth strategy. Primary content.</span>
+        <span className="sr-only">
+          Innovare HP: Healthcare marketing and growth strategy. Primary
+          content.
+        </span>
       </main>
       <ContactPage />
       <ADABanner />

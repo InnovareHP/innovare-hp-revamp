@@ -47,6 +47,7 @@ export async function getEvents(
     // Convert Decimal fields to plain numbers for client component serialization
     const serializedEvents = events.map((event) => ({
       ...event,
+      price: event.price ? Number(event.price) : null,
       attendees: event.attendees.map((attendee) => ({
         ...attendee,
         amountPaid: attendee.amountPaid ? Number(attendee.amountPaid) : null,
@@ -93,6 +94,7 @@ export const getEventById = async (
     // Convert Decimal fields to plain numbers for client component serialization
     const serializedEvent = {
       ...event,
+      price: event.price ? Number(event.price) : null,
       attendees: event.attendees.map((attendee) => ({
         ...attendee,
         amountPaid: attendee.amountPaid ? Number(attendee.amountPaid) : null,

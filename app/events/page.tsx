@@ -46,33 +46,6 @@ export const metadata: Metadata = {
   },
 };
 
-const eventsListJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  name: "Healthcare Marketing Events",
-  description: "Upcoming healthcare marketing events and webinars",
-  url: `${SITE_URL}/events`,
-};
-
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Home",
-      item: SITE_URL,
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "Events",
-      item: `${SITE_URL}/events`,
-    },
-  ],
-};
-
 const page = async ({
   searchParams,
 }: {
@@ -83,19 +56,6 @@ const page = async ({
 
   return (
     <>
-      {/* ItemList Schema */}
-      <script
-        type="application/ld+json"
-        content={JSON.stringify(eventsListJsonLd)}
-      />
-
-      {/* Breadcrumb Schema */}
-      <script
-        type="application/ld+json"
-        content={JSON.stringify(breadcrumbJsonLd)}
-      />
-
-      {/* Interactive Background */}
       <InteractiveBackground />
 
       <div className="relative z-10">

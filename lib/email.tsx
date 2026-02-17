@@ -1,5 +1,3 @@
-import { QRCodeSVG } from "qrcode.react";
-
 interface GetInTouchProps {
   FullName: string;
   PhoneNumber: string;
@@ -220,11 +218,12 @@ export function EventRegistrationConfirmation({
               display: "inline-block",
             }}
           >
-            <QRCodeSVG
-              value={`${process.env.NEXT_PUBLIC_APP_URL}/event/${eventId}`}
-              size={160}
-              level="H"
-              includeMargin={true}
+            <img
+              src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(`${process.env.NEXT_PUBLIC_APP_URL}/events/${eventId}`)}`}
+              width={160}
+              height={160}
+              alt="Event QR Code"
+              style={{ display: "block", margin: "0 auto" }}
             />
             <p
               style={{

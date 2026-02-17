@@ -36,6 +36,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { formatDate } from "@/lib/utils";
 import { Media, Prisma } from "@prisma/client";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import {
   AlertCircle,
   Clock,
@@ -381,6 +383,80 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
     printWindow.document.close();
   };
 
+  const handleExportPDF = () => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+
+    // Title
+    doc.setFontSize(20);
+    doc.text(event.title, pageWidth / 2, 20, { align: "center" });
+
+    // Event details
+    doc.setFontSize(11);
+    doc.setTextColor(100);
+    let y = 32;
+    doc.text(`Date: ${formatDate(event.eventStartDate)}`, 14, y);
+    y += 7;
+    doc.text(`Location: ${event.location}`, 14, y);
+    y += 7;
+    doc.text(`Status: ${event.status}`, 14, y);
+    y += 7;
+
+    // Attendee summary
+    doc.setTextColor(0);
+    doc.setFontSize(14);
+    y += 6;
+    doc.text(`Attendees (${event.attendees.length})`, 14, y);
+    y += 4;
+
+    if (event.isPaid) {
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      const paid = event.attendees.filter(
+        (a: any) => a.paymentStatus === "PAID"
+      ).length;
+      const pending = event.attendees.filter(
+        (a: any) => a.paymentStatus === "PENDING"
+      ).length;
+      const refunded = event.attendees.filter(
+        (a: any) => a.paymentStatus === "REFUNDED"
+      ).length;
+      y += 5;
+      doc.text(
+        `Paid: ${paid}  |  Pending: ${pending}  |  Refunded: ${refunded}`,
+        14,
+        y
+      );
+      y += 4;
+    }
+
+    // Attendee table
+    const baseColumns = ["#", "Name", "Email", "Phone", "Registered"];
+    const columns = event.isPaid ? [...baseColumns, "Payment"] : baseColumns;
+
+    const rows = event.attendees.map((a: any, i: number) => {
+      const base = [
+        String(i + 1),
+        a.name || "",
+        a.email || "",
+        a.phone || "—",
+        new Date(a.createdAt).toLocaleDateString(),
+      ];
+      return event.isPaid ? [...base, a.paymentStatus || "Free"] : base;
+    });
+
+    autoTable(doc, {
+      head: [columns],
+      body: rows,
+      startY: y + 4,
+      styles: { fontSize: 9 },
+      headStyles: { fillColor: [41, 37, 36] },
+    });
+
+    const slug = event.title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    doc.save(`${slug}-attendees.pdf`);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-4 rounded-xl border shadow-sm">
@@ -397,12 +473,18 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
             variant="outline"
             size="sm"
             className="flex-1 md:flex-none gap-2"
+            onClick={handleExportPDF}
           >
             <Download className="w-4 h-4" /> Export
           </Button>
           <AddEventButton
             type="edit"
-            event={event as unknown as EventFormValues & { id: string }}
+            event={
+              event as unknown as EventFormValues & {
+                id: string;
+                eventEndDate: Date | null;
+              }
+            }
           />
           <RemoveEvent onRemove={() => handleDelete([event.id])} />
         </div>

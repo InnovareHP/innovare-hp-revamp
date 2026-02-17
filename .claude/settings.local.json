@@ -5,7 +5,9 @@
       "Bash(dir:*)",
       "Bash(findstr:*)",
       "Bash(npm install:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(pnpm install:*)",
+      "Bash(git stash:*)"
     ]
   }
 }

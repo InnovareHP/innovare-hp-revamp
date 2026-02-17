@@ -54,17 +54,18 @@ export type SignUpValues = z.infer<typeof signUpSchema>;
 export const eventSchema = z.object({
   title: z.string().min(2, "Title is required"),
   description: z.string().min(10, "Description must be at least 10 characters"),
-  date: z.date({ message: "A date is required" }).nullable(),
   location: z.string().min(2, "Location is required"),
   status: z.string().min(1, "Status is required"),
   eventStartDate: z.date({ message: "Start date is required" }).nullable(),
-  maxGuests: z.number().int().min(1, "Must have at least 1 guest"),
+  eventStartTime: z.string().optional(),
+  eventEndDate: z.date({ message: "End date is required" }).nullable(),
   isPaid: z.boolean().optional(),
   price: z.number().min(0).nullable().optional(),
   currency: z.string().optional(),
   media: z
     .instanceof(File)
     .or(z.object({ url: z.string(), type: z.string() }))
+    .nullable()
     .optional(),
 });
 

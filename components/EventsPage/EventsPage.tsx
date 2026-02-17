@@ -35,14 +35,14 @@ const EventsPage = ({ events }: { events: Promise<EventsResponse> }) => {
               href={`/events/${event.id}`}
               className="group flex flex-col cursor-pointer"
             >
-              <Card className="border-none shadow-none bg-transparent mb-5 overflow-hidden">
-                <CardContent className="p-0">
-                  <div className="aspect-[7/3] overflow-hidden rounded-2xl bg-muted">
+              <Card className="border-none shadow-none bg-transparent mb-5 overflow-hidden border-2">
+                <CardContent className="p-0 w-full">
+                  <div className="overflow-hidden rounded-2xl bg-muted">
                     {event.media?.url && (
                       <img
-                        src={event.media.url}
+                        src={event.media?.url ?? ""}
                         alt={event.title}
-                        className="w-full h-full aspect-[2/3] transition-transform duration-700 group-hover:scale-110"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
                     )}
                   </div>
@@ -62,10 +62,7 @@ const EventsPage = ({ events }: { events: Promise<EventsResponse> }) => {
                 <div className="flex flex-col space-y-1">
                   <div className="flex items-center gap-2 text-[11px] font-bold text-muted-foreground">
                     <span className="uppercase tracking-wide">
-                      {format(event.eventStartDate, "h:mm a")} -{" "}
-                      {event.eventEndDate
-                        ? format(event.eventEndDate, "h:mm a")
-                        : ""}
+                      {format(event.eventStartDate, "h:mm a")}
                     </span>
                     {event.qrCode && (
                       <ExternalLink

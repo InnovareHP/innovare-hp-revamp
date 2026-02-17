@@ -53,7 +53,6 @@ type RegistrationFormValues = z.infer<typeof registrationSchema>;
 interface EventRegistrationModalProps {
   eventId: string;
   eventTitle: string;
-  isEventFull: boolean;
   isPastDeadline: boolean;
   eventPrice?: number | null;
   isPaidEvent?: boolean;
@@ -63,7 +62,6 @@ interface EventRegistrationModalProps {
 const EventRegistrationModal = ({
   eventId,
   eventTitle,
-  isEventFull,
   isPastDeadline,
   eventPrice,
   isPaidEvent,
@@ -73,7 +71,8 @@ const EventRegistrationModal = ({
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const labelTurnstileIframe = () => {
-    const TITLE = "Security verification for event registration (Cloudflare Turnstile)";
+    const TITLE =
+      "Security verification for event registration (Cloudflare Turnstile)";
     const setTitle = () => {
       const iframe = turnstileContainerRef.current?.querySelector("iframe");
       if (iframe) {
@@ -179,7 +178,7 @@ const EventRegistrationModal = ({
     }
   };
 
-  const isDisabled = isEventFull || isPastDeadline;
+  const isDisabled = isPastDeadline;
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -205,13 +204,7 @@ const EventRegistrationModal = ({
           ) : (
             <>
               <UserPlus className="w-4 h-4 mr-2" />
-              {isEventFull
-                ? "Event Full"
-                : isPastDeadline
-                  ? "Registration Closed"
-                  : isPaidEvent && eventPrice
-                    ? `Register - ${formatPrice(eventPrice)}`
-                    : "Register Now"}
+              {isPastDeadline ? "Registration Closed" : "Register Now"}
             </>
           )}
         </Button>
@@ -235,10 +228,12 @@ const EventRegistrationModal = ({
               </p>
               <div className="text-sm text-green-800 space-y-1">
                 <p>
-                  <span className="font-semibold">Name:</span> {registrationDetails?.name}
+                  <span className="font-semibold">Name:</span>{" "}
+                  {registrationDetails?.name}
                 </p>
                 <p>
-                  <span className="font-semibold">Email:</span> {registrationDetails?.email}
+                  <span className="font-semibold">Email:</span>{" "}
+                  {registrationDetails?.email}
                 </p>
               </div>
             </div>
@@ -257,8 +252,8 @@ const EventRegistrationModal = ({
                 {isPaidEvent && eventPrice && eventPrice > 0 && (
                   <>
                     {" "}
-                    Registration fee: <strong>{formatPrice(eventPrice)}</strong>.
-                    You will be redirected to a secure payment page.
+                    Registration fee: <strong>{formatPrice(eventPrice)}</strong>
+                    . You will be redirected to a secure payment page.
                   </>
                 )}
               </DialogDescription>
@@ -326,7 +321,9 @@ const EventRegistrationModal = ({
                 />
 
                 <Turnstile
-                  userRef={turnstileContainerRef as React.MutableRefObject<HTMLDivElement>}
+                  userRef={
+                    turnstileContainerRef as React.MutableRefObject<HTMLDivElement>
+                  }
                   sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? ""}
                   theme="light"
                   size="flexible"

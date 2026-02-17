@@ -164,6 +164,7 @@ export async function sendEventEmail({
       eventTitle,
       eventDate,
       eventLocation,
+      eventId,
     });
 
     if (!result.success) {

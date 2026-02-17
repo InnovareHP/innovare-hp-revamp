@@ -20,9 +20,12 @@ export default function AdminEventSkeleton() {
               <Skeleton className="h-4 w-32" /> {/* Created date */}
             </div>
             <div className="flex items-center gap-2 w-full md:w-auto">
-              <Skeleton className="h-9 w-24 flex-1 md:flex-none" /> {/* Export button */}
-              <Skeleton className="h-9 w-20 flex-1 md:flex-none" /> {/* Edit button */}
-              <Skeleton className="h-9 w-24 flex-1 md:flex-none" /> {/* Delete button */}
+              <Skeleton className="h-9 w-24 flex-1 md:flex-none" />{" "}
+              {/* Export button */}
+              <Skeleton className="h-9 w-20 flex-1 md:flex-none" />{" "}
+              {/* Edit button */}
+              <Skeleton className="h-9 w-24 flex-1 md:flex-none" />{" "}
+              {/* Delete button */}
             </div>
           </div>
 

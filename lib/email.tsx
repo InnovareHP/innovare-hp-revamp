@@ -1,5 +1,3 @@
-import { QRCodeSVG } from "qrcode.react";
-
 interface GetInTouchProps {
   FullName: string;
   PhoneNumber: string;
@@ -207,71 +205,14 @@ export function EventRegistrationConfirmation({
           <br />
           {location}
         </p>
-
-        <div style={{ marginTop: "20px", textAlign: "center" }}>
-          <p style={{ marginBottom: "12px" }}>
-            <strong style={{ color: "#555" }}>🎫 Your QR Code:</strong>
-          </p>
-          <div
-            style={{
-              backgroundColor: "#f9f9f9",
-              padding: "16px",
-              borderRadius: "8px",
-              display: "inline-block",
-            }}
-          >
-            <QRCodeSVG
-              value={`${process.env.NEXT_PUBLIC_APP_URL}/event/${eventId}`}
-              size={160}
-              level="H"
-              includeMargin={true}
-            />
-            <p
-              style={{
-                fontSize: "12px",
-                color: "#999",
-                marginTop: "8px",
-                marginBottom: "0",
-              }}
-            >
-              Please present this at the event entrance
-            </p>
-          </div>
-        </div>
       </div>
 
       {/* What to Bring / Reminders */}
-      <div
-        style={{
-          backgroundColor: "#fffbeb",
-          padding: "16px",
-          borderRadius: "8px",
-          marginTop: "20px",
-          border: "1px solid #fef3c7",
-        }}
-      >
-        <p style={{ margin: "0", fontSize: "14px" }}>
-          <strong>📝 Important Reminders:</strong>
-        </p>
-        <ul
-          style={{ marginTop: "8px", marginBottom: "0", paddingLeft: "20px" }}
-        >
-          <li style={{ marginBottom: "4px" }}>
-            Please arrive 15 minutes before the event starts
-          </li>
-          <li style={{ marginBottom: "4px" }}>
-            Bring a valid ID for verification
-          </li>
-          <li style={{ marginBottom: "4px" }}>
-            Save this email for your records
-          </li>
-        </ul>
-      </div>
 
       {/* Call to Action */}
       <div style={{ textAlign: "center", marginTop: "24px" }}>
         <a
-          href="#"
+          href={process.env.NEXT_PUBLIC_APP_URL + `/events/${eventId}`}
           style={{
             display: "inline-block",
             backgroundColor: "skyblue",
@@ -299,7 +240,10 @@ export function EventRegistrationConfirmation({
         <p style={{ fontSize: "13px", color: "#777", marginBottom: "8px" }}>
           Need to cancel or modify your registration?
           <br />
-          <a href="#" style={{ color: "skyblue", textDecoration: "underline" }}>
+          <a
+            href={process.env.NEXT_PUBLIC_APP_URL + `/contact`}
+            style={{ color: "skyblue", textDecoration: "underline" }}
+          >
             Contact Support
           </a>
         </p>
@@ -320,7 +264,6 @@ interface EventRegistrationNotificationProps {
   eventTitle: string;
   eventStartDate: string;
   totalAttendees: number;
-  maxGuests: number;
   eventId: string;
 }
 
@@ -331,12 +274,8 @@ export function EventRegistrationNotification({
   eventTitle,
   eventStartDate,
   totalAttendees,
-  maxGuests,
   eventId,
 }: EventRegistrationNotificationProps) {
-  const capacityPercentage =
-    maxGuests > 0 ? Math.round((totalAttendees / maxGuests) * 100) : 0;
-
   return (
     <div
       style={{
@@ -450,41 +389,9 @@ export function EventRegistrationNotification({
               <strong style={{ fontSize: "18px", color: "skyblue" }}>
                 {totalAttendees}
               </strong>
-              {maxGuests > 0 && (
-                <>
-                  {" "}
-                  / {maxGuests} attendees
-                  <br />
-                  <span style={{ color: "#666", fontSize: "13px" }}>
-                    ({capacityPercentage}% capacity)
-                  </span>
-                </>
-              )}
-              {maxGuests === 0 && (
-                <span style={{ color: "#666", fontSize: "13px" }}>
-                  {" "}
-                  registered (unlimited capacity)
-                </span>
-              )}
             </p>
           </div>
         </div>
-
-        {maxGuests > 0 && totalAttendees >= maxGuests && (
-          <div
-            style={{
-              backgroundColor: "#fef2f2",
-              border: "1px solid #fecaca",
-              padding: "12px",
-              borderRadius: "6px",
-              marginTop: "12px",
-            }}
-          >
-            <p style={{ margin: "0", color: "#dc2626", fontSize: "14px" }}>
-              <strong>⚠️ Event is now at full capacity!</strong>
-            </p>
-          </div>
-        )}
       </div>
 
       {/* Admin Actions */}
@@ -622,7 +529,9 @@ export function RefundConfirmationEmail({
         <p style={{ marginBottom: "12px" }}>
           <strong style={{ color: "#555" }}>Refund Amount:</strong>
           <br />
-          <span style={{ fontSize: "20px", fontWeight: "bold", color: "#22c55e" }}>
+          <span
+            style={{ fontSize: "20px", fontWeight: "bold", color: "#22c55e" }}
+          >
             {refundAmount}
           </span>
         </p>
@@ -688,6 +597,7 @@ interface AdminCustomEmailProps {
   eventTitle?: string;
   eventDate?: string;
   eventLocation?: string;
+  eventId?: string;
 }
 
 export function AdminCustomEmail({
@@ -697,6 +607,7 @@ export function AdminCustomEmail({
   eventTitle,
   eventDate,
   eventLocation,
+  eventId,
 }: AdminCustomEmailProps) {
   return (
     <div
@@ -791,7 +702,7 @@ export function AdminCustomEmail({
       {eventTitle && (
         <div style={{ textAlign: "center", marginTop: "24px" }}>
           <a
-            href="#"
+            href={process.env.NEXT_PUBLIC_APP_URL + `/events/${eventId}`}
             style={{
               display: "inline-block",
               backgroundColor: "skyblue",
@@ -820,7 +731,10 @@ export function AdminCustomEmail({
         <p style={{ fontSize: "13px", color: "#777", marginBottom: "8px" }}>
           Questions or concerns?
           <br />
-          <a href="#" style={{ color: "skyblue", textDecoration: "underline" }}>
+          <a
+            href={process.env.NEXT_PUBLIC_APP_URL + `#contact`}
+            style={{ color: "skyblue", textDecoration: "underline" }}
+          >
             Contact Support
           </a>
         </p>

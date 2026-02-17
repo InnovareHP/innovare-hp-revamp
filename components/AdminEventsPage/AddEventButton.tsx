@@ -8,9 +8,9 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EventStatus } from "@prisma/client";
 import { format } from "date-fns";
-import { CalendarIcon, Plus } from "lucide-react";
+import { CalendarIcon, ImagePlus, Plus } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Resolver, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
@@ -49,20 +49,23 @@ type Props = {
 
 const AddEventButton = ({ type = "add", event }: Props) => {
   const [open, setOpen] = useState(false);
+  const [showMedia, setShowMedia] = useState(!!event?.media);
 
   const form = useForm<EventFormValues>({
-    resolver: zodResolver(eventSchema),
+    resolver: zodResolver(eventSchema) as Resolver<EventFormValues>,
     defaultValues: event
       ? {
           title: event.title,
           description: event.description,
           location: event.location,
           status: event.status.toLowerCase() as EventStatus,
-          maxGuests: event.maxGuests,
-          date: event.date ?? null,
           eventStartDate: event.eventStartDate ?? null,
+          eventStartTime: event.eventStartDate
+            ? format(new Date(event.eventStartDate), "HH:mm")
+            : "",
+          eventEndDate: event.eventEndDate ?? null,
           isPaid: event.isPaid ?? false,
-          price: event.price ?? null,
+          price: event.price ?? 0,
           currency: event.currency ?? "USD",
           media: event?.media,
         }
@@ -71,17 +74,27 @@ const AddEventButton = ({ type = "add", event }: Props) => {
           description: "",
           location: "",
           status: EventStatus.DRAFT,
-          maxGuests: 1,
-          date: null,
           eventStartDate: null,
+          eventStartTime: "",
+          eventEndDate: null,
           isPaid: false,
-          price: null,
+          price: 0,
           currency: "USD",
           media: undefined,
         },
   });
 
   const isPaid = form.watch("isPaid");
+
+  function mergeDateAndTime(date: Date | null, time: string): Date | null {
+    if (!date) return null;
+    const d = new Date(date);
+    if (time) {
+      const [hours, minutes] = time.split(":").map(Number);
+      d.setHours(hours, minutes, 0, 0);
+    }
+    return d;
+  }
 
   async function onSubmit(values: EventFormValues) {
     try {
@@ -92,14 +105,19 @@ const AddEventButton = ({ type = "add", event }: Props) => {
         mediaUrl = media.url;
       }
 
+      const startDate =
+        mergeDateAndTime(values.eventStartDate, values.eventStartTime ?? "") ??
+        new Date();
+      const endDate = values.eventEndDate;
+
       if (type === "add") {
         await createEvent({
           title: values.title,
           description: values.description,
           location: values.location,
           status: values.status.toUpperCase() as EventStatus,
-          maxGuests: values.maxGuests,
-          eventStartDate: values.eventStartDate ?? new Date(),
+          eventStartDate: startDate,
+          eventEndDate: endDate,
           isPaid: values.isPaid ?? false,
           price: values.isPaid && values.price ? values.price : 0,
           currency: values.currency ?? "USD",
@@ -121,8 +139,8 @@ const AddEventButton = ({ type = "add", event }: Props) => {
           description: values.description,
           location: values.location,
           status: values.status.toUpperCase() as EventStatus,
-          maxGuests: values.maxGuests,
-          eventStartDate: values.eventStartDate ?? new Date(),
+          eventStartDate: startDate,
+          eventEndDate: endDate,
           isPaid: values.isPaid ?? false,
           price: values.isPaid && values.price ? values.price : 0,
           currency: values.currency ?? "USD",
@@ -142,8 +160,8 @@ const AddEventButton = ({ type = "add", event }: Props) => {
       setOpen(false);
       form.reset();
     } catch (error) {
-      console.error("Error saving event:", error);
       toast.error("Failed to save event.");
+      console.error("Error saving event:", error);
     }
   }
 
@@ -206,49 +224,8 @@ const AddEventButton = ({ type = "add", event }: Props) => {
               )}
             />
 
+            {/* EVENT START DATE + TIME */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* DATE */}
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Event Date</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            className={cn(
-                              "pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(new Date(field.value), "PPP")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value || undefined}
-                          onSelect={field.onChange}
-                          disabled={(date) => date < new Date("1900-01-01")}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* EVENT START DATE */}
               <FormField
                 control={form.control}
                 name="eventStartDate"
@@ -288,7 +265,66 @@ const AddEventButton = ({ type = "add", event }: Props) => {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="eventStartTime"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Start Time</FormLabel>
+                    <FormControl>
+                      <Input type="time" {...field} value={field.value ?? ""} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
+
+            {/* EVENT END DATE */}
+            <FormField
+              control={form.control}
+              name="eventEndDate"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Event End Date</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(new Date(field.value), "PPP")
+                          ) : (
+                            <span>Pick an end date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value || undefined}
+                        onSelect={field.onChange}
+                        disabled={(date) => {
+                          const startDate = form.getValues("eventStartDate");
+                          return startDate
+                            ? date < new Date(startDate)
+                            : date < new Date("1900-01-01");
+                        }}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* LOCATION */}
@@ -335,31 +371,6 @@ const AddEventButton = ({ type = "add", event }: Props) => {
                 )}
               />
             </div>
-
-            {/* MAX GUESTS */}
-            <FormField
-              control={form.control}
-              name="maxGuests"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Max Guests</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Maximum number of guests"
-                      {...field}
-                      value={field.value ?? ""}
-                      onChange={(e) =>
-                        field.onChange(
-                          e.target.value === "" ? "" : Number(e.target.value)
-                        )
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
             {/* PAID EVENT */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -419,26 +430,52 @@ const AddEventButton = ({ type = "add", event }: Props) => {
               )}
             </div>
 
-            <FormField
-              control={form.control}
-              name="media"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Media</FormLabel>
-                  <FormControl>
-                    <MediaUploadDropper
-                      value={field.value}
-                      onChange={field.onChange}
-                      onUpload={async (file) => {
-                        const media = await uploadFile(file);
-                        return media.url;
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {!showMedia ? (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowMedia(true)}
+                className="w-full"
+              >
+                <ImagePlus className="mr-2 h-4 w-4" />
+                Add Media
+              </Button>
+            ) : (
+              <FormField
+                control={form.control}
+                name="media"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center justify-between">
+                      <FormLabel>Media</FormLabel>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          field.onChange(null);
+                          setShowMedia(false);
+                        }}
+                        className="text-xs text-muted-foreground"
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                    <FormControl>
+                      <MediaUploadDropper
+                        value={field.value ?? undefined}
+                        onChange={field.onChange}
+                        onUpload={async (file) => {
+                          const media = await uploadFile(file);
+                          return media.url;
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
             <div className="flex justify-end gap-2">
               <Button type="submit" disabled={form.formState.isSubmitting}>
@@ -447,8 +484,8 @@ const AddEventButton = ({ type = "add", event }: Props) => {
                     ? "Creating..."
                     : "Updating..."
                   : type === "add"
-                  ? "Create Event"
-                  : "Update Event"}
+                    ? "Create Event"
+                    : "Update Event"}
               </Button>
               <Button
                 type="button"

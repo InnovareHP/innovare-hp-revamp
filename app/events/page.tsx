@@ -1,4 +1,5 @@
 import EventsPage from "@/components/EventsPage/EventsPage";
+import InteractiveBackground from "@/components/EventsPage/InteractiveBackground";
 import Navigation from "@/components/LandingPage/Navigation/Navigation";
 import { CalendarDays } from "lucide-react";
 import type { Metadata } from "next";
@@ -45,33 +46,6 @@ export const metadata: Metadata = {
   },
 };
 
-const eventsListJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  name: "Healthcare Marketing Events",
-  description: "Upcoming healthcare marketing events and webinars",
-  url: `${SITE_URL}/events`,
-};
-
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Home",
-      item: SITE_URL,
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "Events",
-      item: `${SITE_URL}/events`,
-    },
-  ],
-};
-
 const page = async ({
   searchParams,
 }: {
@@ -82,44 +56,36 @@ const page = async ({
 
   return (
     <>
-      {/* ItemList Schema */}
-      <script
-        type="application/ld+json"
-        content={JSON.stringify(eventsListJsonLd)}
-      />
+      <InteractiveBackground />
 
-      {/* Breadcrumb Schema */}
-      <script
-        type="application/ld+json"
-        content={JSON.stringify(breadcrumbJsonLd)}
-      />
-
-      <Navigation />
-      <div className="max-w-6xl mx-auto px-4 py-10 mt-20">
-        <div className="flex items-center justify-between mb-10 border-b pb-6">
-          <div>
-            <h1 className="text-3xl font-black tracking-tighter text-slate-900 uppercase">
-              Events <span className="text-primary">Calendar</span>
-            </h1>
-            <p className="text-muted-foreground text-sm mt-1">
-              Discover what's happening in your community.
-            </p>
-          </div>
-          <CalendarDays className="w-8 h-8 text-primary/40" />
-        </div>
-        <Suspense
-          fallback={
-            <div className="text-center text-muted-foreground text-2xl font-bold">
-              Loading...
+      <div className="relative z-10">
+        <Navigation />
+        <div className="max-w-6xl mx-auto px-4 py-10 mt-20">
+          <div className="flex items-center justify-between mb-10 border-b pb-6">
+            <div>
+              <h1 className="text-3xl font-black tracking-tighter text-slate-900 uppercase">
+                Events <span className="text-primary">Calendar</span>
+              </h1>
+              <p className="text-muted-foreground text-sm mt-1">
+                Discover what's happening in your community.
+              </p>
             </div>
-          }
-        >
-          <EventsPage
-            events={Promise.resolve(
-              (await events).data ?? { events: [], totalPages: 0, page: 1 }
-            )}
-          />
-        </Suspense>
+            <CalendarDays className="w-8 h-8 text-primary/40" />
+          </div>
+          <Suspense
+            fallback={
+              <div className="text-center text-muted-foreground text-2xl font-bold">
+                Loading...
+              </div>
+            }
+          >
+            <EventsPage
+              events={Promise.resolve(
+                (await events).data ?? { events: [], totalPages: 0, page: 1 }
+              )}
+            />
+          </Suspense>
+        </div>
       </div>
     </>
   );

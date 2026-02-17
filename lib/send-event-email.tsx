@@ -37,7 +37,7 @@ export async function sendEventConfirmationEmail({
     };
 
     const { data, error } = await resend.emails.send({
-      from: "Innovare HP <hello@innovarehp.com>",
+      from: "Innovare HP <info@notifications.innovarehp.com>",
       to: [attendeeEmail],
       subject: `Registration Confirmed: ${event.title}`,
       react: EventRegistrationConfirmation({
@@ -58,7 +58,6 @@ export async function sendEventConfirmationEmail({
       return { success: false, error };
     }
 
-    console.log("Confirmation email sent:", data);
     return { success: true, data };
   } catch (error) {
     console.error("Failed to send confirmation email:", error);
@@ -85,8 +84,8 @@ export async function sendEventRegistrationNotificationEmail({
     };
 
     const { data, error } = await resend.emails.send({
-      from: "Innovare HP <hello@innovarehp.com>",
-      to: ["info@innovarehp.com", "hello@innovarehp.com"],
+      from: "Innovare HP <info@notifications.innovarehp.com>",
+      to: ["info@innovarehp.com"],
       subject: `New Registration: ${event.title}`,
       react: EventRegistrationNotification({
         attendeeName,
@@ -95,7 +94,6 @@ export async function sendEventRegistrationNotificationEmail({
         eventTitle: event.title,
         eventStartDate: formatDate(event.eventStartDate),
         totalAttendees: event.attendees.length,
-        maxGuests: event.maxGuests,
         eventId: event.id,
       }),
     });
@@ -105,7 +103,6 @@ export async function sendEventRegistrationNotificationEmail({
       return { success: false, error };
     }
 
-    console.log("Admin notification sent:", data);
     return { success: true, data };
   } catch (error) {
     console.error("Failed to send admin notification:", error);
@@ -162,7 +159,7 @@ export async function sendRefundConfirmationEmail({
 }) {
   try {
     const { data, error } = await resend.emails.send({
-      from: "Innovare HP <hello@innovarehp.com>",
+      from: "Innovare HP <info@notifications.innovarehp.com>",
       to: [attendeeEmail],
       subject: `Refund Processed: ${eventTitle}`,
       react: RefundConfirmationEmail({
@@ -179,7 +176,6 @@ export async function sendRefundConfirmationEmail({
       return { success: false, error };
     }
 
-    console.log("Refund confirmation email sent:", data);
     return { success: true, data };
   } catch (error) {
     console.error("Failed to send refund confirmation email:", error);
@@ -195,6 +191,7 @@ export async function sendAdminCustomEmail({
   eventTitle,
   eventDate,
   eventLocation,
+  eventId,
 }: {
   recipients: string[];
   recipientNames: string[];
@@ -203,12 +200,13 @@ export async function sendAdminCustomEmail({
   eventTitle?: string;
   eventDate?: string;
   eventLocation?: string;
+  eventId?: string;
 }) {
   try {
     const results = await Promise.allSettled(
       recipients.map((email, index) =>
         resend.emails.send({
-          from: "Innovare HP <hello@innovarehp.com>",
+          from: "Innovare HP <info@notifications.innovarehp.com>",
           to: email,
           subject,
           react: AdminCustomEmail({
@@ -218,6 +216,7 @@ export async function sendAdminCustomEmail({
             eventTitle,
             eventDate,
             eventLocation,
+            eventId,
           }),
         })
       )
@@ -225,9 +224,6 @@ export async function sendAdminCustomEmail({
 
     const successful = results.filter((r) => r.status === "fulfilled").length;
     const failed = results.filter((r) => r.status === "rejected").length;
-    console.log(
-      `Admin custom emails sent: ${successful} successful, ${failed} failed`
-    );
     return {
       success: failed === 0,
       successful,

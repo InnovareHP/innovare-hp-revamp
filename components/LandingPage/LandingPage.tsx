@@ -5,6 +5,7 @@ import { useState } from "react";
 import AboutSection from "./AboutSection/AboutSection";
 import ClientReviews from "./ClientReviews/ClientReviews";
 import ContactPage from "./ContactSection/ContactPage";
+import EventSection from "./EventSection/EventSection";
 import HeroSection from "./HeroSection/HeroSection";
 import MissionSection from "./MissionSection/MissionSection";
 import Navigation from "./Navigation/Navigation";
@@ -98,6 +99,7 @@ const LandingPage = ({ posts }: { posts: Promise<LinkedInPost[]> }) => {
       <Navigation />
       <main id="main-content" className="relative pb-16 md:pb-12" tabIndex={-1}>
         <HeroSection />
+        <EventSection />
         <AboutSection />
         <Partners />
         <Process />

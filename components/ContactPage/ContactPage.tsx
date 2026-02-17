@@ -3,6 +3,7 @@
 import { ContactFormSubmission } from "@prisma/client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
 
 const formatDate = (dateString: Date | string) => {
   const date = new Date(dateString);
@@ -26,13 +27,6 @@ const ContactPage = ({ initialSubmissions }: ContactPageProps) => {
   const limit = 10;
 
   useEffect(() => {
-    if (
-      page === 1 &&
-      initialSubmissions.length > 0 &&
-      data === initialSubmissions
-    )
-      return;
-
     const fetchData = async () => {
       setLoading(true);
       try {
@@ -60,7 +54,7 @@ const ContactPage = ({ initialSubmissions }: ContactPageProps) => {
         </h1>
         <div className="flex gap-2 items-center">
           <span className="text-sm text-gray-700 mr-2">Page {page}</span>
-          <button
+          <Button
             type="button"
             disabled={page <= 1 || loading}
             onClick={() => setPage((p) => p - 1)}
@@ -68,8 +62,8 @@ const ContactPage = ({ initialSubmissions }: ContactPageProps) => {
             aria-label="Previous page"
           >
             Prev
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             disabled={page >= Math.ceil(total / limit) || loading}
             onClick={() => setPage((p) => p + 1)}
@@ -77,7 +71,7 @@ const ContactPage = ({ initialSubmissions }: ContactPageProps) => {
             aria-label="Next page"
           >
             Next
-          </button>
+          </Button>
         </div>
       </div>
 

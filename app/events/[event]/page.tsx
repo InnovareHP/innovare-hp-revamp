@@ -1,7 +1,7 @@
 import { getEventById } from "@/app/events/action/eventaction";
 import EventDetailClient from "@/components/EventDetail/EventDetailClient";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Prisma } from "@prisma/client";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -20,7 +20,6 @@ interface EventPageProps {
 
 const EventPage = async ({ params }: EventPageProps) => {
   const { event: eventId } = await params;
-
   const response = await getEventById(eventId);
 
   if (!response.success || !response.data) {
@@ -30,44 +29,41 @@ const EventPage = async ({ params }: EventPageProps) => {
   const event = response.data;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        <Link href="/events" aria-label="Back to events list">
-          <Button
-            variant="outline"
-            className="mb-6 gap-2 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-          >
-            <ArrowLeft className="w-4 h-4" aria-hidden />
-            Back to Events
-          </Button>
-        </Link>
+    <div className=" min-h-screen overflow-hidden">
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source
+          src="/FREE VIDEO People Talking _ Free Talking Video _ Free Stock Footage.mp4"
+          type="video/mp4"
+        />
+      </video>
 
-        <Card className="overflow-hidden">
-          {event.media && (
-            <div className="relative w-full h-64 md:h-96 bg-gradient-to-br from-primary/20 to-primary/5">
-              {event.media ? (
-                <img
-                  src={event.media.url}
-                  alt={event.title}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="flex items-center justify-center h-full">
-                  <p className="text-muted-foreground">Event Media</p>
-                </div>
-              )}
-            </div>
-          )}
+      <div className="absolute inset-0 bg-black/50" />
 
-          <CardHeader className="border-b">
-            <Suspense>
+      <div className="z-10 p-4 lg:p-8 flex items-center justify-center overflow-hidden max-w-7xl mx-auto">
+        <Card className="w-full max-w-5xl max-h-screen overflow-y-auto shadow-xl border-0 bg-blue-50/90 backdrop-blur flex flex-col">
+          <div className="p-2 flex items-center">
+            <Link href="/events">
+              <Button variant="secondary" size="sm">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Events
+              </Button>
+            </Link>
+          </div>
+
+          <div className="p-4">
+            <Suspense fallback={<div>Loading event details...</div>}>
               <EventDetailClient event={event as EventWithRelations} />
             </Suspense>
-          </CardHeader>
+          </div>
         </Card>
       </div>
     </div>
   );
 };
-
 export default EventPage;

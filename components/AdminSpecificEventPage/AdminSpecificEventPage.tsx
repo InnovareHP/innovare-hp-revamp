@@ -70,7 +70,6 @@ type EventFormValues = {
   description: string;
   location: string;
   status: string;
-  maxGuests: number;
   date: Date;
   eventStartDate: Date;
   media: Media;
@@ -645,7 +644,7 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
                     className="bg-amber-500 h-2 rounded-full transition-all"
                     style={{
                       width: `${Math.min(
-                        (event.attendees.length / (event.maxGuests || 1)) * 100,
+                        (event.attendees.length / 1) * 100,
                         100
                       )}%`,
                     }}

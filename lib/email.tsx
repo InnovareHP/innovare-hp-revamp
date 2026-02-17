@@ -205,67 +205,9 @@ export function EventRegistrationConfirmation({
           <br />
           {location}
         </p>
-
-        <div style={{ marginTop: "20px", textAlign: "center" }}>
-          <p style={{ marginBottom: "12px" }}>
-            <strong style={{ color: "#555" }}>🎫 Your QR Code:</strong>
-          </p>
-          <div
-            style={{
-              backgroundColor: "#f9f9f9",
-              padding: "16px",
-              borderRadius: "8px",
-              display: "inline-block",
-            }}
-          >
-            <img
-              src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(`${process.env.NEXT_PUBLIC_APP_URL}/events/${eventId}`)}`}
-              width={160}
-              height={160}
-              alt="Event QR Code"
-              style={{ display: "block", margin: "0 auto" }}
-            />
-            <p
-              style={{
-                fontSize: "12px",
-                color: "#999",
-                marginTop: "8px",
-                marginBottom: "0",
-              }}
-            >
-              Please present this at the event entrance
-            </p>
-          </div>
-        </div>
       </div>
 
       {/* What to Bring / Reminders */}
-      <div
-        style={{
-          backgroundColor: "#fffbeb",
-          padding: "16px",
-          borderRadius: "8px",
-          marginTop: "20px",
-          border: "1px solid #fef3c7",
-        }}
-      >
-        <p style={{ margin: "0", fontSize: "14px" }}>
-          <strong>📝 Important Reminders:</strong>
-        </p>
-        <ul
-          style={{ marginTop: "8px", marginBottom: "0", paddingLeft: "20px" }}
-        >
-          <li style={{ marginBottom: "4px" }}>
-            Please arrive 15 minutes before the event starts
-          </li>
-          <li style={{ marginBottom: "4px" }}>
-            Bring a valid ID for verification
-          </li>
-          <li style={{ marginBottom: "4px" }}>
-            Save this email for your records
-          </li>
-        </ul>
-      </div>
 
       {/* Call to Action */}
       <div style={{ textAlign: "center", marginTop: "24px" }}>
@@ -587,7 +529,9 @@ export function RefundConfirmationEmail({
         <p style={{ marginBottom: "12px" }}>
           <strong style={{ color: "#555" }}>Refund Amount:</strong>
           <br />
-          <span style={{ fontSize: "20px", fontWeight: "bold", color: "#22c55e" }}>
+          <span
+            style={{ fontSize: "20px", fontWeight: "bold", color: "#22c55e" }}
+          >
             {refundAmount}
           </span>
         </p>

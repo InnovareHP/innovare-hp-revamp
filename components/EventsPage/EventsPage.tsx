@@ -32,7 +32,7 @@ const EventsPage = ({ events }: { events: Promise<EventsResponse> }) => {
           eventsData.map((event) => (
             <Link
               key={event.id}
-              href={`/events/${event.id}`}
+              href={`/events/${event.slug}`}
               className="group flex flex-col cursor-pointer"
             >
               <Card className="border-none shadow-none bg-transparent mb-5 overflow-hidden border-2">

@@ -115,6 +115,7 @@ enum EventStatus {
 
 model Event {
   id String @id @default(uuid())
+  slug String @unique
   
   title String
   description String
@@ -171,7 +172,7 @@ model EventAttendee {
 }
 
 
-model Media {
+    model Media {
   id String @id @default(uuid())
   url String
   type String

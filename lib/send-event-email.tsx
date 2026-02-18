@@ -50,6 +50,7 @@ export async function sendEventConfirmationEmail({
           : undefined,
         location: event.location,
         eventId: event.id,
+        slug: event.slug,
       }),
     });
 
@@ -95,6 +96,7 @@ export async function sendEventRegistrationNotificationEmail({
         eventStartDate: formatDate(event.eventStartDate),
         totalAttendees: event.attendees.length,
         eventId: event.id,
+        slug: event.slug,
       }),
     });
 
@@ -192,6 +194,7 @@ export async function sendAdminCustomEmail({
   eventDate,
   eventLocation,
   eventId,
+  slug,
 }: {
   recipients: string[];
   recipientNames: string[];
@@ -201,6 +204,7 @@ export async function sendAdminCustomEmail({
   eventDate?: string;
   eventLocation?: string;
   eventId?: string;
+  slug: string;
 }) {
   try {
     const results = await Promise.allSettled(
@@ -217,6 +221,7 @@ export async function sendAdminCustomEmail({
             eventDate,
             eventLocation,
             eventId,
+            slug,
           }),
         })
       )

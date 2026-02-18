@@ -295,7 +295,7 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
       return;
     }
 
-    const qrCodeUrl = `${window.location.origin}/event/${event.id}`;
+    const qrCodeUrl = `${window.location.origin}/event/${event.slug}`;
 
     printWindow.document.write(`
       <!DOCTYPE html>
@@ -729,7 +729,7 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
               <div className="flex flex-col items-center gap-3">
                 <div className="bg-white p-4 rounded-lg shadow-sm border-2 border-primary/10">
                   <QRCodeSVG
-                    value={`${window.location.origin}/events/${event.id}`}
+                    value={`${window.location.origin}/events/${event.slug}`}
                     size={160}
                     level="H"
                     includeMargin={true}

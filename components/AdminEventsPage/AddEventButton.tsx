@@ -113,6 +113,7 @@ const AddEventButton = ({ type = "add", event }: Props) => {
       if (type === "add") {
         await createEvent({
           title: values.title,
+          slug: values.title.toLowerCase().replace(/ /g, "-"),
           description: values.description,
           location: values.location,
           status: values.status.toUpperCase() as EventStatus,
@@ -136,6 +137,7 @@ const AddEventButton = ({ type = "add", event }: Props) => {
         await updateEvent(event!.id, {
           id: event!.id,
           title: values.title,
+          slug: values.title.toLowerCase().replace(/ /g, "-"),
           description: values.description,
           location: values.location,
           status: values.status.toUpperCase() as EventStatus,

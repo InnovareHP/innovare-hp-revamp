@@ -54,7 +54,10 @@ export async function getEvents(
       })),
     }));
 
-    return { success: true, data: { events: serializedEvents as typeof events, totalPages, page } };
+    return {
+      success: true,
+      data: { events: serializedEvents as typeof events, totalPages, page },
+    };
   } catch (error) {
     console.error("Error fetching events:", error);
     return {
@@ -79,7 +82,7 @@ export const getEventById = async (
     }
 
     const event = await prisma.event.findUnique({
-      where: { id },
+      where: { slug: id },
       include: {
         media: true,
         attendees: true,
@@ -318,10 +321,11 @@ export async function joinEvent(
         ...event,
         attendees: [...event.attendees, newAttendee],
         media: event.media ?? null,
+        slug: event.slug,
       },
     });
 
-    revalidatePath(`/events/${eventId}`);
+    revalidatePath(`/events/${event.slug}`);
     return { success: true };
   } catch (error) {
     console.error("Error joining event:", error);

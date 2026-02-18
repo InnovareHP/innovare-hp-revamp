@@ -21,7 +21,8 @@ interface EventPageProps {
 
 const EventPage = async ({ params }: EventPageProps) => {
   const { event: eventId } = await params;
-  const response = await getEventById(eventId);
+
+  const response = await getEventById(decodeURIComponent(eventId));
 
   if (!response.success || !response.data) {
     notFound();

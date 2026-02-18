@@ -80,6 +80,7 @@ export async function getEventsAuthenticated(
 export const createEvent = async (event: Prisma.EventCreateInput) => {
   try {
     await requireAdmin();
+
     const newEvent = await prisma.event.create({
       data: event,
     });
@@ -165,6 +166,7 @@ export async function sendEventEmail({
       eventDate,
       eventLocation,
       eventId,
+      slug: event.slug,
     });
 
     if (!result.success) {
@@ -262,7 +264,7 @@ export async function refundAttendee(
       });
     }
 
-    revalidatePath(`/admin/events/${attendee.eventId}`);
+    revalidatePath(`/admin/events/${event?.slug}`);
     return { success: true };
   } catch (error) {
     console.error("Error refunding attendee:", error);

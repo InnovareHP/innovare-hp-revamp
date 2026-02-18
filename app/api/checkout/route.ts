@@ -92,8 +92,8 @@ export async function POST(req: Request) {
         ],
         mode: "payment",
         customer_email: email,
-        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/events/${eventId}?payment=success`,
-        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/events/${eventId}?payment=cancelled`,
+        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/events/${event.slug}?payment=success`,
+        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/events/${event.slug}?payment=cancelled`,
         metadata: { eventId, name, email, phone },
       },
       {

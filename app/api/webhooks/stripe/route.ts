@@ -1,8 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { sendEventRegistrationEmails } from "@/lib/send-event-email";
 import { stripe } from "@/lib/stripe";
-import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
         });
       }
 
-      revalidatePath(`/events/${attendee.eventId}`);
+      revalidatePath(`/events/${eventData?.slug}`);
     }
   }
 
@@ -68,6 +68,7 @@ export async function POST(req: Request) {
 
     const attendee = await prisma.eventAttendee.findUnique({
       where: { stripeSessionId: session.id },
+      include: { event: true },
     });
 
     if (attendee && attendee.paymentStatus === "PENDING") {
@@ -75,7 +76,7 @@ export async function POST(req: Request) {
         where: { id: attendee.id },
       });
 
-      revalidatePath(`/events/${attendee.eventId}`);
+      revalidatePath(`/events/${attendee.event.slug}`);
     }
   }
 
@@ -93,6 +94,7 @@ export async function POST(req: Request) {
       const stripeSession = sessions.data[0];
       const attendee = await prisma.eventAttendee.findUnique({
         where: { stripeSessionId: stripeSession.id },
+        include: { event: true },
       });
 
       if (attendee && attendee.paymentStatus === "PENDING") {
@@ -109,7 +111,7 @@ export async function POST(req: Request) {
           },
         });
 
-        revalidatePath(`/events/${attendee.eventId}`);
+        revalidatePath(`${attendee.event.slug}`);
       }
     }
   }
@@ -132,6 +134,7 @@ export async function POST(req: Request) {
         const stripeSession = sessions.data[0];
         const attendee = await prisma.eventAttendee.findUnique({
           where: { stripeSessionId: stripeSession.id },
+          include: { event: true },
         });
 
         if (attendee && attendee.paymentStatus !== "REFUNDED") {
@@ -140,7 +143,7 @@ export async function POST(req: Request) {
             data: { paymentStatus: "REFUNDED" },
           });
 
-          revalidatePath(`/events/${attendee.eventId}`);
+          revalidatePath(`/events/${attendee.event.slug}`);
         }
       }
     }

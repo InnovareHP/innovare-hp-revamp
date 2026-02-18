@@ -61,14 +61,14 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
         description:
           "You have been registered for the event. Check your email for confirmation.",
       });
-      window.history.replaceState({}, "", `/events/${event.id}`);
+      window.history.replaceState({}, "", `/events/${event.slug}`);
     } else if (payment === "cancelled") {
       toast.info("Payment cancelled", {
         description: "Your registration was not completed.",
       });
-      window.history.replaceState({}, "", `/events/${event.id}`);
+      window.history.replaceState({}, "", `/events/${event.slug}`);
     }
-  }, [searchParams, event.id]);
+  }, [searchParams, event.slug]);
 
   // Geocode location using Nominatim (free OpenStreetMap service)
   useEffect(() => {
@@ -248,7 +248,7 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
                       Event Title: {event.title}
                     </p>
                     <QRCodeSVG
-                      value={`${origin}/events/${event.id}`}
+                      value={`${origin}/events/${event.slug}`}
                       size={300}
                       level="H"
                       includeMargin={true}

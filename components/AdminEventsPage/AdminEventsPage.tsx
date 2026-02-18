@@ -93,7 +93,7 @@ export default function AdminEventPage({
       header: "Title",
       cell: (event) => (
         <Link
-          href={`/admin/events/${event.id}`}
+          href={`/admin/events/${event.slug}`}
           className="font-medium text-blue-500 hover:text-blue-600 underline"
         >
           {event.title}

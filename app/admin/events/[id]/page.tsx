@@ -16,7 +16,7 @@ const page = async ({ params }: EventPageProps) => {
 
   const { id } = await params;
 
-  const response = getEventById(id);
+  const response = getEventById(decodeURIComponent(id));
 
   return (
     <div className="min-h-screen">

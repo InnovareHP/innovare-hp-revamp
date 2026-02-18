@@ -94,6 +94,7 @@ interface EventRegistrationConfirmationProps {
   eventEndDate?: string;
   location: string;
   eventId: string;
+  slug: string;
 }
 
 export function EventRegistrationConfirmation({
@@ -104,6 +105,7 @@ export function EventRegistrationConfirmation({
   eventEndDate,
   location,
   eventId,
+  slug,
 }: EventRegistrationConfirmationProps) {
   return (
     <div
@@ -212,7 +214,7 @@ export function EventRegistrationConfirmation({
       {/* Call to Action */}
       <div style={{ textAlign: "center", marginTop: "24px" }}>
         <a
-          href={process.env.NEXT_PUBLIC_APP_URL + `/events/${eventId}`}
+          href={process.env.NEXT_PUBLIC_APP_URL + `/events/${slug}`}
           style={{
             display: "inline-block",
             backgroundColor: "skyblue",
@@ -265,6 +267,7 @@ interface EventRegistrationNotificationProps {
   eventStartDate: string;
   totalAttendees: number;
   eventId: string;
+  slug: string;
 }
 
 export function EventRegistrationNotification({
@@ -275,6 +278,7 @@ export function EventRegistrationNotification({
   eventStartDate,
   totalAttendees,
   eventId,
+  slug,
 }: EventRegistrationNotificationProps) {
   return (
     <div
@@ -397,7 +401,7 @@ export function EventRegistrationNotification({
       {/* Admin Actions */}
       <div style={{ textAlign: "center", marginTop: "24px" }}>
         <a
-          href={process.env.NEXT_PUBLIC_APP_URL + `/admin/events/${eventId}`}
+          href={process.env.NEXT_PUBLIC_APP_URL + `/admin/events/${slug}`}
           style={{
             display: "inline-block",
             backgroundColor: "skyblue",
@@ -413,7 +417,7 @@ export function EventRegistrationNotification({
           View All Attendees
         </a>
         <a
-          href={process.env.NEXT_PUBLIC_APP_URL + `/admin/events/${eventId}`}
+          href={process.env.NEXT_PUBLIC_APP_URL + `/admin/events/${slug}`}
           style={{
             display: "inline-block",
             backgroundColor: "#6b7280",
@@ -598,6 +602,7 @@ interface AdminCustomEmailProps {
   eventDate?: string;
   eventLocation?: string;
   eventId?: string;
+  slug: string;
 }
 
 export function AdminCustomEmail({
@@ -608,6 +613,7 @@ export function AdminCustomEmail({
   eventDate,
   eventLocation,
   eventId,
+  slug,
 }: AdminCustomEmailProps) {
   return (
     <div
@@ -702,7 +708,7 @@ export function AdminCustomEmail({
       {eventTitle && (
         <div style={{ textAlign: "center", marginTop: "24px" }}>
           <a
-            href={process.env.NEXT_PUBLIC_APP_URL + `/events/${eventId}`}
+            href={process.env.NEXT_PUBLIC_APP_URL + `/events/${slug}`}
             style={{
               display: "inline-block",
               backgroundColor: "skyblue",

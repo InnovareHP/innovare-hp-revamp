@@ -1,5 +1,6 @@
 import { getEventById } from "@/app/events/action/eventaction";
 import EventDetailClient from "@/components/EventDetail/EventDetailClient";
+import InteractiveBackground from "@/components/EventsPage/InteractiveBackground";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Prisma } from "@prisma/client";
@@ -30,19 +31,7 @@ const EventPage = async ({ params }: EventPageProps) => {
 
   return (
     <div className=" min-h-screen overflow-hidden">
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover"
-      >
-        {/* check the video if not working */}
-        <source
-          src="/FREE VIDEO People Talking _ Free Talking Video _ Free Stock Footage.mp4"
-          type="video/mp4"
-        />
-      </video>
+      <InteractiveBackground />
 
       <div className="absolute inset-0 bg-black/50" />
 

@@ -5,6 +5,7 @@ import { useState } from "react";
 import AboutSection from "./AboutSection/AboutSection";
 import ClientReviews from "./ClientReviews/ClientReviews";
 import ContactPage from "./ContactSection/ContactPage";
+import { EventPromoToast } from "./EventPromoToast";
 import EventSection from "./EventSection/EventSection";
 import HeroSection from "./HeroSection/HeroSection";
 import MissionSection from "./MissionSection/MissionSection";
@@ -115,6 +116,7 @@ const LandingPage = ({ posts }: { posts: Promise<LinkedInPost[]> }) => {
       </main>
       <ContactPage />
       <ADABanner />
+      <EventPromoToast />
     </>
   );
 };

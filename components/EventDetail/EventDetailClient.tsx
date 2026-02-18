@@ -119,9 +119,9 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
   };
 
   return (
-    <CardContent className="p-4 h-full">
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-0">
-        <div className="space-y-6 p-8 lg:pr-6">
+    <CardContent className="h-full ">
+      <div className="grid grid-cols-1 xl:grid-cols-2 space-y-4">
+        <div className="space-y-6 lg:pr-6">
           <div className="relative w-full aspect-[2/1] overflow-hidden">
             <img
               src={event.media?.url ?? ""}
@@ -152,7 +152,7 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-4">
             <Card className="border-0 bg-gradient-to-br from-blue-50 via-blue-50/80 to-blue-100/30 shadow-md hover:shadow-lg transition-all duration-300">
               <CardContent className="pt-6">
                 <div className="flex items-start gap-4">
@@ -260,7 +260,7 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
           </div>
         </div>
 
-        <div className="space-y-6 p-8 lg:pl-6 bg-gradient-to-br from-slate-50/50 to-blue-50/30 lg:border-l border-slate-200">
+        <div className="space-y-6 p-2 lg:pl-6 bg-gradient-to-br from-slate-50/50 to-blue-50/30 lg:border-l border-slate-200">
           {event.status === "PUBLISHED" && (
             <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 p-6 md:p-8 shadow-2xl">
               {/* Decorative Background Pattern */}

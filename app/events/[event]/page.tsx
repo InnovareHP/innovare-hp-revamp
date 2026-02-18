@@ -31,7 +31,7 @@ const EventPage = async ({ params }: EventPageProps) => {
   const event = response.data;
 
   return (
-    <div className=" min-h-screen overflow-hidden">
+    <div className="min-h-screen overflow-hidden">
       <InteractiveBackground />
 
       <div className="absolute inset-0 bg-black/50" />
@@ -47,11 +47,9 @@ const EventPage = async ({ params }: EventPageProps) => {
             </Link>
           </div>
 
-          <div className="p-4">
-            <Suspense fallback={<div>Loading event details...</div>}>
-              <EventDetailClient event={event as EventWithRelations} />
-            </Suspense>
-          </div>
+          <Suspense fallback={<div>Loading event details...</div>}>
+            <EventDetailClient event={event as EventWithRelations} />
+          </Suspense>
         </Card>
       </div>
     </div>

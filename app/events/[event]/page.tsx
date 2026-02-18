@@ -37,6 +37,7 @@ const EventPage = async ({ params }: EventPageProps) => {
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
       >
+        {/* check the video if not working */}
         <source
           src="/FREE VIDEO People Talking _ Free Talking Video _ Free Stock Footage.mp4"
           type="video/mp4"

@@ -65,7 +65,7 @@ const AddEventButton = ({ type = "add", event }: Props) => {
             : "",
           eventEndDate: event.eventEndDate ?? null,
           isPaid: event.isPaid ?? false,
-          price: event.price ?? 0,
+          price: Number(event.price) ?? 0,
           currency: event.currency ?? "USD",
           media: event?.media,
         }

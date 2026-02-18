@@ -49,8 +49,8 @@ model User {
   email         String
   emailVerified Boolean   @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime  @db.Timestamptz @default(now())
+  updatedAt     DateTime  @db.Timestamptz @updatedAt
   sessions      Session[]
   accounts      Account[]
 
@@ -62,8 +62,8 @@ model Session {
   id        String   @id
   expiresAt DateTime
   token     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @db.Timestamptz @default(now())
+  updatedAt DateTime @db.Timestamptz @updatedAt
   ipAddress String?
   userAgent String?
   userId    String
@@ -87,8 +87,8 @@ model Account {
   refreshTokenExpiresAt DateTime?
   scope                 String?
   password              String?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+  createdAt             DateTime  @db.Timestamptz @default(now())
+  updatedAt             DateTime  @db.Timestamptz @updatedAt
 
   @@index([userId])
   @@map("account")
@@ -99,8 +99,8 @@ model Verification {
   identifier String
   value      String
   expiresAt  DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @db.Timestamptz @default(now())
+  updatedAt  DateTime @db.Timestamptz @updatedAt
 
   @@index([identifier])
   @@map("verification")
@@ -126,12 +126,12 @@ model Event {
   price                Decimal?        @default(0) // Use Decimal for currency
   currency             String          @default("USD")
 
-  eventStartDate DateTime
-  eventEndDate DateTime?
-  registrationDeadline DateTime?
+  eventStartDate DateTime @db.Timestamptz
+  eventEndDate DateTime? @db.Timestamptz
+  registrationDeadline DateTime? @db.Timestamptz
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @db.Timestamptz @default(now())
+  updatedAt DateTime @db.Timestamptz @updatedAt
 
   mediaId String?
   media Media? @relation(fields: [mediaId], references: [id])
@@ -144,8 +144,8 @@ model Guest {
   name String
   email String
   phone String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @db.Timestamptz @default(now())
+  updatedAt DateTime @db.Timestamptz @updatedAt
 
   eventId String
   event Event @relation(fields: [eventId], references: [id])
@@ -166,8 +166,8 @@ model EventAttendee {
 
 
   event Event @relation(fields: [eventId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @db.Timestamptz @default(now())
+  updatedAt DateTime @db.Timestamptz @updatedAt
 }
 
 
@@ -175,8 +175,8 @@ model Media {
   id String @id @default(uuid())
   url String
   type String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @db.Timestamptz @default(now())
+  updatedAt DateTime @db.Timestamptz @updatedAt
 
   events Event[]
 }

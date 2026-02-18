@@ -7,6 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const formatDate = (date: Date) => {
   return new Date(date).toLocaleDateString("en-US", {
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     weekday: "long",
     year: "numeric",
     month: "long",
@@ -16,6 +17,7 @@ export const formatDate = (date: Date) => {
 
 export const formatTime = (date: Date) => {
   return new Date(date).toLocaleTimeString("en-US", {
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     hour: "2-digit",
     minute: "2-digit",
   });

@@ -155,7 +155,7 @@ export default function AdminEventPage({
       cell: (event) => (
         <div className="flex justify-end gap-2">
           <Button asChild variant="outline" size="sm">
-            <Link href={`/admin/events/${event.id}`}>View</Link>
+            <Link href={`/admin/events/${event.slug}`}>View</Link>
           </Button>
           <AddEventButton
             type="edit"

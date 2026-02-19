@@ -58,6 +58,7 @@ export const eventSchema = z.object({
   status: z.string().min(1, "Status is required"),
   eventType: z.enum(["ONSITE", "VIRTUAL"]).default("ONSITE"),
   hostedBy: z.string().optional(),
+  meetingUrl: z.url("Must be a valid URL").optional().or(z.literal("")),
   expectations: z.array(z.string()).optional(),
   eventStartDate: z.date({ message: "Start date is required" }).nullable(),
   eventStartTime: z.string().optional(),

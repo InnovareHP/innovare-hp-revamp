@@ -95,7 +95,6 @@ export const createEvent = async (event: Prisma.EventCreateInput) => {
       data: event,
     });
 
-    console.log(newEvent);
     // Auto-create Teams meeting for virtual events
     if (newEvent.eventType === "VIRTUAL") {
       try {
@@ -105,7 +104,6 @@ export const createEvent = async (event: Prisma.EventCreateInput) => {
           endDate: newEvent.eventEndDate,
         });
 
-        console.log(meeting);
         await prisma.event.update({
           where: { id: newEvent.id },
           data: {

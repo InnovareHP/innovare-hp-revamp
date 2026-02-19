@@ -35,7 +35,8 @@ export async function createTeamsMeeting(event: {
   const token = await getAccessToken();
   const userId = process.env.AZURE_ORGANIZER_USER_ID!;
 
-  const endDate = event.endDate ?? new Date(event.startDate.getTime() + 60 * 60 * 1000); // default +1hr
+  const endDate =
+    event.endDate ?? new Date(event.startDate.getTime() + 60 * 60 * 1000); // default +1hr
 
   const res = await fetch(`${GRAPH_BASE}/users/${userId}/onlineMeetings`, {
     method: "POST",
@@ -48,7 +49,7 @@ export async function createTeamsMeeting(event: {
       startDateTime: event.startDate.toISOString(),
       endDateTime: endDate.toISOString(),
       lobbyBypassSettings: {
-        scope: "organizer",           // Everyone waits in lobby — organizer admits
+        scope: "organizer", // Everyone waits in lobby — organizer admits
         isDialInBypassEnabled: false,
       },
       allowedPresenters: "organizer",
@@ -81,7 +82,8 @@ export async function updateTeamsMeeting(
   const token = await getAccessToken();
   const userId = process.env.AZURE_ORGANIZER_USER_ID!;
 
-  const endDate = event.endDate ?? new Date(event.startDate.getTime() + 60 * 60 * 1000);
+  const endDate =
+    event.endDate ?? new Date(event.startDate.getTime() + 60 * 60 * 1000);
 
   const res = await fetch(
     `${GRAPH_BASE}/users/${userId}/onlineMeetings/${meetingId}`,

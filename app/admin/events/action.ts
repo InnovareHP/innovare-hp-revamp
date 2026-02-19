@@ -7,11 +7,7 @@ import {
   sendRefundConfirmationEmail,
 } from "@/lib/send-event-email";
 import { stripe } from "@/lib/stripe";
-import {
-  createTeamsMeeting,
-  deleteTeamsMeeting,
-  updateTeamsMeeting,
-} from "@/lib/teams";
+import { createTeamsMeeting, deleteTeamsMeeting } from "@/lib/teams";
 import { formatDate } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
@@ -69,6 +65,7 @@ export async function getEventsAuthenticated(
 
     const formattedEvents = events.map((event) => ({
       ...event,
+      price: event.price ? Number(event.price) : null,
       totalAttendees: event._count.attendees,
       expectations: event.expectations.map(
         (expectation) => expectation.description
@@ -98,6 +95,7 @@ export const createEvent = async (event: Prisma.EventCreateInput) => {
       data: event,
     });
 
+    console.log(newEvent);
     // Auto-create Teams meeting for virtual events
     if (newEvent.eventType === "VIRTUAL") {
       try {
@@ -106,6 +104,8 @@ export const createEvent = async (event: Prisma.EventCreateInput) => {
           startDate: newEvent.eventStartDate,
           endDate: newEvent.eventEndDate,
         });
+
+        console.log(meeting);
         await prisma.event.update({
           where: { id: newEvent.id },
           data: {
@@ -120,7 +120,13 @@ export const createEvent = async (event: Prisma.EventCreateInput) => {
     }
 
     revalidatePath("/admin/events");
-    return { success: true, data: newEvent };
+    return {
+      success: true,
+      data: {
+        ...newEvent,
+        price: newEvent.price ? Number(newEvent.price) : null,
+      },
+    };
   } catch (error) {
     console.error("Error creating event:", error);
     return { success: false, error: "Failed to create event" };

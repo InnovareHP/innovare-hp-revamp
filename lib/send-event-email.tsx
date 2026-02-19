@@ -51,6 +51,8 @@ export async function sendEventConfirmationEmail({
         location: event.location,
         eventId: event.id,
         slug: event.slug,
+        isVirtual: event.eventType === "VIRTUAL",
+        teamsMeetingUrl: event.teamsMeetingUrl,
       }),
     });
 

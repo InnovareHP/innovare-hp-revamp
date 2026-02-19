@@ -10,10 +10,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
-const SITE_URL = "https://www.innovarehp.com";
+const SITE_URL = "https://innovarehp.com";
 
 type EventWithRelations = Prisma.EventGetPayload<{
-  include: { media: true; attendees: true; guests: true };
+  include: { media: true; attendees: true; guests: true; expectations: true };
 }>;
 
 interface EventPageProps {

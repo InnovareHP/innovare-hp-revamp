@@ -40,6 +40,11 @@ export async function getEventsAuthenticated(
       prisma.event.findMany({
         include: {
           media: true,
+          expectations: {
+            select: {
+              description: true,
+            },
+          },
           _count: {
             select: {
               attendees: true, // 👈 relation name
@@ -60,6 +65,9 @@ export async function getEventsAuthenticated(
     const formattedEvents = events.map((event) => ({
       ...event,
       totalAttendees: event._count.attendees,
+      expectations: event.expectations.map(
+        (expectation) => expectation.description
+      ),
       _count: undefined, // optional cleanup
     }));
 

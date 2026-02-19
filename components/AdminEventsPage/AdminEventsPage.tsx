@@ -28,6 +28,7 @@ export default function AdminEventPage({
 }) {
   const { events: eventsData, totalPages, page } = use(events);
 
+  console.log(eventsData);
   const handleDelete = async (ids: string[]) => {
     try {
       await deleteEvent(ids);
@@ -159,7 +160,12 @@ export default function AdminEventPage({
           </Button>
           <AddEventButton
             type="edit"
-            event={event as unknown as EventFormValues & { id: string }}
+            event={
+              event as unknown as EventFormValues & {
+                id: string | null;
+                expectations: string[];
+              }
+            }
           />
           <RemoveEvent onRemove={() => handleDelete([event.id])} />
         </div>

@@ -6,11 +6,11 @@ import { EventFormValues, eventSchema } from "@/lib/schema";
 import { uploadFile } from "@/lib/storage";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EventStatus } from "@prisma/client";
+import { EventStatus, EventType } from "@prisma/client";
 import { format } from "date-fns";
-import { CalendarIcon, ImagePlus, Plus } from "lucide-react";
+import { CalendarIcon, ImagePlus, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { Resolver, useForm } from "react-hook-form";
+import { Resolver, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
@@ -44,7 +44,7 @@ import { Textarea } from "../ui/textarea";
 
 type Props = {
   type?: "add" | "edit";
-  event?: EventFormValues & { id: string };
+  event?: EventFormValues & { id: string | null; expectations: string[] };
 };
 
 const AddEventButton = ({ type = "add", event }: Props) => {
@@ -59,6 +59,9 @@ const AddEventButton = ({ type = "add", event }: Props) => {
           description: event.description,
           location: event.location,
           status: event.status.toLowerCase() as EventStatus,
+          eventType: (event.eventType as EventType) ?? EventType.ONSITE,
+          hostedBy: event.hostedBy ?? "",
+          expectations: event.expectations ?? [],
           eventStartDate: event.eventStartDate ?? null,
           eventStartTime: event.eventStartDate
             ? format(new Date(event.eventStartDate), "HH:mm")
@@ -74,6 +77,9 @@ const AddEventButton = ({ type = "add", event }: Props) => {
           description: "",
           location: "",
           status: EventStatus.DRAFT,
+          eventType: EventType.ONSITE,
+          hostedBy: "",
+          expectations: [],
           eventStartDate: null,
           eventStartTime: "",
           eventEndDate: null,
@@ -82,6 +88,11 @@ const AddEventButton = ({ type = "add", event }: Props) => {
           currency: "USD",
           media: undefined,
         },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "expectations" as never,
   });
 
   const isPaid = form.watch("isPaid");
@@ -104,11 +115,18 @@ const AddEventButton = ({ type = "add", event }: Props) => {
         const media = await uploadFile(values.media);
         mediaUrl = media.url;
       }
+      const startDate = mergeDateAndTime(
+        values.eventStartDate,
+        values.eventStartTime ?? ""
+      );
 
-      const startDate =
-        mergeDateAndTime(values.eventStartDate, values.eventStartTime ?? "") ??
-        new Date();
-      const endDate = values.eventEndDate;
+      const endDate = values.eventEndDate
+        ? new Date(values.eventEndDate)
+        : null;
+
+      const validExpectations = (values.expectations ?? []).filter((e) =>
+        e.trim()
+      );
 
       if (type === "add") {
         await createEvent({
@@ -117,11 +135,19 @@ const AddEventButton = ({ type = "add", event }: Props) => {
           description: values.description,
           location: values.location,
           status: values.status.toUpperCase() as EventStatus,
-          eventStartDate: startDate,
-          eventEndDate: endDate,
+          eventType: (values.eventType ?? "ONSITE") as EventType,
+          hostedBy: values.hostedBy || null,
+          eventStartDate: startDate ?? new Date(),
+          eventEndDate: endDate ? new Date(endDate) : undefined,
           isPaid: values.isPaid ?? false,
           price: values.isPaid && values.price ? values.price : 0,
           currency: values.currency ?? "USD",
+          expectations:
+            validExpectations.length > 0
+              ? {
+                  create: validExpectations.map((e) => ({ description: e })),
+                }
+              : undefined,
           media: mediaUrl
             ? {
                 create: {
@@ -134,18 +160,30 @@ const AddEventButton = ({ type = "add", event }: Props) => {
 
         toast.success("Event created successfully!");
       } else {
-        await updateEvent(event!.id, {
-          id: event!.id,
+        // TypeScript fix: event!.id is assumed to be string | null, but updateEvent expects string
+        if (!event?.id) {
+          throw new Error("Invalid event ID for update");
+        }
+        await updateEvent(event.id, {
+          id: event.id,
           title: values.title,
           slug: values.title.toLowerCase().replace(/ /g, "-"),
           description: values.description,
           location: values.location,
           status: values.status.toUpperCase() as EventStatus,
-          eventStartDate: startDate,
-          eventEndDate: endDate,
+          eventType: (values.eventType ?? "ONSITE") as EventType,
+          hostedBy: values.hostedBy || null,
+          eventStartDate: startDate ? new Date(startDate) : undefined,
+          eventEndDate: endDate ? new Date(endDate) : undefined,
           isPaid: values.isPaid ?? false,
           price: values.isPaid && values.price ? values.price : 0,
           currency: values.currency ?? "USD",
+          expectations: {
+            deleteMany: {
+              eventId: event!.id,
+            },
+            create: validExpectations.map((e) => ({ description: e })),
+          },
           media: mediaUrl
             ? {
                 upsert: {
@@ -167,6 +205,8 @@ const AddEventButton = ({ type = "add", event }: Props) => {
     }
   }
 
+  console.log(form.watch());
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -175,7 +215,7 @@ const AddEventButton = ({ type = "add", event }: Props) => {
           {type === "add" ? "Add Event" : "Edit Event"}
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
             {type === "add" ? "Create Event" : "Edit Event"}
@@ -225,6 +265,75 @@ const AddEventButton = ({ type = "add", event }: Props) => {
                 </FormItem>
               )}
             />
+
+            {/* HOSTED BY */}
+            <FormField
+              control={form.control}
+              name="hostedBy"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Hosted By</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="e.g. Dr. Jane Smith"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* WHAT TO EXPECT */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <FormLabel>What to Expect</FormLabel>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => append("")}
+                >
+                  <Plus className="w-3 h-3 mr-1" />
+                  Add Item
+                </Button>
+              </div>
+              {fields.length === 0 && (
+                <p className="text-sm text-muted-foreground">
+                  No expectations added yet.
+                </p>
+              )}
+              {fields.map((field, index) => (
+                <div key={field.id} className="flex gap-2 items-center">
+                  <FormField
+                    control={form.control}
+                    name={`expectations.${index}`}
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormControl>
+                          <Input
+                            placeholder={`Expectation ${index + 1}`}
+                            {...field}
+                            value={field.value ?? ""}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => remove(index)}
+                    className="text-destructive hover:text-destructive"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
 
             {/* EVENT START DATE + TIME */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -373,6 +482,29 @@ const AddEventButton = ({ type = "add", event }: Props) => {
                 )}
               />
             </div>
+
+            {/* EVENT TYPE */}
+            <FormField
+              control={form.control}
+              name="eventType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Event Type</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select event type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="ONSITE">Onsite</SelectItem>
+                      <SelectItem value="VIRTUAL">Virtual</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             {/* PAID EVENT */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

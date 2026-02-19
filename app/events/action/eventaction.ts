@@ -4,7 +4,7 @@ import { requireAuth } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
 import { sendEventRegistrationEmails } from "@/lib/send-event-email";
 import { validateWithRetry } from "@/lib/turnstile";
-import { Prisma } from "@prisma/client";
+import { EventStatus, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
@@ -19,7 +19,9 @@ export async function getEvents(
   page: number = 1
 ): Promise<
   ActionResponse<{
-    events: Prisma.EventGetPayload<{ include: { media: true } }>[];
+    events: Prisma.EventGetPayload<{
+      include: { media: true; expectations: true };
+    }>[];
     totalPages: number;
     page: number;
   }>
@@ -32,9 +34,13 @@ export async function getEvents(
           media: true,
           attendees: true,
           guests: true,
+          expectations: true,
         },
         orderBy: {
           eventStartDate: "asc",
+        },
+        where: {
+          status: EventStatus.PUBLISHED,
         },
         take: limit,
         skip: offset,
@@ -72,7 +78,12 @@ export const getEventById = async (
 ): Promise<
   ActionResponse<
     Prisma.EventGetPayload<{
-      include: { media: true; attendees: true; guests: true };
+      include: {
+        media: true;
+        attendees: true;
+        guests: true;
+        expectations: true;
+      };
     }>
   >
 > => {
@@ -87,6 +98,7 @@ export const getEventById = async (
         media: true,
         attendees: true,
         guests: true,
+        expectations: true,
       },
     });
 
@@ -208,28 +220,20 @@ export async function updateEvent(
 
     const existingEvent = await prisma.event.findUnique({
       where: { id },
+      include: {
+        expectations: true,
+      },
     });
 
     if (!existingEvent) {
       return { success: false, error: "Event not found" };
     }
 
-    if (event.eventStartDate && event.eventEndDate) {
-      const startDate = new Date(event.eventStartDate as Date);
-      const endDate = new Date(event.eventEndDate as Date);
-
-      if (endDate < startDate) {
-        return {
-          success: false,
-          error: "Event end date must be after start date",
-        };
-      }
-    }
-
-    await prisma.event.update({
+    const updatedEvent = await prisma.event.update({
       where: { id },
       data: event,
     });
+    console.log(updatedEvent);
 
     return { success: true };
   } catch (error) {

@@ -113,19 +113,26 @@ enum EventStatus {
   COMPLETED
 }
 
+enum EventType {
+  ONSITE
+  VIRTUAL
+}
+
 model Event {
   id String @id @default(uuid())
   slug String @unique
-  
+
   title String
   description String
   location String
   status EventStatus @default(DRAFT)
+  eventType EventType @default(ONSITE)
   qrCode String?
 
   isPaid               Boolean         @default(false)
   price                Decimal?        @default(0) // Use Decimal for currency
   currency             String          @default("USD")
+  hostedBy String?
 
   eventStartDate DateTime @db.Timestamptz
   eventEndDate DateTime? @db.Timestamptz
@@ -138,6 +145,17 @@ model Event {
   media Media? @relation(fields: [mediaId], references: [id])
   attendees EventAttendee[]
   guests Guest[]
+  expectations Expectation[]
+}
+
+model Expectation {
+  id String @id @default(uuid())
+  description String
+  createdAt DateTime @db.Timestamptz @default(now())
+  updatedAt DateTime @db.Timestamptz @updatedAt
+
+  eventId String
+  event Event @relation(fields: [eventId], references: [id])
 }
 
 model Guest {
@@ -172,7 +190,7 @@ model EventAttendee {
 }
 
 
-    model Media {
+model Media {
   id String @id @default(uuid())
   url String
   type String

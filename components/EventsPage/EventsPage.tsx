@@ -73,7 +73,7 @@ const EventsPage = ({ events }: { events: Promise<EventsResponse> }) => {
                   </div>
 
                   <h3 className="text-base font-bold text-slate-800 leading-tight group-hover:text-primary transition-colors">
-                    {event.title}
+                    {event.title} {event.hostedBy && `- ${event.hostedBy}`}
                   </h3>
 
                   <div className="flex items-center gap-2 pt-1">

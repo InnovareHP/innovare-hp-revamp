@@ -35,7 +35,7 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { formatDate } from "@/lib/utils";
-import { Media, Prisma } from "@prisma/client";
+import { EventType, Media, Prisma } from "@prisma/client";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import {
@@ -60,7 +60,7 @@ import RemoveEvent from "../AdminEventsPage/RemoveEvent";
 
 interface AdminEventDetailClientProps {
   event: Prisma.EventGetPayload<{
-    include: { media: true; attendees: true; guests: true };
+    include: { media: true; attendees: true; guests: true; expectations: true };
   }>;
 }
 
@@ -73,6 +73,9 @@ type EventFormValues = {
   date: Date;
   eventStartDate: Date;
   media: Media;
+  eventType: EventType;
+  hostedBy: string;
+  expectations: string[];
 };
 
 type EmailDialogState = {
@@ -615,7 +618,47 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
                         </p>
                       </div>
                     </div>
+                    <div className="flex items-center gap-3 p-3 border rounded-lg">
+                      <Users className="text-primary w-5 h-5" />
+                      <div>
+                        <p className="text-xs text-muted-foreground uppercase font-bold">
+                          Hosted By
+                        </p>
+                        <p className="text-sm font-semibold">
+                          {event.hostedBy || "—"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 border rounded-lg">
+                      <AlertCircle className="text-primary w-5 h-5" />
+                      <div>
+                        <p className="text-xs text-muted-foreground uppercase font-bold">
+                          Event Type
+                        </p>
+                        <p className="text-sm font-semibold">
+                          {event.eventType === "VIRTUAL" ? "Virtual" : "Onsite"}
+                        </p>
+                      </div>
+                    </div>
                   </div>
+                  {event.expectations && event.expectations.length > 0 && (
+                    <div className="p-3 border rounded-lg space-y-2">
+                      <p className="text-xs text-muted-foreground uppercase font-bold">
+                        What to Expect
+                      </p>
+                      <ul className="space-y-1">
+                        {event.expectations.map((e) => (
+                          <li
+                            key={e.id}
+                            className="text-sm flex items-start gap-2"
+                          >
+                            <span className="text-primary mt-0.5">•</span>
+                            {e.description}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </TabsContent>
               </Tabs>
             </CardContent>

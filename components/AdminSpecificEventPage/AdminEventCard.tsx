@@ -14,7 +14,7 @@ type Props = {
   event: Promise<
     ActionResponse<
       Prisma.EventGetPayload<{
-        include: { media: true; attendees: true; guests: true };
+        include: { media: true; attendees: true; guests: true; expectations: true };
       }>
     >
   >;
@@ -50,7 +50,7 @@ const AdminEventCard = ({ event }: Props) => {
         <AdminSpecificEventPage
           event={
             eventData.data as Prisma.EventGetPayload<{
-              include: { media: true; attendees: true; guests: true };
+              include: { media: true; attendees: true; guests: true; expectations: true };
             }>
           }
         />

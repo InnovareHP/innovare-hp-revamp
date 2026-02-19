@@ -8,12 +8,15 @@ import { Prisma } from "@prisma/client";
 import {
   Calendar,
   CalendarDays,
+  CheckCircle2,
   Clock,
   DollarSign,
   ExternalLink,
   MapPin,
+  Monitor,
   Navigation,
   QrCode,
+  User,
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { QRCodeSVG } from "qrcode.react";
@@ -31,7 +34,7 @@ import {
 import EventRegistrationModal from "./EventRegistrationModal";
 
 type EventWithRelations = Prisma.EventGetPayload<{
-  include: { media: true; attendees: true; guests: true };
+  include: { media: true; attendees: true; guests: true; expectations: true };
 }>;
 
 interface EventDetailClientProps {
@@ -131,26 +134,69 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
           </div>
 
           <div className="space-y-4">
-            {event.isPaid && eventPrice && eventPrice > 0 ? (
-              <Badge variant="secondary" className="gap-1">
-                <DollarSign className="w-3 h-3" />
-                {formatPrice(eventPrice)}
-              </Badge>
-            ) : (
+            <div className="flex flex-wrap gap-2">
+              {event.isPaid && eventPrice && eventPrice > 0 ? (
+                <Badge variant="secondary" className="gap-1">
+                  <DollarSign className="w-3 h-3" />
+                  {formatPrice(eventPrice)}
+                </Badge>
+              ) : (
+                <Badge
+                  variant="outline"
+                  className="text-green-600 border-green-300"
+                >
+                  Free
+                </Badge>
+              )}
               <Badge
                 variant="outline"
-                className="text-green-600 border-green-300"
+                className={
+                  event.eventType === "VIRTUAL"
+                    ? "text-purple-600 border-purple-300 gap-1"
+                    : "text-blue-600 border-blue-300 gap-1"
+                }
               >
-                Free
+                <Monitor className="w-3 h-3" />
+                {event.eventType === "VIRTUAL" ? "Virtual" : "Onsite"}
               </Badge>
-            )}
+            </div>
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
               {event.title}
             </h1>
+            {event.hostedBy && (
+              <div className="flex items-center gap-2 text-slate-600">
+                <User className="w-4 h-4 shrink-0" />
+                <span className="text-sm font-medium">
+                  Hosted by{" "}
+                  <span className="text-slate-900 font-semibold">
+                    {event.hostedBy}
+                  </span>
+                </span>
+              </div>
+            )}
             <p className="text-base leading-relaxed text-slate-600">
               {event.description}
             </p>
           </div>
+
+          {event.expectations && event.expectations.length > 0 && (
+            <div className="space-y-3">
+              <h3 className="text-lg font-bold text-slate-900">
+                What to Expect
+              </h3>
+              <ul className="space-y-2">
+                {event.expectations.map((expectation) => (
+                  <li
+                    key={expectation.id}
+                    className="flex items-start gap-2 text-slate-700"
+                  >
+                    <CheckCircle2 className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
+                    <span className="text-sm">{expectation.description}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-1 gap-4">
             <Card className="border-0 bg-gradient-to-br from-blue-50 via-blue-50/80 to-blue-100/30 shadow-md hover:shadow-lg transition-all duration-300">

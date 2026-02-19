@@ -192,14 +192,6 @@ export function EventRegistrationConfirmation({
           <strong style={{ color: "#555" }}>📅 Date & Time:</strong>
           <br />
           {eventStartDate}
-          {eventEndDate && (
-            <>
-              <br />
-              <span style={{ color: "#666", fontSize: "14px" }}>
-                Ends: {eventEndDate}
-              </span>
-            </>
-          )}
         </p>
 
         <p style={{ marginBottom: "12px" }}>

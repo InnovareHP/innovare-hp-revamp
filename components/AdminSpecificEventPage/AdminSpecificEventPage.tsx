@@ -43,6 +43,7 @@ import {
   Clock,
   DollarSign,
   Download,
+  ExternalLink,
   Mail,
   MapPin,
   MoreVertical,
@@ -51,6 +52,7 @@ import {
   RotateCcw,
   Send,
   Users,
+  Video,
 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
@@ -485,6 +487,9 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
               event as unknown as EventFormValues & {
                 id: string;
                 eventEndDate: Date | null;
+                eventType: EventType;
+                hostedBy: string;
+                expectations: string[];
               }
             }
           />
@@ -641,8 +646,30 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
                       </div>
                     </div>
                   </div>
+                  {event.teamsMeetingUrl && (
+                    <div className="p-3 border border-purple-200 bg-purple-50/50 rounded-lg space-y-2 col-span-full">
+                      <p className="text-xs text-muted-foreground uppercase font-bold flex items-center gap-1">
+                        <Video className="w-3 h-3" /> Teams Meeting Link
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium text-purple-700 truncate flex-1">
+                          {event.teamsMeetingUrl}
+                        </p>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="shrink-0 text-purple-600 hover:text-purple-800"
+                          onClick={() =>
+                            window.open(event.teamsMeetingUrl!, "_blank")
+                          }
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                   {event.expectations && event.expectations.length > 0 && (
-                    <div className="p-3 border rounded-lg space-y-2">
+                    <div className="p-3 border rounded-lg space-y-2 col-span-full">
                       <p className="text-xs text-muted-foreground uppercase font-bold">
                         What to Expect
                       </p>

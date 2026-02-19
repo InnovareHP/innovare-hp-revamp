@@ -17,6 +17,7 @@ import {
   Navigation,
   QrCode,
   User,
+  Video,
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { QRCodeSVG } from "qrcode.react";
@@ -345,6 +346,47 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
               </div>
             </div>
           )}
+          {event.status === "PUBLISHED" &&
+            event.eventType === "VIRTUAL" &&
+            event.teamsMeetingUrl && (
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-600 via-purple-700 to-indigo-800 p-6 shadow-2xl">
+                <div className="absolute inset-0 opacity-10">
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                    }}
+                  />
+                </div>
+                <div className="relative z-10 flex flex-col items-center gap-4 text-center">
+                  <div className="p-3 rounded-full bg-white/20">
+                    <Video className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="space-y-1">
+                    <h3 className="text-xl font-bold text-white">
+                      Virtual Event — Microsoft Teams
+                    </h3>
+                    <p className="text-purple-100 text-sm">
+                      {userIsRegistered
+                        ? "You're registered. Click below to join when the event starts."
+                        : "Register to receive the meeting details by email."}
+                    </p>
+                  </div>
+                  {userIsRegistered && (
+                    <Button
+                      className="bg-white text-purple-700 hover:bg-purple-50 font-semibold gap-2"
+                      onClick={() =>
+                        window.open(event.teamsMeetingUrl!, "_blank")
+                      }
+                    >
+                      <Video className="w-4 h-4" />
+                      Join Microsoft Teams Meeting
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )}
+
           {event.status === "PUBLISHED" && (
             <div className="space-y-3">
               <h3 className="text-xl font-bold text-slate-900">How to Join</h3>
@@ -384,6 +426,33 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
             </div>
           )}
           <div className="space-y-4">
+            {event.eventType === "VIRTUAL" ? (
+              <>
+                <h3 className="text-xl font-bold text-slate-900">
+                  Meeting Details
+                </h3>
+                <Card className="overflow-hidden border-2 shadow-lg">
+                  <CardContent className="p-5 bg-gradient-to-br from-purple-50/50 to-white">
+                    <div className="flex items-start gap-3">
+                      <Monitor className="w-5 h-5 text-purple-600 mt-0.5 shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-slate-700 mb-1">
+                          Platform
+                        </p>
+                        <p className="text-slate-900 font-medium text-base">
+                          Microsoft Teams
+                        </p>
+                        <p className="text-xs text-slate-500 mt-1">
+                          The meeting link will be sent to your email after
+                          registration.
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </>
+            ) : (
+              <>
             <div className="flex items-center justify-between flex-wrap gap-4">
               <h3 className="text-xl font-bold text-slate-900">
                 Event Location
@@ -454,6 +523,8 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
                 </>
               )}
             </Card>
+              </>
+            )}
           </div>
         </div>
       </div>

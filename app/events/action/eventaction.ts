@@ -4,7 +4,7 @@ import { requireAuth } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
 import { sendEventRegistrationEmails } from "@/lib/send-event-email";
 import { validateWithRetry } from "@/lib/turnstile";
-import { EventStatus, EventType, Prisma } from "@prisma/client";
+import { EventStatus, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
@@ -40,14 +40,7 @@ export async function getEvents(
           eventStartDate: "asc",
         },
         where: {
-          OR: [
-            {
-              status: EventStatus.PUBLISHED,
-            },
-            {
-              eventType: EventType.ONSITE,
-            },
-          ],
+          status: EventStatus.PUBLISHED,
         },
         take: limit,
         skip: offset,

@@ -9,7 +9,7 @@ import {
   updateTeamsMeeting,
 } from "@/lib/teams";
 import { validateWithRetry } from "@/lib/turnstile";
-import { Prisma } from "@prisma/client";
+import { EventStatus, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
@@ -44,7 +44,9 @@ export async function getEvents(
         orderBy: {
           eventStartDate: "asc",
         },
-
+        where: {
+          status: EventStatus.PUBLISHED,
+        },
         take: limit,
         skip: offset,
       }),

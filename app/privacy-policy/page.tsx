@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
 import PrivacyPolicy from "@/components/PrivacyPolicy/PrivacyPolicy";
+import type { Metadata } from "next";
 
-const SITE_URL = "https://www.innovarehp.com";
+const SITE_URL = "https://innovarehp.com";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy - HIPAA Compliant Marketing",
+  title: "Privacy Policy | Innovare HP",
   description:
     "Innovare HP's privacy policy outlines how we protect your data and maintain HIPAA compliance in all healthcare marketing activities.",
   robots: {

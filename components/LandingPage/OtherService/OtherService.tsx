@@ -66,7 +66,7 @@ const OtherService = () => {
         className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-6"
       >
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-900 tracking-tight">
-          Our Exciting Service Offerings
+          Healthcare Marketing Services
         </h2>
         <WorkWithUsButton variant="service" />
       </motion.div>

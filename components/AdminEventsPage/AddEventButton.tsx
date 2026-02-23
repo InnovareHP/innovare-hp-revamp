@@ -205,8 +205,6 @@ const AddEventButton = ({ type = "add", event }: Props) => {
     }
   }
 
-  console.log(form.watch());
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

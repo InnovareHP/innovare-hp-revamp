@@ -68,7 +68,7 @@ const WhatWeDo = () => {
     <section
       id="what-we-do"
       className="max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 py-16"
-      aria-label="What we do section"
+      aria-label="Healthcare marketing and growth strategy section"
     >
       <div>
         {/* Header Animation */}
@@ -80,7 +80,7 @@ const WhatWeDo = () => {
           className="mb-12 lg:mb-16"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-left text-blue-900">
-            What we do
+            Healthcare Marketing & Growth Strategy
           </h2>
         </motion.div>
 

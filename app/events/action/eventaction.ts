@@ -3,8 +3,13 @@
 import { requireAuth } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
 import { sendEventRegistrationEmails } from "@/lib/send-event-email";
+import {
+  createTeamsMeeting,
+  deleteTeamsMeeting,
+  updateTeamsMeeting,
+} from "@/lib/teams";
 import { validateWithRetry } from "@/lib/turnstile";
-import { EventStatus, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
@@ -39,9 +44,7 @@ export async function getEvents(
         orderBy: {
           eventStartDate: "asc",
         },
-        where: {
-          status: EventStatus.PUBLISHED,
-        },
+
         take: limit,
         skip: offset,
       }),
@@ -220,9 +223,7 @@ export async function updateEvent(
 
     const existingEvent = await prisma.event.findUnique({
       where: { id },
-      include: {
-        expectations: true,
-      },
+      include: { expectations: true },
     });
 
     if (!existingEvent) {
@@ -233,7 +234,47 @@ export async function updateEvent(
       where: { id },
       data: event,
     });
-    console.log(updatedEvent);
+
+    // Handle Teams meeting lifecycle when eventType changes
+    const newType = (event.eventType as string) ?? existingEvent.eventType;
+    const wasVirtual = existingEvent.eventType === "VIRTUAL";
+    const isNowVirtual = newType === "VIRTUAL";
+
+    try {
+      if (!wasVirtual && isNowVirtual) {
+        // Switched to VIRTUAL — create a new Teams meeting
+        const meeting = await createTeamsMeeting({
+          title: updatedEvent.title,
+          startDate: updatedEvent.eventStartDate,
+          endDate: updatedEvent.eventEndDate,
+        });
+        await prisma.event.update({
+          where: { id },
+          data: {
+            teamsMeetingId: meeting.meetingId,
+            teamsMeetingUrl: meeting.joinUrl,
+          },
+        });
+      } else if (wasVirtual && !isNowVirtual) {
+        // Switched away from VIRTUAL — delete the Teams meeting
+        if (existingEvent.teamsMeetingId) {
+          await deleteTeamsMeeting(existingEvent.teamsMeetingId);
+        }
+        await prisma.event.update({
+          where: { id },
+          data: { teamsMeetingId: null, teamsMeetingUrl: null },
+        });
+      } else if (wasVirtual && isNowVirtual && existingEvent.teamsMeetingId) {
+        // Still VIRTUAL — sync title/dates with the existing Teams meeting
+        await updateTeamsMeeting(existingEvent.teamsMeetingId, {
+          title: updatedEvent.title,
+          startDate: updatedEvent.eventStartDate,
+          endDate: updatedEvent.eventEndDate,
+        });
+      }
+    } catch (teamsError) {
+      console.error("Teams meeting sync failed:", teamsError);
+    }
 
     return { success: true };
   } catch (error) {

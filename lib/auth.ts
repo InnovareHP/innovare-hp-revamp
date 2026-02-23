@@ -8,7 +8,6 @@ export const auth = betterAuth({
   }),
   trustedOrigins: [
     "https://innovarehp.com",
-    "https://www.innovarehp.com",
     "http://localhost:3000",
     "http://localhost:3001",
   ],

@@ -88,7 +88,7 @@ const TeamSection = () => {
           className="mb-8 sm:mb-12 md:mb-16"
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-gray-700">
-            Meet the champions of our proven outreach strategies
+            Our Healthcare Marketing Team
           </h2>
           <p className="text-lg lg:text-2xl leading-relaxed sm:leading-normal text-gray-600 font-sans font-normal">
             Over the course of our journey, we have forged meaningful

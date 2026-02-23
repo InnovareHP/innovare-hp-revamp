@@ -7,6 +7,7 @@ import {
   sendRefundConfirmationEmail,
 } from "@/lib/send-event-email";
 import { stripe } from "@/lib/stripe";
+import { createTeamsMeeting, deleteTeamsMeeting } from "@/lib/teams";
 import { formatDate } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
@@ -64,6 +65,7 @@ export async function getEventsAuthenticated(
 
     const formattedEvents = events.map((event) => ({
       ...event,
+      price: event.price ? Number(event.price) : null,
       totalAttendees: event._count.attendees,
       expectations: event.expectations.map(
         (expectation) => expectation.description
@@ -93,8 +95,36 @@ export const createEvent = async (event: Prisma.EventCreateInput) => {
       data: event,
     });
 
+    // Auto-create Teams meeting for virtual events
+    if (newEvent.eventType === "VIRTUAL") {
+      try {
+        const meeting = await createTeamsMeeting({
+          title: newEvent.title,
+          startDate: newEvent.eventStartDate,
+          endDate: newEvent.eventEndDate,
+        });
+
+        await prisma.event.update({
+          where: { id: newEvent.id },
+          data: {
+            teamsMeetingId: meeting.meetingId,
+            teamsMeetingUrl: meeting.joinUrl,
+          },
+        });
+      } catch (teamsError) {
+        // Log but don't fail the event creation
+        console.error("Teams meeting creation failed:", teamsError);
+      }
+    }
+
     revalidatePath("/admin/events");
-    return { success: true, data: newEvent };
+    return {
+      success: true,
+      data: {
+        ...newEvent,
+        price: newEvent.price ? Number(newEvent.price) : null,
+      },
+    };
   } catch (error) {
     console.error("Error creating event:", error);
     return { success: false, error: "Failed to create event" };
@@ -104,6 +134,18 @@ export const createEvent = async (event: Prisma.EventCreateInput) => {
 export const deleteEvent = async (ids: string[]) => {
   try {
     await requireAdmin();
+
+    // Clean up Teams meetings before deleting
+    const events = await prisma.event.findMany({
+      where: { id: { in: ids } },
+      select: { teamsMeetingId: true },
+    });
+    await Promise.allSettled(
+      events
+        .filter((e) => e.teamsMeetingId)
+        .map((e) => deleteTeamsMeeting(e.teamsMeetingId!))
+    );
+
     await prisma.$transaction([
       prisma.eventAttendee.deleteMany({
         where: { eventId: { in: ids } },

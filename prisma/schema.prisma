@@ -141,6 +141,9 @@ model Event {
   createdAt DateTime @db.Timestamptz @default(now())
   updatedAt DateTime @db.Timestamptz @updatedAt
 
+  teamsMeetingId  String?
+  teamsMeetingUrl String?
+
   mediaId String?
   media Media? @relation(fields: [mediaId], references: [id])
   attendees EventAttendee[]

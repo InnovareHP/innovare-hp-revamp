@@ -71,8 +71,7 @@ const HeroSection = () => {
             variants={itemVariants}
             className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight font-bold"
           >
-            Marketing that empowers healthcare brands to stand apart and stay
-            ahead.
+            Marketing that empowers healthcare brands to stand apart.
           </motion.h1>
 
           <motion.p

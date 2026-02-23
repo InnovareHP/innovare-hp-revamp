@@ -125,6 +125,7 @@ const WhatWeAreTalkingAbout = ({
               href={`https://www.linkedin.com/embed/feed/update/${post.id}`}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`View LinkedIn post from ${new Date(post.publishedAt).toLocaleDateString("en-US", { month: "long", year: "numeric" })} (opens in new tab)`}
               className="block group bg-slate-50 rounded-2xl border-2 border-slate-200 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               {post.images?.[0]?.imageUrl && (
@@ -161,7 +162,6 @@ const WhatWeAreTalkingAbout = ({
                   </div>
                 </div>
               </div>
-              <span className="sr-only">(opens in new tab)</span>
           </Link>
           </div>
         ))}

@@ -28,7 +28,6 @@ export default function AdminEventPage({
 }) {
   const { events: eventsData, totalPages, page } = use(events);
 
-  console.log(eventsData);
   const handleDelete = async (ids: string[]) => {
     try {
       await deleteEvent(ids);

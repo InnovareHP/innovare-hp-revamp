@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { getEvents } from "./action/eventaction";
 
-const SITE_URL = "https://www.innovarehp.com";
+const SITE_URL = "https://innovarehp.com";
 
 export const metadata: Metadata = {
   title: "Healthcare Marketing Events & Webinars",

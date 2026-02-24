@@ -1,6 +1,5 @@
 "use client";
 
-import { LinkedInPost } from "@/lib/types";
 import { useState } from "react";
 import AboutSection from "./AboutSection/AboutSection";
 import ClientReviews from "./ClientReviews/ClientReviews";
@@ -13,7 +12,6 @@ import Navigation from "./Navigation/Navigation";
 import Partners from "./Partners/Partners";
 import Process from "./Proces/Process";
 import TeamSection from "./TeamSection/TeamSection";
-import WhatWeAreTalkingAbout from "./WhatWeAreTalkingAbout/WhatWeAreTalkingAbout";
 import WhatWeDo from "./WhatWeDo/WhatWeDo";
 
 function ADABanner() {
@@ -94,7 +92,7 @@ function ADABanner() {
   );
 }
 
-const LandingPage = ({ posts }: { posts: Promise<LinkedInPost[]> }) => {
+const LandingPage = () => {
   return (
     <>
       <Navigation />
@@ -105,7 +103,7 @@ const LandingPage = ({ posts }: { posts: Promise<LinkedInPost[]> }) => {
         <Partners />
         <Process />
         <WhatWeDo />
-        <WhatWeAreTalkingAbout initialPosts={posts} />
+        {/* <WhatWeAreTalkingAbout initialPosts={posts} /> */}
         <MissionSection />
         <TeamSection />
         <ClientReviews />

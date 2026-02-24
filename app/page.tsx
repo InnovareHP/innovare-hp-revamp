@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import LandingPage from "../components/LandingPage/LandingPage";
-import { LinkInPost } from "./action/landing-page";
 
 const SITE_URL = "https://innovarehp.com";
 
@@ -92,7 +91,7 @@ const websiteJsonLd = {
 };
 
 export default async function Home() {
-  const postsWithRelativeTime = LinkInPost();
+  // const postsWithRelativeTime = LinkInPost();
 
   return (
     <>
@@ -112,7 +111,7 @@ export default async function Home() {
         content={JSON.stringify(websiteJsonLd)}
       />
 
-      <LandingPage posts={postsWithRelativeTime} />
+      <LandingPage />
     </>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { motion } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
 import AboutSection from "./AboutSection/AboutSection";
 import ClientReviews from "./ClientReviews/ClientReviews";
 import ContactPage from "./ContactSection/ContactPage";
@@ -16,13 +17,54 @@ import WhatWeDo from "./WhatWeDo/WhatWeDo";
 
 function ADABanner() {
   const [isVisible, setIsVisible] = useState(true);
+  const [heroInView, setHeroInView] = useState(true);
+  const [isExiting, setIsExiting] = useState(false);
+  const isVisibleRef = useRef(isVisible);
 
-  if (!isVisible) return null;
+  useEffect(() => {
+    isVisibleRef.current = isVisible;
+  }, [isVisible]);
+
+  useEffect(() => {
+    const hero = document.getElementById("hero-section");
+    if (!hero) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const inView = entry.isIntersecting;
+        setHeroInView(inView);
+        if (!inView && isVisibleRef.current) setIsExiting(true);
+      },
+      { threshold: 0, rootMargin: "0px" }
+    );
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setIsVisible(false);
+    setIsExiting(true);
+  }, []);
+
+  const handleExitComplete = useCallback(() => {
+    setIsExiting(false);
+  }, []);
+
+  const showBanner = (isVisible && heroInView) || isExiting;
+  if (!showBanner) return null;
 
   return (
-    <aside
+    <motion.aside
       className="fixed bottom-0 left-0 right-0 z-[100] bg-blue-900/95 backdrop-blur-md text-white border-t border-white/20 shadow-[0_-4px_20px_rgba(0,0,0,0.3)]"
       aria-label="Accessibility Notice"
+      initial={{ y: "100%", opacity: 0 }}
+      animate={
+        isExiting
+          ? { y: "100%", opacity: 0 }
+          : { y: 0, opacity: 1 }
+      }
+      onAnimationComplete={handleExitComplete}
+      transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
     >
       <div className="max-w-screen-xl mx-auto px-4 py-3 sm:px-6 md:px-8 flex items-center justify-between gap-4">
         {/* ADA CONTENT */}
@@ -63,7 +105,7 @@ function ADABanner() {
         {/* CLOSE BUTTON */}
         <button
           type="button"
-          onClick={() => setIsVisible(false)}
+          onClick={handleClose}
           className="flex items-center gap-2 p-1.5 hover:bg-white/10 rounded-lg transition-colors group shrink-0"
           aria-label="Close accessibility notice"
         >
@@ -88,7 +130,7 @@ function ADABanner() {
           </svg>
         </button>
       </div>
-    </aside>
+    </motion.aside>
   );
 }
 

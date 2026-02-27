@@ -83,6 +83,15 @@ const HeroSection = () => {
             marketing for organizations that want to lead—not follow.
           </motion.p>
 
+          <motion.p
+            variants={itemVariants}
+            className="text-sm sm:text-base md:text-lg text-gray-300 max-w-xl leading-relaxed"
+          >
+            We provide strategic marketing, brand development, and community
+            outreach for senior care, behavioral health, and clinical
+            organizations.
+          </motion.p>
+
           <motion.div variants={itemVariants} className="pt-2 sm:pt-4">
             <WorkWithUsButton variant="hero" />
           </motion.div>

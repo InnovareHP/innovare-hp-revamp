@@ -41,12 +41,6 @@ const TeamSection = () => {
       imageTitle: "Amy Cunningham, MHC, MBA",
     },
     {
-      name: "Tracy Lorenz",
-      role: "Regional Brand & Relationship Manager",
-      image: "/images/team/team-6.png",
-      imageTitle: "Tracy Lorenz",
-    },
-    {
       name: "Ivor Glorioso",
       role: "Software Engineer/CIO",
       image: "/images/team/team-3.png",

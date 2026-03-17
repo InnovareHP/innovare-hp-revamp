@@ -99,10 +99,8 @@ const EventPage = async ({ params }: EventPageProps) => {
     <div className="min-h-screen overflow-hidden">
       <InteractiveBackground />
 
-      <div className="absolute inset-0 bg-black/50" />
-
       <div className="z-10 p-4 lg:p-8 flex items-center justify-center overflow-hidden max-w-7xl mx-auto">
-        <Card className="w-full max-w-5xl max-h-screen overflow-y-auto shadow-xl border-0 bg-blue-50/90 backdrop-blur flex flex-col">
+        <Card className="w-full max-w-5xl max-h-screen overflow-y-auto shadow-xl border-0 bg-blue-50/90 backdrop-blur flex flex-col border-2 shadow-lg">
           <div className="p-2 flex items-center">
             <Link href="/events">
               <Button variant="secondary" size="sm">

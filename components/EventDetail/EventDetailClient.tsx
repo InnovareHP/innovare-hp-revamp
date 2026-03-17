@@ -453,76 +453,80 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
               </>
             ) : (
               <>
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <h3 className="text-xl font-bold text-slate-900">
-                Event Location
-              </h3>
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-2 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 transition-colors"
-                onClick={() => window.open(googleMapsDirectionsUrl, "_blank")}
-              >
-                <Navigation className="w-4 h-4" />
-                Directions
-              </Button>
-            </div>
-
-            <Card className="overflow-hidden border-2 shadow-lg">
-              {isLoadingMap ? (
-                <div className="relative w-full h-[300px] bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center">
-                  <div className="text-center space-y-3">
-                    <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
-                    <p className="text-slate-600 font-medium">Loading map...</p>
-                  </div>
+                <div className="flex items-center justify-between flex-wrap gap-4">
+                  <h3 className="text-xl font-bold text-slate-900">
+                    Event Location
+                  </h3>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 transition-colors"
+                    onClick={() =>
+                      window.open(googleMapsDirectionsUrl, "_blank")
+                    }
+                  >
+                    <Navigation className="w-4 h-4" />
+                    Directions
+                  </Button>
                 </div>
-              ) : (
-                <>
-                  <div className="relative w-full h-[300px] bg-slate-100">
-                    <iframe
-                      width="100%"
-                      height="100%"
-                      style={{ border: 0 }}
-                      loading="lazy"
-                      title="Event Location Map"
-                      src={`https://www.google.com/maps?q=${encodeURIComponent(
-                        event.location
-                      )}&output=embed`}
-                      className="w-full h-full"
-                    />
-                  </div>
-                  <CardContent className="p-5 bg-gradient-to-br from-blue-50/50 to-white">
-                    <div className="flex items-start gap-3">
-                      <MapPin className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-slate-700 mb-1">
-                          Address
-                        </p>
-                        <p className="text-slate-900 font-medium text-base">
-                          {event.location}
-                        </p>
-                        <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">
-                          © OpenStreetMap contributors
+
+                <Card className="overflow-hidden border-2 shadow-lg">
+                  {isLoadingMap ? (
+                    <div className="relative w-full h-[300px] bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center">
+                      <div className="text-center space-y-3">
+                        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                        <p className="text-slate-600 font-medium">
+                          Loading map...
                         </p>
                       </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="shrink-0 hover:bg-blue-50 hover:text-blue-700"
-                        onClick={() =>
-                          window.open(
-                            `https://www.openstreetmap.org/?mlat=${mapCoordinates?.lat}&mlon=${mapCoordinates?.lon}#map=16/${mapCoordinates?.lat}/${mapCoordinates?.lon}`,
-                            "_blank"
-                          )
-                        }
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </Button>
                     </div>
-                  </CardContent>
-                </>
-              )}
-            </Card>
+                  ) : (
+                    <>
+                      <div className="relative w-full h-[300px] bg-slate-100">
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          style={{ border: 0 }}
+                          loading="lazy"
+                          title="Event Location Map"
+                          src={`https://www.google.com/maps?q=${encodeURIComponent(
+                            event.location
+                          )}&output=embed`}
+                          className="w-full h-full"
+                        />
+                      </div>
+                      <CardContent className="p-5 bg-gradient-to-br from-blue-50/50 to-white">
+                        <div className="flex items-start gap-3">
+                          <MapPin className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-slate-700 mb-1">
+                              Address
+                            </p>
+                            <p className="text-slate-900 font-medium text-base">
+                              {event.location}
+                            </p>
+                            <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">
+                              © OpenStreetMap contributors
+                            </p>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="shrink-0 hover:bg-blue-50 hover:text-blue-700"
+                            onClick={() =>
+                              window.open(
+                                `https://www.openstreetmap.org/?mlat=${mapCoordinates?.lat}&mlon=${mapCoordinates?.lon}#map=16/${mapCoordinates?.lat}/${mapCoordinates?.lon}`,
+                                "_blank"
+                              )
+                            }
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </>
+                  )}
+                </Card>
               </>
             )}
           </div>

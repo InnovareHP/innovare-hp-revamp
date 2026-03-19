@@ -20,7 +20,6 @@ const navLinks = [
   { name: "Team", href: "#team", title: "Team" },
   { name: "Client Review", href: "#reviews", title: "Client Review" },
   { name: "Contact", href: "#contact", title: "Contact" },
-  { name: "Field Notes", href: "/field-notes", title: "Field Notes" },
   { name: "Privacy Policy", href: "/privacy-policy", title: "Privacy Policy" },
 ];
 
@@ -222,32 +221,32 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
                 aria-modal="true"
                 aria-label="Menu"
               >
-              <nav
-                className="flex flex-col gap-6 text-center"
-                aria-label="Main navigation"
-              >
-                {navLinks.map((link, i) => (
-                  <motion.div
-                    key={link.name}
-                    custom={i}
-                    variants={linkVariants}
-                    initial="closed"
-                    animate="open"
-                    exit="closed"
-                  >
-                    <Link
-                      href={getHref(link.href)}
-                      onClick={() => setIsOpen(false)}
-                      className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black rounded underline"
+                <nav
+                  className="flex flex-col gap-6 text-center"
+                  aria-label="Main navigation"
+                >
+                  {navLinks.map((link, i) => (
+                    <motion.div
+                      key={link.name}
+                      custom={i}
+                      variants={linkVariants}
+                      initial="closed"
+                      animate="open"
+                      exit="closed"
                     >
-                      {link.name}
-                    </Link>
-                  </motion.div>
-                ))}
-              </nav>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                      <Link
+                        href={getHref(link.href)}
+                        onClick={() => setIsOpen(false)}
+                        className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black rounded underline"
+                      >
+                        {link.name}
+                      </Link>
+                    </motion.div>
+                  ))}
+                </nav>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </header>
     </>

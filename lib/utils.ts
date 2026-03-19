@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const formatDate = (date: Date) => {
   return new Date(date).toLocaleDateString("en-PH", {
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    timeZone: "Asia/Manila", // fixed timezone
     weekday: "long",
     year: "numeric",
     month: "long",

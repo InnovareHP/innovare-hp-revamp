@@ -60,7 +60,7 @@ const page = async ({
 
       <div className="relative z-10">
         <Navigation />
-        <div className="max-w-6xl mx-auto px-4 py-10 mt-20">
+        <div className="max-w-7xl mx-auto px-4 py-10 mt-20">
           <div className="flex items-center justify-between mb-10 border-b pb-6">
             <div>
               <h1 className="text-3xl font-black tracking-tighter text-slate-900 uppercase">

@@ -10,6 +10,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { formatTime } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { format } from "date-fns";
 import { DollarSign, ExternalLink, MapPin } from "lucide-react";
@@ -62,7 +63,7 @@ const EventsPage = ({ events }: { events: Promise<EventsResponse> }) => {
                 <div className="flex flex-col space-y-1">
                   <div className="flex items-center gap-2 text-[11px] font-bold text-muted-foreground">
                     <span className="uppercase tracking-wide">
-                      {format(event.eventStartDate, "h:mm a")}
+                      {formatTime(event.eventStartDate)}
                     </span>
                     {event.qrCode && (
                       <ExternalLink

@@ -17,7 +17,7 @@ export const formatDate = (date: Date) => {
 
 export const formatTime = (date: Date) => {
   return new Date(date).toLocaleTimeString("en-PH", {
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    timeZone: "Asia/Manila", //
     hour: "2-digit",
     minute: "2-digit",
   });

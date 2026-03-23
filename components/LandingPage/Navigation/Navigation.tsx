@@ -19,6 +19,7 @@ const navLinks = [
   { name: "Mission", href: "#mission", title: "Mission" },
   { name: "Team", href: "#team", title: "Team" },
   { name: "Client Review", href: "#reviews", title: "Client Review" },
+  { name: "Field Notes", href: "/field-notes", title: "Field Notes" },
   { name: "Contact", href: "#contact", title: "Contact" },
   { name: "Privacy Policy", href: "/privacy-policy", title: "Privacy Policy" },
 ];

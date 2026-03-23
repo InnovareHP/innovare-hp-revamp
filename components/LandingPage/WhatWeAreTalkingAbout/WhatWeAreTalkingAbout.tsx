@@ -128,10 +128,10 @@ const WhatWeAreTalkingAbout = ({
               aria-label={`View LinkedIn post from ${new Date(post.publishedAt).toLocaleDateString("en-US", { month: "long", year: "numeric" })} (opens in new tab)`}
               className="block group bg-slate-50 rounded-2xl border-2 border-slate-200 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
-              {post.images?.[0]?.imageUrl && (
+              {(post.images?.[0]?.storedUrl || post.images?.[0]?.imageUrl) && (
                 <div className="relative aspect-square w-full">
                   <Image
-                    src={post.images[0].imageUrl}
+                    src={post.images[0].storedUrl || post.images[0].imageUrl}
                     alt={post.images[0].altText ?? `Innovare HP LinkedIn post ${index + 1} content`}
                     title={post.images[0].altText ?? `Innovare HP LinkedIn post ${index + 1} content`}
                     width={1000}

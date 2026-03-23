@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import AboutSection from "./AboutSection/AboutSection";
 import ClientReviews from "./ClientReviews/ClientReviews";
+import FieldNotesSummary from "./FieldNotes/FieldNotesSummary";
 import ContactPage from "./ContactSection/ContactPage";
 import { EventPromoToast } from "./EventPromoToast";
 import EventSection from "./EventSection/EventSection";
@@ -149,6 +150,7 @@ const LandingPage = () => {
         <MissionSection />
         <TeamSection />
         <ClientReviews />
+        <FieldNotesSummary />
         <span className="sr-only">
           Innovare HP: Healthcare marketing and growth strategy. Primary
           content.

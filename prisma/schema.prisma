@@ -23,12 +23,13 @@ model LinkedInPost {
 }
 
 model LinkedInPostImage {
-  id       String  @id @default(uuid())
-  postId   String
-  imageUrn String
-  imageUrl String?
-  altText  String?
-  position Int?
+  id        String  @id @default(uuid())
+  postId    String
+  imageUrn  String
+  imageUrl  String?
+  storedUrl String?
+  altText   String?
+  position  Int?
 
   post LinkedInPost @relation(fields: [postId], references: [id])
 

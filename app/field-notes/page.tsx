@@ -4,20 +4,20 @@ import FieldNotes from "@/components/LandingPage/FieldNotes/FieldNotes";
 const SITE_URL = "https://www.innovarehp.com";
 
 export const metadata: Metadata = {
-  title: "Healthcare Marketing Insights & Field Notes",
+  title: "Recommended Reading | Healthcare Articles & Insights",
   description:
-    "Expert insights on healthcare marketing, behavioral health strategies, senior care trends, and clinical marketing best practices from Innovare HP's field notes.",
+    "A curated collection of healthcare industry articles covering strategy, marketing, behavioral health, senior care, and more from trusted sources.",
   keywords: [
+    "healthcare articles",
     "healthcare marketing insights",
-    "medical marketing blog",
-    "senior care marketing tips",
-    "behavioral health strategies",
+    "senior care industry news",
+    "behavioral health resources",
     "healthcare industry trends",
   ],
   openGraph: {
-    title: "Healthcare Marketing Insights & Field Notes | Innovare HP",
+    title: "Recommended Reading | Innovare HP",
     description:
-      "Expert insights and field notes on healthcare marketing strategies, trends, and best practices.",
+      "Curated healthcare industry articles and insights from trusted sources.",
     url: `${SITE_URL}/field-notes`,
     type: "website",
     images: [
@@ -25,15 +25,15 @@ export const metadata: Metadata = {
         url: `${SITE_URL}/images/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "Innovare HP Field Notes",
+        alt: "Innovare HP Recommended Reading",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Healthcare Marketing Insights | Innovare HP",
+    title: "Recommended Reading | Innovare HP",
     description:
-      "Expert insights on healthcare marketing strategies and trends.",
+      "Curated healthcare industry articles and insights from trusted sources.",
     images: [`${SITE_URL}/images/og-image.jpg`],
   },
   alternates: {
@@ -43,9 +43,10 @@ export const metadata: Metadata = {
 
 const blogJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Blog",
-  name: "Innovare HP Field Notes",
-  description: "Healthcare marketing insights and industry analysis",
+  "@type": "CollectionPage",
+  name: "Innovare HP Recommended Reading",
+  description:
+    "Curated healthcare industry articles and insights from trusted sources",
   url: `${SITE_URL}/field-notes`,
   publisher: {
     "@type": "Organization",

@@ -79,17 +79,17 @@ const HeroSection = () => {
             variants={itemVariants}
             className="text-lg sm:text-2xl md:text-3xl text-gray-100 max-w-xl tracking-wide"
           >
-            <strong>Innovare HP</strong> delivers full-service healthcare
-            marketing for organizations that want to lead—not follow.
+            <strong>Innovare HP</strong> delivers full-service marketing for
+            healthcare organizations that want to lead—not follow.
           </motion.p>
 
           <motion.p
             variants={itemVariants}
             className="text-sm sm:text-base md:text-lg text-gray-300 max-w-xl leading-relaxed"
           >
-            We provide strategic marketing, brand development, and community
-            outreach for senior care, behavioral health, and clinical
-            organizations.
+            We provide growth strategy, referral development, and integrated
+            digital marketing solutions designed to expand market presence and
+            accelerate census.
           </motion.p>
 
           <motion.div variants={itemVariants} className="pt-2 sm:pt-4">

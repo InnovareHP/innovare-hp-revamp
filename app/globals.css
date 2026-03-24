@@ -178,7 +178,6 @@ textarea:focus-visible,
 html
   body
   a:not([class*="rounded-full"]):not([class*="button"]):not([class*="Button"]) {
-  text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
 }
@@ -193,7 +192,6 @@ html
   a:not([class*="rounded-full"]):not([class*="button"]):not(
     [class*="Button"]
   ):focus {
-  text-decoration: underline;
   text-decoration-thickness: 2px;
 }
 

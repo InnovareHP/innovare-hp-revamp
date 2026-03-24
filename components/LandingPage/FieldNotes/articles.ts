@@ -27,7 +27,7 @@ export const articles: Article[] = [
     source: "Brainz Magazine",
     url: "https://www.brainzmagazine.com/post/the-healthcare-referral-economy",
     description:
-      "Discover how the healthcare referral economy truly drives patient flow, growth, and trust. Learn why relationships, digital presence, and accessibility matter more than advertising.",
+      "Understand how the healthcare referral economy drives patient flow, growth, and trust—and why strong relationships, digital presence, and accessibility matter more than traditional advertising.",
     category: "Healthcare Strategy",
     image:
       "https://static.wixstatic.com/media/194202_b89d5aef4dd84b7cb79522e57112bf84~mv2.jpg/v1/fill/w_1024,h_604,al_c/194202_b89d5aef4dd84b7cb79522e57112bf84~mv2.jpg",

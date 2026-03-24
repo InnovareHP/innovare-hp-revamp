@@ -56,10 +56,10 @@ const FieldNotes = () => {
                           )}
                           <div className="flex items-start justify-between gap-4 p-5">
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">
+                              <h3 className="text-lg underline font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">
                                 {article.title}
                               </h3>
-                              <p className="text-sm text-blue-600 mt-1">
+                              <p className="text-sm underline text-blue-600 mt-1">
                                 {article.source}
                               </p>
                               <p className="text-gray-600 mt-2 text-sm leading-relaxed">

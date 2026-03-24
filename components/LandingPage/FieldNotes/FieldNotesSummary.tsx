@@ -53,7 +53,7 @@ const FieldNotesSummary = () => {
               href={article.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group block rounded-lg overflow-hidden border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
+              className="group block no-underline rounded-lg overflow-hidden border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
             >
               {article.image && (
                 <div className="relative w-full h-52 sm:h-60 overflow-hidden">
@@ -67,16 +67,16 @@ const FieldNotesSummary = () => {
                 </div>
               )}
               <div className="p-6">
-                <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-2">
+                <p className="text-sm font-semibold underline text-blue-600 uppercase tracking-wider mb-2">
                   {article.source}
                 </p>
-                <h3 className="text-lg lg:text-xl font-semibold text-gray-900 group-hover:text-blue-700 transition-colors leading-snug mb-3">
+                <h3 className="text-lg lg:text-xl underline font-semibold text-gray-900 group-hover:text-blue-700 transition-colors leading-snug mb-3">
                   {article.title}
                 </h3>
-                <p className="text-gray-600 text-sm lg:text-base leading-relaxed line-clamp-3">
+                <p className="text-gray-600 text-sm lg:text-base leading-relaxed">
                   {article.description}
                 </p>
-                <div className="mt-4 flex items-center gap-2 text-blue-600 group-hover:text-blue-700 text-sm font-medium">
+                <div className="mt-4 flex items-center gap-2 underline text-blue-600 group-hover:text-blue-700 text-sm font-medium">
                   Read article
                   <ExternalLink className="w-4 h-4" />
                 </div>

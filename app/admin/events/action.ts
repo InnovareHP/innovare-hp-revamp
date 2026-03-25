@@ -6,7 +6,6 @@ import {
   sendAdminCustomEmail,
   sendRefundConfirmationEmail,
 } from "@/lib/send-event-email";
-import { stripe } from "@/lib/stripe";
 import { createTeamsMeeting, deleteTeamsMeeting } from "@/lib/teams";
 import { formatDate } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
@@ -262,24 +261,24 @@ export async function refundAttendee(
       };
     }
 
-    // Retrieve the checkout session to get the payment intent
-    const session = await stripe.checkout.sessions.retrieve(
-      attendee.stripeSessionId
-    );
+    // // Retrieve the checkout session to get the payment intent
+    // const session = await stripe.checkout.sessions.retrieve(
+    //   attendee.stripeSessionId
+    // );
 
-    const paymentIntentId =
-      typeof session.payment_intent === "string"
-        ? session.payment_intent
-        : session.payment_intent?.id;
+    // const paymentIntentId =
+    //   typeof session.payment_intent === "string"
+    //     ? session.payment_intent
+    //     : session.payment_intent?.id;
 
-    if (!paymentIntentId) {
-      return { success: false, error: "No payment intent found" };
-    }
+    // if (!paymentIntentId) {
+    //   return { success: false, error: "No payment intent found" };
+    // }
 
     // Create Stripe refund
-    await stripe.refunds.create({
-      payment_intent: paymentIntentId,
-    });
+    // await stripe.refunds.create({
+    //   payment_intent: paymentIntentId,
+    // });
 
     // Update attendee payment status and store reason
     await prisma.eventAttendee.update({

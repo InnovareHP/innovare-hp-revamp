@@ -1,5 +1,4 @@
 import { prisma } from "@/lib/prisma";
-import { stripe } from "@/lib/stripe";
 import { validateWithRetry } from "@/lib/turnstile";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -74,46 +73,46 @@ export async function POST(req: Request) {
     }
 
     // Create Stripe Checkout Session
-    const session = await stripe.checkout.sessions.create(
-      {
-        payment_method_types: ["card"],
-        line_items: [
-          {
-            price_data: {
-              currency: event.currency || "usd",
-              product_data: {
-                name: event.title,
-                description: `Registration for ${event.title}`,
-              },
-              unit_amount: Math.round(Number(event.price) * 100),
-            },
-            quantity: 1,
-          },
-        ],
-        mode: "payment",
-        customer_email: email,
-        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/events/${event.slug}?payment=success`,
-        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/events/${event.slug}?payment=cancelled`,
-        metadata: { eventId, name, email, phone },
-      },
-      {
-        idempotencyKey: `checkout_${eventId}_${email}_${Date.now()}`,
-      }
-    );
+    // const session = await stripe.checkout.sessions.create(
+    //   {
+    //     payment_method_types: ["card"],
+    //     line_items: [
+    //       {
+    //         price_data: {
+    //           currency: event.currency || "usd",
+    //           product_data: {
+    //             name: event.title,
+    //             description: `Registration for ${event.title}`,
+    //           },
+    //           unit_amount: Math.round(Number(event.price) * 100),
+    //         },
+    //         quantity: 1,
+    //       },
+    //     ],
+    //     mode: "payment",
+    //     customer_email: email,
+    //     success_url: `${process.env.NEXT_PUBLIC_APP_URL}/events/${event.slug}?payment=success`,
+    //     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/events/${event.slug}?payment=cancelled`,
+    //     metadata: { eventId, name, email, phone },
+    //   },
+    //   {
+    //     idempotencyKey: `checkout_${eventId}_${email}_${Date.now()}`,
+    //   }
+    // );
 
     // Create attendee with PENDING status
-    await prisma.eventAttendee.create({
-      data: {
-        eventId,
-        name,
-        email,
-        phone,
-        stripeSessionId: session.id,
-        paymentStatus: "PENDING",
-      },
-    });
+    // await prisma.eventAttendee.create({
+    //   data: {
+    //     eventId,
+    //     name,
+    //     email,
+    //     phone,
+    //     stripeSessionId: session.id,
+    //     paymentStatus: "PENDING",
+    //   },
+    // });
 
-    return NextResponse.json({ url: session.url });
+    // return NextResponse.json({ url: session.url });
   } catch (error) {
     console.error("Checkout error:", error);
     return NextResponse.json(

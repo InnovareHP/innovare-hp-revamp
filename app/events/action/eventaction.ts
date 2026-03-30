@@ -20,20 +20,21 @@ type ActionResponse<T = void> = {
 };
 
 export async function getEvents(
-  limit: number = 10,
-  page: number = 1
 ): Promise<
   ActionResponse<{
-    events: Prisma.EventGetPayload<{
+    upcomingEvents: Prisma.EventGetPayload<{
       include: { media: true; expectations: true };
     }>[];
-    totalPages: number;
-    page: number;
+    pastEvents: Prisma.EventGetPayload<{
+      include: { media: true; expectations: true };
+    }>[];
   }>
 > {
   try {
-    const offset = (page - 1) * limit;
-    const [events, total] = await prisma.$transaction([
+    const now = new Date();
+    const visibleStatuses = [EventStatus.PUBLISHED, EventStatus.COMPLETED];
+
+    const [upcomingEvents, pastEvents] = await prisma.$transaction([
       prisma.event.findMany({
         include: {
           media: true,
@@ -41,33 +42,80 @@ export async function getEvents(
           guests: true,
           expectations: true,
         },
+        where: {
+          status: {
+            in: visibleStatuses,
+          },
+          OR: [
+            {
+              eventEndDate: {
+                gte: now,
+              },
+            },
+            {
+              eventEndDate: null,
+              eventStartDate: {
+                gte: now,
+              },
+            },
+          ],
+        },
         orderBy: {
           eventStartDate: "asc",
         },
-        where: {
-          status: EventStatus.PUBLISHED,
-        },
-        take: limit,
-        skip: offset,
       }),
-      prisma.event.count(),
+      prisma.event.findMany({
+        include: {
+          media: true,
+          attendees: true,
+          guests: true,
+          expectations: true,
+        },
+        where: {
+          status: {
+            in: visibleStatuses,
+          },
+          OR: [
+            {
+              eventEndDate: {
+                lt: now,
+              },
+            },
+            {
+              eventEndDate: null,
+              eventStartDate: {
+                lt: now,
+              },
+            },
+          ],
+        },
+        orderBy: {
+          eventStartDate: "desc",
+        },
+      }),
     ]);
 
-    const totalPages = Math.ceil(total / limit);
-
     // Convert Decimal fields to plain numbers for client component serialization
-    const serializedEvents = events.map((event) => ({
+    const serializeEvents = (
+      events: Prisma.EventGetPayload<{
+        include: { media: true; attendees: true; guests: true; expectations: true };
+      }>[]
+    ) =>
+      events.map((event) => ({
       ...event,
-      price: event.price ? Number(event.price) : null,
-      attendees: event.attendees.map((attendee) => ({
-        ...attendee,
-        amountPaid: attendee.amountPaid ? Number(attendee.amountPaid) : null,
-      })),
-    }));
+        price: event.price ? Number(event.price) : null,
+        attendees: event.attendees.map((attendee) => ({
+          ...attendee,
+          amountPaid: attendee.amountPaid ? Number(attendee.amountPaid) : null,
+        })),
+      }));
 
     return {
       success: true,
-      data: { events: serializedEvents as typeof events, totalPages, page },
+      data: {
+        upcomingEvents: serializeEvents(upcomingEvents) as typeof upcomingEvents,
+        pastEvents: serializeEvents(pastEvents) as typeof pastEvents,
+      },
     };
   } catch (error) {
     console.error("Error fetching events:", error);
@@ -330,6 +378,10 @@ export async function joinEvent(
       return { success: false, error: "Event not found" };
     }
 
+    if (event.status !== EventStatus.PUBLISHED) {
+      return { success: false, error: "Registration is not available for this event" };
+    }
+
     const existingAttendee = await prisma.eventAttendee.findFirst({
       where: {
         eventId,
@@ -349,6 +401,11 @@ export async function joinEvent(
       if (now > event.registrationDeadline) {
         return { success: false, error: "Registration deadline has passed" };
       }
+    }
+
+    const eventCutoffDate = event.eventEndDate ?? event.eventStartDate;
+    if (new Date() > eventCutoffDate) {
+      return { success: false, error: "This event has already ended" };
     }
 
     const newAttendee = await prisma.eventAttendee.create({

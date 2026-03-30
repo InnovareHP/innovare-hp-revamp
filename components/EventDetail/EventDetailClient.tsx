@@ -109,6 +109,10 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
   const isPastDeadline = event.registrationDeadline
     ? new Date() > new Date(event.registrationDeadline)
     : false;
+  const eventCutoffDate = event.eventEndDate
+    ? new Date(event.eventEndDate)
+    : new Date(event.eventStartDate);
+  const isPastEvent = new Date() > eventCutoffDate;
 
   const encodedLocation = encodeURIComponent(event.location);
   const googleMapsDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodedLocation}`;
@@ -308,7 +312,7 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
         </div>
 
         <div className="space-y-6 p-2 lg:pl-6 bg-gradient-to-br from-slate-50/50 to-blue-50/30 lg:border-l border-slate-200">
-          {event.status === "PUBLISHED" && (
+          {event.status === "PUBLISHED" && !isPastEvent && (
             <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 p-6 md:p-8 shadow-2xl">
               {/* Decorative Background Pattern */}
               <div className="absolute inset-0 opacity-10">
@@ -347,6 +351,7 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
             </div>
           )}
           {event.status === "PUBLISHED" &&
+            !isPastEvent &&
             event.eventType === "VIRTUAL" &&
             event.teamsMeetingUrl && (
               <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-600 via-purple-700 to-indigo-800 p-6 shadow-2xl">
@@ -387,7 +392,7 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
               </div>
             )}
 
-          {event.status === "PUBLISHED" && (
+          {event.status === "PUBLISHED" && !isPastEvent && (
             <div className="space-y-3">
               <h3 className="text-xl font-bold text-slate-900">How to Join</h3>
               <Card className="border-l-4 border-l-blue-600 bg-gradient-to-r from-blue-50 to-white shadow-sm">
@@ -424,6 +429,19 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
                 </CardContent>
               </Card>
             </div>
+          )}
+          {isPastEvent && (
+            <Card className="border-amber-200 bg-amber-50 shadow-sm">
+              <CardContent className="pt-5">
+                <h3 className="text-lg font-bold text-slate-900">
+                  This event has ended
+                </h3>
+                <p className="mt-2 text-sm text-slate-600">
+                  This activity now appears in the Past Events section and is no
+                  longer accepting registrations.
+                </p>
+              </CardContent>
+            </Card>
           )}
           <div className="space-y-4">
             {event.eventType === "VIRTUAL" ? (

@@ -46,13 +46,8 @@ export const metadata: Metadata = {
   },
 };
 
-const page = async ({
-  searchParams,
-}: {
-  searchParams?: Promise<{ page?: string; limit?: string }>;
-}) => {
-  const { page, limit } = (await searchParams) ?? { page: "1", limit: "10" };
-  const events = getEvents(Number(limit ?? 10), Number(page ?? 1));
+const page = async () => {
+  const events = getEvents();
 
   return (
     <>
@@ -81,7 +76,7 @@ const page = async ({
           >
             <EventsPage
               events={Promise.resolve(
-                (await events).data ?? { events: [], totalPages: 0, page: 1 }
+                (await events).data ?? { upcomingEvents: [], pastEvents: [] }
               )}
             />
           </Suspense>

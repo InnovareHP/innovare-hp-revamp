@@ -115,59 +115,58 @@ const EventRegistrationModal = ({
     setIsSubmitting(true);
 
     try {
-      if (isPaidEvent && eventPrice && eventPrice > 0) {
-        // Paid event: redirect to Stripe Checkout
-        const res = await fetch("/api/checkout", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            eventId,
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            turnstileToken,
-          }),
+      // if (isPaidEvent && eventPrice && eventPrice > 0) {
+      //   // Paid event: redirect to Stripe Checkout
+      //   const res = await fetch("/api/checkout", {
+      //     method: "POST",
+      //     headers: { "Content-Type": "application/json" },
+      //     body: JSON.stringify({
+      //       eventId,
+      //       name: data.name,
+      //       email: data.email,
+      //       phone: data.phone,
+      //       turnstileToken,
+      //     }),
+      //   });
+
+      //   const result = await res.json();
+
+      //   if (!res.ok) {
+      //     toast.error(result.error || "Failed to start payment", {
+      //       description: "Please try again or contact support.",
+      //     });
+      //     return;
+      //   }
+
+      //   if (result.url) {
+      //     // Store registration before redirect so user is recognized when they return
+      //     storeEventRegistration(eventId, data.email, data.name);
+      //     window.location.href = result.url;
+      //     return;
+      //   }
+      // } else {
+      // Free event: existing flow
+      const response = await joinEvent(eventId, data, turnstileToken);
+
+      if (response.success) {
+        storeEventRegistration(eventId, data.email, data.name);
+
+        toast.success("Successfully registered for the event!", {
+          description: "You will receive a confirmation email shortly.",
         });
 
-        const result = await res.json();
+        setIsAlreadyRegistered(true);
+        setRegistrationDetails({
+          name: data.name,
+          email: data.email,
+        });
 
-        if (!res.ok) {
-          toast.error(result.error || "Failed to start payment", {
-            description: "Please try again or contact support.",
-          });
-          return;
-        }
-
-        if (result.url) {
-          // Store registration before redirect so user is recognized when they return
-          storeEventRegistration(eventId, data.email, data.name);
-          window.location.href = result.url;
-          return;
-        }
+        form.reset();
+        onSuccess?.();
       } else {
-        // Free event: existing flow
-        const response = await joinEvent(eventId, data, turnstileToken);
-
-        if (response.success) {
-          storeEventRegistration(eventId, data.email, data.name);
-
-          toast.success("Successfully registered for the event!", {
-            description: "You will receive a confirmation email shortly.",
-          });
-
-          setIsAlreadyRegistered(true);
-          setRegistrationDetails({
-            name: data.name,
-            email: data.email,
-          });
-
-          form.reset();
-          onSuccess?.();
-        } else {
-          toast.error(response.error || "Failed to register for event", {
-            description: "Please try again or contact support.",
-          });
-        }
+        toast.error(response.error || "Failed to register for event", {
+          description: "Please try again or contact support.",
+        });
       }
     } catch {
       toast.error("An unexpected error occurred", {

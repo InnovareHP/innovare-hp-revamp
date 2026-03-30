@@ -2,6 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatTime } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { format } from "date-fns";
@@ -17,6 +18,7 @@ type EventsResponse = {
 
 const EventsPage = ({ events }: { events: Promise<EventsResponse> }) => {
   const { upcomingEvents, pastEvents } = use(events);
+  const defaultView = upcomingEvents.length > 0 ? "upcoming" : "past";
 
   const renderEventCard = (
     event: Prisma.EventGetPayload<{ include: { media: true } }>
@@ -95,47 +97,60 @@ const EventsPage = ({ events }: { events: Promise<EventsResponse> }) => {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <section className="space-y-8">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-black tracking-tight text-slate-900 uppercase">
-            Upcoming <span className="text-primary">Events</span>
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Current and upcoming activities you can still plan around.
-          </p>
+      <Tabs defaultValue={defaultView} className="space-y-8">
+        <div className="flex justify-start">
+          <TabsList className="grid h-auto w-full max-w-sm grid-cols-2">
+            <TabsTrigger value="upcoming" className="px-4 py-2">
+              Upcoming ({upcomingEvents.length})
+            </TabsTrigger>
+            <TabsTrigger value="past" className="px-4 py-2">
+              Past ({pastEvents.length})
+            </TabsTrigger>
+          </TabsList>
         </div>
 
-        {upcomingEvents.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-14">
-            {upcomingEvents.map(renderEventCard)}
+        <TabsContent value="upcoming" className="space-y-8">
+          <div className="space-y-2">
+            <h3 className="text-2xl font-black tracking-tight text-slate-900 uppercase">
+              Upcoming <span className="text-primary">Events</span>
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Current and upcoming activities you can still plan around.
+            </p>
           </div>
-        ) : (
-          <div className="rounded-2xl border bg-background px-6 py-10 text-center text-muted-foreground">
-            No upcoming events right now.
-          </div>
-        )}
-      </section>
 
-      <section className="mt-16 space-y-8">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-black tracking-tight text-slate-900 uppercase">
-            Past <span className="text-primary">Events</span>
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Recent activities remain available here after they finish.
-          </p>
-        </div>
+          {upcomingEvents.length > 0 ? (
+            <div className="grid grid-cols-1 gap-x-10 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
+              {upcomingEvents.map(renderEventCard)}
+            </div>
+          ) : (
+            <div className="rounded-2xl border bg-background px-6 py-10 text-center text-muted-foreground">
+              No upcoming events right now.
+            </div>
+          )}
+        </TabsContent>
 
-        {pastEvents.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-14">
-            {pastEvents.map(renderEventCard)}
+        <TabsContent value="past" className="space-y-8">
+          <div className="space-y-2">
+            <h3 className="text-2xl font-black tracking-tight text-slate-900 uppercase">
+              Past <span className="text-primary">Events</span>
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Recent activities remain available here after they finish.
+            </p>
           </div>
-        ) : (
-          <div className="rounded-2xl border bg-background px-6 py-10 text-center text-muted-foreground">
-            Past events will appear here once activities have wrapped up.
-          </div>
-        )}
-      </section>
+
+          {pastEvents.length > 0 ? (
+            <div className="grid grid-cols-1 gap-x-10 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
+              {pastEvents.map(renderEventCard)}
+            </div>
+          ) : (
+            <div className="rounded-2xl border bg-background px-6 py-10 text-center text-muted-foreground">
+              Past events will appear here once activities have wrapped up.
+            </div>
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

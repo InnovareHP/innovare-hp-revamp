@@ -73,7 +73,7 @@ const EventsPage = ({ events }: { events: Promise<EventsResponse> }) => {
               <MapPin className="w-3.5 h-3.5" />
               <span className="truncate">{event.location}</span>
             </div>
-            {event.isPaid && Number(event.price) > 0 ? (
+            {event.isPaid ? (
               <Badge
                 variant="secondary"
                 className="gap-0.5 text-[10px] px-1.5 py-0"

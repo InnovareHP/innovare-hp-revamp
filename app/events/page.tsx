@@ -1,6 +1,11 @@
 import EventsPage from "@/components/EventsPage/EventsPage";
 import InteractiveBackground from "@/components/EventsPage/InteractiveBackground";
 import Navigation from "@/components/LandingPage/Navigation/Navigation";
+import {
+  formatEtDay,
+  formatEtMonth,
+  formatEtTime,
+} from "@/lib/event-datetime";
 import { CalendarDays } from "lucide-react";
 import type { Metadata } from "next";
 import { Suspense } from "react";
@@ -47,7 +52,22 @@ export const metadata: Metadata = {
 };
 
 const page = async () => {
-  const events = getEvents();
+  const eventsResult = await getEvents();
+  const eventsData = eventsResult.data ?? { upcomingEvents: [], pastEvents: [] };
+  const events = {
+    upcomingEvents: eventsData.upcomingEvents.map((event) => ({
+      ...event,
+      displayStartMonth: formatEtMonth(event.eventStartDate),
+      displayStartDay: formatEtDay(event.eventStartDate),
+      displayStartTime: formatEtTime(event.eventStartDate),
+    })),
+    pastEvents: eventsData.pastEvents.map((event) => ({
+      ...event,
+      displayStartMonth: formatEtMonth(event.eventStartDate),
+      displayStartDay: formatEtDay(event.eventStartDate),
+      displayStartTime: formatEtTime(event.eventStartDate),
+    })),
+  };
 
   return (
     <>
@@ -74,11 +94,7 @@ const page = async () => {
               </div>
             }
           >
-            <EventsPage
-              events={Promise.resolve(
-                (await events).data ?? { upcomingEvents: [], pastEvents: [] }
-              )}
-            />
+            <EventsPage events={events} />
           </Suspense>
         </div>
       </div>

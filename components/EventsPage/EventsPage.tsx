@@ -3,26 +3,29 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { formatTime } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
-import { format } from "date-fns";
 import { DollarSign, ExternalLink, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { use } from "react";
 
-type EventsResponse = {
-  upcomingEvents: Prisma.EventGetPayload<{ include: { media: true } }>[];
-  pastEvents: Prisma.EventGetPayload<{ include: { media: true } }>[];
+type EventWithDisplayFields = Prisma.EventGetPayload<{
+  include: { media: true };
+}> & {
+  displayStartMonth: string;
+  displayStartDay: string;
+  displayStartTime: string;
 };
 
-const EventsPage = ({ events }: { events: Promise<EventsResponse> }) => {
-  const { upcomingEvents, pastEvents } = use(events);
+type EventsResponse = {
+  upcomingEvents: EventWithDisplayFields[];
+  pastEvents: EventWithDisplayFields[];
+};
+
+const EventsPage = ({ events }: { events: EventsResponse }) => {
+  const { upcomingEvents, pastEvents } = events;
   const defaultView = upcomingEvents.length > 0 ? "upcoming" : "past";
 
-  const renderEventCard = (
-    event: Prisma.EventGetPayload<{ include: { media: true } }>
-  ) => (
+  const renderEventCard = (event: EventWithDisplayFields) => (
     <Link
       key={event.id}
       href={`/events/${event.slug}`}
@@ -47,17 +50,17 @@ const EventsPage = ({ events }: { events: Promise<EventsResponse> }) => {
       <div className="flex gap-5">
         <div className="flex flex-col items-center min-w-[45px]">
           <span className="text-[10px] font-bold text-primary uppercase tracking-widest">
-            {format(event.eventStartDate, "MMM")}
+            {event.displayStartMonth}
           </span>
           <span className="text-3xl font-black text-slate-900 leading-none">
-            {format(event.eventStartDate, "dd")}
+            {event.displayStartDay}
           </span>
         </div>
 
         <div className="flex flex-col space-y-1">
           <div className="flex items-center gap-2 text-[11px] font-bold text-muted-foreground">
             <span className="uppercase tracking-wide">
-              {formatTime(event.eventStartDate)}
+              {event.displayStartTime}
             </span>
             {event.qrCode && (
               <ExternalLink className="w-3 h-3 text-primary" aria-hidden />

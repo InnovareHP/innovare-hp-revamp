@@ -19,10 +19,8 @@ import {
   User,
   Video,
 } from "lucide-react";
-import { useSearchParams } from "next/navigation";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { Badge } from "../ui/badge";
 import {
   Dialog,
@@ -50,29 +48,28 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
   } | null>(null);
   const [isLoadingMap, setIsLoadingMap] = useState(true);
   const [origin, setOrigin] = useState("");
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     setUserIsRegistered(isRegisteredForEvent(event.id));
     setOrigin(window.location.origin);
   }, [event.id]);
 
-  useEffect(() => {
-    const payment = searchParams.get("payment");
-    if (payment === "success") {
-      setUserIsRegistered(true);
-      toast.success("Payment successful!", {
-        description:
-          "You have been registered for the event. Check your email for confirmation.",
-      });
-      window.history.replaceState({}, "", `/events/${event.slug}`);
-    } else if (payment === "cancelled") {
-      toast.info("Payment cancelled", {
-        description: "Your registration was not completed.",
-      });
-      window.history.replaceState({}, "", `/events/${event.slug}`);
-    }
-  }, [searchParams, event.slug]);
+  // useEffect(() => {
+  //   const payment = searchParams.get("payment");
+  //   if (payment === "success") {
+  //     setUserIsRegistered(true);
+  //     toast.success("Payment successful!", {
+  //       description:
+  //         "You have been registered for the event. Check your email for confirmation.",
+  //     });
+  //     window.history.replaceState({}, "", `/events/${event.slug}`);
+  //   } else if (payment === "cancelled") {
+  //     toast.info("Payment cancelled", {
+  //       description: "Your registration was not completed.",
+  //     });
+  //     window.history.replaceState({}, "", `/events/${event.slug}`);
+  //   }
+  // }, [searchParams, event.slug]);
 
   // Geocode location using Nominatim (free OpenStreetMap service)
   useEffect(() => {

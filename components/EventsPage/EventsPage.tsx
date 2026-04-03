@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { formatDate, formatTime } from "@/lib/utils";
+import { formatDay, formatMonth, formatTime } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { DollarSign, ExternalLink, MapPin } from "lucide-react";
 import Image from "next/image";
@@ -46,10 +46,10 @@ const EventsPage = ({ events }: { events: Promise<EventsResponse> }) => {
       <div className="flex gap-5">
         <div className="flex flex-col items-center min-w-[45px]">
           <span className="text-[10px] font-bold text-primary uppercase tracking-widest">
-            {formatDate(event.eventStartDate).split(" ")[1]}
+            {formatMonth(event.eventStartDate)}
           </span>
           <span className="text-3xl font-black text-slate-900 leading-none">
-            {formatDate(event.eventStartDate).split(" ")[2]}
+            {formatDay(event.eventStartDate)}
           </span>
         </div>
 

@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { isRegisteredForEvent } from "@/lib/event-registration-storage";
-import { formatDate, formatTime } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import {
   Calendar,
@@ -40,9 +39,16 @@ type EventWithRelations = Prisma.EventGetPayload<{
 
 interface EventDetailClientProps {
   event: EventWithRelations;
+  formattedDates: {
+    startDate: string;
+    startTime: string;
+    endDate: string | null;
+    registrationDeadlineDate: string | null;
+    registrationDeadlineTime: string | null;
+  };
 }
 
-const EventDetailClient = ({ event }: EventDetailClientProps) => {
+const EventDetailClient = ({ event, formattedDates }: EventDetailClientProps) => {
   const [userIsRegistered, setUserIsRegistered] = useState(false);
   const [mapCoordinates, setMapCoordinates] = useState<{
     lat: number;
@@ -215,10 +221,10 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
                       Start Date
                     </p>
                     <p className="text-xl font-bold text-slate-900">
-                      {formatDate(event.eventStartDate)}
+                      {formattedDates.startDate}
                     </p>
                     <p className="text-sm text-slate-600 font-medium">
-                      {formatTime(event.eventStartDate)}
+                      {formattedDates.startTime}
                     </p>
                   </div>
                 </div>
@@ -237,7 +243,7 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
                         End Date
                       </p>
                       <p className="text-xl font-bold text-slate-900">
-                        {formatDate(event.eventEndDate)}
+                        {formattedDates.endDate}
                       </p>
                     </div>
                   </div>
@@ -257,10 +263,10 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
                         Registration Deadline
                       </p>
                       <p className="text-xl font-bold text-slate-900">
-                        {formatDate(event.registrationDeadline)}
+                        {formattedDates.registrationDeadlineDate}
                       </p>
                       <p className="text-sm text-slate-600 font-medium">
-                        {formatTime(event.registrationDeadline)}
+                        {formattedDates.registrationDeadlineTime}
                       </p>
                     </div>
                   </div>

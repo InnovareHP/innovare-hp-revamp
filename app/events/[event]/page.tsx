@@ -2,6 +2,7 @@ import { getEventById } from "@/app/events/action/eventaction";
 import EventDetailClient from "@/components/EventDetail/EventDetailClient";
 import InteractiveBackground from "@/components/EventsPage/InteractiveBackground";
 import { Button } from "@/components/ui/button";
+import { formatEtDate, formatEtTime } from "@/lib/event-datetime";
 import { Card } from "@/components/ui/card";
 import { Prisma } from "@prisma/client";
 import { ArrowLeft } from "lucide-react";
@@ -94,6 +95,17 @@ const EventPage = async ({ params }: EventPageProps) => {
   }
 
   const event = response.data;
+  const formattedDates = {
+    startDate: formatEtDate(event.eventStartDate),
+    startTime: formatEtTime(event.eventStartDate),
+    endDate: event.eventEndDate ? formatEtDate(event.eventEndDate) : null,
+    registrationDeadlineDate: event.registrationDeadline
+      ? formatEtDate(event.registrationDeadline)
+      : null,
+    registrationDeadlineTime: event.registrationDeadline
+      ? formatEtTime(event.registrationDeadline)
+      : null,
+  };
 
   return (
     <div className="min-h-screen overflow-hidden">
@@ -111,7 +123,10 @@ const EventPage = async ({ params }: EventPageProps) => {
           </div>
 
           <Suspense fallback={<div>Loading event details...</div>}>
-            <EventDetailClient event={event as EventWithRelations} />
+            <EventDetailClient
+              event={event as EventWithRelations}
+              formattedDates={formattedDates}
+            />
           </Suspense>
         </Card>
       </div>

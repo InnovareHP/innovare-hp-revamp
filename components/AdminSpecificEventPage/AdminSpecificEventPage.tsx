@@ -300,7 +300,7 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
       return;
     }
 
-    const qrCodeUrl = `${window.location.origin}/event/${event.slug}`;
+    const qrCodeUrl = `${window.location.origin}/events/${event.slug}`;
 
     printWindow.document.write(`
       <!DOCTYPE html>

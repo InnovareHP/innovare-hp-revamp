@@ -517,7 +517,7 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
                 <TabsContent value="attendees">
                   <ReusableTable
                     data={event.attendees}
-                    itemsPerPage={5}
+                    itemsPerPage={10}
                     columns={[
                       { key: "name", header: "Name" },
                       { key: "email", header: "Email" },

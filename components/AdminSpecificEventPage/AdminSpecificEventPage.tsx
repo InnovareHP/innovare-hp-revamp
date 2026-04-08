@@ -435,7 +435,7 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
     }
 
     // Attendee table
-    const baseColumns = ["#", "Name", "Email", "Phone", "Registered"];
+    const baseColumns = ["#", "Name", "Email", "Phone", "Organization", "Registered"];
     const columns = event.isPaid ? [...baseColumns, "Payment"] : baseColumns;
 
     const rows = event.attendees.map((a: any, i: number) => {
@@ -444,6 +444,7 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
         a.name || "",
         a.email || "",
         a.phone || "—",
+        a.organization || "—",
         new Date(a.createdAt).toLocaleDateString(),
       ];
       return event.isPaid ? [...base, a.paymentStatus || "Free"] : base;
@@ -521,6 +522,18 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
                     columns={[
                       { key: "name", header: "Name" },
                       { key: "email", header: "Email" },
+                      {
+                        key: "organization",
+                        header: "Organization",
+                        cell: (row: any) =>
+                          row.organization ? (
+                            <span className="text-sm">{row.organization}</span>
+                          ) : (
+                            <span className="text-xs text-muted-foreground/50">
+                              —
+                            </span>
+                          ),
+                      },
                       {
                         key: "registeredAt",
                         header: "Registered",

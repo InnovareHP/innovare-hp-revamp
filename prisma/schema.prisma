@@ -181,6 +181,7 @@ model EventAttendee {
   name String
   email String
   phone String
+  organization String?
 
   paymentStatus   PaymentStatus  @default(PENDING)
   stripeSessionId String?        @unique // To verify the payment later

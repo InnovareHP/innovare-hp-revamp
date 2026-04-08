@@ -341,7 +341,7 @@ export async function updateEvent(
 
 export async function joinEvent(
   eventId: string,
-  attendeeData: { name: string; email: string; phone: string },
+  attendeeData: { name: string; email: string; phone: string; organization: string },
   turnstileToken: string
 ): Promise<ActionResponse> {
   try {
@@ -359,10 +359,15 @@ export async function joinEvent(
       return { success: false, error: "Event ID is required" };
     }
 
-    if (!attendeeData.name || !attendeeData.email || !attendeeData.phone) {
+    if (
+      !attendeeData.name ||
+      !attendeeData.email ||
+      !attendeeData.phone ||
+      !attendeeData.organization?.trim()
+    ) {
       return {
         success: false,
-        error: "Name, email, and phone are required",
+        error: "Name, email, phone, and organization are required",
       };
     }
 
@@ -414,6 +419,7 @@ export async function joinEvent(
         name: attendeeData.name,
         email: attendeeData.email,
         phone: attendeeData.phone,
+        organization: attendeeData.organization.trim(),
       },
     });
 

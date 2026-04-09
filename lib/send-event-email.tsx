@@ -67,7 +67,7 @@ export async function sendEventRegistrationNotificationEmail({
   try {
     const { data, error } = await resend.emails.send({
       from: "Innovare HP <info@notifications.innovarehp.com>",
-      to: ["info@innovarehp.com"],
+      to: ["info@innovarehp.com", "dermino@innovarehp.com"],
       subject: `New Registration: ${event.title}`,
       react: EventRegistrationNotification({
         attendeeName,

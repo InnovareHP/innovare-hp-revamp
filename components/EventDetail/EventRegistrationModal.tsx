@@ -46,6 +46,10 @@ const registrationSchema = z.object({
       /^[\d\s\-\+\(\)]+$/,
       "Phone number can only contain digits, spaces, and symbols like +, -, (, )"
     ),
+  organization: z
+    .string()
+    .min(2, "Organization is required")
+    .max(150, "Organization must be less than 150 characters"),
 });
 
 type RegistrationFormValues = z.infer<typeof registrationSchema>;
@@ -95,6 +99,7 @@ const EventRegistrationModal = ({
   const [registrationDetails, setRegistrationDetails] = useState<{
     name: string;
     email: string;
+    organization: string;
   } | null>(null);
 
   const form = useForm<RegistrationFormValues>({
@@ -103,6 +108,7 @@ const EventRegistrationModal = ({
       name: "",
       email: "",
       phone: "",
+      organization: "",
     },
   });
 
@@ -159,6 +165,7 @@ const EventRegistrationModal = ({
         setRegistrationDetails({
           name: data.name,
           email: data.email,
+          organization: data.organization ?? "",
         });
 
         form.reset();
@@ -234,6 +241,12 @@ const EventRegistrationModal = ({
                   <span className="font-semibold">Email:</span>{" "}
                   {registrationDetails?.email}
                 </p>
+                {registrationDetails?.organization && (
+                  <p>
+                    <span className="font-semibold">Organization:</span>{" "}
+                    {registrationDetails.organization}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -318,6 +331,30 @@ const EventRegistrationModal = ({
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={form.control}
+                  name="organization"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Organization</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Your organization or company"
+                          {...field}
+                          disabled={isSubmitting}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  By clicking Register, you consent to receive future
+                  communications from the event organizer and their partners
+                  regarding this and related events.
+                </p>
 
                 <Turnstile
                   userRef={

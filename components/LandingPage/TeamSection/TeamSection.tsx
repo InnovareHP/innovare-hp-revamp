@@ -64,6 +64,12 @@ const TeamSection = () => {
       image: "/images/team/team-8.png",
       imageTitle: "Dyllan Ermino",
     },
+    {
+      name: "Kristin Ann Artillaga",
+      role: "Creative Director",
+      image: "/images/team/team-9.png",
+      imageTitle: "Kristin Ann Artillaga",
+    },
   ];
 
   return (

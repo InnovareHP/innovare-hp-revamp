@@ -11,24 +11,22 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 
-const contactDetails = [
-  {
-    label: "Phone",
-    value: "(269) 501-4496",
-    icon: Phone,
-    href: "tel:+12695014496",
-    type: "phone",
-  },
-  {
-    label: "Email",
-    value: "hello@innovarehp.com",
-    icon: Mail,
-    href: "mailto:hello@innovarehp.com",
-    type: "email",
-  },
-  {
-    label: "Address",
+export type OfficeContact = {
+  phone?: { value: string; href: string };
+  email: { value: string; href: string };
+  address: {
+    value: string;
+    displayValue: ReactNode;
+    href: string;
+  };
+};
+
+const grandRapidsOffice: OfficeContact = {
+  phone: { value: "(269) 501-4496", href: "tel:+12695014496" },
+  email: { value: "hello@innovarehp.com", href: "mailto:hello@innovarehp.com" },
+  address: {
     value: "4221 Bud Drive NE, Comstock Park, MI 49321",
     displayValue: (
       <>
@@ -37,11 +35,9 @@ const contactDetails = [
         Comstock Park, MI 49321
       </>
     ),
-    icon: MapPin,
     href: "https://maps.google.com/?q=4221+Bud+Drive+NE+Comstock+Park+MI+49321",
-    type: "address",
   },
-];
+};
 
 const socialLinks = [
   {
@@ -61,8 +57,15 @@ const socialLinks = [
   },
 ];
 
-const ContactInfoCard = () => {
-  // Transform-only so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
+type ContactInfoCardProps = {
+  office?: OfficeContact;
+  showSocial?: boolean;
+};
+
+const ContactInfoCard = ({
+  office = grandRapidsOffice,
+  showSocial = true,
+}: ContactInfoCardProps) => {
   const container: Variants = {
     hidden: {},
     show: {
@@ -74,6 +77,42 @@ const ContactInfoCard = () => {
     hidden: { x: -10 },
     show: { x: 0, transition: { duration: 0.4 } },
   };
+
+  const details: Array<{
+    label: string;
+    value: string;
+    displayValue?: ReactNode;
+    icon: typeof Phone;
+    href: string;
+    type: "phone" | "email" | "address";
+  }> = [];
+
+  if (office.phone) {
+    details.push({
+      label: "Phone",
+      value: office.phone.value,
+      icon: Phone,
+      href: office.phone.href,
+      type: "phone",
+    });
+  }
+
+  details.push({
+    label: "Email",
+    value: office.email.value,
+    icon: Mail,
+    href: office.email.href,
+    type: "email",
+  });
+
+  details.push({
+    label: "Address",
+    value: office.address.value,
+    displayValue: office.address.displayValue,
+    icon: MapPin,
+    href: office.address.href,
+    type: "address",
+  });
 
   return (
     <div className="bg-white rounded-lg overflow-hidden lg:shadow-lg border">
@@ -105,14 +144,13 @@ const ContactInfoCard = () => {
             animate="show"
             className="space-y-4"
           >
-            {contactDetails.map(
+            {details.map(
               ({ label, value, displayValue, icon: Icon, href, type }) => (
                 <motion.div
                   key={label}
                   variants={item}
                   className="flex items-start gap-3"
                 >
-                  {/* Decorative: role="presentation" so not announced as image; no aria-hidden (rule #9: visible content must stay in AT) */}
                   <Icon
                     className="w-5 h-5 text-blue-600 mt-0.5 shrink-0"
                     role="presentation"
@@ -121,71 +159,62 @@ const ContactInfoCard = () => {
                     <p className="text-sm font-semibold text-gray-700">
                       {label}
                     </p>
-                    {href ? (
-                      <Link
-                        href={href}
-                        className="text-sm text-gray-700 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded transition-colors"
-                        aria-label={
-                          type === "email"
-                            ? `Send an email to ${value} (opens email application)`
-                            : type === "phone"
-                              ? `Call ${value} (opens phone app)`
-                              : undefined
-                        }
-                      >
-                        {displayValue || value}
-                        {/* Screen-reader-only context: do not override visible text (WCAG 2.1) */}
-                        {type === "email" && (
-                          <span className="sr-only">
-                            {" "}
-                            (opens email application)
-                          </span>
-                        )}
-                        {type === "phone" && (
-                          <span className="sr-only">
-                            {" "}
-                            (initiates a phone call)
-                          </span>
-                        )}
-                        {type === "address" && (
-                          <span className="sr-only">
-                            {" "}
-                            (opens in new tab)
-                          </span>
-                        )}
-                      </Link>
-                    ) : (
-                      <p className="text-sm text-gray-700">
-                        {displayValue || value}
-                      </p>
-                    )}
+                    <Link
+                      href={href}
+                      className="text-sm text-gray-700 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded transition-colors"
+                      aria-label={
+                        type === "email"
+                          ? `Send an email to ${value} (opens email application)`
+                          : type === "phone"
+                            ? `Call ${value} (opens phone app)`
+                            : undefined
+                      }
+                    >
+                      {displayValue || value}
+                      {type === "email" && (
+                        <span className="sr-only">
+                          {" "}
+                          (opens email application)
+                        </span>
+                      )}
+                      {type === "phone" && (
+                        <span className="sr-only">
+                          {" "}
+                          (initiates a phone call)
+                        </span>
+                      )}
+                      {type === "address" && (
+                        <span className="sr-only"> (opens in new tab)</span>
+                      )}
+                    </Link>
                   </div>
                 </motion.div>
               )
             )}
           </motion.div>
 
-          <fieldset className="space-y-3 border-0 p-0 m-0 min-w-0">
-            <legend className="text-sm font-semibold text-gray-700">
-              Social Media
-            </legend>
-            <div className="flex gap-3">
-              {socialLinks.map(({ icon: Icon, href, title }) => (
-                <Link
-                  key={title}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Visit our ${title} page (opens in new tab)`}
-                  className="text-white transition bg-blue-600 p-2 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                  title={title}
-                >
-                  {/* Decorative: role="presentation" so not announced as image; no aria-hidden (rule #9: visible content must stay in AT) */}
-                  <Icon className="w-6 h-6" role="presentation" />
-                </Link>
-              ))}
-            </div>
-          </fieldset>
+          {showSocial && (
+            <fieldset className="space-y-3 border-0 p-0 m-0 min-w-0">
+              <legend className="text-sm font-semibold text-gray-700">
+                Social Media
+              </legend>
+              <div className="flex gap-3">
+                {socialLinks.map(({ icon: Icon, href, title }) => (
+                  <Link
+                    key={title}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Visit our ${title} page (opens in new tab)`}
+                    className="text-white transition bg-blue-600 p-2 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    title={title}
+                  >
+                    <Icon className="w-6 h-6" role="presentation" />
+                  </Link>
+                ))}
+              </div>
+            </fieldset>
+          )}
         </div>
       </div>
     </div>

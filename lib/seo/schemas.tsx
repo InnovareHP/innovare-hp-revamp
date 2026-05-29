@@ -71,7 +71,6 @@ export function generateArticleSchema(article: {
   return {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: article.title,
     description: article.description,
     url: article.url,
     datePublished: article.datePublished,

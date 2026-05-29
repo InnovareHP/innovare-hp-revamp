@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
 import FieldNotes from "@/components/LandingPage/FieldNotes/FieldNotes";
+import type { Metadata } from "next";
 
 const SITE_URL = "https://www.innovarehp.com";
 
 export const metadata: Metadata = {
-  title: "Recommended Reading | Healthcare Articles & Insights",
+  title: "Field Notes | Healthcare Articles & Insights",
   description:
     "A curated collection of healthcare industry articles covering strategy, marketing, behavioral health, senior care, and more from trusted sources.",
   keywords: [
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     "healthcare industry trends",
   ],
   openGraph: {
-    title: "Recommended Reading | Innovare HP",
+    title: "Field Notes| Innovare HP",
     description:
       "Curated healthcare industry articles and insights from trusted sources.",
     url: `${SITE_URL}/field-notes`,
@@ -25,13 +25,13 @@ export const metadata: Metadata = {
         url: `${SITE_URL}/images/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "Innovare HP Recommended Reading",
+        alt: "Innovare HP Field Notes",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Recommended Reading | Innovare HP",
+    title: "Field Notes | Innovare HP",
     description:
       "Curated healthcare industry articles and insights from trusted sources.",
     images: [`${SITE_URL}/images/og-image.jpg`],
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
 const blogJsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: "Innovare HP Recommended Reading",
+  name: "Innovare HP Field Notes",
   description:
     "Curated healthcare industry articles and insights from trusted sources",
   url: `${SITE_URL}/field-notes`,

@@ -13,6 +13,19 @@ export interface Article {
 export const articles: Article[] = [
   {
     id: 1,
+    slug: "why-healthcare-referrals-break-before-they-begin",
+    title: "Why Healthcare Referrals Break Before They Begin",
+    source: "Brainz Magazine",
+    url: "https://www.brainzmagazine.com/post/why-healthcare-referrals-break-before-they-begin",
+    description:
+      "Explore why healthcare referrals break down before they even begin—and how stronger communication, trust, and follow-through can keep patients moving through the care continuum.",
+    category: "Healthcare Strategy",
+    publishedDate: "2025-04-19",
+    image:
+      "https://static.wixstatic.com/media/769e42_9cfedbfedbb24a4dae287b40207dd759~mv2.jpg/v1/fill/w_740,h_491,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/769e42_9cfedbfedbb24a4dae287b40207dd759~mv2.jpg",
+  },
+  {
+    id: 2,
     slug: "the-healthcare-referral-economy",
     title: "The Healthcare Referral Economy",
     source: "Brainz Magazine",
@@ -25,7 +38,7 @@ export const articles: Article[] = [
       "https://static.wixstatic.com/media/194202_b89d5aef4dd84b7cb79522e57112bf84~mv2.jpg/v1/fill/w_1024,h_604,al_c/194202_b89d5aef4dd84b7cb79522e57112bf84~mv2.jpg",
   },
   {
-    id: 2,
+    id: 3,
     slug: "confessions-of-a-nurse-marketer",
     title:
       "Confessions of a Nurse-Marketer – Interview with Rich Nollen, BSN, RN, Founder & CEO of Innovare HP",

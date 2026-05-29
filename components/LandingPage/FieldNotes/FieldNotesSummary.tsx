@@ -100,7 +100,7 @@ const FieldNotesSummary = () => {
             href="/field-notes"
             className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-800 font-medium text-lg transition-colors"
           >
-            View all recommended reading
+            View all field notes
             <ArrowRight className="w-5 h-5" />
           </Link>
         </motion.div>

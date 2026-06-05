@@ -30,6 +30,7 @@ export async function getEventsAuthenticated(
     }> & { totalAttendees: number })[];
     totalPages: number;
     page: number;
+    total: number;
   }>
 > {
   try {
@@ -52,7 +53,7 @@ export async function getEventsAuthenticated(
           },
         },
         orderBy: {
-          eventStartDate: "asc",
+          eventStartDate: "desc",
         },
         take: limit,
         skip: offset,
@@ -78,6 +79,7 @@ export async function getEventsAuthenticated(
         events: formattedEvents as any,
         totalPages,
         page,
+        total,
       },
     };
   } catch (error) {

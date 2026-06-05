@@ -19,6 +19,7 @@ type EventsResponse = {
   events: Prisma.EventGetPayload<{ include: { media: true } }>[];
   totalPages: number;
   page: number;
+  total?: number;
 };
 
 export default function AdminEventPage({
@@ -26,7 +27,7 @@ export default function AdminEventPage({
 }: {
   events: Promise<EventsResponse>;
 }) {
-  const { events: eventsData, totalPages, page } = use(events);
+  const { events: eventsData, totalPages, page, total } = use(events);
 
   const handleDelete = async (ids: string[]) => {
     try {
@@ -206,6 +207,8 @@ export default function AdminEventPage({
             itemsPerPage={10}
             totalPages={totalPages}
             currentPage={page}
+            manualPagination
+            totalItems={total}
           />
         </div>
       </div>

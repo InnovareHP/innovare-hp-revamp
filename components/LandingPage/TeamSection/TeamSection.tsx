@@ -70,6 +70,12 @@ const TeamSection = () => {
       image: "/images/team/team-9.png",
       imageTitle: "Kristin Ann Artillaga",
     },
+    {
+      name: "Llewilyn Janda",
+      role: "Social Media Specialist",
+      image: "/images/team/team-10.png",
+      imageTitle: "Llewilyn Janda",
+    },
   ];
 
   return (

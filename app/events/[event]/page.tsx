@@ -12,6 +12,8 @@ import { Suspense } from "react";
 
 const SITE_URL = "https://innovarehp.com";
 
+export const dynamic = "force-dynamic";
+
 type EventWithRelations = Prisma.EventGetPayload<{
   include: { media: true; attendees: true; guests: true; expectations: true };
 }>;

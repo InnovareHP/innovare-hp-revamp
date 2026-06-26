@@ -8,6 +8,8 @@ import { getEvents } from "./action/eventaction";
 
 const SITE_URL = "https://innovarehp.com";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Healthcare Marketing Events & Webinars",
   description:

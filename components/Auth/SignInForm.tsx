@@ -58,8 +58,8 @@ export default function SignInForm() {
               Welcome Back
             </h1>
             <p className="text-xl text-slate-600 leading-relaxed">
-              Sign in to manage your events, track attendees, and create
-              amazing experiences.
+              Sign in to manage your events, track attendees, and create amazing
+              experiences.
             </p>
           </div>
 
@@ -253,12 +253,6 @@ export default function SignInForm() {
               <span className="text-muted-foreground">
                 Don&apos;t have an account?{" "}
               </span>
-              <Link
-                href="/register"
-                className="text-primary font-semibold hover:underline"
-              >
-                Create account
-              </Link>
             </div>
           </CardContent>
         </Card>

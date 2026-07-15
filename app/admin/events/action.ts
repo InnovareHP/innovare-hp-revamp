@@ -6,7 +6,7 @@ import {
   sendAdminCustomEmail,
   sendRefundConfirmationEmail,
 } from "@/lib/send-event-email";
-import { stripe } from "@/lib/stripe";
+import { createTeamsMeeting, deleteTeamsMeeting } from "@/lib/teams";
 import { formatDate } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
@@ -30,6 +30,7 @@ export async function getEventsAuthenticated(
     }> & { totalAttendees: number })[];
     totalPages: number;
     page: number;
+    total: number;
   }>
 > {
   try {
@@ -40,6 +41,11 @@ export async function getEventsAuthenticated(
       prisma.event.findMany({
         include: {
           media: true,
+          expectations: {
+            select: {
+              description: true,
+            },
+          },
           _count: {
             select: {
               attendees: true, // 👈 relation name
@@ -47,7 +53,7 @@ export async function getEventsAuthenticated(
           },
         },
         orderBy: {
-          eventStartDate: "asc",
+          eventStartDate: "desc",
         },
         take: limit,
         skip: offset,
@@ -59,7 +65,11 @@ export async function getEventsAuthenticated(
 
     const formattedEvents = events.map((event) => ({
       ...event,
+      price: event.price ? Number(event.price) : null,
       totalAttendees: event._count.attendees,
+      expectations: event.expectations.map(
+        (expectation) => expectation.description
+      ),
       _count: undefined, // optional cleanup
     }));
 
@@ -69,6 +79,7 @@ export async function getEventsAuthenticated(
         events: formattedEvents as any,
         totalPages,
         page,
+        total,
       },
     };
   } catch (error) {
@@ -80,12 +91,41 @@ export async function getEventsAuthenticated(
 export const createEvent = async (event: Prisma.EventCreateInput) => {
   try {
     await requireAdmin();
+
     const newEvent = await prisma.event.create({
       data: event,
     });
 
+    // Auto-create Teams meeting for virtual events
+    if (newEvent.eventType === "VIRTUAL") {
+      try {
+        const meeting = await createTeamsMeeting({
+          title: newEvent.title,
+          startDate: newEvent.eventStartDate,
+          endDate: newEvent.eventEndDate,
+        });
+
+        await prisma.event.update({
+          where: { id: newEvent.id },
+          data: {
+            teamsMeetingId: meeting.meetingId,
+            teamsMeetingUrl: meeting.joinUrl,
+          },
+        });
+      } catch (teamsError) {
+        // Log but don't fail the event creation
+        console.error("Teams meeting creation failed:", teamsError);
+      }
+    }
+
     revalidatePath("/admin/events");
-    return { success: true, data: newEvent };
+    return {
+      success: true,
+      data: {
+        ...newEvent,
+        price: newEvent.price ? Number(newEvent.price) : null,
+      },
+    };
   } catch (error) {
     console.error("Error creating event:", error);
     return { success: false, error: "Failed to create event" };
@@ -95,6 +135,18 @@ export const createEvent = async (event: Prisma.EventCreateInput) => {
 export const deleteEvent = async (ids: string[]) => {
   try {
     await requireAdmin();
+
+    // Clean up Teams meetings before deleting
+    const events = await prisma.event.findMany({
+      where: { id: { in: ids } },
+      select: { teamsMeetingId: true },
+    });
+    await Promise.allSettled(
+      events
+        .filter((e) => e.teamsMeetingId)
+        .map((e) => deleteTeamsMeeting(e.teamsMeetingId!))
+    );
+
     await prisma.$transaction([
       prisma.eventAttendee.deleteMany({
         where: { eventId: { in: ids } },
@@ -165,6 +217,7 @@ export async function sendEventEmail({
       eventDate,
       eventLocation,
       eventId,
+      slug: event.slug,
     });
 
     if (!result.success) {
@@ -210,24 +263,24 @@ export async function refundAttendee(
       };
     }
 
-    // Retrieve the checkout session to get the payment intent
-    const session = await stripe.checkout.sessions.retrieve(
-      attendee.stripeSessionId
-    );
+    // // Retrieve the checkout session to get the payment intent
+    // const session = await stripe.checkout.sessions.retrieve(
+    //   attendee.stripeSessionId
+    // );
 
-    const paymentIntentId =
-      typeof session.payment_intent === "string"
-        ? session.payment_intent
-        : session.payment_intent?.id;
+    // const paymentIntentId =
+    //   typeof session.payment_intent === "string"
+    //     ? session.payment_intent
+    //     : session.payment_intent?.id;
 
-    if (!paymentIntentId) {
-      return { success: false, error: "No payment intent found" };
-    }
+    // if (!paymentIntentId) {
+    //   return { success: false, error: "No payment intent found" };
+    // }
 
     // Create Stripe refund
-    await stripe.refunds.create({
-      payment_intent: paymentIntentId,
-    });
+    // await stripe.refunds.create({
+    //   payment_intent: paymentIntentId,
+    // });
 
     // Update attendee payment status and store reason
     await prisma.eventAttendee.update({
@@ -262,7 +315,7 @@ export async function refundAttendee(
       });
     }
 
-    revalidatePath(`/admin/events/${attendee.eventId}`);
+    revalidatePath(`/admin/events/${event?.slug}`);
     return { success: true };
   } catch (error) {
     console.error("Error refunding attendee:", error);

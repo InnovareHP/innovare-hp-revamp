@@ -55,6 +55,7 @@ async function seedEvents() {
         registrationDeadline: new Date("2026-03-10T23:59:59"),
         qrCode: "TECH2026-QR-001",
         mediaId: media1.id,
+        slug: "tech-innovation-summit-2026",
       },
     });
 
@@ -109,6 +110,7 @@ async function seedEvents() {
         registrationDeadline: new Date("2026-02-15T23:59:59"),
         qrCode: "AIML-WORKSHOP-002",
         mediaId: media2.id,
+        slug: "ai-machine-learning-workshop",
       },
     });
 
@@ -139,6 +141,7 @@ async function seedEvents() {
         registrationDeadline: new Date("2026-02-26T23:59:59"),
         qrCode: "STARTUP-NET-003",
         mediaId: media3.id,
+        slug: "startup-founders-networking-night",
       },
     });
 
@@ -173,6 +176,7 @@ async function seedEvents() {
         eventEndDate: new Date("2026-04-12T18:00:00"),
         registrationDeadline: new Date("2026-04-05T23:59:59"),
         mediaId: media4.id,
+        slug: "blockchain-web3-conference",
       },
     });
 
@@ -191,6 +195,7 @@ async function seedEvents() {
         registrationDeadline: new Date("2025-12-10T23:59:59"),
         qrCode: "DEV-MEETUP-2025",
         mediaId: media5.id,
+        slug: "annual-developer-meetup-2025",
       },
     });
 
@@ -231,6 +236,7 @@ async function seedEvents() {
         eventEndDate: new Date("2026-03-05T17:00:00"),
         registrationDeadline: new Date("2026-02-25T23:59:59"),
         mediaId: media1.id,
+        slug: "mobile-app-development-bootcamp",
       },
     });
 
@@ -249,6 +255,7 @@ async function seedEvents() {
         registrationDeadline: new Date("2026-02-23T23:59:59"),
         qrCode: "OPENSOURCE-007",
         mediaId: media3.id,
+        slug: "open-source-contribution-workshop",
       },
     });
 

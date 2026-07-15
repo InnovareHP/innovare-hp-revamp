@@ -1,3 +1,16 @@
+interface EventRegistrationConfirmationProps {
+  attendeeName: string;
+  eventTitle: string;
+  eventDescription: string;
+  eventStartDate: string;
+  eventEndDate?: string;
+  location: string;
+  eventId: string;
+  slug: string;
+  isVirtual?: boolean;
+  teamsMeetingUrl?: string | null;
+}
+
 interface GetInTouchProps {
   FullName: string;
   PhoneNumber: string;
@@ -86,16 +99,6 @@ export function GetInTouch({
   );
 }
 
-interface EventRegistrationConfirmationProps {
-  attendeeName: string;
-  eventTitle: string;
-  eventDescription: string;
-  eventStartDate: string;
-  eventEndDate?: string;
-  location: string;
-  eventId: string;
-}
-
 export function EventRegistrationConfirmation({
   attendeeName,
   eventTitle,
@@ -104,6 +107,9 @@ export function EventRegistrationConfirmation({
   eventEndDate,
   location,
   eventId,
+  slug,
+  isVirtual,
+  teamsMeetingUrl,
 }: EventRegistrationConfirmationProps) {
   return (
     <div
@@ -190,29 +196,93 @@ export function EventRegistrationConfirmation({
           <strong style={{ color: "#555" }}>📅 Date & Time:</strong>
           <br />
           {eventStartDate}
-          {eventEndDate && (
+          {/* {eventEndDate && (
             <>
               <br />
               <span style={{ color: "#666", fontSize: "14px" }}>
                 Ends: {eventEndDate}
               </span>
             </>
-          )}
+          )} */}
         </p>
 
-        <p style={{ marginBottom: "12px" }}>
-          <strong style={{ color: "#555" }}>📍 Location:</strong>
-          <br />
-          {location}
-        </p>
+        {isVirtual ? (
+          <p style={{ marginBottom: "12px" }}>
+            <strong style={{ color: "#555" }}>💻 Format:</strong>
+            <br />
+            Virtual — Microsoft Teams
+          </p>
+        ) : (
+          <p style={{ marginBottom: "12px" }}>
+            <strong style={{ color: "#555" }}>📍 Location:</strong>
+            <br />
+            {location}
+          </p>
+        )}
       </div>
 
-      {/* What to Bring / Reminders */}
+      {/* Teams Meeting Block */}
+      {isVirtual && teamsMeetingUrl && (
+        <div
+          style={{
+            backgroundColor: "#f5f3ff",
+            border: "1px solid #ddd6fe",
+            borderRadius: "8px",
+            padding: "20px",
+            marginTop: "20px",
+          }}
+        >
+          <h3
+            style={{
+              color: "#7c3aed",
+              marginTop: "0",
+              marginBottom: "12px",
+              fontSize: "16px",
+            }}
+          >
+            🎥 Your Microsoft Teams Meeting Link
+          </h3>
+          <p style={{ fontSize: "14px", color: "#555", marginBottom: "16px" }}>
+            This is a virtual event. Use the button below to join when the event
+            starts. You may be held in the lobby until the host admits you.
+          </p>
+          <div style={{ textAlign: "center" }}>
+            <a
+              href={teamsMeetingUrl}
+              style={{
+                display: "inline-block",
+                backgroundColor: "#7c3aed",
+                color: "white",
+                padding: "12px 32px",
+                borderRadius: "6px",
+                textDecoration: "none",
+                fontWeight: "bold",
+                fontSize: "15px",
+              }}
+            >
+              Join Microsoft Teams Meeting
+            </a>
+          </div>
+          <p
+            style={{
+              fontSize: "12px",
+              color: "#888",
+              marginTop: "12px",
+              textAlign: "center",
+            }}
+          >
+            Or copy this link:{" "}
+            <span style={{ color: "#7c3aed", wordBreak: "break-all" }}>
+              {teamsMeetingUrl}
+            </span>
+          </p>
+        </div>
+      )}
 
       {/* Call to Action */}
       <div style={{ textAlign: "center", marginTop: "24px" }}>
         <a
-          href={process.env.NEXT_PUBLIC_APP_URL + `/events/${eventId}`}
+          href={process.env.NEXT_PUBLIC_APP_URL + `/events/${slug}`}
           style={{
             display: "inline-block",
             backgroundColor: "skyblue",
@@ -265,6 +335,7 @@ interface EventRegistrationNotificationProps {
   eventStartDate: string;
   totalAttendees: number;
   eventId: string;
+  slug: string;
 }
 
 export function EventRegistrationNotification({
@@ -275,6 +346,7 @@ export function EventRegistrationNotification({
   eventStartDate,
   totalAttendees,
   eventId,
+  slug,
 }: EventRegistrationNotificationProps) {
   return (
     <div
@@ -397,7 +469,7 @@ export function EventRegistrationNotification({
       {/* Admin Actions */}
       <div style={{ textAlign: "center", marginTop: "24px" }}>
         <a
-          href={process.env.NEXT_PUBLIC_APP_URL + `/admin/events/${eventId}`}
+          href={process.env.NEXT_PUBLIC_APP_URL + `/admin/events/${slug}`}
           style={{
             display: "inline-block",
             backgroundColor: "skyblue",
@@ -413,7 +485,7 @@ export function EventRegistrationNotification({
           View All Attendees
         </a>
         <a
-          href={process.env.NEXT_PUBLIC_APP_URL + `/admin/events/${eventId}`}
+          href={process.env.NEXT_PUBLIC_APP_URL + `/admin/events/${slug}`}
           style={{
             display: "inline-block",
             backgroundColor: "#6b7280",
@@ -598,6 +670,7 @@ interface AdminCustomEmailProps {
   eventDate?: string;
   eventLocation?: string;
   eventId?: string;
+  slug: string;
 }
 
 export function AdminCustomEmail({
@@ -608,6 +681,7 @@ export function AdminCustomEmail({
   eventDate,
   eventLocation,
   eventId,
+  slug,
 }: AdminCustomEmailProps) {
   return (
     <div
@@ -702,7 +776,7 @@ export function AdminCustomEmail({
       {eventTitle && (
         <div style={{ textAlign: "center", marginTop: "24px" }}>
           <a
-            href={process.env.NEXT_PUBLIC_APP_URL + `/events/${eventId}`}
+            href={process.env.NEXT_PUBLIC_APP_URL + `/events/${slug}`}
             style={{
               display: "inline-block",
               backgroundColor: "skyblue",

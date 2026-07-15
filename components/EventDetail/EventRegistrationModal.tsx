@@ -46,6 +46,10 @@ const registrationSchema = z.object({
       /^[\d\s\-\+\(\)]+$/,
       "Phone number can only contain digits, spaces, and symbols like +, -, (, )"
     ),
+  organization: z
+    .string()
+    .min(2, "Organization is required")
+    .max(150, "Organization must be less than 150 characters"),
 });
 
 type RegistrationFormValues = z.infer<typeof registrationSchema>;
@@ -95,6 +99,7 @@ const EventRegistrationModal = ({
   const [registrationDetails, setRegistrationDetails] = useState<{
     name: string;
     email: string;
+    organization: string;
   } | null>(null);
 
   const form = useForm<RegistrationFormValues>({
@@ -103,6 +108,7 @@ const EventRegistrationModal = ({
       name: "",
       email: "",
       phone: "",
+      organization: "",
     },
   });
 
@@ -115,59 +121,59 @@ const EventRegistrationModal = ({
     setIsSubmitting(true);
 
     try {
-      if (isPaidEvent && eventPrice && eventPrice > 0) {
-        // Paid event: redirect to Stripe Checkout
-        const res = await fetch("/api/checkout", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            eventId,
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            turnstileToken,
-          }),
+      // if (isPaidEvent && eventPrice && eventPrice > 0) {
+      //   // Paid event: redirect to Stripe Checkout
+      //   const res = await fetch("/api/checkout", {
+      //     method: "POST",
+      //     headers: { "Content-Type": "application/json" },
+      //     body: JSON.stringify({
+      //       eventId,
+      //       name: data.name,
+      //       email: data.email,
+      //       phone: data.phone,
+      //       turnstileToken,
+      //     }),
+      //   });
+
+      //   const result = await res.json();
+
+      //   if (!res.ok) {
+      //     toast.error(result.error || "Failed to start payment", {
+      //       description: "Please try again or contact support.",
+      //     });
+      //     return;
+      //   }
+
+      //   if (result.url) {
+      //     // Store registration before redirect so user is recognized when they return
+      //     storeEventRegistration(eventId, data.email, data.name);
+      //     window.location.href = result.url;
+      //     return;
+      //   }
+      // } else {
+      // Free event: existing flow
+      const response = await joinEvent(eventId, data, turnstileToken);
+
+      if (response.success) {
+        storeEventRegistration(eventId, data.email, data.name);
+
+        toast.success("Successfully registered for the event!", {
+          description: "You will receive a confirmation email shortly.",
         });
 
-        const result = await res.json();
+        setIsAlreadyRegistered(true);
+        setRegistrationDetails({
+          name: data.name,
+          email: data.email,
+          organization: data.organization ?? "",
+        });
 
-        if (!res.ok) {
-          toast.error(result.error || "Failed to start payment", {
-            description: "Please try again or contact support.",
-          });
-          return;
-        }
-
-        if (result.url) {
-          // Store registration before redirect so user is recognized when they return
-          storeEventRegistration(eventId, data.email, data.name);
-          window.location.href = result.url;
-          return;
-        }
+        form.reset();
+        onSuccess?.();
       } else {
-        // Free event: existing flow
-        const response = await joinEvent(eventId, data, turnstileToken);
-
-        if (response.success) {
-          storeEventRegistration(eventId, data.email, data.name);
-
-          toast.success("Successfully registered for the event!", {
-            description: "You will receive a confirmation email shortly.",
-          });
-
-          setIsAlreadyRegistered(true);
-          setRegistrationDetails({
-            name: data.name,
-            email: data.email,
-          });
-
-          form.reset();
-          onSuccess?.();
-        } else {
-          toast.error(response.error || "Failed to register for event", {
-            description: "Please try again or contact support.",
-          });
-        }
+        toast.error(response.error || "Failed to register for event", {
+          description: "Please try again or contact support.",
+        });
       }
     } catch {
       toast.error("An unexpected error occurred", {
@@ -235,6 +241,12 @@ const EventRegistrationModal = ({
                   <span className="font-semibold">Email:</span>{" "}
                   {registrationDetails?.email}
                 </p>
+                {registrationDetails?.organization && (
+                  <p>
+                    <span className="font-semibold">Organization:</span>{" "}
+                    {registrationDetails.organization}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -319,6 +331,30 @@ const EventRegistrationModal = ({
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={form.control}
+                  name="organization"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Organization</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Your organization or company"
+                          {...field}
+                          disabled={isSubmitting}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  By clicking Register, you consent to receive future
+                  communications from the event organizer and their partners
+                  regarding this and related events.
+                </p>
 
                 <Turnstile
                   userRef={

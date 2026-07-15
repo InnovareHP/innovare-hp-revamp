@@ -7,6 +7,7 @@ import {
 } from "./email";
 import { prisma } from "./prisma";
 import { resend } from "./resend";
+import { formatDate } from "./utils";
 
 type EventWithRelations = Prisma.EventGetPayload<{
   include: { media: true; attendees: true };
@@ -25,17 +26,6 @@ export async function sendEventConfirmationEmail({
   event,
 }: Omit<SendEventRegistrationEmailParams, "attendeePhone">) {
   try {
-    const formatDate = (date: Date) => {
-      return new Date(date).toLocaleDateString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    };
-
     const { data, error } = await resend.emails.send({
       from: "Innovare HP <info@notifications.innovarehp.com>",
       to: [attendeeEmail],
@@ -50,6 +40,9 @@ export async function sendEventConfirmationEmail({
           : undefined,
         location: event.location,
         eventId: event.id,
+        slug: event.slug,
+        isVirtual: event.eventType === "VIRTUAL",
+        teamsMeetingUrl: event.teamsMeetingUrl,
       }),
     });
 
@@ -72,20 +65,9 @@ export async function sendEventRegistrationNotificationEmail({
   event,
 }: SendEventRegistrationEmailParams) {
   try {
-    const formatDate = (date: Date) => {
-      return new Date(date).toLocaleDateString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    };
-
     const { data, error } = await resend.emails.send({
       from: "Innovare HP <info@notifications.innovarehp.com>",
-      to: ["info@innovarehp.com"],
+      to: ["info@innovarehp.com", "deermino@innovarehp.com"],
       subject: `New Registration: ${event.title}`,
       react: EventRegistrationNotification({
         attendeeName,
@@ -95,6 +77,7 @@ export async function sendEventRegistrationNotificationEmail({
         eventStartDate: formatDate(event.eventStartDate),
         totalAttendees: event.attendees.length,
         eventId: event.id,
+        slug: event.slug,
       }),
     });
 
@@ -192,6 +175,7 @@ export async function sendAdminCustomEmail({
   eventDate,
   eventLocation,
   eventId,
+  slug,
 }: {
   recipients: string[];
   recipientNames: string[];
@@ -201,6 +185,7 @@ export async function sendAdminCustomEmail({
   eventDate?: string;
   eventLocation?: string;
   eventId?: string;
+  slug: string;
 }) {
   try {
     const results = await Promise.allSettled(
@@ -217,6 +202,7 @@ export async function sendAdminCustomEmail({
             eventDate,
             eventLocation,
             eventId,
+            slug,
           }),
         })
       )

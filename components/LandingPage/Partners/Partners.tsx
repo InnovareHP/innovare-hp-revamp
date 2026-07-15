@@ -26,6 +26,9 @@ const logos = [
   "20",
   "21",
   "22",
+  "23",
+  "24",
+  "25",
 ];
 
 const chunkSize = Math.ceil(logos.length / 4);
@@ -97,9 +100,9 @@ const LogoMarquee = ({
                        sm:w-[240px] sm:h-[120px] 
                        md:w-[320px] md:h-[160px]"
           >
-            <div className="relative w-full h-full scale-110">
-              {" "}
-              {/* Extra 10% scale for impact */}
+            <div
+              className={`relative w-full h-full ${n === "23" ? "scale-100" : "scale-110"}`}
+            >
               <Image
                 src={`/images/testimonials/${n}.png`}
                 alt={`Partner organization logo ${n}`}

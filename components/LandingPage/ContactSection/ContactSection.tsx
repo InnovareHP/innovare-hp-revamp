@@ -46,7 +46,13 @@ const itemVariants: Variants = {
 
 const TURNSTILE_IFRAME_TITLE = "Security verification to confirm you are human (Cloudflare Turnstile)";
 
-export default function ContactSection() {
+type ContactSectionProps = {
+  selectedOfficeLabel?: string;
+};
+
+export default function ContactSection({
+  selectedOfficeLabel,
+}: ContactSectionProps = {}) {
   const turnstile = useTurnstile();
   const turnstileContainerRef = useRef<HTMLDivElement>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
@@ -96,8 +102,13 @@ export default function ContactSection() {
       announcement.textContent = "Submitting form...";
     }
 
+    const messageWithOffice = selectedOfficeLabel
+      ? `[Regarding: ${selectedOfficeLabel}]\n\n${values.message}`
+      : values.message;
+
     const res = await createGetInTouch({
       ...values,
+      message: messageWithOffice,
       turnstileToken,
     });
 
@@ -138,9 +149,23 @@ export default function ContactSection() {
       className="p-8 bg-white rounded-lg border shadow-sm"
       aria-label="Contact form"
     >
-      <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-4">
-        Stay in touch!
-      </motion.h2>
+      <motion.div variants={itemVariants} className="mb-6">
+        <p className="text-xs font-semibold uppercase tracking-wide text-blue-600 mb-1">
+          Stay in touch
+        </p>
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+          Send us a message
+        </h2>
+        {selectedOfficeLabel && (
+          <p className="mt-2 text-sm text-gray-600">
+            Your message will be routed to our{" "}
+            <span className="font-semibold text-blue-700">
+              {selectedOfficeLabel}
+            </span>{" "}
+            team.
+          </p>
+        )}
+      </motion.div>
 
       {/* Screen reader announcements: hidden from AT when empty (rule #10); expose when we set content */}
       <div

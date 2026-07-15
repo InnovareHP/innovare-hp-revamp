@@ -35,7 +35,7 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { formatDate } from "@/lib/utils";
-import { Media, Prisma } from "@prisma/client";
+import { EventType, Media, Prisma } from "@prisma/client";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import {
@@ -43,6 +43,7 @@ import {
   Clock,
   DollarSign,
   Download,
+  ExternalLink,
   Mail,
   MapPin,
   MoreVertical,
@@ -51,6 +52,7 @@ import {
   RotateCcw,
   Send,
   Users,
+  Video,
 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
@@ -60,7 +62,7 @@ import RemoveEvent from "../AdminEventsPage/RemoveEvent";
 
 interface AdminEventDetailClientProps {
   event: Prisma.EventGetPayload<{
-    include: { media: true; attendees: true; guests: true };
+    include: { media: true; attendees: true; guests: true; expectations: true };
   }>;
 }
 
@@ -73,6 +75,9 @@ type EventFormValues = {
   date: Date;
   eventStartDate: Date;
   media: Media;
+  eventType: EventType;
+  hostedBy: string;
+  expectations: string[];
 };
 
 type EmailDialogState = {
@@ -295,7 +300,7 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
       return;
     }
 
-    const qrCodeUrl = `${window.location.origin}/event/${event.id}`;
+    const qrCodeUrl = `${window.location.origin}/events/${event.slug}`;
 
     printWindow.document.write(`
       <!DOCTYPE html>
@@ -430,7 +435,7 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
     }
 
     // Attendee table
-    const baseColumns = ["#", "Name", "Email", "Phone", "Registered"];
+    const baseColumns = ["#", "Name", "Email", "Phone", "Organization", "Registered"];
     const columns = event.isPaid ? [...baseColumns, "Payment"] : baseColumns;
 
     const rows = event.attendees.map((a: any, i: number) => {
@@ -439,6 +444,7 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
         a.name || "",
         a.email || "",
         a.phone || "—",
+        a.organization || "—",
         new Date(a.createdAt).toLocaleDateString(),
       ];
       return event.isPaid ? [...base, a.paymentStatus || "Free"] : base;
@@ -482,6 +488,9 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
               event as unknown as EventFormValues & {
                 id: string;
                 eventEndDate: Date | null;
+                eventType: EventType;
+                hostedBy: string;
+                expectations: string[];
               }
             }
           />
@@ -509,10 +518,22 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
                 <TabsContent value="attendees">
                   <ReusableTable
                     data={event.attendees}
-                    itemsPerPage={5}
+                    itemsPerPage={10}
                     columns={[
                       { key: "name", header: "Name" },
                       { key: "email", header: "Email" },
+                      {
+                        key: "organization",
+                        header: "Organization",
+                        cell: (row: any) =>
+                          row.organization ? (
+                            <span className="text-sm">{row.organization}</span>
+                          ) : (
+                            <span className="text-xs text-muted-foreground/50">
+                              —
+                            </span>
+                          ),
+                      },
                       {
                         key: "registeredAt",
                         header: "Registered",
@@ -615,7 +636,69 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
                         </p>
                       </div>
                     </div>
+                    <div className="flex items-center gap-3 p-3 border rounded-lg">
+                      <Users className="text-primary w-5 h-5" />
+                      <div>
+                        <p className="text-xs text-muted-foreground uppercase font-bold">
+                          Hosted By
+                        </p>
+                        <p className="text-sm font-semibold">
+                          {event.hostedBy || "—"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 border rounded-lg">
+                      <AlertCircle className="text-primary w-5 h-5" />
+                      <div>
+                        <p className="text-xs text-muted-foreground uppercase font-bold">
+                          Event Type
+                        </p>
+                        <p className="text-sm font-semibold">
+                          {event.eventType === "VIRTUAL" ? "Virtual" : "Onsite"}
+                        </p>
+                      </div>
+                    </div>
                   </div>
+                  {event.teamsMeetingUrl && (
+                    <div className="p-3 border border-purple-200 bg-purple-50/50 rounded-lg space-y-2 col-span-full">
+                      <p className="text-xs text-muted-foreground uppercase font-bold flex items-center gap-1">
+                        <Video className="w-3 h-3" /> Teams Meeting Link
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium text-purple-700 truncate flex-1">
+                          {event.teamsMeetingUrl}
+                        </p>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="shrink-0 text-purple-600 hover:text-purple-800"
+                          onClick={() =>
+                            window.open(event.teamsMeetingUrl!, "_blank")
+                          }
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                  {event.expectations && event.expectations.length > 0 && (
+                    <div className="p-3 border rounded-lg space-y-2 col-span-full">
+                      <p className="text-xs text-muted-foreground uppercase font-bold">
+                        What to Expect
+                      </p>
+                      <ul className="space-y-1">
+                        {event.expectations.map((e) => (
+                          <li
+                            key={e.id}
+                            className="text-sm flex items-start gap-2"
+                          >
+                            <span className="text-primary mt-0.5">•</span>
+                            {e.description}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </TabsContent>
               </Tabs>
             </CardContent>
@@ -729,7 +812,7 @@ const AdminEventDetailClient = ({ event }: AdminEventDetailClientProps) => {
               <div className="flex flex-col items-center gap-3">
                 <div className="bg-white p-4 rounded-lg shadow-sm border-2 border-primary/10">
                   <QRCodeSVG
-                    value={`${window.location.origin}/events/${event.id}`}
+                    value={`${window.location.origin}/events/${event.slug}`}
                     size={160}
                     level="H"
                     includeMargin={true}

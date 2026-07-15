@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { getEvents } from "./action/eventaction";
 
-const SITE_URL = "https://www.innovarehp.com";
+const SITE_URL = "https://innovarehp.com";
 
 export const metadata: Metadata = {
   title: "Healthcare Marketing Events & Webinars",
@@ -46,13 +46,8 @@ export const metadata: Metadata = {
   },
 };
 
-const page = async ({
-  searchParams,
-}: {
-  searchParams?: Promise<{ page?: string; limit?: string }>;
-}) => {
-  const { page, limit } = (await searchParams) ?? { page: "1", limit: "10" };
-  const events = getEvents(Number(limit ?? 10), Number(page ?? 1));
+const page = async () => {
+  const events = getEvents();
 
   return (
     <>
@@ -60,7 +55,7 @@ const page = async ({
 
       <div className="relative z-10">
         <Navigation />
-        <div className="max-w-6xl mx-auto px-4 py-10 mt-20">
+        <div className="max-w-7xl mx-auto px-4 py-10 mt-20">
           <div className="flex items-center justify-between mb-10 border-b pb-6">
             <div>
               <h1 className="text-3xl font-black tracking-tighter text-slate-900 uppercase">
@@ -81,7 +76,7 @@ const page = async ({
           >
             <EventsPage
               events={Promise.resolve(
-                (await events).data ?? { events: [], totalPages: 0, page: 1 }
+                (await events).data ?? { upcomingEvents: [], pastEvents: [] }
               )}
             />
           </Suspense>

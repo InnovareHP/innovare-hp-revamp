@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import LandingPage from "../components/LandingPage/LandingPage";
-import { LinkInPost } from "./action/landing-page";
 
-const SITE_URL = "https://www.innovarehp.com";
+const SITE_URL = "https://innovarehp.com";
 
 export const metadata: Metadata = {
   title: "Innovare HP | Healthcare Marketing & Growth Strategy",
   description:
-    "Innovare HP delivers intelligent healthcare marketing, community outreach, referral development, and brand strategy for senior care, behavioral health, and clinical organizations.",
+    "Innovare HP: Healthcare marketing & brand strategy for senior care, behavioral health, and clinical organizations.",
   openGraph: {
     title: "Innovare HP | Healthcare Marketing & Growth Strategy",
     description:
@@ -28,22 +27,51 @@ export const metadata: Metadata = {
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Innovare HP | Healthcare Marketing & Growth Strategy",
+  "@type": "ProfessionalService",
+  name: "Innovare HP",
+  alternateName: "Innovare HP | Healthcare Marketing & Growth Strategy",
   url: SITE_URL,
   logo: `${SITE_URL}/images/logo.png`,
+  image: `${SITE_URL}/images/og-image.jpg`,
   description:
-    "Innovare HP delivers intelligent healthcare marketing, community outreach, referral development, and brand strategy for senior care, behavioral health, and clinical organizations.",
+    "Innovare HP: Healthcare marketing & brand strategy for senior care, behavioral health, and clinical organizations.",
   foundingDate: "2020",
+  priceRange: "$$",
+  telephone: "+1-269-501-4496",
+  email: "hello@innovarehp.com",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "4221 Bud Drive NE",
+    addressLocality: "Comstock Park",
+    addressRegion: "MI",
+    postalCode: "49321",
+    addressCountry: "US",
+  },
+  areaServed: {
+    "@type": "Country",
+    name: "US",
+  },
+  knowsAbout: [
+    "Healthcare Marketing",
+    "Senior Care Marketing",
+    "Behavioral Health Marketing",
+    "Healthcare Brand Strategy",
+    "Referral Development",
+    "Community Outreach",
+    "Healthcare Growth Strategy",
+  ],
   sameAs: [
     "https://www.linkedin.com/company/innovarehp",
-    "https://twitter.com/innovarehp",
+    "https://www.instagram.com/innovarehp/",
+    "https://www.facebook.com/innovarehp",
   ],
   contactPoint: {
     "@type": "ContactPoint",
+    telephone: "+1-269-501-4496",
     email: "hello@innovarehp.com",
     contactType: "customer service",
     areaServed: "US",
+    availableLanguage: "English",
   },
 };
 
@@ -63,7 +91,7 @@ const websiteJsonLd = {
 };
 
 export default async function Home() {
-  const postsWithRelativeTime = LinkInPost();
+  // const postsWithRelativeTime = LinkInPost();
 
   return (
     <>
@@ -83,7 +111,7 @@ export default async function Home() {
         content={JSON.stringify(websiteJsonLd)}
       />
 
-      <LandingPage posts={postsWithRelativeTime} />
+      <LandingPage />
     </>
   );
 }

@@ -4,15 +4,6 @@ import { motion, Variants } from "framer-motion";
 
 const TeamSection = () => {
   // Transform-only animation so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
-  const containerVariants: Variants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
   const memberVariants: Variants = {
     hidden: { x: -20 },
     visible: {
@@ -33,18 +24,6 @@ const TeamSection = () => {
       role: "CFO",
       image: "/images/team/team-5.png",
       imageTitle: "Roy Gingrich",
-    },
-    {
-      name: "Amy Cunningham, MHC, MBA",
-      role: "Regional Brand & Relationship Manager",
-      image: "/images/team/team-2.png",
-      imageTitle: "Amy Cunningham, MHC, MBA",
-    },
-    {
-      name: "Tracy Lorenz",
-      role: "Regional Brand & Relationship Manager",
-      image: "/images/team/team-6.png",
-      imageTitle: "Tracy Lorenz",
     },
     {
       name: "Ivor Glorioso",
@@ -70,6 +49,30 @@ const TeamSection = () => {
       image: "/images/team/team-8.png",
       imageTitle: "Dyllan Ermino",
     },
+    {
+      name: "Kristin Ann Artillaga",
+      role: "Creative Director",
+      image: "/images/team/team-9.png",
+      imageTitle: "Kristin Ann Artillaga",
+    },
+    {
+      name: "Llewilyn Janda",
+      role: "Social Media Specialist",
+      image: "/images/team/team-10.png",
+      imageTitle: "Llewilyn Janda",
+    },
+    {
+      name: "Gerald Ponteras, CPA",
+      role: "Accounting & Billing Manager",
+      image: "/images/team/Team-11.png",
+      imageTitle: "Gerald Ponteras, CPA",
+    },
+    {
+      name: "Arzenio Victor Duque",
+      role: "Graphic Designer",
+      image: "/images/team/Team-12.png",
+      imageTitle: "Arzenio Victor Duque",
+    },
   ];
 
   return (
@@ -88,7 +91,7 @@ const TeamSection = () => {
           className="mb-8 sm:mb-12 md:mb-16"
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-gray-700">
-            Meet the champions of our proven outreach strategies
+            Our Healthcare Marketing Team
           </h2>
           <p className="text-lg lg:text-2xl leading-relaxed sm:leading-normal text-gray-600 font-sans font-normal">
             Over the course of our journey, we have forged meaningful
@@ -98,17 +101,14 @@ const TeamSection = () => {
         </motion.div>
 
         {/* Team Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
           {team.map((member) => (
             <motion.div
               key={member.name}
               variants={memberVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
               whileHover={{ x: 5 }} // Slight nudge on hover
               className="flex items-start gap-6 group"
             >
@@ -134,7 +134,7 @@ const TeamSection = () => {
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Footer Logo - transform only so never visually hidden while in a11y tree */}
         <motion.div

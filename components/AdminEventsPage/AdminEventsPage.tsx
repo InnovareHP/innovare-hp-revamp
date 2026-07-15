@@ -19,6 +19,7 @@ type EventsResponse = {
   events: Prisma.EventGetPayload<{ include: { media: true } }>[];
   totalPages: number;
   page: number;
+  total?: number;
 };
 
 export default function AdminEventPage({
@@ -26,7 +27,7 @@ export default function AdminEventPage({
 }: {
   events: Promise<EventsResponse>;
 }) {
-  const { events: eventsData, totalPages, page } = use(events);
+  const { events: eventsData, totalPages, page, total } = use(events);
 
   const handleDelete = async (ids: string[]) => {
     try {
@@ -93,7 +94,7 @@ export default function AdminEventPage({
       header: "Title",
       cell: (event) => (
         <Link
-          href={`/admin/events/${event.id}`}
+          href={`/admin/events/${event.slug}`}
           className="font-medium text-blue-500 hover:text-blue-600 underline"
         >
           {event.title}
@@ -155,11 +156,16 @@ export default function AdminEventPage({
       cell: (event) => (
         <div className="flex justify-end gap-2">
           <Button asChild variant="outline" size="sm">
-            <Link href={`/admin/events/${event.id}`}>View</Link>
+            <Link href={`/admin/events/${event.slug}`}>View</Link>
           </Button>
           <AddEventButton
             type="edit"
-            event={event as unknown as EventFormValues & { id: string }}
+            event={
+              event as unknown as EventFormValues & {
+                id: string | null;
+                expectations: string[];
+              }
+            }
           />
           <RemoveEvent onRemove={() => handleDelete([event.id])} />
         </div>
@@ -201,6 +207,8 @@ export default function AdminEventPage({
             itemsPerPage={10}
             totalPages={totalPages}
             currentPage={page}
+            manualPagination
+            totalItems={total}
           />
         </div>
       </div>

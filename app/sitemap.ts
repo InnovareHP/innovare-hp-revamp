@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://www.innovarehp.com";
+  const baseUrl = "https://innovarehp.com";
 
   // Static routes
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -40,6 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
       select: {
         id: true,
+        slug: true,
         updatedAt: true,
       },
       orderBy: {
@@ -48,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
 
     const eventRoutes: MetadataRoute.Sitemap = events.map((event) => ({
-      url: `${baseUrl}/events/${event.id}`,
+      url: `${baseUrl}/events/${event.slug}`,
       lastModified: event.updatedAt,
       changeFrequency: "weekly",
       priority: 0.7,

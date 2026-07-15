@@ -23,12 +23,13 @@ model LinkedInPost {
 }
 
 model LinkedInPostImage {
-  id       String  @id @default(uuid())
-  postId   String
-  imageUrn String
-  imageUrl String?
-  altText  String?
-  position Int?
+  id        String  @id @default(uuid())
+  postId    String
+  imageUrn  String
+  imageUrl  String?
+  storedUrl String?
+  altText   String?
+  position  Int?
 
   post LinkedInPost @relation(fields: [postId], references: [id])
 
@@ -49,8 +50,8 @@ model User {
   email         String
   emailVerified Boolean   @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime  @db.Timestamptz @default(now())
+  updatedAt     DateTime  @db.Timestamptz @updatedAt
   sessions      Session[]
   accounts      Account[]
 
@@ -62,8 +63,8 @@ model Session {
   id        String   @id
   expiresAt DateTime
   token     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @db.Timestamptz @default(now())
+  updatedAt DateTime @db.Timestamptz @updatedAt
   ipAddress String?
   userAgent String?
   userId    String
@@ -87,8 +88,8 @@ model Account {
   refreshTokenExpiresAt DateTime?
   scope                 String?
   password              String?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+  createdAt             DateTime  @db.Timestamptz @default(now())
+  updatedAt             DateTime  @db.Timestamptz @updatedAt
 
   @@index([userId])
   @@map("account")
@@ -99,8 +100,8 @@ model Verification {
   identifier String
   value      String
   expiresAt  DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @db.Timestamptz @default(now())
+  updatedAt  DateTime @db.Timestamptz @updatedAt
 
   @@index([identifier])
   @@map("verification")
@@ -113,30 +114,52 @@ enum EventStatus {
   COMPLETED
 }
 
+enum EventType {
+  ONSITE
+  VIRTUAL
+}
+
 model Event {
   id String @id @default(uuid())
-  
+  slug String @unique
+
   title String
   description String
   location String
   status EventStatus @default(DRAFT)
+  eventType EventType @default(ONSITE)
   qrCode String?
 
   isPaid               Boolean         @default(false)
   price                Decimal?        @default(0) // Use Decimal for currency
   currency             String          @default("USD")
+  hostedBy String?
 
-  eventStartDate DateTime
-  eventEndDate DateTime?
-  registrationDeadline DateTime?
+  eventStartDate DateTime @db.Timestamptz
+  eventEndDate DateTime? @db.Timestamptz
+  registrationDeadline DateTime? @db.Timestamptz
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @db.Timestamptz @default(now())
+  updatedAt DateTime @db.Timestamptz @updatedAt
+
+  teamsMeetingId  String?
+  teamsMeetingUrl String?
 
   mediaId String?
   media Media? @relation(fields: [mediaId], references: [id])
   attendees EventAttendee[]
   guests Guest[]
+  expectations Expectation[]
+}
+
+model Expectation {
+  id String @id @default(uuid())
+  description String
+  createdAt DateTime @db.Timestamptz @default(now())
+  updatedAt DateTime @db.Timestamptz @updatedAt
+
+  eventId String
+  event Event @relation(fields: [eventId], references: [id])
 }
 
 model Guest {
@@ -144,8 +167,8 @@ model Guest {
   name String
   email String
   phone String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @db.Timestamptz @default(now())
+  updatedAt DateTime @db.Timestamptz @updatedAt
 
   eventId String
   event Event @relation(fields: [eventId], references: [id])
@@ -158,6 +181,7 @@ model EventAttendee {
   name String
   email String
   phone String
+  organization String?
 
   paymentStatus   PaymentStatus  @default(PENDING)
   stripeSessionId String?        @unique // To verify the payment later
@@ -166,8 +190,8 @@ model EventAttendee {
 
 
   event Event @relation(fields: [eventId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @db.Timestamptz @default(now())
+  updatedAt DateTime @db.Timestamptz @updatedAt
 }
 
 
@@ -175,8 +199,8 @@ model Media {
   id String @id @default(uuid())
   url String
   type String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @db.Timestamptz @default(now())
+  updatedAt DateTime @db.Timestamptz @updatedAt
 
   events Event[]
 }

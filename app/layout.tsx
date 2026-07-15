@@ -19,13 +19,13 @@ const signika = Signika({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.innovarehp.com"),
+  metadataBase: new URL("https://innovarehp.com"),
   title: {
     default: "Innovare HP | Healthcare Marketing & Growth Strategy",
     template: "%s | Innovare HP",
   },
   description:
-    "Innovare HP delivers intelligent healthcare marketing, community outreach, referral development, and brand strategy for senior care, behavioral health, and clinical organizations.",
+    "Innovare HP: Healthcare marketing & brand strategy for senior care, behavioral health, and clinical organizations.",
   applicationName: "Innovare HP",
   generator: "Next.js",
   keywords: KeyWords,
@@ -46,13 +46,13 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: "https://www.innovarehp.com",
+    canonical: "https://innovarehp.com",
   },
 
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://www.innovarehp.com",
+    url: "https://innovarehp.com",
     siteName: "Innovare HP | Healthcare Marketing & Growth Strategy",
     title: "Innovare HP | Healthcare Marketing & Growth Strategy",
     description:

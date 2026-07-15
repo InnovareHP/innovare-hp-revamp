@@ -130,13 +130,15 @@ const InteractiveBackground = () => {
         style={{ opacity: 0.4 }}
       />
 
+      <div className="fixed inset-0 bg-black/20" />
+
       {/* Gradient overlays */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Top gradient */}
-        <div className="absolute top-0 left-0 w-full h-[40vh] bg-gradient-to-b from-blue-0 via-transparent to-transparent opacity-60" />
+        <div className="absolute top-0 left-0 w-full h-[50vh] bg-gradient-to-b from-blue-0 via-transparent to-transparent opacity-60" />
 
         {/* Bottom gradient */}
-        <div className="absolute bottom-0 left-0 w-full h-[30vh] bg-gradient-to-t from-blue-300 via-transparent to-transparent opacity-40" />
+        <div className="absolute bottom-0 left-0 w-full h-[40vh] bg-gradient-to-t from-blue-300 via-transparent to-transparent opacity-40" />
 
         {/* Floating orbs */}
         <div className="absolute top-20 left-10 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />

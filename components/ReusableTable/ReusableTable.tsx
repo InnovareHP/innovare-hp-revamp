@@ -37,6 +37,14 @@ type ReusableTableProps<T> = {
   itemsPerPage?: number;
   totalPages?: number;
   currentPage?: number;
+  /**
+   * Set true when `data` is already sliced to the current page server-side
+   * (e.g. Prisma take/skip). Skips the internal client-side slice so pages
+   * past the first aren't blanked out.
+   */
+  manualPagination?: boolean;
+  /** Total row count across all pages (for the "Showing X of Y" summary in manual mode). */
+  totalItems?: number;
 };
 
 export default function ReusableTable<T>({
@@ -46,10 +54,15 @@ export default function ReusableTable<T>({
   itemsPerPage = 10,
   totalPages = 1,
   currentPage = 1,
+  manualPagination = false,
+  totalItems,
 }: ReusableTableProps<T>) {
   const router = useRouter();
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedData = data.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedData = manualPagination
+    ? data
+    : data.slice(startIndex, startIndex + itemsPerPage);
+  const totalCount = manualPagination ? (totalItems ?? data.length) : data.length;
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -147,15 +160,17 @@ export default function ReusableTable<T>({
           <p className="text-sm font-medium text-muted-foreground">
             Showing{" "}
             <span className="font-bold text-foreground px-1">
-              {startIndex + 1}
+              {totalCount === 0 ? 0 : startIndex + 1}
             </span>{" "}
             to{" "}
             <span className="font-bold text-foreground px-1">
-              {Math.min(startIndex + itemsPerPage, data.length)}
+              {manualPagination
+                ? startIndex + paginatedData.length
+                : Math.min(startIndex + itemsPerPage, data.length)}
             </span>{" "}
             of{" "}
             <span className="font-bold text-foreground px-1">
-              {data.length}
+              {totalCount}
             </span>{" "}
             results
           </p>

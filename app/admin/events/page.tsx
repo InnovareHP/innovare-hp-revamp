@@ -28,7 +28,12 @@ const page = async ({ searchParams }: Props) => {
 
       <AdminEventPage
         events={Promise.resolve(
-          (await events).data ?? { events: [], totalPages: 0, page: 1 }
+          (await events).data ?? {
+            events: [],
+            totalPages: 0,
+            page: 1,
+            total: 0,
+          }
         )}
       />
     </section>

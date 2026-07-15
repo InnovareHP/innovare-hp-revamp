@@ -8,6 +8,7 @@ export type LinkedInPost = {
     id: string;
     imageUrn: string;
     imageUrl: string;
+    storedUrl: string | null;
     altText: string;
     position: number;
   }[];

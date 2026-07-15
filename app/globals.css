@@ -178,7 +178,6 @@ textarea:focus-visible,
 html
   body
   a:not([class*="rounded-full"]):not([class*="button"]):not([class*="Button"]) {
-  text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
 }
@@ -193,7 +192,6 @@ html
   a:not([class*="rounded-full"]):not([class*="button"]):not(
     [class*="Button"]
   ):focus {
-  text-decoration: underline;
   text-decoration-thickness: 2px;
 }
 
@@ -274,6 +272,37 @@ h6 {
   line-height: 1.2;
   /* Ensure headings remain readable when line-height is increased */
   overflow-wrap: break-word;
+}
+
+/* Radix Collapsible animations (used by office accordions on the contact section) */
+@keyframes collapsible-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes collapsible-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+[data-slot="collapsible-content"][data-state="open"] {
+  animation: collapsible-down 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-slot="collapsible-content"][data-state="closed"] {
+  animation: collapsible-up 220ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Support for user custom stylesheets - don't override user preferences */

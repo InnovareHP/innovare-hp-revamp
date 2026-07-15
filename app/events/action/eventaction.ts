@@ -3,8 +3,13 @@
 import { requireAuth } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
 import { sendEventRegistrationEmails } from "@/lib/send-event-email";
+import {
+  createTeamsMeeting,
+  deleteTeamsMeeting,
+  updateTeamsMeeting,
+} from "@/lib/teams";
 import { validateWithRetry } from "@/lib/turnstile";
-import { Prisma } from "@prisma/client";
+import { EventStatus, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
@@ -15,46 +20,103 @@ type ActionResponse<T = void> = {
 };
 
 export async function getEvents(
-  limit: number = 10,
-  page: number = 1
 ): Promise<
   ActionResponse<{
-    events: Prisma.EventGetPayload<{ include: { media: true } }>[];
-    totalPages: number;
-    page: number;
+    upcomingEvents: Prisma.EventGetPayload<{
+      include: { media: true; expectations: true };
+    }>[];
+    pastEvents: Prisma.EventGetPayload<{
+      include: { media: true; expectations: true };
+    }>[];
   }>
 > {
   try {
-    const offset = (page - 1) * limit;
-    const [events, total] = await prisma.$transaction([
+    const now = new Date();
+    const visibleStatuses = [EventStatus.PUBLISHED, EventStatus.COMPLETED];
+
+    const [upcomingEvents, pastEvents] = await prisma.$transaction([
       prisma.event.findMany({
         include: {
           media: true,
           attendees: true,
           guests: true,
+          expectations: true,
+        },
+        where: {
+          status: {
+            in: visibleStatuses,
+          },
+          OR: [
+            {
+              eventEndDate: {
+                gte: now,
+              },
+            },
+            {
+              eventEndDate: null,
+              eventStartDate: {
+                gte: now,
+              },
+            },
+          ],
         },
         orderBy: {
           eventStartDate: "asc",
         },
-        take: limit,
-        skip: offset,
       }),
-      prisma.event.count(),
+      prisma.event.findMany({
+        include: {
+          media: true,
+          attendees: true,
+          guests: true,
+          expectations: true,
+        },
+        where: {
+          status: {
+            in: visibleStatuses,
+          },
+          OR: [
+            {
+              eventEndDate: {
+                lt: now,
+              },
+            },
+            {
+              eventEndDate: null,
+              eventStartDate: {
+                lt: now,
+              },
+            },
+          ],
+        },
+        orderBy: {
+          eventStartDate: "desc",
+        },
+      }),
     ]);
 
-    const totalPages = Math.ceil(total / limit);
-
     // Convert Decimal fields to plain numbers for client component serialization
-    const serializedEvents = events.map((event) => ({
+    const serializeEvents = (
+      events: Prisma.EventGetPayload<{
+        include: { media: true; attendees: true; guests: true; expectations: true };
+      }>[]
+    ) =>
+      events.map((event) => ({
       ...event,
-      price: event.price ? Number(event.price) : null,
-      attendees: event.attendees.map((attendee) => ({
-        ...attendee,
-        amountPaid: attendee.amountPaid ? Number(attendee.amountPaid) : null,
-      })),
-    }));
+        price: event.price ? Number(event.price) : null,
+        attendees: event.attendees.map((attendee) => ({
+          ...attendee,
+          amountPaid: attendee.amountPaid ? Number(attendee.amountPaid) : null,
+        })),
+      }));
 
-    return { success: true, data: { events: serializedEvents as typeof events, totalPages, page } };
+    return {
+      success: true,
+      data: {
+        upcomingEvents: serializeEvents(upcomingEvents) as typeof upcomingEvents,
+        pastEvents: serializeEvents(pastEvents) as typeof pastEvents,
+      },
+    };
   } catch (error) {
     console.error("Error fetching events:", error);
     return {
@@ -69,7 +131,12 @@ export const getEventById = async (
 ): Promise<
   ActionResponse<
     Prisma.EventGetPayload<{
-      include: { media: true; attendees: true; guests: true };
+      include: {
+        media: true;
+        attendees: true;
+        guests: true;
+        expectations: true;
+      };
     }>
   >
 > => {
@@ -79,11 +146,12 @@ export const getEventById = async (
     }
 
     const event = await prisma.event.findUnique({
-      where: { id },
+      where: { slug: id },
       include: {
         media: true,
         attendees: true,
         guests: true,
+        expectations: true,
       },
     });
 
@@ -205,28 +273,58 @@ export async function updateEvent(
 
     const existingEvent = await prisma.event.findUnique({
       where: { id },
+      include: { expectations: true },
     });
 
     if (!existingEvent) {
       return { success: false, error: "Event not found" };
     }
 
-    if (event.eventStartDate && event.eventEndDate) {
-      const startDate = new Date(event.eventStartDate as Date);
-      const endDate = new Date(event.eventEndDate as Date);
-
-      if (endDate < startDate) {
-        return {
-          success: false,
-          error: "Event end date must be after start date",
-        };
-      }
-    }
-
-    await prisma.event.update({
+    const updatedEvent = await prisma.event.update({
       where: { id },
       data: event,
     });
+
+    // Handle Teams meeting lifecycle when eventType changes
+    const newType = (event.eventType as string) ?? existingEvent.eventType;
+    const wasVirtual = existingEvent.eventType === "VIRTUAL";
+    const isNowVirtual = newType === "VIRTUAL";
+
+    try {
+      if (!wasVirtual && isNowVirtual) {
+        // Switched to VIRTUAL — create a new Teams meeting
+        const meeting = await createTeamsMeeting({
+          title: updatedEvent.title,
+          startDate: updatedEvent.eventStartDate,
+          endDate: updatedEvent.eventEndDate,
+        });
+        await prisma.event.update({
+          where: { id },
+          data: {
+            teamsMeetingId: meeting.meetingId,
+            teamsMeetingUrl: meeting.joinUrl,
+          },
+        });
+      } else if (wasVirtual && !isNowVirtual) {
+        // Switched away from VIRTUAL — delete the Teams meeting
+        if (existingEvent.teamsMeetingId) {
+          await deleteTeamsMeeting(existingEvent.teamsMeetingId);
+        }
+        await prisma.event.update({
+          where: { id },
+          data: { teamsMeetingId: null, teamsMeetingUrl: null },
+        });
+      } else if (wasVirtual && isNowVirtual && existingEvent.teamsMeetingId) {
+        // Still VIRTUAL — sync title/dates with the existing Teams meeting
+        await updateTeamsMeeting(existingEvent.teamsMeetingId, {
+          title: updatedEvent.title,
+          startDate: updatedEvent.eventStartDate,
+          endDate: updatedEvent.eventEndDate,
+        });
+      }
+    } catch (teamsError) {
+      console.error("Teams meeting sync failed:", teamsError);
+    }
 
     return { success: true };
   } catch (error) {
@@ -243,7 +341,7 @@ export async function updateEvent(
 
 export async function joinEvent(
   eventId: string,
-  attendeeData: { name: string; email: string; phone: string },
+  attendeeData: { name: string; email: string; phone: string; organization: string },
   turnstileToken: string
 ): Promise<ActionResponse> {
   try {
@@ -261,10 +359,15 @@ export async function joinEvent(
       return { success: false, error: "Event ID is required" };
     }
 
-    if (!attendeeData.name || !attendeeData.email || !attendeeData.phone) {
+    if (
+      !attendeeData.name ||
+      !attendeeData.email ||
+      !attendeeData.phone ||
+      !attendeeData.organization?.trim()
+    ) {
       return {
         success: false,
-        error: "Name, email, and phone are required",
+        error: "Name, email, phone, and organization are required",
       };
     }
 
@@ -278,6 +381,10 @@ export async function joinEvent(
 
     if (!event) {
       return { success: false, error: "Event not found" };
+    }
+
+    if (event.status !== EventStatus.PUBLISHED) {
+      return { success: false, error: "Registration is not available for this event" };
     }
 
     const existingAttendee = await prisma.eventAttendee.findFirst({
@@ -301,12 +408,18 @@ export async function joinEvent(
       }
     }
 
+    const eventCutoffDate = event.eventEndDate ?? event.eventStartDate;
+    if (new Date() > eventCutoffDate) {
+      return { success: false, error: "This event has already ended" };
+    }
+
     const newAttendee = await prisma.eventAttendee.create({
       data: {
         eventId,
         name: attendeeData.name,
         email: attendeeData.email,
         phone: attendeeData.phone,
+        organization: attendeeData.organization.trim(),
       },
     });
 
@@ -318,10 +431,11 @@ export async function joinEvent(
         ...event,
         attendees: [...event.attendees, newAttendee],
         media: event.media ?? null,
+        slug: event.slug,
       },
     });
 
-    revalidatePath(`/events/${eventId}`);
+    revalidatePath(`/events/${event.slug}`);
     return { success: true };
   } catch (error) {
     console.error("Error joining event:", error);

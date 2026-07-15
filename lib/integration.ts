@@ -1,7 +1,51 @@
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { extractImageUrns } from "./function";
 import { prisma } from "./prisma";
 
 const LINKEDIN_API = "https://api.linkedin.com/rest/posts";
+
+const s3 = new S3Client({
+  forcePathStyle: true,
+  region: process.env.AWS_REGION_LOC!,
+  endpoint: process.env.AWS_ENDPOINT!,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_ID!,
+    secretAccessKey: process.env.AWS_SECRET!,
+  },
+});
+
+async function downloadAndUploadImage(
+  downloadUrl: string,
+  imageUrn: string
+): Promise<string | null> {
+  try {
+    const res = await fetch(downloadUrl);
+    if (!res.ok) return null;
+
+    const contentType = res.headers.get("content-type") ?? "image/jpeg";
+    const buffer = new Uint8Array(await res.arrayBuffer());
+
+    // Create a safe filename from the URN
+    const safeUrn = imageUrn.replace(/[^a-zA-Z0-9]/g, "_");
+    const ext = contentType.includes("png") ? "png" : "jpg";
+    const key = `linkedin/${safeUrn}.${ext}`;
+
+    await s3.send(
+      new PutObjectCommand({
+        Bucket: process.env.AWS_BUCKET_NAME!,
+        Key: key,
+        Body: buffer,
+        ContentType: contentType,
+        ACL: "public-read",
+      })
+    );
+
+    return `https://xxldcsnneqmdwebkxgnl.supabase.co/storage/v1/object/public/media/${key}`;
+  } catch (err) {
+    console.error(`Failed to upload image ${imageUrn}:`, err);
+    return null;
+  }
+}
 
 export async function fetchLinkedInPosts() {
   const token = process.env.LINKEDIN_ACCESS_TOKEN!;
@@ -66,9 +110,27 @@ export async function fetchLinkedInPosts() {
   // 3. Batch fetch images
   const imageMap = await fetchImagesByUrns(uniqueImageUrns);
 
-  // 4. Save images
+  // 4. Save images — download from LinkedIn and upload to Supabase
   for (const img of images) {
     const resolved = imageMap[img.imageUrn];
+    const linkedInUrl = resolved?.downloadUrl ?? null;
+
+    // Check if we already have a stored copy
+    const existing = await prisma.linkedInPostImage.findUnique({
+      where: {
+        postId_imageUrn: {
+          postId: img.postId,
+          imageUrn: img.imageUrn,
+        },
+      },
+      select: { storedUrl: true },
+    });
+
+    // Only upload if we don't already have a stored copy
+    let storedUrl = existing?.storedUrl ?? null;
+    if (!storedUrl && linkedInUrl) {
+      storedUrl = await downloadAndUploadImage(linkedInUrl, img.imageUrn);
+    }
 
     await prisma.linkedInPostImage.upsert({
       where: {
@@ -78,14 +140,16 @@ export async function fetchLinkedInPosts() {
         },
       },
       update: {
-        imageUrl: resolved?.downloadUrl ?? null,
+        imageUrl: linkedInUrl,
+        storedUrl: storedUrl ?? undefined,
         altText: img.altText ?? null,
         position: img.position ?? null,
       },
       create: {
         postId: img.postId,
         imageUrn: img.imageUrn,
-        imageUrl: resolved?.downloadUrl ?? null,
+        imageUrl: linkedInUrl,
+        storedUrl,
         altText: img.altText ?? null,
         position: img.position ?? null,
       },

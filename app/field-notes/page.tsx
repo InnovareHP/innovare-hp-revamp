@@ -1,23 +1,23 @@
-import type { Metadata } from "next";
 import FieldNotes from "@/components/LandingPage/FieldNotes/FieldNotes";
+import type { Metadata } from "next";
 
 const SITE_URL = "https://www.innovarehp.com";
 
 export const metadata: Metadata = {
-  title: "Healthcare Marketing Insights & Field Notes",
+  title: "Field Notes | Healthcare Articles & Insights",
   description:
-    "Expert insights on healthcare marketing, behavioral health strategies, senior care trends, and clinical marketing best practices from Innovare HP's field notes.",
+    "A curated collection of healthcare industry articles covering strategy, marketing, behavioral health, senior care, and more from trusted sources.",
   keywords: [
+    "healthcare articles",
     "healthcare marketing insights",
-    "medical marketing blog",
-    "senior care marketing tips",
-    "behavioral health strategies",
+    "senior care industry news",
+    "behavioral health resources",
     "healthcare industry trends",
   ],
   openGraph: {
-    title: "Healthcare Marketing Insights & Field Notes | Innovare HP",
+    title: "Field Notes| Innovare HP",
     description:
-      "Expert insights and field notes on healthcare marketing strategies, trends, and best practices.",
+      "Curated healthcare industry articles and insights from trusted sources.",
     url: `${SITE_URL}/field-notes`,
     type: "website",
     images: [
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Healthcare Marketing Insights | Innovare HP",
+    title: "Field Notes | Innovare HP",
     description:
-      "Expert insights on healthcare marketing strategies and trends.",
+      "Curated healthcare industry articles and insights from trusted sources.",
     images: [`${SITE_URL}/images/og-image.jpg`],
   },
   alternates: {
@@ -43,9 +43,10 @@ export const metadata: Metadata = {
 
 const blogJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Blog",
+  "@type": "CollectionPage",
   name: "Innovare HP Field Notes",
-  description: "Healthcare marketing insights and industry analysis",
+  description:
+    "Curated healthcare industry articles and insights from trusted sources",
   url: `${SITE_URL}/field-notes`,
   publisher: {
     "@type": "Organization",

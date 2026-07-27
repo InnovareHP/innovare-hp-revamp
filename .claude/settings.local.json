@@ -18,7 +18,8 @@
       "Bash(npx next:*)",
       "WebFetch(domain:www.brainzmagazine.com)",
       "Bash(curl -s -L https://www.brainzmagazine.com/post/confessions-of-a-nurse-marketer-interview-with-rich-nollen-bsn-rn-founder-ceo-of-innovare-hp)",
-      "Bash(curl -s -L https://www.brainzmagazine.com/post/the-healthcare-referral-economy)"
+      "Bash(curl -s -L https://www.brainzmagazine.com/post/the-healthcare-referral-economy)",
+      "Bash(curl -sL -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120.0 Safari/537.36\" \"https://www.brainzmagazine.com/post/building-a-healthcare-brand-people-remember\")"
     ]
   }
 }

@@ -12,7 +12,7 @@ interface NavigationProps {
 
 const navLinks = [
   { name: "About", href: "#about", title: "About" },
-  { name: "Partners", href: "#partners", title: "Partners" },
+  // { name: "Partners", href: "#partners", title: "Partners" },
   { name: "Process", href: "#process", title: "Process" },
   { name: "What We Do", href: "#what-we-do", title: "What We Do" },
   { name: "Service Offerings", href: "#services", title: "Service Offerings" },

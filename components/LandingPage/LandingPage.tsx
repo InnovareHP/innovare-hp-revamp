@@ -11,7 +11,7 @@ import EventSection from "./EventSection/EventSection";
 import HeroSection from "./HeroSection/HeroSection";
 import MissionSection from "./MissionSection/MissionSection";
 import Navigation from "./Navigation/Navigation";
-import Partners from "./Partners/Partners";
+// import Partners from "./Partners/Partners";
 import Process from "./Proces/Process";
 import TeamSection from "./TeamSection/TeamSection";
 import WhatWeDo from "./WhatWeDo/WhatWeDo";
@@ -143,7 +143,7 @@ const LandingPage = () => {
         <HeroSection />
         <EventSection />
         <AboutSection />
-        <Partners />
+        {/* <Partners /> */}
         <Process />
         <WhatWeDo />
         {/* <WhatWeAreTalkingAbout initialPosts={posts} /> */}

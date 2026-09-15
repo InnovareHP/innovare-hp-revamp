@@ -56,7 +56,7 @@ const PillButton = ({
 
   if (isInternalHash) {
     return (
-      <Link href={href} title={title} className={classes}>
+      <Link href={href} title={title} data-magnetic className={classes}>
         {content}
       </Link>
     );
@@ -68,6 +68,7 @@ const PillButton = ({
       title={title}
       target="_blank"
       rel="noopener noreferrer"
+      data-magnetic
       className={classes}
     >
       {content}

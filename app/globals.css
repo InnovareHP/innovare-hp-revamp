@@ -376,3 +376,88 @@ h6 {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---- Landing motion primitives ---- */
+
+/* Sticky section rail: from `lg` the left column parks under the header while
+   its neighbour scrolls past. `align-self: start` keeps the grid item from
+   stretching, which would leave it nothing to stick within. `main` uses
+   `overflow-x: clip` (not `hidden`) precisely so this keeps working. */
+@media (min-width: 1024px) {
+  .hp-sticky-col {
+    position: sticky;
+    top: 121px; /* 81px header + 40px breathing room */
+    align-self: start;
+  }
+}
+
+/* Images that reveal behind a wipe start covered. The wipe is applied by
+   `LandingAnimations`; if that script never runs, or motion is reduced, the
+   rule below is overridden and the picture is simply visible. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-anim="mask"] {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+/* Rows that lean toward the pointer. GSAP drives the x-shift where it can; this
+   is the no-JS/reduced-motion fallback and covers keyboard focus too. */
+.hp-hover-row {
+  transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hp-hover-row:focus-visible {
+  transform: translateX(10px);
+}
+
+/* Thin brand rule that draws in from the left under a hovered row. */
+.hp-hover-rule {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.group:hover .hp-hover-rule,
+.group:focus-visible .hp-hover-rule,
+.group[data-state="open"] .hp-hover-rule {
+  transform: scaleX(1);
+}
+
+/* Carousel slides soften and sink as they leave centre. `--slide-away` is
+   written by the carousel from the track's live scroll offset, so the quote
+   travels with a drag rather than snapping between states. Off-centre slides
+   are duplicates and already `aria-hidden`. */
+.hp-slide-part {
+  transform: translateY(calc(var(--slide-away, 0) * 26px))
+    scale(calc(1 - var(--slide-away, 0) * 0.05));
+  opacity: calc(1 - var(--slide-away, 0) * 0.85);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-slide-part {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* Promote only the handful of nodes that are transformed on every scroll
+   frame. Anything one-shot is left alone — a permanent layer per reveal costs
+   more than it saves. */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  [data-parallax],
+  [data-float],
+  [data-sticky-media],
+  [data-hero-drift],
+  [data-hero-sheen] {
+    will-change: transform;
+  }
+}
+
+/* Phones keep the reveals but drop the always-on decoration: the hero's
+   ambient loops and the scrubbed depth never start below `lg` (see
+   `LandingAnimations`), so nothing here needs a compositor layer. */
+@media (max-width: 1023px) {
+  [data-hero-sheen] {
+    display: none;
+  }
+}

@@ -24,37 +24,41 @@ const AboutSection = () => (
         </h2>
       </div>
 
-      <div className="mt-10 grid items-end gap-8 lg:mt-[54px] lg:grid-cols-2 lg:gap-12">
+      <div className="mt-8 grid items-end gap-6 sm:mt-10 lg:mt-[54px] lg:grid-cols-[minmax(0,602px)_minmax(0,1fr)] lg:gap-12">
         <div
           data-anim="stagger"
           data-anim-from="slide-left"
-          className="flex items-end gap-4 sm:gap-[22px]"
+          className="flex items-stretch gap-3 sm:gap-4 lg:items-end lg:gap-[22px]"
         >
-          <div className="relative min-w-0 flex-1 overflow-hidden rounded-[20px] lg:w-[290px] lg:flex-none">
+          <div
+            data-anim="mask"
+            className="relative min-w-0 flex-1 overflow-hidden rounded-[20px] lg:max-w-[290px]"
+          >
             <Image
               src="/images/redesign/about-1.webp"
               alt="Innovare HP strategist presenting to a healthcare client"
               width={290}
               height={323}
               sizes="(max-width: 1024px) 45vw, 290px"
-              className="h-full w-full object-cover"
-              style={{ aspectRatio: "290 / 323" }}
+              className="aspect-[5/6] h-full w-full object-cover lg:aspect-[290/323]"
             />
           </div>
-          <div className="relative min-w-0 flex-1 overflow-hidden rounded-[20px] lg:w-[290px] lg:flex-none">
+          <div
+            data-anim="mask"
+            className="relative min-w-0 flex-1 overflow-hidden rounded-[20px] lg:max-w-[290px]"
+          >
             <Image
               src="/images/redesign/about-2.webp"
               alt="Healthcare marketing team laughing together during a workshop"
               width={290}
               height={274}
               sizes="(max-width: 1024px) 45vw, 290px"
-              className="h-full w-full object-cover"
-              style={{ aspectRatio: "290 / 274" }}
+              className="aspect-[5/6] h-full w-full object-cover lg:aspect-[290/274]"
             />
           </div>
         </div>
 
-        <div data-anim="slide-right" className="lg:pl-6">
+        <div data-anim="slide-right" className="mt-2 lg:mt-0 lg:pl-6">
           <p className="max-w-[433px] text-base leading-[25px] text-ink sm:text-lg">
             The rise of patient choice and autonomy has transformed healthcare
             marketing, pushing facilities to adopt new, multi-platform

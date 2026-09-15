@@ -41,7 +41,7 @@ const ContactPage = () => (
             Tell us what you&apos;re looking to build. We&apos;re ready to help.
           </p>
 
-          <ul className="mt-10 max-w-[328px] lg:mt-[62px]">
+          <ul data-anim="stagger" className="mt-10 max-w-[328px] lg:mt-[62px]">
             {offices.map((office, index) => (
               <li
                 key={office.name}
@@ -51,7 +51,8 @@ const ContactPage = () => (
                   href={office.mapsHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-start justify-between gap-4 pb-8 no-underline"
+                  data-hover-row="10"
+                  className="hp-hover-row group flex items-start justify-between gap-4 pb-8 no-underline"
                 >
                   <span>
                     <span className="block text-base leading-[25px] text-brand uppercase">

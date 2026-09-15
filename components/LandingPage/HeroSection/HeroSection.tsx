@@ -16,6 +16,8 @@ const HeroSection = () => (
   >
     <div className="absolute inset-0">
       <Image
+        data-parallax
+        data-hero-drift
         src="/images/redesign/hero-banner.webp"
         alt="Innovare HP healthcare marketing professionals collaborating"
         fill
@@ -28,18 +30,38 @@ const HeroSection = () => (
         aria-hidden
         className="absolute inset-0 bg-black/45 lg:bg-black/35"
       />
+      {/* Brand wash that drifts across the frame, so the banner is never a
+          completely still photograph. Decorative and very low contrast. */}
+      <div
+        aria-hidden
+        data-hero-sheen
+        className="absolute inset-y-0 -left-1/3 w-2/3 bg-gradient-to-r from-transparent via-brand-bright/20 to-transparent mix-blend-screen"
+      />
     </div>
 
-    <div className="hp-container relative lg:flex lg:h-full lg:items-center">
+    <div
+      data-hero-copy
+      className="hp-container relative lg:flex lg:h-full lg:items-center"
+    >
       <div
         data-anim="hero"
         className="mx-auto flex max-w-[790px] flex-col items-center text-center"
       >
-        <p className="text-[13px] tracking-[0.05em] text-white uppercase sm:text-base">
+        {/* <p className="flex items-center gap-3 text-[13px] tracking-[0.05em] text-white uppercase sm:text-base">
+          <span
+            aria-hidden
+            data-hero-pulse
+            className="size-2 rounded-full bg-brand-bright"
+          />
           Full-service marketing for healthcare
-        </p>
+        </p> */}
 
-        <h1 className="mt-6 text-[clamp(1.75rem,6vw,3rem)] leading-[1.15] font-bold text-white">
+        {/* Word-by-word mask reveal — each word rises out of its own line box,
+            so the headline arrives with a rhythm instead of one block fade. */}
+        <h1
+          data-anim="words"
+          className="mt-6 text-[clamp(1.75rem,6vw,3rem)] leading-[1.15] font-bold text-white"
+        >
           <span className="font-semibold">Marketing that empowers </span>
           <span className="font-bold">healthcare brands </span>
           <span className="font-semibold">to stand apart.</span>
@@ -67,6 +89,15 @@ const HeroSection = () => (
         </PillButton>
       </div>
     </div>
+
+    {/* Scroll cue: a hairline that keeps travelling down its track. Purely
+        decorative, hidden where the hero is a short stacked block. */}
+    <span
+      aria-hidden
+      className="absolute bottom-8 left-1/2 hidden h-[54px] w-px -translate-x-1/2 overflow-hidden bg-white/25 lg:block"
+    >
+      <span data-hero-cue className="block h-1/2 w-px bg-white" />
+    </span>
   </section>
 );
 

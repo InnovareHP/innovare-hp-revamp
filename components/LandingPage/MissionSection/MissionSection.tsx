@@ -1,6 +1,7 @@
 import SectionBadge from "@/components/LandingPage/shared/SectionBadge";
 import Image from "next/image";
 
+import SectionSeam from "@/components/LandingPage/shared/SectionSeam";
 const stats = [
   { value: 500, suffix: "+", label: "Referrals Generated" },
   { value: 30, suffix: "+", label: "Brands Grown" },
@@ -11,8 +12,10 @@ const MissionSection = () => (
   <section
     id="mission"
     aria-label="Our mission"
-    className="bg-surface-1 pt-16 pb-16 sm:pt-20 lg:pt-[85px] lg:pb-[108px]"
+    className="relative bg-surface-1 pt-16 pb-16 sm:pt-20 lg:pt-[85px] lg:pb-[108px]"
   >
+    <SectionSeam from="from-surface-3" />
+
     <div data-anim="stagger" className="hp-container">
       <SectionBadge number="05" className="w-fit">
         Our mission
@@ -40,6 +43,7 @@ const MissionSection = () => (
       <div className="hp-container relative lg:absolute lg:inset-x-0 lg:bottom-[-51px]">
         <dl
           data-anim="stagger"
+          data-count-scrub
           className="-mt-8 grid grid-cols-3 gap-2 rounded-[10px] bg-surface-3 px-4 py-6 sm:gap-6 sm:px-10 lg:mt-0 lg:ml-auto lg:w-[694px] lg:px-[84px] lg:py-[26px]"
         >
           {stats.map((stat) => (
@@ -67,15 +71,28 @@ const MissionSection = () => (
       </div>
     </div>
 
-    <div
-      data-anim="stagger"
-      className="hp-container mt-12 grid gap-8 lg:mt-[110px] lg:grid-cols-[315px_1fr] lg:gap-12"
-    >
-      <p className="max-w-[315px] text-base leading-[25px] text-ink sm:text-lg">
-        We turn insight into connection and connection into impact.
-      </p>
+    <div className="hp-container mt-12 grid gap-8 lg:mt-[110px] lg:grid-cols-[315px_1fr] lg:gap-12">
+      {/* Short lead-in that holds while the long-form copy scrolls past it. */}
+      <div data-sticky-col data-anim="slide-left" className="hp-sticky-col">
+        <p className="max-w-[315px] text-base leading-[25px] text-ink sm:text-lg">
+          We turn insight into connection and connection into impact.
+        </p>
+        <span
+          aria-hidden
+          className="relative mt-8 hidden h-[96px] w-[2px] bg-hairline lg:block"
+        >
+          <span
+            data-sticky-progress
+            className="absolute inset-0 origin-top scale-y-0 bg-brand"
+          />
+        </span>
+      </div>
 
-      <div className="lg:pl-16">
+      <div
+        data-anim="stagger"
+        data-anim-from="slide-right"
+        className="lg:pl-16"
+      >
         <p className="max-w-[697px] text-[clamp(1.375rem,3.6vw,2.25rem)] leading-[1.25] font-medium text-ink">
           We aspire to lead a{" "}
           <span className="text-brand">transformative growth</span> in

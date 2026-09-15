@@ -1,6 +1,7 @@
 import SectionBadge from "@/components/LandingPage/shared/SectionBadge";
 import Image from "next/image";
 
+import SectionSeam from "@/components/LandingPage/shared/SectionSeam";
 const team = [
   {
     name: "Rich Nollen, BSN, RN",
@@ -48,8 +49,10 @@ const TeamSection = () => (
   <section
     id="team"
     aria-label="Meet the team"
-    className="bg-surface-2 py-16 sm:py-20 lg:py-[72px]"
+    className="relative bg-surface-2 py-16 sm:py-20 lg:py-[72px]"
   >
+    <SectionSeam from="from-surface-1" />
+
     <div className="hp-container">
       <SectionBadge number="06" className="w-fit">
         Meet the team
@@ -73,8 +76,8 @@ const TeamSection = () => (
 
       <ul
         data-anim="stagger"
-        data-anim-from="zoom"
-        className="mt-10 grid grid-cols-2 items-start gap-x-5 gap-y-10 sm:gap-x-[29px] lg:mt-[68px] lg:grid-cols-4"
+        data-anim-from="lift"
+        className="mt-8 grid grid-cols-2 items-start gap-x-4 gap-y-8 sm:mt-10 sm:gap-x-[29px] sm:gap-y-10 lg:mt-[68px] lg:grid-cols-4"
       >
         {team.map((member, index) => (
           <li
@@ -82,23 +85,34 @@ const TeamSection = () => (
             /* Second-row shorter portraits sit higher, as in the Figma
                stagger. Only from `lg`, where the grid is four across — the
                two-column layout below that stays flush. */
-            className={index >= 4 && index % 2 === 1 ? "lg:-mt-[51px]" : ""}
+            className={`group ${
+              index >= 4 && index % 2 === 1 ? "lg:-mt-[51px]" : ""
+            }`}
           >
-            <Image
-              src={member.image}
-              alt={member.name}
-              width={250}
-              height={index % 2 === 0 ? 335 : 276}
-              sizes="(max-width: 640px) 45vw, (max-width: 1024px) 45vw, 250px"
-              className="w-full object-cover"
-              style={{
-                aspectRatio: index % 2 === 0 ? "250 / 335" : "250 / 276",
-              }}
+            {/* The frame holds still; only the portrait inside scales, so the
+                grid rhythm never shifts on hover. */}
+            <div className="overflow-hidden">
+              <Image
+                src={member.image}
+                alt={member.name}
+                width={250}
+                height={index % 2 === 0 ? 335 : 276}
+                sizes="(max-width: 640px) 45vw, (max-width: 1024px) 45vw, 250px"
+                className={`aspect-[5/6] w-full object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06] ${
+                  index % 2 === 0
+                    ? "lg:aspect-[250/335]"
+                    : "lg:aspect-[250/276]"
+                }`}
+              />
+            </div>
+            <span
+              aria-hidden
+              className="hp-hover-rule mt-3 block h-[2px] w-full bg-brand sm:mt-4"
             />
-            <h3 className="mt-5 text-lg leading-tight font-medium text-brand sm:text-xl">
+            <h3 className="mt-3 text-[15px] leading-tight font-medium text-brand transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5 sm:text-lg lg:text-xl">
               {member.name}
             </h3>
-            <p className="mt-1 text-sm leading-snug text-ink sm:text-[15px]">
+            <p className="mt-1 text-[13px] leading-snug text-ink transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5 sm:text-sm lg:text-[15px]">
               {member.role}
             </p>
           </li>

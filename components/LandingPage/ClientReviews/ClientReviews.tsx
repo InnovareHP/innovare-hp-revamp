@@ -2,6 +2,7 @@
 
 import SectionBadge from "@/components/LandingPage/shared/SectionBadge";
 import Image from "next/image";
+import SectionSeam from "@/components/LandingPage/shared/SectionSeam";
 import {
   useCallback,
   useEffect,
@@ -64,6 +65,7 @@ const ringDelta = (from: number, to: number) => {
 const ClientReviews = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const avatarRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const slideRefs = useRef<(HTMLElement | null)[]>([]);
   const [activeSlide, setActiveSlide] = useState(COUNT);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -74,17 +76,32 @@ const ClientReviews = () => {
   const active = activeSlide % COUNT;
 
   /**
-   * Lay the avatars out from the track's exact scroll offset so they travel
-   * with the drag instead of snapping. Distance is measured around a ring, so
-   * the first avatar follows the last one round. Written straight to the DOM —
-   * running this through React state would re-render on every scroll frame.
+   * Lay the stage out from the track's exact scroll offset so everything
+   * travels with the drag instead of snapping. Distance is measured around a
+   * ring, so the first avatar follows the last one round. Written straight to
+   * the DOM — running this through React state would re-render on every scroll
+   * frame.
    */
-  const layoutAvatars = useCallback(() => {
+  const layoutStage = useCallback(() => {
     const track = trackRef.current;
     if (!track || track.clientWidth === 0) return;
 
     const raw = track.scrollLeft / track.clientWidth;
     const progress = ((raw % COUNT) + COUNT) % COUNT;
+
+    // How far each slide is from centre, handed to CSS as `--slide-away`. The
+    // quote and its attribution sink and soften on the way out, so the one
+    // being read is unmistakable mid-drag. Off-centre slides are duplicates of
+    // the live set and already aria-hidden, so softening them costs nothing in
+    // the accessibility tree. The figure itself is never transformed — that
+    // would move the box scroll-snapping measures against.
+    slideRefs.current.forEach((el, index) => {
+      if (!el) return;
+      el.style.setProperty(
+        "--slide-away",
+        String(Math.min(1, Math.abs(raw - index)))
+      );
+    });
 
     avatarRefs.current.forEach((el, index) => {
       if (!el) return;
@@ -122,16 +139,16 @@ const ClientReviews = () => {
     const el = trackRef.current;
     if (!el) return;
     el.scrollLeft = COUNT * el.clientWidth;
-    layoutAvatars();
+    layoutStage();
 
     const onResize = () => {
       el.scrollLeft =
         Math.round(el.scrollLeft / el.clientWidth) * el.clientWidth;
-      layoutAvatars();
+      layoutStage();
     };
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-  }, [layoutAvatars]);
+  }, [layoutStage]);
 
   // Derive the active slide from scroll position (drag, swipe, or dot click).
   useEffect(() => {
@@ -142,7 +159,7 @@ const ClientReviews = () => {
     const onScroll = () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
-        layoutAvatars();
+        layoutStage();
         const index = Math.round(el.scrollLeft / el.clientWidth);
         setActiveSlide((prev) => (prev === index ? prev : index));
       });
@@ -157,7 +174,7 @@ const ClientReviews = () => {
       cancelAnimationFrame(frame);
       if (settleTimer.current) clearTimeout(settleTimer.current);
     };
-  }, [layoutAvatars, recentre]);
+  }, [layoutStage, recentre]);
 
   /** Scroll the track only — never the page. Always takes the short way round. */
   const goTo = useCallback((realIndex: number) => {
@@ -211,8 +228,10 @@ const ClientReviews = () => {
     <section
       id="reviews"
       aria-label="Client stories"
-      className="bg-surface-3 py-16 sm:py-20 lg:py-[44px] lg:pt-[44px] lg:pb-[115px]"
+      className="relative bg-surface-3 py-16 sm:py-20 lg:py-[44px] lg:pt-[44px] lg:pb-[115px]"
     >
+      <SectionSeam from="from-surface-1" />
+
       <div className="hp-container">
         <SectionBadge number="04" className="w-fit">
           Client stories
@@ -286,9 +305,12 @@ const ClientReviews = () => {
                 aria-roledescription="slide"
                 aria-label={`${slide.realIndex + 1} of ${COUNT}`}
                 aria-hidden={index !== activeSlide}
+                ref={(el) => {
+                  slideRefs.current[index] = el;
+                }}
                 className="flex w-full shrink-0 snap-center snap-always flex-col justify-center px-1 text-center"
               >
-                <blockquote>
+                <blockquote className="hp-slide-part">
                   <p className="mx-auto max-w-[863px] text-[clamp(1.125rem,2.2vw,1.5625rem)] leading-[1.35] font-medium text-ink">
                     &ldquo;{slide.highlight}&rdquo;
                   </p>
@@ -299,7 +321,7 @@ const ClientReviews = () => {
                   ) : null}
                 </blockquote>
 
-                <figcaption className="mt-8 flex items-center justify-center gap-4 lg:mt-[62px]">
+                <figcaption className="hp-slide-part mt-8 flex items-center justify-center gap-4 lg:mt-[62px]">
                   <Image
                     src={slide.logo}
                     alt={`${slide.role} logo`}

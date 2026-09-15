@@ -1,7 +1,6 @@
 "use client";
 
 import { createGetInTouch } from "@/app/action/email.action";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -15,7 +14,6 @@ import { Textarea } from "@/components/ui/textarea";
 import type { ContactFormValues } from "@/lib/schema";
 import { contactFormSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { motion, type Variants } from "framer-motion";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import Turnstile, { useTurnstile } from "react-turnstile";
@@ -30,21 +28,13 @@ const defaultValues: Partial<ContactFormValues> = {
   message: "",
 };
 
-/* Use transform-only animation so content is never "visually hidden" (opacity 0) and exposed to AT */
-const containerVariants: Variants = {
-  hidden: { y: 20 },
-  visible: {
-    y: 0,
-    transition: { staggerChildren: 0.1 },
-  },
-};
+const TURNSTILE_IFRAME_TITLE =
+  "Security verification to confirm you are human (Cloudflare Turnstile)";
 
-const itemVariants: Variants = {
-  hidden: { y: 10 },
-  visible: { y: 0 },
-};
+const fieldClass =
+  "h-9 rounded-md border-hairline bg-white px-3 py-1 text-sm text-ink shadow-none focus-visible:border-brand focus-visible:ring-brand/30";
 
-const TURNSTILE_IFRAME_TITLE = "Security verification to confirm you are human (Cloudflare Turnstile)";
+const labelClass = "text-base font-medium text-ink";
 
 type ContactSectionProps = {
   selectedOfficeLabel?: string;
@@ -64,14 +54,13 @@ export default function ContactSection({
         if (!iframe.getAttribute("title")) {
           iframe.setAttribute("title", TURNSTILE_IFRAME_TITLE);
         }
-        // Also set aria-label for better accessibility (WCAG 2.0 requirement)
         if (!iframe.getAttribute("aria-label")) {
           iframe.setAttribute("aria-label", TURNSTILE_IFRAME_TITLE);
         }
       }
     };
     setTitle();
-    // Fallback: iframe may be injected shortly after onLoad (audit-friendly)
+    // The iframe can be injected shortly after onLoad fires.
     setTimeout(setTitle, 100);
   };
 
@@ -81,26 +70,30 @@ export default function ContactSection({
     mode: "onChange",
   });
 
-  const onSubmit = async (values: ContactFormValues) => {
+  const announce = (message: string, clearAfter?: number) => {
     const announcement = document.getElementById("form-announcement");
-    
+    if (!announcement) return;
+    announcement.setAttribute("aria-hidden", "false");
+    announcement.textContent = message;
+    if (clearAfter) {
+      setTimeout(() => {
+        announcement.setAttribute("aria-hidden", "true");
+        announcement.textContent = "";
+      }, clearAfter);
+    }
+  };
+
+  const onSubmit = async (values: ContactFormValues) => {
     if (!turnstileToken) {
       toast.error("Please verify you are human.");
-      if (announcement) {
-        announcement.setAttribute("aria-hidden", "false");
-        announcement.textContent = "Error: Please verify you are human by completing the security verification.";
-        setTimeout(() => {
-          announcement.setAttribute("aria-hidden", "true");
-          announcement.textContent = "";
-        }, 5000);
-      }
+      announce(
+        "Error: Please verify you are human by completing the security verification.",
+        5000
+      );
       return;
     }
 
-    if (announcement) {
-      announcement.setAttribute("aria-hidden", "false");
-      announcement.textContent = "Submitting form...";
-    }
+    announce("Submitting form...");
 
     const messageWithOffice = selectedOfficeLabel
       ? `[Regarding: ${selectedOfficeLabel}]\n\n${values.message}`
@@ -114,16 +107,9 @@ export default function ContactSection({
 
     if (!res.success) {
       toast.error("Verification failed. Please try again.");
-      turnstile.reset(); // 🔥 important
+      turnstile.reset();
       setTurnstileToken(null);
-      if (announcement) {
-        announcement.setAttribute("aria-hidden", "false");
-        announcement.textContent = "Error: Verification failed. Please try again.";
-        setTimeout(() => {
-          announcement.setAttribute("aria-hidden", "true");
-          announcement.textContent = "";
-        }, 5000);
-      }
+      announce("Error: Verification failed. Please try again.", 5000);
       return;
     }
 
@@ -131,43 +117,26 @@ export default function ContactSection({
     form.reset(defaultValues);
     turnstile.reset();
     setTurnstileToken(null);
-    if (announcement) {
-      announcement.setAttribute("aria-hidden", "false");
-      announcement.textContent = "Success: Your message has been sent successfully!";
-      setTimeout(() => {
-        announcement.setAttribute("aria-hidden", "true");
-        announcement.textContent = "";
-      }, 3000);
-    }
+    announce("Success: Your message has been sent successfully!", 3000);
   };
 
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      className="p-8 bg-white rounded-lg border shadow-sm"
-      aria-label="Contact form"
-    >
-      <motion.div variants={itemVariants} className="mb-6">
-        <p className="text-xs font-semibold uppercase tracking-wide text-blue-600 mb-1">
-          Stay in touch
-        </p>
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-          Send us a message
-        </h2>
-        {selectedOfficeLabel && (
-          <p className="mt-2 text-sm text-gray-600">
-            Your message will be routed to our{" "}
-            <span className="font-semibold text-blue-700">
-              {selectedOfficeLabel}
-            </span>{" "}
-            team.
-          </p>
-        )}
-      </motion.div>
+    <div className="rounded-[20px] bg-white p-6 shadow-[0_4px_20px_0_rgba(0,0,0,0.1)] sm:p-9">
+      <h3 className="text-[clamp(1.5rem,3vw,2rem)] leading-tight font-semibold text-brand">
+        Start a conversation
+      </h3>
 
-      {/* Screen reader announcements: hidden from AT when empty (rule #10); expose when we set content */}
+      {selectedOfficeLabel && (
+        <p className="mt-2 text-sm text-ink">
+          Your message will be routed to our{" "}
+          <span className="font-semibold text-brand">
+            {selectedOfficeLabel}
+          </span>{" "}
+          team.
+        </p>
+      )}
+
+      {/* Screen reader announcements: hidden from AT until we set content. */}
       <div
         id="form-announcement"
         className="sr-only"
@@ -177,80 +146,102 @@ export default function ContactSection({
       />
 
       <Form {...form}>
-        <form 
-          onSubmit={form.handleSubmit(onSubmit)} 
-          className="space-y-6" 
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="mt-6 space-y-5"
           noValidate
         >
-          {/* NAME */}
-          <motion.div variants={itemVariants}>
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name *</FormLabel>
-                  <FormControl>
-                    <Input {...field} required aria-required="true" type="text" autoComplete="name" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </motion.div>
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem className="gap-3">
+                <FormLabel className={labelClass}>
+                  Full Name <span className="text-[#ff0200]">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    required
+                    aria-required="true"
+                    type="text"
+                    autoComplete="name"
+                    className={fieldClass}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-          {/* PHONE */}
-          <motion.div variants={itemVariants}>
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone *</FormLabel>
-                  <FormControl>
-                    <Input {...field} required aria-required="true" type="tel" autoComplete="tel" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </motion.div>
+          <FormField
+            control={form.control}
+            name="phoneNumber"
+            render={({ field }) => (
+              <FormItem className="gap-3">
+                <FormLabel className={labelClass}>
+                  Phone <span className="text-[#ff0200]">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    required
+                    aria-required="true"
+                    type="tel"
+                    autoComplete="tel"
+                    className={fieldClass}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-          {/* EMAIL */}
-          <motion.div variants={itemVariants}>
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email *</FormLabel>
-                  <FormControl>
-                    <Input {...field} required aria-required="true" type="email" autoComplete="email" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </motion.div>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="gap-3">
+                <FormLabel className={labelClass}>
+                  Email <span className="text-[#ff0200]">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    required
+                    aria-required="true"
+                    type="email"
+                    autoComplete="email"
+                    className={fieldClass}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-          {/* MESSAGE */}
-          <motion.div variants={itemVariants}>
-            <FormField
-              control={form.control}
-              name="message"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Message *</FormLabel>
-                  <FormControl>
-                    <Textarea className="min-h-[120px]" {...field} required aria-required="true" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </motion.div>
+          <FormField
+            control={form.control}
+            name="message"
+            render={({ field }) => (
+              <FormItem className="gap-3">
+                <FormLabel className={labelClass}>
+                  Message <span className="text-[#ff0200]">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    required
+                    aria-required="true"
+                    className={`${fieldClass} h-[102px] min-h-[102px] py-2`}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-          {/* Honeypot: inert + hidden so subtree is fully out of a11y tree (rule #10). */}
+          {/* Honeypot: inert + hidden so the subtree stays out of the a11y tree. */}
           <div
             className="hidden"
             aria-hidden="true"
@@ -281,43 +272,40 @@ export default function ContactSection({
             />
           </div>
 
-          {/* TURNSTILE: fieldset labeled via aria-label; legend hidden from AT to avoid rule #10 (visually hidden but exposed). */}
-          <motion.div variants={itemVariants}>
-            <fieldset
-              className="border-0 p-0 m-0 min-w-0"
-              aria-label="Security verification"
-            >
-              <legend id="security-verification-legend" className="sr-only" aria-hidden="true">
-                Security verification
-              </legend>
-              <Turnstile
-                userRef={turnstileContainerRef as React.MutableRefObject<HTMLDivElement>}
-                sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? ""}
-                theme="light"
-                size="flexible"
-                onLoad={labelTurnstileIframe}
-                onVerify={(token) => setTurnstileToken(token)}
-                onExpire={() => setTurnstileToken(null)}
-                onError={() => {
-                  toast.error("Turnstile error");
-                  setTurnstileToken(null);
-                }}
-              />
-            </fieldset>
-          </motion.div>
+          <fieldset
+            className="m-0 min-w-0 border-0 p-0"
+            aria-label="Security verification"
+          >
+            <legend className="sr-only" aria-hidden="true">
+              Security verification
+            </legend>
+            <Turnstile
+              userRef={
+                turnstileContainerRef as React.MutableRefObject<HTMLDivElement>
+              }
+              sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? ""}
+              theme="light"
+              size="flexible"
+              onLoad={labelTurnstileIframe}
+              onVerify={(token) => setTurnstileToken(token)}
+              onExpire={() => setTurnstileToken(null)}
+              onError={() => {
+                toast.error("Turnstile error");
+                setTurnstileToken(null);
+              }}
+            />
+          </fieldset>
 
-          {/* SUBMIT */}
-          <motion.div variants={itemVariants}>
-            <Button
-              type="submit"
-              disabled={form.formState.isSubmitting || !turnstileToken}
-              aria-busy={form.formState.isSubmitting}
-            >
-              {form.formState.isSubmitting ? "Submitting..." : "Submit"}
-            </Button>
-          </motion.div>
+          <button
+            type="submit"
+            disabled={form.formState.isSubmitting || !turnstileToken}
+            aria-busy={form.formState.isSubmitting}
+            className="inline-flex h-[45px] items-center justify-center rounded-full bg-brand px-8 text-base font-bold text-white transition-colors hover:bg-brand-deep disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {form.formState.isSubmitting ? "Submitting..." : "Submit"}
+          </button>
         </form>
       </Form>
-    </motion.div>
+    </div>
   );
 }

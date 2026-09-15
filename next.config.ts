@@ -4,6 +4,8 @@ const nextConfig: NextConfig = {
   /* config options here */
 
   images: {
+    // The hero fan is exported at 2x; 75 (the default) visibly softens it.
+    qualities: [75, 90],
     remotePatterns: [
       {
         protocol: "https",

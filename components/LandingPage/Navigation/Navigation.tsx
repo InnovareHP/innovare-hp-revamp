@@ -1,10 +1,10 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface NavigationProps {
   isFieldNotes?: boolean;
@@ -12,56 +12,136 @@ interface NavigationProps {
 
 const navLinks = [
   { name: "About", href: "#about", title: "About" },
-  // { name: "Partners", href: "#partners", title: "Partners" },
-  { name: "Process", href: "#process", title: "Process" },
-  { name: "What We Do", href: "#what-we-do", title: "What We Do" },
-  { name: "Service Offerings", href: "#services", title: "Service Offerings" },
+  { name: "Services", href: "#services", title: "Services" },
+  { name: "Our Approach", href: "#process", title: "Our Approach" },
+  { name: "Client Stories", href: "#reviews", title: "Client Stories" },
   { name: "Mission", href: "#mission", title: "Mission" },
   { name: "Team", href: "#team", title: "Team" },
-  { name: "Client Review", href: "#reviews", title: "Client Review" },
+  { name: "Events", href: "/events", title: "Events" },
   { name: "Field Notes", href: "/field-notes", title: "Field Notes" },
   { name: "Contact", href: "#contact", title: "Contact" },
   { name: "Privacy Policy", href: "/privacy-policy", title: "Privacy Policy" },
 ];
 
+
+
+/** Sections the header tracks, in page order, for the menu's current link. */
+const trackedSections = [
+  { id: "about" },
+  { id: "services" },
+  { id: "process" },
+  { id: "reviews" },
+  { id: "mission" },
+  { id: "team" },
+  { id: "events" },
+  { id: "field-notes" },
+  { id: "contact" },
+];
+
 const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isCondensed, setIsCondensed] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const progressRef = useRef<HTMLSpanElement>(null);
   const pathname = usePathname();
+  const isLanding = pathname === "/";
 
-  // Helper function to get the correct href based on current path
-  const getHref = (href: string) => {
-    // If we're not on the home page and the link is a hash link, prepend "/"
-    if (pathname !== "/" && href.startsWith("#")) {
-      return `/${href}`;
-    }
-    return href;
-  };
+  // Hash links only resolve on the landing page; prefix them elsewhere.
+  const getHref = (href: string) =>
+    pathname !== "/" && href.startsWith("#") ? `/${href}` : href;
 
+  /**
+   * The header reacts to the scroll itself: it condenses once the hero is
+   * behind us, and a hairline across its bottom edge reports how far down the
+   * document the reader is. The ratio is written straight to the DOM inside a
+   * rAF — putting a scroll position through React state would re-render the
+   * header every frame.
+   */
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY || window.pageYOffset;
-      setIsScrolled(scrollPosition > 0);
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+      if (progressRef.current) {
+        progressRef.current.style.transform = `scaleX(${ratio})`;
+      }
+      setIsCondensed(window.scrollY > 120);
+      setIsAtTop(window.scrollY <= 4);
     };
 
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
 
-  // Handle keyboard navigation and focus management for mobile menu
+  /**
+   * Which section is being read. The header shows its name and the overlay menu
+   * marks the matching link with `aria-current`, so the menu is useful the
+   * moment it opens rather than being a flat list.
+   */
+  useEffect(() => {
+    if (!isLanding) return;
+
+    const elements = trackedSections
+      .map(({ id }) => document.getElementById(id))
+      .filter((el): el is HTMLElement => Boolean(el));
+    if (!elements.length) return;
+
+    const ratios = new Map<string, number>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          ratios.set(entry.target.id, entry.intersectionRatio);
+        });
+
+        // Whichever section occupies most of the reading band wins.
+        let best: string | null = null;
+        let bestRatio = 0;
+        ratios.forEach((ratio, id) => {
+          if (ratio > bestRatio) {
+            bestRatio = ratio;
+            best = id;
+          }
+        });
+        setActiveSection(bestRatio > 0.08 ? best : null);
+      },
+      {
+        // Ignore the strip behind the fixed header, and weight the upper half
+        // of the viewport — that is what the reader is actually looking at.
+        rootMargin: "-88px 0px -45% 0px",
+        threshold: [0, 0.12, 0.3, 0.6, 1],
+      }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [isLanding]);
+
+
+  // Keyboard handling and focus trapping for the overlay menu.
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
         setIsOpen(false);
-        // Return focus to menu button
         const menuButton = document.querySelector(
           '[aria-controls="navigation-menu"]'
         ) as HTMLElement;
         menuButton?.focus();
       }
 
-      // Trap focus within dialog when open
       if (isOpen && e.key === "Tab") {
         const dialog = document.getElementById("navigation-menu");
         if (!dialog) return;
@@ -84,10 +164,8 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
 
     if (isOpen) {
       document.addEventListener("keydown", handleKeyDown);
-      // Prevent body scroll when menu is open
       document.body.style.overflow = "hidden";
 
-      // Focus first link in menu when it opens
       setTimeout(() => {
         const firstLink = document.querySelector(
           "#navigation-menu a"
@@ -104,150 +182,146 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
     };
   }, [isOpen]);
 
-  const linkVariants = {
-    closed: { opacity: 0, y: 20 },
-    open: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: 0.3 + i * 0.1, duration: 0.4 },
-    }),
-  };
+  const barLine =
+    "block h-[2px] w-full rounded-full bg-white transition-transform duration-300";
 
   return (
     <>
-      {/* Skip to main content link for keyboard navigation */}
       <Link
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        className="sr-only focus-visible:not-sr-only focus-visible:absolute focus-visible:top-4 focus-visible:left-4 focus-visible:z-[60] focus-visible:rounded-md focus-visible:bg-white focus-visible:px-4 focus-visible:py-2 focus-visible:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
       >
         Skip to main content
       </Link>
-      <header className="fixed top-0 left-0 w-full z-50 px-6 py-2 md:px-6 md:py-2 pointer-events-none bg-white">
-        <div className="flex justify-between items-center mx-auto w-full pointer-events-auto">
-          {/* Logo and menu button; main navigation links are in the menu panel below */}
-          <div className="flex items-center gap-2">
-            <Link
-              href="/"
-              title="Innovare HP"
-              aria-label="Innovare HP home page"
-            >
-              <Image
-                src="/images/logo.png"
-                alt="Innovare HP logo"
-                width={96}
-                height={96}
-                className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
-              />
-            </Link>
-            <span
-              className={`uppercase font-light text-lg font-signika tracking-[0.55em] sm:block hidden ${isFieldNotes || isScrolled ? "text-black" : "text-white"}`}
-            >
-              Innovare HP
-            </span>
-          </div>
 
-          {/* Burger Icon */}
+      {/* Over the landing hero the bar rides on the artwork itself and only
+          takes its brand fill once the reader starts scrolling. Other pages
+          open on a light surface, so there it stays filled throughout. */}
+      <header
+        data-condensed={isCondensed}
+        className={`group fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-300 ${
+          isLanding && isAtTop && !isOpen ? "bg-transparent" : "bg-brand"
+        } ${
+          isCondensed ? "shadow-[0_6px_24px_-12px_rgba(0,0,0,0.45)]" : ""
+        } ${isFieldNotes ? "shadow-sm" : ""}`}
+      >
+        <div className="hp-container flex h-16 items-center justify-between transition-[height] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-data-[condensed=true]:h-14 lg:h-[81px] lg:group-data-[condensed=true]:h-[62px]">
+          <Link
+            href="/"
+            title="Innovare HP"
+            aria-label="Innovare HP home page"
+            className="shrink-0 no-underline"
+          >
+            <Image
+              src="/images/redesign/logo-wordmark.webp"
+              alt="Innovare HP"
+              width={640}
+              height={125}
+              priority
+              className="h-8 w-auto transition-[height] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-data-[condensed=true]:h-7 lg:h-[45px] lg:group-data-[condensed=true]:h-9"
+            />
+          </Link>
 
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="relative z-50 flex flex-col justify-between w-8 h-6 group"
+            className="relative z-50 flex h-6 w-8 flex-col justify-between"
             aria-label={
               isOpen ? "Close navigation menu" : "Open navigation menu"
             }
             aria-expanded={isOpen}
             aria-controls="navigation-menu"
           >
-            <motion.span
-              animate={isOpen ? { rotate: 45, y: 10 } : { rotate: 0, y: 0 }}
-              className={`w-full h-[2px] rounded-full transition-colors ${
-                isOpen
-                  ? "bg-blue-600"
-                  : isScrolled
-                    ? "bg-blue-600"
-                    : isFieldNotes
-                      ? "bg-black"
-                      : "bg-white"
-              }`}
+            <span
+              className={`${barLine} ${isOpen ? "translate-y-[11px] rotate-45" : ""}`}
             />
-            <motion.span
-              animate={isOpen ? { opacity: 0, x: 20 } : { opacity: 1, x: 0 }}
-              className={`w-full h-[2px] rounded-full transition-colors ${
-                isOpen
-                  ? "bg-blue-600"
-                  : isScrolled
-                    ? "bg-blue-600"
-                    : isFieldNotes
-                      ? "bg-black"
-                      : "bg-white"
-              }`}
+            <span
+              className={`${barLine} ${isOpen ? "opacity-0" : "opacity-100"}`}
             />
-            <motion.span
-              animate={isOpen ? { rotate: -45, y: -12 } : { rotate: 0, y: 0 }}
-              className={`w-full h-[2px] rounded-full transition-colors ${
-                isOpen
-                  ? "bg-blue-600"
-                  : isScrolled
-                    ? "bg-blue-600"
-                    : isFieldNotes
-                      ? "bg-black"
-                      : "bg-white"
-              }`}
+            <span
+              className={`${barLine} ${isOpen ? "-translate-y-[11px] -rotate-45" : ""}`}
             />
           </button>
         </div>
 
-        {/* Full Screen Menu Overlay - wrapper always in DOM so aria-controls is valid */}
-        <div id="navigation-menu">
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                variants={{
-                  closed: {
-                    opacity: 0,
-                    x: "100%",
-                    transition: { duration: 0.5, ease: "easeInOut" },
-                  },
-                  open: {
-                    opacity: 1,
-                    x: 0,
-                    transition: { duration: 0.5, ease: "easeInOut" },
-                  },
-                }}
-                initial="closed"
-                animate="open"
-                exit="closed"
-                className="fixed inset-0 bg-black text-white z-40 flex flex-col justify-center items-center pointer-events-auto"
-                role="dialog"
-                aria-modal="true"
-                aria-label="Menu"
-              >
-                <nav
-                  className="flex flex-col gap-6 text-center"
-                  aria-label="Main navigation"
-                >
-                  {navLinks.map((link, i) => (
-                    <motion.div
-                      key={link.name}
-                      custom={i}
-                      variants={linkVariants}
-                      initial="closed"
-                      animate="open"
-                      exit="closed"
+        {/* Reading progress across the whole document. */}
+        <span
+          ref={progressRef}
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 bg-brand-bright"
+        />
+
+        {/* Overlay menu — always mounted so aria-controls stays valid. The
+            numbered rows echo the numbered service list and the section badges,
+            and the hero halftone sits behind them so the menu belongs to the
+            same surface as the page. */}
+        <div
+          id="navigation-menu"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu"
+          aria-hidden={!isOpen}
+          inert={!isOpen}
+          className={`fixed inset-0 z-40 overflow-y-auto bg-brand-deep text-white transition-transform duration-500 ease-in-out ${
+            isOpen ? "translate-x-0" : "pointer-events-none translate-x-full"
+          }`}
+        >
+          <div aria-hidden className="pointer-events-none absolute inset-0">
+            <Image
+              src="/images/redesign/hero-texture.webp"
+              alt=""
+              fill
+              sizes="100vw"
+              className="object-cover opacity-40"
+            />
+          </div>
+
+          <div className="hp-container relative flex min-h-full flex-col justify-center py-24">
+            <span className="flex items-center gap-4 text-[11px] tracking-[0.18em] text-white/60 uppercase">
+              <span aria-hidden className="h-px w-8 bg-white/30" />
+              Menu
+            </span>
+
+            <nav className="mt-8 flex flex-col" aria-label="Main navigation">
+              {navLinks.map((link, index) => {
+                const isCurrent =
+                  isLanding && link.href === `#${activeSection ?? ""}`;
+
+                return (
+                  <Link
+                    key={link.name}
+                    href={getHref(link.href)}
+                    onClick={() => setIsOpen(false)}
+                    aria-current={isCurrent ? "true" : undefined}
+                    className={`group/row flex items-baseline gap-5 border-b border-white/10 py-4 no-underline transition-colors duration-300 sm:gap-8 sm:py-5 ${
+                      isCurrent ? "text-white" : "text-white/75 hover:text-white"
+                    }`}
+                  >
+                    <span
+                      aria-hidden
+                      className={`text-[11px] tabular-nums transition-colors duration-300 ${
+                        isCurrent ? "text-brand-glow" : "text-white/40"
+                      }`}
                     >
-                      <Link
-                        href={getHref(link.href)}
-                        onClick={() => setIsOpen(false)}
-                        className="text-2xl sm:text-4xl font-light uppercase tracking-widest hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black rounded underline"
-                      >
-                        {link.name}
-                      </Link>
-                    </motion.div>
-                  ))}
-                </nav>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-2xl tracking-[0.02em] sm:text-4xl">
+                      {link.name}
+                    </span>
+                    <ArrowRight
+                      aria-hidden
+                      className="ml-auto size-5 shrink-0 self-center opacity-0 transition-all duration-300 group-hover/row:translate-x-1 group-hover/row:opacity-100"
+                    />
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <p className="mt-10 max-w-[420px] text-sm leading-[1.6] text-white/60">
+              Healthcare marketing and growth strategy — Comstock Park and Ann
+              Arbor, Michigan.
+            </p>
+          </div>
         </div>
       </header>
     </>

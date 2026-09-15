@@ -27,6 +27,24 @@ const EASE = "power3.out";
  * paint on a small GPU.
  */
 const LandingAnimations = () => {
+  /**
+   * The landing page always opens at the hero. Browsers restore the previous
+   * scroll offset on a refresh, which drops the reader a few dozen pixels into
+   * the hero — the header has already taken its brand fill and the copy sits
+   * under the bar. A deep link (`/#services`) still wins, and the browser's own
+   * restoration is put back when the page unmounts.
+   */
+  useEffect(() => {
+    if (!("scrollRestoration" in window.history)) return;
+
+    window.history.scrollRestoration = "manual";
+    if (!window.location.hash) window.scrollTo(0, 0);
+
+    return () => {
+      window.history.scrollRestoration = "auto";
+    };
+  }, []);
+
   useEffect(() => {
     const mm = gsap.matchMedia();
 
@@ -83,19 +101,6 @@ const LandingAnimations = () => {
           });
         });
 
-        // The eyebrow's status dot pulses everywhere — one tiny element.
-        const pulse = document.querySelector<HTMLElement>("[data-hero-pulse]");
-        if (pulse) {
-          gsap.to(pulse, {
-            scale: 1.9,
-            opacity: 0.35,
-            duration: 1.1,
-            ease: "power1.inOut",
-            yoyo: true,
-            repeat: -1,
-          });
-        }
-
         // Ambient hero loops are wide-screen only: they never stop, so they are
         // the last thing a phone should be asked to composite.
         if (desktop) {
@@ -109,37 +114,6 @@ const LandingAnimations = () => {
               yoyo: true,
               repeat: -1,
             });
-          }
-
-          const sheen =
-            document.querySelector<HTMLElement>("[data-hero-sheen]");
-          if (sheen) {
-            gsap.fromTo(
-              sheen,
-              { xPercent: 0 },
-              {
-                xPercent: 250,
-                duration: 7,
-                ease: "power1.inOut",
-                repeat: -1,
-                repeatDelay: 3.5,
-              }
-            );
-          }
-
-          const cue = document.querySelector<HTMLElement>("[data-hero-cue]");
-          if (cue) {
-            gsap.fromTo(
-              cue,
-              { yPercent: -100 },
-              {
-                yPercent: 200,
-                duration: 1.8,
-                ease: "power2.inOut",
-                repeat: -1,
-                repeatDelay: 0.4,
-              }
-            );
           }
 
           // Leaving the hero: the copy lifts away a little faster than the page

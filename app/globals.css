@@ -13,6 +13,8 @@
   --color-brand: #003a9e;
   --color-brand-deep: #013184;
   --color-brand-bright: #007ac9;
+  /* Hero accent + card glow (Figma #38abfa). */
+  --color-brand-glow: #38abfa;
   --color-ink: #232323;
   /* Figma uses #8b8b8b; darkened to clear WCAG AA (4.5:1) on our light surfaces. */
   --color-ink-muted: #6b6b6b;
@@ -447,17 +449,8 @@ h6 {
   [data-parallax],
   [data-float],
   [data-sticky-media],
-  [data-hero-drift],
-  [data-hero-sheen] {
+  [data-hero-drift] {
     will-change: transform;
   }
 }
 
-/* Phones keep the reveals but drop the always-on decoration: the hero's
-   ambient loops and the scrubbed depth never start below `lg` (see
-   `LandingAnimations`), so nothing here needs a compositor layer. */
-@media (max-width: 1023px) {
-  [data-hero-sheen] {
-    display: none;
-  }
-}

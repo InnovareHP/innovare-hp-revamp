@@ -95,6 +95,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${figtree.variable} font-sans antialiased`}>
+        {/* Runs before paint: the landing page opens at the hero, so the
+            browser must not restore the offset it had on the last visit. A
+            deep link and every other route keep the default behaviour. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "if('scrollRestoration' in history && location.pathname==='/' && !location.hash){history.scrollRestoration='manual';window.scrollTo(0,0)}",
+          }}
+        />
         <Provider>{children}</Provider>
         <Toaster />
         <ToasterA11y />

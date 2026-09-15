@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -22,22 +23,25 @@ const navLinks = [
   { name: "Privacy Policy", href: "/privacy-policy", title: "Privacy Policy" },
 ];
 
-/** Sections the header reports on, in page order. */
+
+
+/** Sections the header tracks, in page order, for the menu's current link. */
 const trackedSections = [
-  { id: "about", label: "About us" },
-  { id: "services", label: "Our services" },
-  { id: "process", label: "Our approach" },
-  { id: "reviews", label: "Client stories" },
-  { id: "mission", label: "Our mission" },
-  { id: "team", label: "Meet the team" },
-  { id: "events", label: "Events" },
-  { id: "field-notes", label: "Field notes" },
-  { id: "contact", label: "Contact us" },
+  { id: "about" },
+  { id: "services" },
+  { id: "process" },
+  { id: "reviews" },
+  { id: "mission" },
+  { id: "team" },
+  { id: "events" },
+  { id: "field-notes" },
+  { id: "contact" },
 ];
 
 const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isCondensed, setIsCondensed] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const progressRef = useRef<HTMLSpanElement>(null);
   const pathname = usePathname();
@@ -65,6 +69,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
         progressRef.current.style.transform = `scaleX(${ratio})`;
       }
       setIsCondensed(window.scrollY > 120);
+      setIsAtTop(window.scrollY <= 4);
     };
 
     const onScroll = () => {
@@ -125,9 +130,6 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
     return () => observer.disconnect();
   }, [isLanding]);
 
-  const activeLabel = trackedSections.find(
-    (section) => section.id === activeSection
-  )?.label;
 
   // Keyboard handling and focus trapping for the overlay menu.
   useEffect(() => {
@@ -192,9 +194,14 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
         Skip to main content
       </Link>
 
+      {/* Over the landing hero the bar rides on the artwork itself and only
+          takes its brand fill once the reader starts scrolling. Other pages
+          open on a light surface, so there it stays filled throughout. */}
       <header
         data-condensed={isCondensed}
-        className={`group fixed inset-x-0 top-0 z-50 bg-brand transition-shadow duration-300 ${
+        className={`group fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-300 ${
+          isLanding && isAtTop && !isOpen ? "bg-transparent" : "bg-brand"
+        } ${
           isCondensed ? "shadow-[0_6px_24px_-12px_rgba(0,0,0,0.45)]" : ""
         } ${isFieldNotes ? "shadow-sm" : ""}`}
       >
@@ -203,7 +210,7 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
             href="/"
             title="Innovare HP"
             aria-label="Innovare HP home page"
-            className="no-underline"
+            className="shrink-0 no-underline"
           >
             <Image
               src="/images/redesign/logo-wordmark.webp"
@@ -214,18 +221,6 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
               className="h-8 w-auto transition-[height] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-data-[condensed=true]:h-7 lg:h-[45px] lg:group-data-[condensed=true]:h-9"
             />
           </Link>
-
-          {/* Where the reader is. Decorative — the same information is in the
-              menu, marked with aria-current. */}
-          <span
-            aria-hidden
-            className={`hidden items-center gap-3 text-[11px] tracking-[0.18em] text-white/70 uppercase transition-opacity duration-500 lg:flex ${
-              activeLabel ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <span className="h-px w-8 bg-white/40" />
-            {activeLabel ?? ""}
-          </span>
 
           <button
             type="button"
@@ -256,7 +251,10 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
           className="absolute inset-x-0 bottom-0 h-[2px] origin-left scale-x-0 bg-brand-bright"
         />
 
-        {/* Overlay menu — always mounted so aria-controls stays valid. */}
+        {/* Overlay menu — always mounted so aria-controls stays valid. The
+            numbered rows echo the numbered service list and the section badges,
+            and the hero halftone sits behind them so the menu belongs to the
+            same surface as the page. */}
         <div
           id="navigation-menu"
           role="dialog"
@@ -264,39 +262,66 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
           aria-label="Menu"
           aria-hidden={!isOpen}
           inert={!isOpen}
-          className={`fixed inset-0 z-40 flex flex-col items-center justify-center bg-brand-deep text-white transition-transform duration-500 ease-in-out ${
+          className={`fixed inset-0 z-40 overflow-y-auto bg-brand-deep text-white transition-transform duration-500 ease-in-out ${
             isOpen ? "translate-x-0" : "pointer-events-none translate-x-full"
           }`}
         >
-          <nav
-            className="flex max-h-[80vh] flex-col gap-5 overflow-y-auto px-6 text-center"
-            aria-label="Main navigation"
-          >
-            {navLinks.map((link) => {
-              const isCurrent =
-                isLanding && link.href === `#${activeSection ?? ""}`;
+          <div aria-hidden className="pointer-events-none absolute inset-0">
+            <Image
+              src="/images/redesign/hero-texture.webp"
+              alt=""
+              fill
+              sizes="100vw"
+              className="object-cover opacity-40"
+            />
+          </div>
 
-              return (
-                <Link
-                  key={link.name}
-                  href={getHref(link.href)}
-                  onClick={() => setIsOpen(false)}
-                  aria-current={isCurrent ? "true" : undefined}
-                  className={`inline-flex items-center justify-center gap-4 text-xl tracking-[0.15em] uppercase underline transition-colors hover:text-white/70 focus:ring-2 focus:ring-white focus:outline-none sm:text-3xl ${
-                    isCurrent ? "text-white" : "text-white/75"
-                  }`}
-                >
-                  <span
-                    aria-hidden
-                    className={`h-px bg-white transition-all duration-300 ${
-                      isCurrent ? "w-8 opacity-100" : "w-0 opacity-0"
+          <div className="hp-container relative flex min-h-full flex-col justify-center py-24">
+            <span className="flex items-center gap-4 text-[11px] tracking-[0.18em] text-white/60 uppercase">
+              <span aria-hidden className="h-px w-8 bg-white/30" />
+              Menu
+            </span>
+
+            <nav className="mt-8 flex flex-col" aria-label="Main navigation">
+              {navLinks.map((link, index) => {
+                const isCurrent =
+                  isLanding && link.href === `#${activeSection ?? ""}`;
+
+                return (
+                  <Link
+                    key={link.name}
+                    href={getHref(link.href)}
+                    onClick={() => setIsOpen(false)}
+                    aria-current={isCurrent ? "true" : undefined}
+                    className={`group/row flex items-baseline gap-5 border-b border-white/10 py-4 no-underline transition-colors duration-300 sm:gap-8 sm:py-5 ${
+                      isCurrent ? "text-white" : "text-white/75 hover:text-white"
                     }`}
-                  />
-                  {link.name}
-                </Link>
-              );
-            })}
-          </nav>
+                  >
+                    <span
+                      aria-hidden
+                      className={`text-[11px] tabular-nums transition-colors duration-300 ${
+                        isCurrent ? "text-brand-glow" : "text-white/40"
+                      }`}
+                    >
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-2xl tracking-[0.02em] sm:text-4xl">
+                      {link.name}
+                    </span>
+                    <ArrowRight
+                      aria-hidden
+                      className="ml-auto size-5 shrink-0 self-center opacity-0 transition-all duration-300 group-hover/row:translate-x-1 group-hover/row:opacity-100"
+                    />
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <p className="mt-10 max-w-[420px] text-sm leading-[1.6] text-white/60">
+              Healthcare marketing and growth strategy — Comstock Park and Ann
+              Arbor, Michigan.
+            </p>
+          </div>
         </div>
       </header>
     </>

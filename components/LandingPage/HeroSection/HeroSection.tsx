@@ -2,79 +2,76 @@ import PillButton from "@/components/LandingPage/shared/PillButton";
 import Image from "next/image";
 
 /**
- * The banner artwork is 2560x1078 (2.37:1). From `lg` the section adopts that
- * exact ratio, so the whole photograph is on screen rather than a band cropped
- * out of the middle. A portrait phone can't fit that ratio, so there the photo
- * stays behind the copy as one block and is anchored left — that side of the
- * frame holds the two figures, and it keeps the darker area under the text.
+ * Hero per the Figma redesign: centred copy on a dark halftone field, with a
+ * fan of five photographs anchored under it.
+ *
+ * All five cards are 2x exports that already carry their tilt, white frame and
+ * brand glow, so nothing is rotated or framed in CSS — doing so would double
+ * the angle and stack a second border on top of the baked one. Displayed
+ * widths are half the export, capped in `vw` so the row keeps its proportions
+ * on a narrow desktop without ever outgrowing the frame.
+ *
+ * The fan sits outside the page gutter and is centred with a measured gap
+ * rather than spread edge to edge — spread across a wide monitor the cards
+ * drift into five islands. Every card is a complete card, so a window wider
+ * than the row shows all five whole; a narrower one lets the outer pair run
+ * off the sides, which is how the Figma frame treats them. Narrow screens keep
+ * the middle of the fan: the outer pair drops below `lg`, the inner pair below
+ * `sm`.
+ *
+ * The hero runs under the fixed header, which is transparent until the reader
+ * scrolls; the top padding is what keeps the copy clear of the bar.
  */
 const HeroSection = () => (
   <section
     id="hero-section"
     aria-label="Hero"
-    className="relative mt-16 flex w-full items-center overflow-hidden bg-[#0c0d08] py-16 lg:mt-[81px] lg:aspect-[2560/1078] lg:max-h-[calc(100dvh-81px)] lg:py-0"
+    className="relative w-full overflow-hidden bg-[#03102f] pt-[7rem] pb-14 lg:pt-[calc(81px+4rem)] lg:pb-[4.5rem]"
   >
-    <div className="absolute inset-0">
+    <div aria-hidden className="absolute inset-0">
       <Image
         data-parallax
         data-hero-drift
-        src="/images/redesign/hero-banner.webp"
-        alt="Innovare HP healthcare marketing professionals collaborating"
+        src="/images/redesign/hero-texture.webp"
+        alt=""
         fill
         priority
         sizes="100vw"
-        className="object-cover object-left lg:object-center"
+        className="object-cover"
       />
-      {/* Keeps the headline above AA contrast on the lighter parts of the photo. */}
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-black/45 lg:bg-black/35"
-      />
-      {/* Brand wash that drifts across the frame, so the banner is never a
-          completely still photograph. Decorative and very low contrast. */}
-      <div
-        aria-hidden
-        data-hero-sheen
-        className="absolute inset-y-0 -left-1/3 w-2/3 bg-gradient-to-r from-transparent via-brand-bright/20 to-transparent mix-blend-screen"
-      />
+      {/* The same 45% black the design lays over the texture — it is what keeps
+          the headline above AA contrast on the lighter top-right corner. */}
+      <div className="absolute inset-0 bg-black/45" />
     </div>
 
-    <div
-      data-hero-copy
-      className="hp-container relative lg:flex lg:h-full lg:items-center"
-    >
+    <div data-hero-copy className="hp-container relative">
       <div
         data-anim="hero"
-        className="mx-auto flex max-w-[790px] flex-col items-center text-center"
+        className="mx-auto flex max-w-[864px] flex-col items-center text-center"
       >
-        {/* <p className="flex items-center gap-3 text-[13px] tracking-[0.05em] text-white uppercase sm:text-base">
-          <span
-            aria-hidden
-            data-hero-pulse
-            className="size-2 rounded-full bg-brand-bright"
-          />
+        <p className="text-sm tracking-[0.05em] text-white uppercase sm:text-base">
           Full-service marketing for healthcare
-        </p> */}
+        </p>
 
         {/* Word-by-word mask reveal — each word rises out of its own line box,
             so the headline arrives with a rhythm instead of one block fade. */}
         <h1
           data-anim="words"
-          className="mt-6 text-[clamp(1.75rem,6vw,3rem)] leading-[1.15] font-bold text-white"
+          className="mt-4 text-[clamp(1.875rem,5vw,3rem)] leading-[1.2] font-semibold text-white"
         >
-          <span className="font-semibold">Marketing that empowers </span>
-          <span className="font-bold">healthcare brands </span>
-          <span className="font-semibold">to stand apart.</span>
+          Marketing that empowers{" "}
+          <span className="text-brand-glow font-bold">healthcare brands</span>{" "}
+          to stand apart.
         </h1>
 
-        <p className="mt-6 max-w-[484px] text-left text-base leading-[1.5] text-white sm:text-xl">
+        <p className="mt-6 text-base leading-[1.5] text-white sm:text-xl">
           We provide{" "}
           <strong className="font-semibold">
             growth strategy, referral development,
           </strong>{" "}
-          and i
+          and{" "}
           <strong className="font-semibold">
-            ntegrated digital marketing solutions
+            integrated digital marketing solutions
           </strong>{" "}
           designed to expand market presence and accelerate census.
         </p>
@@ -90,14 +87,58 @@ const HeroSection = () => (
       </div>
     </div>
 
-    {/* Scroll cue: a hairline that keeps travelling down its track. Purely
-        decorative, hidden where the hero is a short stacked block. */}
-    <span
-      aria-hidden
-      className="absolute bottom-8 left-1/2 hidden h-[54px] w-px -translate-x-1/2 overflow-hidden bg-white/25 lg:block"
+    <div
+      data-anim="stagger"
+      data-anim-from="lift"
+      className="relative mx-auto mt-12 flex w-full max-w-[1600px] items-start justify-center gap-4 sm:gap-6 lg:mt-[3.25rem] lg:gap-[clamp(14px,1.8vw,34px)]"
     >
-      <span data-hero-cue className="block h-1/2 w-px bg-white" />
-    </span>
+      <Image
+        src="/images/redesign/hero-fan-side-left.webp"
+        quality={90}
+        alt="Clinician talking with a patient across a desk"
+        width={512}
+        height={712}
+        sizes="256px"
+        className="hidden h-auto w-[min(18.5vw,256px)] shrink-0 lg:block"
+      />
+      <Image
+        src="/images/redesign/hero-fan-inner-left.webp"
+        quality={90}
+        alt="Two colleagues in conversation in an open office"
+        width={552}
+        height={770}
+        sizes="(min-width: 1024px) 276px, 26vw"
+        className="hidden h-auto w-[min(26vw,276px)] shrink-0 sm:block lg:w-[min(20vw,276px)]"
+      />
+      <Image
+        src="/images/redesign/hero-fan-center.webp"
+        quality={90}
+        alt="Healthcare marketing team meeting outdoors over coffee"
+        width={776}
+        height={848}
+        priority
+        sizes="(min-width: 1024px) 388px, (min-width: 640px) 36vw, 64vw"
+        className="h-auto w-[min(64vw,240px)] shrink-0 sm:w-[min(36vw,388px)] lg:w-[min(28vw,388px)]"
+      />
+      <Image
+        src="/images/redesign/hero-fan-inner-right.webp"
+        quality={90}
+        alt="Two professionals shaking hands outside an office building"
+        width={552}
+        height={770}
+        sizes="(min-width: 1024px) 276px, 26vw"
+        className="hidden h-auto w-[min(26vw,276px)] shrink-0 sm:block lg:w-[min(20vw,276px)]"
+      />
+      <Image
+        src="/images/redesign/hero-fan-side-right.webp"
+        quality={90}
+        alt="Hospital staff reviewing notes on a tablet together"
+        width={512}
+        height={712}
+        sizes="256px"
+        className="hidden h-auto w-[min(18.5vw,256px)] shrink-0 lg:block"
+      />
+    </div>
   </section>
 );
 

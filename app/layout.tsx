@@ -3,19 +3,15 @@ import { ToasterA11y } from "@/components/ToasterA11y";
 import { Toaster } from "@/components/ui/sonner";
 import { KeyWords } from "@/lib/const";
 import type { Metadata, Viewport } from "next";
-import { Signika, Work_Sans } from "next/font/google";
+import { Figtree } from "next/font/google";
 import "./globals.css";
 
-const workSans = Work_Sans({
-  variable: "--font-work-sans",
+// Primary typeface of the redesigned site (matches the Figma source).
+const figtree = Figtree({
+  variable: "--font-figtree",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-});
-
-const signika = Signika({
-  variable: "--font-signika",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -98,7 +94,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${workSans.variable} ${signika.variable} antialiased`}>
+      <body className={`${figtree.variable} font-sans antialiased`}>
         <Provider>{children}</Provider>
         <Toaster />
         <ToasterA11y />

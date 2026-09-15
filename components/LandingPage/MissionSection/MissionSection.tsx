@@ -1,102 +1,95 @@
-"use client";
+import SectionBadge from "@/components/LandingPage/shared/SectionBadge";
+import Image from "next/image";
 
-import { motion, Variants } from "framer-motion";
+const stats = [
+  { value: 500, suffix: "+", label: "Referrals Generated" },
+  { value: 30, suffix: "+", label: "Brands Grown" },
+  { value: 10, suffix: "", label: "Years of Experience" },
+];
 
-const MissionSection = () => {
-  /* Transform-only animation so content is never "visually hidden" (opacity 0) while exposed to AT */
-  const textContainer: Variants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-      },
-    },
-  };
+const MissionSection = () => (
+  <section
+    id="mission"
+    aria-label="Our mission"
+    className="bg-surface-1 pt-16 pb-16 sm:pt-20 lg:pt-[85px] lg:pb-[108px]"
+  >
+    <div data-anim="stagger" className="hp-container">
+      <SectionBadge number="05" className="w-fit">
+        Our mission
+      </SectionBadge>
 
-  const fadeInUp: Variants = {
-    hidden: { y: 30 },
-    visible: {
-      y: 0,
-      transition: { duration: 0.8, ease: "easeOut" },
-    },
-  };
+      <h2 className="mt-8 max-w-[546px] text-[clamp(1.75rem,4.5vw,2.5rem)] leading-[1.25] font-semibold text-ink lg:mt-[74px]">
+        We build healthcare brands that grow with{" "}
+        <span className="hp-mark">purpose.</span>
+      </h2>
+    </div>
 
-  const imageReveal: Variants = {
-    hidden: { scale: 1.1 },
-    visible: {
-      scale: 1,
-      transition: { duration: 1.5, ease: [0.16, 1, 0.3, 1] },
-    },
-  };
-
-  return (
-    <section
-      id="mission"
-      className="bg-[#414141] text-white py-16 px-8 lg:px-12 xl:px-16 overflow-hidden"
-      aria-label="Mission section"
-    >
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          variants={textContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12"
-        >
-          {/* Logo Animation */}
-          <motion.div variants={fadeInUp} className="flex items-center gap-3">
-            <img
-              src="/images/logo-white-2.png"
-              alt="Innovare HP"
-              width={50}
-              title="Innovare HP"
-              height={50}
-            />
-            <h2 className="uppercase font-light text-lg font-signika tracking-[0.55em] block">
-              Innovare HP
-            </h2>
-          </motion.div>
-
-          {/* Paragraphs Animation */}
-          <div className="md:max-w-3xl space-y-6">
-            <motion.p
-              variants={fadeInUp}
-              className="text-lg lg:text-2xl font-normal leading-relaxed sm:leading-normal"
-            >
-              We are dedicated to enhancing the reach and influence of
-              healthcare brands, touching lives with compassionate and
-              innovative marketing approaches driven by valuable insights.
-            </motion.p>
-            <motion.p
-              variants={fadeInUp}
-              className="text-lg lg:text-2xl font-normal leading-relaxed sm:leading-normal"
-            >
-              We aspire to lead a transformative growth in healthcare marketing,
-              empowering brands to inspire positive change and drive meaningful
-              impact.
-            </motion.p>
-          </div>
-        </motion.div>
-
-        {/* Cinematic Image Reveal */}
-        <motion.div
-          variants={imageReveal}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="w-full aspect-[21/9] bg-gray-300 relative overflow-hidden rounded-sm"
-        >
-          <img
-            src="/images/mission.jpg"
-            alt="Innovare HP team working on healthcare marketing mission and values"
-            title="Innovare HP team working on healthcare marketing mission and values"
-            className="object-cover"
-          />
-        </motion.div>
+    <div className="relative mt-10 lg:mt-[55px]">
+      <div className="overflow-hidden">
+        <Image
+          data-parallax
+          src="/images/redesign/mission.webp"
+          alt="Innovare HP strategists leading a workshop with a healthcare team"
+          width={2000}
+          height={950}
+          sizes="100vw"
+          className="h-[240px] w-full object-cover sm:h-[420px] lg:h-[640px]"
+        />
       </div>
-    </section>
-  );
-};
+
+      <div className="hp-container relative lg:absolute lg:inset-x-0 lg:bottom-[-51px]">
+        <dl
+          data-anim="stagger"
+          className="-mt-8 grid grid-cols-3 gap-2 rounded-[10px] bg-surface-3 px-4 py-6 sm:gap-6 sm:px-10 lg:mt-0 lg:ml-auto lg:w-[694px] lg:px-[84px] lg:py-[26px]"
+        >
+          {stats.map((stat) => (
+            <div key={stat.label}>
+              <dt className="sr-only">{stat.label}</dt>
+              <dd>
+                <span
+                  data-count-to={stat.value}
+                  data-count-suffix={stat.suffix}
+                  className="block text-[clamp(1.75rem,5vw,4rem)] leading-[1.15] font-bold whitespace-nowrap text-brand"
+                >
+                  {stat.value}
+                  {stat.suffix}
+                </span>
+                <span
+                  aria-hidden
+                  className="mt-1 block text-[11px] leading-tight text-ink sm:text-xs"
+                >
+                  {stat.label}
+                </span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+
+    <div
+      data-anim="stagger"
+      className="hp-container mt-12 grid gap-8 lg:mt-[110px] lg:grid-cols-[315px_1fr] lg:gap-12"
+    >
+      <p className="max-w-[315px] text-base leading-[25px] text-ink sm:text-lg">
+        We turn insight into connection and connection into impact.
+      </p>
+
+      <div className="lg:pl-16">
+        <p className="max-w-[697px] text-[clamp(1.375rem,3.6vw,2.25rem)] leading-[1.25] font-medium text-ink">
+          We aspire to lead a{" "}
+          <span className="text-brand">transformative growth</span> in
+          healthcare marketing, empowering brands to inspire positive change and
+          drive meaningful impact.
+        </p>
+        <p className="mt-8 max-w-[602px] text-base leading-[25px] text-ink sm:text-lg lg:mt-[60px]">
+          We are dedicated to enhancing the reach and influence of healthcare
+          brands, touching lives with compassionate and innovative marketing
+          approaches driven by valuable insights.
+        </p>
+      </div>
+    </div>
+  </section>
+);
 
 export default MissionSection;

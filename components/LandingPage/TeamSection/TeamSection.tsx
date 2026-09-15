@@ -1,151 +1,111 @@
-"use client";
+import SectionBadge from "@/components/LandingPage/shared/SectionBadge";
+import Image from "next/image";
 
-import { motion, Variants } from "framer-motion";
+const team = [
+  {
+    name: "Rich Nollen, BSN, RN",
+    role: "Owner/CEO",
+    image: "/images/team/team-1.png",
+  },
+  {
+    name: "Roy Gingrich",
+    role: "CFO",
+    image: "/images/team/team-5.png",
+  },
+  {
+    name: "Mark Ivor Glorioso",
+    role: "Software Engineer/CIO",
+    image: "/images/team/team-3.png",
+  },
+  {
+    name: "Abcdef Cresencio",
+    role: "Software Engineer/IT & Web Systems Manager",
+    image: "/images/team/team-7.png",
+  },
+  {
+    name: "Kristin Ann Artillaga",
+    role: "Creative Director",
+    image: "/images/team/team-9.png",
+  },
+  {
+    name: "Llewilyn Janda",
+    role: "Social Media Specialist",
+    image: "/images/team/team-10.png",
+  },
+  {
+    name: "Gerald Ponteras, CPA",
+    role: "Accounting & Billing Manager",
+    image: "/images/team/Team-11.png",
+  },
+  {
+    name: "Arzenio Victor Duque",
+    role: "Graphic Designer",
+    image: "/images/team/Team-12.png",
+  },
+];
 
-const TeamSection = () => {
-  // Transform-only animation so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
-  const memberVariants: Variants = {
-    hidden: { x: -20 },
-    visible: {
-      x: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
+const TeamSection = () => (
+  <section
+    id="team"
+    aria-label="Meet the team"
+    className="bg-surface-2 py-16 sm:py-20 lg:py-[72px]"
+  >
+    <div className="hp-container">
+      <SectionBadge number="06" className="w-fit">
+        Meet the team
+      </SectionBadge>
 
-  const team = [
-    {
-      name: "Rich Nollen, BSN, RN",
-      role: "Owner/CEO",
-      image: "/images/team/team-1.png",
-      imageTitle: "Rich Nollen, BSN, RN",
-    },
-    {
-      name: "Roy Gingrich",
-      role: "CFO",
-      image: "/images/team/team-5.png",
-      imageTitle: "Roy Gingrich",
-    },
-    {
-      name: "Ivor Glorioso",
-      role: "Software Engineer/CIO",
-      image: "/images/team/team-3.png",
-      imageTitle: "Ivor Glorioso",
-    },
-    {
-      name: "Abcdef Cresencio",
-      role: "Software Engineer/IT & Web Systems Manager",
-      image: "/images/team/team-7.png",
-      imageTitle: "Abcdef Cresencio",
-    },
-    {
-      name: "Kristin Ann Artillaga",
-      role: "Creative Director",
-      image: "/images/team/team-9.png",
-      imageTitle: "Kristin Ann Artillaga",
-    },
-    {
-      name: "Llewilyn Janda",
-      role: "Social Media Specialist",
-      image: "/images/team/team-10.png",
-      imageTitle: "Llewilyn Janda",
-    },
-    {
-      name: "Gerald Ponteras, CPA",
-      role: "Accounting & Billing Manager",
-      image: "/images/team/Team-11.png",
-      imageTitle: "Gerald Ponteras, CPA",
-    },
-    {
-      name: "Arzenio Victor Duque",
-      role: "Graphic Designer",
-      image: "/images/team/Team-12.png",
-      imageTitle: "Arzenio Victor Duque",
-    },
-  ];
-
-  return (
-    <section
-      id="team"
-      className="bg-[#E5E1DA] py-8 sm:py-12 md:py-16 px-8 lg:px-12 xl:px-16 text-[#414141] overflow-hidden"
-      aria-label="Team section"
-    >
-      <div className="max-w-6xl mx-auto">
-        {/* Header Content - transform only so never visually hidden while in a11y tree */}
-        <motion.div
-          initial={{ y: 20 }}
-          whileInView={{ y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mb-8 sm:mb-12 md:mb-16"
+      <div
+        data-anim="stagger"
+        className="mt-8 grid gap-6 lg:mt-[74px] lg:grid-cols-2 lg:gap-16"
+      >
+        <h2
+          data-anim="lines"
+          className="max-w-[455px] text-[clamp(1.75rem,4.5vw,2.5rem)] leading-[1.2] font-semibold text-ink"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-gray-700">
-            Our Healthcare Marketing Team
-          </h2>
-          <p className="text-lg lg:text-2xl leading-relaxed sm:leading-normal text-gray-600 font-sans font-normal">
-            Over the course of our journey, we have forged meaningful
-            partnerships with a diverse range of healthcare and health-related
-            organizations.
-          </p>
-        </motion.div>
-
-        {/* Team Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
-          {team.map((member) => (
-            <motion.div
-              key={member.name}
-              variants={memberVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              whileHover={{ x: 5 }} // Slight nudge on hover
-              className="flex items-start gap-6 group"
-            >
-              {/* Profile Image */}
-              <div className="w-[121px] h-[145px] bg-gray-400 shrink-0 overflow-hidden shadow-sm relative">
-                <img
-                  src={member.image}
-                  alt={member.name}
-                  className="object-cover w-full border-2 min-h-[145px] grayscale group-hover:grayscale-0 transition-all duration-500 scale-110 group-hover:scale-100"
-                  title={member.imageTitle}
-                  fetchPriority="high"
-                />
-              </div>
-
-              {/* Member Details */}
-              <div className="flex flex-col pt-2">
-                <h3 className="font-bold text-xl md:text-2xl leading-relaxed sm:leading-normal group-hover:text-black transition-colors">
-                  {member.name}
-                </h3>
-                <p className="text-lg lg:text-2xl leading-relaxed sm:leading-normal text-gray-600 font-sans font-normal mt-1">
-                  {member.role}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Footer Logo - transform only so never visually hidden while in a11y tree */}
-        <motion.div
-          initial={{ translateY: 8 }}
-          whileInView={{ translateY: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className="mt-20 flex justify-end items-center gap-2 opacity-80"
-        >
-          <img
-            src="/images/logo-black.png"
-            alt="Innovare HP"
-            width={50}
-            height={50}
-            title="Innovare HP"
-          />
-          <h2 className="uppercase font-light text-lg font-signika tracking-[0.55em] block">
-            Innovare HP
-          </h2>
-        </motion.div>
+          Our Healthcare Marketing Team
+        </h2>
+        <p className="max-w-[602px] self-center text-base leading-[25px] text-ink sm:text-lg">
+          Over the course of our journey, we have forged meaningful partnerships
+          with a diverse range of healthcare and health-related organizations.
+        </p>
       </div>
-    </section>
-  );
-};
+
+      <ul
+        data-anim="stagger"
+        data-anim-from="zoom"
+        className="mt-10 grid grid-cols-2 items-start gap-x-5 gap-y-10 sm:gap-x-[29px] lg:mt-[68px] lg:grid-cols-4"
+      >
+        {team.map((member, index) => (
+          <li
+            key={member.name}
+            /* Second-row shorter portraits sit higher, as in the Figma
+               stagger. Only from `lg`, where the grid is four across — the
+               two-column layout below that stays flush. */
+            className={index >= 4 && index % 2 === 1 ? "lg:-mt-[51px]" : ""}
+          >
+            <Image
+              src={member.image}
+              alt={member.name}
+              width={250}
+              height={index % 2 === 0 ? 335 : 276}
+              sizes="(max-width: 640px) 45vw, (max-width: 1024px) 45vw, 250px"
+              className="w-full object-cover"
+              style={{
+                aspectRatio: index % 2 === 0 ? "250 / 335" : "250 / 276",
+              }}
+            />
+            <h3 className="mt-5 text-lg leading-tight font-medium text-brand sm:text-xl">
+              {member.name}
+            </h3>
+            <p className="mt-1 text-sm leading-snug text-ink sm:text-[15px]">
+              {member.role}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+);
 
 export default TeamSection;

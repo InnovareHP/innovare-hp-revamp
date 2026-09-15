@@ -12,6 +12,18 @@ export interface Article {
 
 export const articles: Article[] = [
   {
+    id: 4,
+    slug: "building-a-healthcare-brand-people-remember",
+    title: "Building a Healthcare Brand People Remember",
+    source: "Brainz Magazine",
+    url: "https://www.brainzmagazine.com/post/building-a-healthcare-brand-people-remember",
+    description:
+      "Discover how to build a healthcare brand people remember. Learn why trust, consistency, and reputation drive growth long before occupancy, admissions, or referrals are ever discussed.",
+    category: "Healthcare Branding",
+    publishedDate: "2026-07-16",
+    image: "/images/redesign/fieldnote.webp",
+  },
+  {
     id: 1,
     slug: "why-healthcare-referrals-break-before-they-begin",
     title: "Why Healthcare Referrals Break Before They Begin",

@@ -1,27 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { isRegisteredForEvent } from "@/lib/event-registration-storage";
-import { formatDate, formatTime } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
-import {
-  Calendar,
-  CalendarDays,
-  CheckCircle2,
-  Clock,
-  DollarSign,
-  ExternalLink,
-  MapPin,
-  Monitor,
-  Navigation,
-  QrCode,
-  User,
-  Video,
-} from "lucide-react";
-import { QRCodeSVG } from "qrcode.react";
-import { useEffect, useState } from "react";
-import { Badge } from "../ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -29,7 +7,24 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
+} from "@/components/ui/dialog";
+import { isRegisteredForEvent } from "@/lib/event-registration-storage";
+import { formatDate, formatTime } from "@/lib/utils";
+import { Prisma } from "@prisma/client";
+import {
+  ArrowUpRight,
+  CalendarDays,
+  Check,
+  Clock,
+  MapPin,
+  Monitor,
+  QrCode,
+  Video,
+} from "lucide-react";
+import Image from "next/image";
+import { QRCodeSVG } from "qrcode.react";
+import { useEffect, useState } from "react";
+import EventMap from "./EventMap";
 import EventRegistrationModal from "./EventRegistrationModal";
 
 type EventWithRelations = Prisma.EventGetPayload<{
@@ -40,68 +35,38 @@ interface EventDetailClientProps {
   event: EventWithRelations;
 }
 
+/** Label + value pair used down the detail rail. */
+const MetaRow = ({
+  icon: Icon,
+  label,
+  value,
+  hint,
+}: {
+  icon: typeof CalendarDays;
+  label: string;
+  value: string;
+  hint?: string;
+}) => (
+  <div className="flex items-start gap-4 border-t border-hairline py-5 first:border-t-0 first:pt-0">
+    <Icon aria-hidden className="mt-1 size-5 shrink-0 text-brand" />
+    <div className="min-w-0">
+      <p className="text-[13px] tracking-[0.18em] text-brand uppercase">
+        {label}
+      </p>
+      <p className="mt-1 text-lg font-semibold text-ink sm:text-xl">{value}</p>
+      {hint ? <p className="mt-0.5 text-sm text-ink-muted">{hint}</p> : null}
+    </div>
+  </div>
+);
+
 const EventDetailClient = ({ event }: EventDetailClientProps) => {
   const [userIsRegistered, setUserIsRegistered] = useState(false);
-  const [mapCoordinates, setMapCoordinates] = useState<{
-    lat: number;
-    lon: number;
-  } | null>(null);
-  const [isLoadingMap, setIsLoadingMap] = useState(true);
   const [origin, setOrigin] = useState("");
 
   useEffect(() => {
     setUserIsRegistered(isRegisteredForEvent(event.id));
     setOrigin(window.location.origin);
   }, [event.id]);
-
-  // useEffect(() => {
-  //   const payment = searchParams.get("payment");
-  //   if (payment === "success") {
-  //     setUserIsRegistered(true);
-  //     toast.success("Payment successful!", {
-  //       description:
-  //         "You have been registered for the event. Check your email for confirmation.",
-  //     });
-  //     window.history.replaceState({}, "", `/events/${event.slug}`);
-  //   } else if (payment === "cancelled") {
-  //     toast.info("Payment cancelled", {
-  //       description: "Your registration was not completed.",
-  //     });
-  //     window.history.replaceState({}, "", `/events/${event.slug}`);
-  //   }
-  // }, [searchParams, event.slug]);
-
-  // Geocode location using Nominatim (free OpenStreetMap service)
-  useEffect(() => {
-    const geocodeLocation = async () => {
-      try {
-        setIsLoadingMap(true);
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-            event.location
-          )}&limit=1`,
-          {
-            headers: {
-              "User-Agent": "InnovareHP-Events",
-            },
-          }
-        );
-        const data = await response.json();
-        if (data && data.length > 0) {
-          setMapCoordinates({
-            lat: parseFloat(data[0].lat),
-            lon: parseFloat(data[0].lon),
-          });
-        }
-      } catch (error) {
-        console.error("Error geocoding location:", error);
-      } finally {
-        setIsLoadingMap(false);
-      }
-    };
-
-    geocodeLocation();
-  }, [event.location]);
 
   const isPastDeadline = event.registrationDeadline
     ? new Date() > new Date(event.registrationDeadline)
@@ -115,227 +80,203 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
   const googleMapsDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodedLocation}`;
 
   const eventPrice = event.price ? Number(event.price) : null;
+  const isVirtual = event.eventType === "VIRTUAL";
+  const isOpen = event.status === "PUBLISHED" && !isPastEvent;
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
+  const formatPrice = (price: number) =>
+    new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
     }).format(price);
-  };
 
   return (
-    <CardContent className="h-full ">
-      <div className="grid grid-cols-1 xl:grid-cols-2 space-y-4">
-        <div className="space-y-6 lg:pr-6">
-          <div className="relative w-full aspect-[2/1] overflow-hidden">
-            <img
-              src={event.media?.url ?? ""}
+    <div className="hp-container grid gap-12 py-12 lg:grid-cols-[1fr_420px] lg:gap-16 lg:py-[72px]">
+      {/* ---- Main column ---- */}
+      <div>
+        {event.media?.url ? (
+          <div className="overflow-hidden rounded-[20px] bg-surface-3">
+            {/* Event posters come in every ratio, so show the whole artwork
+                rather than cropping it to a fixed box. */}
+            <Image
+              src={event.media.url}
               alt={event.title}
-              className="w-full h-full object-cover"
+              width={1200}
+              height={800}
+              priority
+              sizes="(max-width: 1024px) 100vw, 60vw"
+              className="h-auto w-full"
             />
           </div>
+        ) : null}
 
-          <div className="space-y-4">
-            <div className="flex flex-wrap gap-2">
-              {event.isPaid && eventPrice && eventPrice > 0 ? (
-                <Badge variant="secondary" className="gap-1">
-                  <DollarSign className="w-3 h-3" />
-                  {formatPrice(eventPrice)}
-                </Badge>
-              ) : (
-                <Badge
-                  variant="outline"
-                  className="text-green-600 border-green-300"
-                >
-                  Free
-                </Badge>
-              )}
-              <Badge
-                variant="outline"
-                className={
-                  event.eventType === "VIRTUAL"
-                    ? "text-purple-600 border-purple-300 gap-1"
-                    : "text-blue-600 border-blue-300 gap-1"
-                }
-              >
-                <Monitor className="w-3 h-3" />
-                {event.eventType === "VIRTUAL" ? "Virtual" : "Onsite"}
-              </Badge>
-            </div>
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
-              {event.title}
-            </h1>
-            {event.hostedBy && (
-              <div className="flex items-center gap-2 text-slate-600">
-                <User className="w-4 h-4 shrink-0" />
-                <span className="text-sm font-medium">
-                  Hosted by{" "}
-                  <span className="text-slate-900 font-semibold">
-                    {event.hostedBy}
-                  </span>
-                </span>
-              </div>
+        <div className="mt-8 flex flex-wrap items-center gap-2">
+          <span
+            className={`inline-flex h-7 items-center rounded-full px-3 text-[13px] font-medium ${
+              event.isPaid && eventPrice && eventPrice > 0
+                ? "bg-brand text-white"
+                : "border border-hairline bg-white text-brand"
+            }`}
+          >
+            {event.isPaid && eventPrice && eventPrice > 0
+              ? formatPrice(eventPrice)
+              : "Free"}
+          </span>
+          <span className="inline-flex h-7 items-center gap-1.5 rounded-full border border-hairline bg-white px-3 text-[13px] font-medium text-ink">
+            {isVirtual ? (
+              <Monitor aria-hidden className="size-3.5" />
+            ) : (
+              <MapPin aria-hidden className="size-3.5" />
             )}
-            <p className="text-base leading-relaxed text-slate-600">
-              {event.description}
-            </p>
-          </div>
-
-          {event.expectations && event.expectations.length > 0 && (
-            <div className="space-y-3">
-              <h3 className="text-lg font-bold text-slate-900">
-                What to Expect
-              </h3>
-              <ul className="space-y-2">
-                {event.expectations.map((expectation) => (
-                  <li
-                    key={expectation.id}
-                    className="flex items-start gap-2 text-slate-700"
-                  >
-                    <CheckCircle2 className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
-                    <span className="text-sm">{expectation.description}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          <div className="grid grid-cols-1 lg:grid-cols-1 gap-4">
-            <Card className="border-0 bg-gradient-to-br from-blue-50 via-blue-50/80 to-blue-100/30 shadow-md hover:shadow-lg transition-all duration-300">
-              <CardContent className="pt-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-xl bg-white/80 backdrop-blur-sm shadow-sm">
-                    <CalendarDays className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div className="space-y-1 flex-1">
-                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                      Start Date
-                    </p>
-                    <p className="text-xl font-bold text-slate-900">
-                      {formatDate(event.eventStartDate)}
-                    </p>
-                    <p className="text-sm text-slate-600 font-medium">
-                      {formatTime(event.eventStartDate)}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {event.eventEndDate && (
-              <Card className="border-0 bg-gradient-to-br from-blue-50 via-indigo-50/80 to-blue-100/30 shadow-md hover:shadow-lg transition-all duration-300">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-xl bg-white/80 backdrop-blur-sm shadow-sm">
-                      <Calendar className="w-6 h-6 text-blue-600" />
-                    </div>
-                    <div className="space-y-1 flex-1">
-                      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                        End Date
-                      </p>
-                      <p className="text-xl font-bold text-slate-900">
-                        {formatDate(event.eventEndDate)}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {event.registrationDeadline && (
-              <Card className="border-0 bg-gradient-to-br from-blue-50 via-indigo-50/80 to-blue-100/30 shadow-md hover:shadow-lg transition-all duration-300">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-xl bg-white/80 backdrop-blur-sm shadow-sm">
-                      <Clock className="w-6 h-6 text-blue-600" />
-                    </div>
-                    <div className="space-y-1 flex-1">
-                      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                        Registration Deadline
-                      </p>
-                      <p className="text-xl font-bold text-slate-900">
-                        {formatDate(event.registrationDeadline)}
-                      </p>
-                      <p className="text-sm text-slate-600 font-medium">
-                        {formatTime(event.registrationDeadline)}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            <Dialog>
-              <DialogTrigger asChild>
-                <Card className="border-0 cursor-pointer bg-gradient-to-br from-blue-50 via-slate-50/80 to-blue-100/30 shadow-md hover:shadow-lg transition-all duration-300">
-                  <CardContent className="pt-6">
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 rounded-xl bg-white/80 backdrop-blur-sm shadow-sm">
-                        <QrCode className="w-6 h-6 text-blue-600" />
-                      </div>
-                      <div className="space-y-1 flex-1">
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          QR Code
-                        </p>
-                        <p className="text-xl font-bold text-slate-900">
-                          Invite Guests
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>QR Code</DialogTitle>
-                  <DialogDescription>
-                    Scan this QR code to register or view event details
-                  </DialogDescription>
-                  <div className="flex flex-col justify-center items-center">
-                    <p className="text-sm text-slate-500">
-                      Event Title: {event.title}
-                    </p>
-                    <QRCodeSVG
-                      value={`${origin}/events/${event.slug}`}
-                      size={300}
-                      level="H"
-                      includeMargin={true}
-                    />
-                  </div>
-                </DialogHeader>
-              </DialogContent>
-            </Dialog>
-          </div>
+            {isVirtual ? "Virtual" : "Onsite"}
+          </span>
+          {isPastEvent ? (
+            <span className="inline-flex h-7 items-center rounded-full border border-hairline bg-white px-3 text-[13px] font-medium text-ink-muted">
+              Event ended
+            </span>
+          ) : null}
         </div>
 
-        <div className="space-y-6 p-2 lg:pl-6 bg-gradient-to-br from-slate-50/50 to-blue-50/30 lg:border-l border-slate-200">
-          {event.status === "PUBLISHED" && !isPastEvent && (
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 p-6 md:p-8 shadow-2xl">
-              {/* Decorative Background Pattern */}
-              <div className="absolute inset-0 opacity-10">
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                  }}
-                />
-              </div>
+        <h1 className="mt-5 text-[clamp(1.75rem,4.5vw,2.5rem)] leading-[1.2] font-semibold text-ink">
+          {event.title}
+        </h1>
 
-              <div className="relative z-10 flex flex-col items-center gap-4 text-center">
-                <div className="space-y-2">
-                  <h3 className="text-2xl md:text-3xl font-bold text-white">
-                    {userIsRegistered ? "You're All Set!" : "Ready to Join?"}
-                  </h3>
-                  <p className="text-blue-100 text-sm md:text-base">
-                    {userIsRegistered
-                      ? "You're registered! See you there!"
-                      : isPastDeadline
-                        ? "Registration deadline has passed."
-                        : "Register now to secure your spot!"}
+        {event.hostedBy ? (
+          <p className="mt-3 text-base text-ink-muted sm:text-lg">
+            Hosted by <span className="text-ink">{event.hostedBy}</span>
+          </p>
+        ) : null}
+
+        <p className="mt-6 max-w-[650px] text-base leading-[25px] whitespace-pre-line text-ink sm:text-lg">
+          {event.description}
+        </p>
+
+        {event.expectations && event.expectations.length > 0 ? (
+          <div className="mt-10">
+            <h2 className="text-[clamp(1.375rem,2.6vw,1.875rem)] leading-[1.2] font-semibold text-ink">
+              What to expect
+            </h2>
+            <ul className="mt-5 space-y-3">
+              {event.expectations.map((expectation) => (
+                <li key={expectation.id} className="flex items-start gap-3">
+                  <Check
+                    aria-hidden
+                    className="mt-1 size-4 shrink-0 text-brand"
+                    strokeWidth={3}
+                  />
+                  <span className="text-base leading-[25px] text-ink sm:text-lg">
+                    {expectation.description}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+
+        {/* Location / meeting */}
+        <div className="mt-12">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <h2 className="text-[clamp(1.375rem,2.6vw,1.875rem)] leading-[1.2] font-semibold text-ink">
+              {isVirtual ? "Meeting details" : "Event location"}
+            </h2>
+            {!isVirtual ? (
+              <a
+                href={googleMapsDirectionsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 text-sm font-bold tracking-[0.02em] text-brand uppercase no-underline hover:text-brand-deep"
+              >
+                Directions
+                <ArrowUpRight
+                  aria-hidden
+                  className="size-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                  strokeWidth={2.4}
+                />
+                <span className="sr-only">
+                  (opens Google Maps in a new tab)
+                </span>
+              </a>
+            ) : null}
+          </div>
+
+          {isVirtual ? (
+            <div className="mt-5 rounded-[20px] border border-hairline bg-surface-1 p-6">
+              <div className="flex items-start gap-4">
+                <Monitor
+                  aria-hidden
+                  className="mt-1 size-5 shrink-0 text-brand"
+                />
+                <div>
+                  <p className="text-lg font-semibold text-ink">
+                    Microsoft Teams
+                  </p>
+                  <p className="mt-1 text-sm text-ink-muted sm:text-base">
+                    The meeting link is sent to your email after registration.
                   </p>
                 </div>
+              </div>
+            </div>
+          ) : (
+            <div className="mt-5 overflow-hidden rounded-[20px] border border-hairline bg-surface-1">
+              <EventMap location={event.location} />
+              <div className="flex items-start gap-4 border-t border-hairline p-6">
+                <MapPin
+                  aria-hidden
+                  className="mt-1 size-5 shrink-0 text-brand"
+                />
+                <div>
+                  <p className="text-[13px] tracking-[0.18em] text-brand uppercase">
+                    Address
+                  </p>
+                  <p className="mt-1 text-lg font-semibold text-ink">
+                    {event.location}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
 
-                {!userIsRegistered && (
+      {/* ---- Detail rail ---- */}
+      <aside className="lg:sticky lg:top-[105px] lg:self-start">
+        <div className="rounded-[20px] border border-hairline bg-surface-1 p-6 sm:p-8">
+          <MetaRow
+            icon={CalendarDays}
+            label="Starts"
+            value={formatDate(event.eventStartDate)}
+            hint={formatTime(event.eventStartDate)}
+          />
+          {event.eventEndDate ? (
+            <MetaRow
+              icon={CalendarDays}
+              label="Ends"
+              value={formatDate(event.eventEndDate)}
+            />
+          ) : null}
+          {event.registrationDeadline ? (
+            <MetaRow
+              icon={Clock}
+              label="Register by"
+              value={formatDate(event.registrationDeadline)}
+              hint={formatTime(event.registrationDeadline)}
+            />
+          ) : null}
+
+          {isOpen ? (
+            <div className="mt-6 border-t border-hairline pt-6">
+              <p className="text-lg font-semibold text-ink sm:text-xl">
+                {userIsRegistered ? "You're all set" : "Ready to join?"}
+              </p>
+              <p className="mt-1 text-sm text-ink-muted sm:text-base">
+                {userIsRegistered
+                  ? "You're registered — see you there."
+                  : isPastDeadline
+                    ? "The registration deadline has passed."
+                    : "Register now to secure your spot."}
+              </p>
+
+              {!userIsRegistered ? (
+                <div className="mt-5">
                   <EventRegistrationModal
                     eventId={event.id}
                     eventTitle={event.title}
@@ -343,211 +284,95 @@ const EventDetailClient = ({ event }: EventDetailClientProps) => {
                     eventPrice={eventPrice}
                     isPaidEvent={event.isPaid}
                   />
-                )}
-              </div>
+                </div>
+              ) : null}
             </div>
-          )}
-          {event.status === "PUBLISHED" &&
-            !isPastEvent &&
-            event.eventType === "VIRTUAL" &&
-            event.teamsMeetingUrl && (
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-600 via-purple-700 to-indigo-800 p-6 shadow-2xl">
-                <div className="absolute inset-0 opacity-10">
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                    }}
-                  />
-                </div>
-                <div className="relative z-10 flex flex-col items-center gap-4 text-center">
-                  <div className="p-3 rounded-full bg-white/20">
-                    <Video className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="space-y-1">
-                    <h3 className="text-xl font-bold text-white">
-                      Virtual Event — Microsoft Teams
-                    </h3>
-                    <p className="text-purple-100 text-sm">
-                      {userIsRegistered
-                        ? "You're registered. Click below to join when the event starts."
-                        : "Register to receive the meeting details by email."}
-                    </p>
-                  </div>
-                  {userIsRegistered && (
-                    <Button
-                      className="bg-white text-purple-700 hover:bg-purple-50 font-semibold gap-2"
-                      onClick={() =>
-                        window.open(event.teamsMeetingUrl!, "_blank")
-                      }
-                    >
-                      <Video className="w-4 h-4" />
-                      Join Microsoft Teams Meeting
-                    </Button>
-                  )}
-                </div>
-              </div>
-            )}
+          ) : null}
 
-          {event.status === "PUBLISHED" && !isPastEvent && (
-            <div className="space-y-3">
-              <h3 className="text-xl font-bold text-slate-900">How to Join</h3>
-              <Card className="border-l-4 border-l-blue-600 bg-gradient-to-r from-blue-50 to-white shadow-sm">
-                <CardContent className="pt-4 pb-4">
-                  <div className="space-y-3">
-                    <div className="flex gap-2 items-start">
-                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
-                        1
-                      </div>
-                      <p className="text-slate-700 text-sm">
-                        <span className="font-semibold">Register:</span> Fill
-                        out the form below
-                      </p>
-                    </div>
-                    <div className="flex gap-2 items-start">
-                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
-                        2
-                      </div>
-                      <p className="text-slate-700 text-sm">
-                        <span className="font-semibold">Confirm:</span> Check
-                        your email
-                      </p>
-                    </div>
-                    <div className="flex gap-2 items-start">
-                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
-                        3
-                      </div>
-                      <p className="text-slate-700 text-sm">
-                        <span className="font-semibold">Attend:</span> Be
-                        present at the event location
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+          {isPastEvent ? (
+            <div className="mt-6 border-t border-hairline pt-6">
+              <p className="text-lg font-semibold text-ink">
+                This event has ended
+              </p>
+              <p className="mt-1 text-sm text-ink-muted sm:text-base">
+                It now appears under past events and is no longer accepting
+                registrations.
+              </p>
             </div>
-          )}
-          {isPastEvent && (
-            <Card className="border-amber-200 bg-amber-50 shadow-sm">
-              <CardContent className="pt-5">
-                <h3 className="text-lg font-bold text-slate-900">
-                  This event has ended
-                </h3>
-                <p className="mt-2 text-sm text-slate-600">
-                  This activity now appears in the Past Events section and is no
-                  longer accepting registrations.
-                </p>
-              </CardContent>
-            </Card>
-          )}
-          <div className="space-y-4">
-            {event.eventType === "VIRTUAL" ? (
-              <>
-                <h3 className="text-xl font-bold text-slate-900">
-                  Meeting Details
-                </h3>
-                <Card className="overflow-hidden border-2 shadow-lg">
-                  <CardContent className="p-5 bg-gradient-to-br from-purple-50/50 to-white">
-                    <div className="flex items-start gap-3">
-                      <Monitor className="w-5 h-5 text-purple-600 mt-0.5 shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-slate-700 mb-1">
-                          Platform
-                        </p>
-                        <p className="text-slate-900 font-medium text-base">
-                          Microsoft Teams
-                        </p>
-                        <p className="text-xs text-slate-500 mt-1">
-                          The meeting link will be sent to your email after
-                          registration.
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </>
-            ) : (
-              <>
-                <div className="flex items-center justify-between flex-wrap gap-4">
-                  <h3 className="text-xl font-bold text-slate-900">
-                    Event Location
-                  </h3>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="gap-2 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 transition-colors"
-                    onClick={() =>
-                      window.open(googleMapsDirectionsUrl, "_blank")
-                    }
-                  >
-                    <Navigation className="w-4 h-4" />
-                    Directions
-                  </Button>
-                </div>
-
-                <Card className="overflow-hidden border-2 shadow-lg">
-                  {isLoadingMap ? (
-                    <div className="relative w-full h-[300px] bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center">
-                      <div className="text-center space-y-3">
-                        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
-                        <p className="text-slate-600 font-medium">
-                          Loading map...
-                        </p>
-                      </div>
-                    </div>
-                  ) : (
-                    <>
-                      <div className="relative w-full h-[300px] bg-slate-100">
-                        <iframe
-                          width="100%"
-                          height="100%"
-                          style={{ border: 0 }}
-                          loading="lazy"
-                          title="Event Location Map"
-                          src={`https://www.google.com/maps?q=${encodeURIComponent(
-                            event.location
-                          )}&output=embed`}
-                          className="w-full h-full"
-                        />
-                      </div>
-                      <CardContent className="p-5 bg-gradient-to-br from-blue-50/50 to-white">
-                        <div className="flex items-start gap-3">
-                          <MapPin className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-slate-700 mb-1">
-                              Address
-                            </p>
-                            <p className="text-slate-900 font-medium text-base">
-                              {event.location}
-                            </p>
-                            <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">
-                              © OpenStreetMap contributors
-                            </p>
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="shrink-0 hover:bg-blue-50 hover:text-blue-700"
-                            onClick={() =>
-                              window.open(
-                                `https://www.openstreetmap.org/?mlat=${mapCoordinates?.lat}&mlon=${mapCoordinates?.lon}#map=16/${mapCoordinates?.lat}/${mapCoordinates?.lon}`,
-                                "_blank"
-                              )
-                            }
-                          >
-                            <ExternalLink className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </>
-                  )}
-                </Card>
-              </>
-            )}
-          </div>
+          ) : null}
         </div>
-      </div>
-    </CardContent>
+
+        {isOpen && isVirtual && event.teamsMeetingUrl && userIsRegistered ? (
+          <a
+            href={event.teamsMeetingUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group mt-4 inline-flex h-[50px] w-full items-center justify-center gap-2.5 rounded-full bg-brand px-6 text-sm font-bold tracking-[0.02em] text-white uppercase no-underline transition-colors hover:bg-brand-deep sm:text-base"
+          >
+            <Video aria-hidden className="size-5" />
+            Join Teams meeting
+          </a>
+        ) : null}
+
+        {isOpen ? (
+          <ol className="mt-8">
+            {[
+              { step: "Register", text: "Fill out the form." },
+              { step: "Confirm", text: "Check your email." },
+              {
+                step: "Attend",
+                text: isVirtual
+                  ? "Join with the link we send you."
+                  : "Come to the event location.",
+              },
+            ].map((item, index) => (
+              <li
+                key={item.step}
+                className="flex items-start gap-4 border-t border-hairline py-4 first:border-t-0"
+              >
+                <span className="text-sm font-bold text-brand tabular-nums">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <p className="text-base text-ink">
+                  <span className="font-medium">{item.step}:</span> {item.text}
+                </p>
+              </li>
+            ))}
+          </ol>
+        ) : null}
+
+        <Dialog>
+          <DialogTrigger asChild>
+            <button
+              type="button"
+              className="group mt-6 inline-flex items-center gap-2 text-sm font-bold tracking-[0.02em] text-brand uppercase hover:text-brand-deep"
+            >
+              <QrCode aria-hidden className="size-4" />
+              Invite guests with a QR code
+            </button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>QR code</DialogTitle>
+              <DialogDescription>
+                Scan to open this event page and register.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex flex-col items-center justify-center gap-3">
+              <p className="text-sm text-ink-muted">{event.title}</p>
+              {origin ? (
+                <QRCodeSVG
+                  value={`${origin}/events/${event.slug}`}
+                  size={280}
+                  level="H"
+                  marginSize={2}
+                />
+              ) : null}
+            </div>
+          </DialogContent>
+        </Dialog>
+      </aside>
+    </div>
   );
 };
 

@@ -1,104 +1,73 @@
-"use client";
+import PillButton from "@/components/LandingPage/shared/PillButton";
+import Image from "next/image";
 
-import WorkWithUsButton from "@/components/ui/work-with-us-button";
-import { motion, Variants } from "framer-motion";
+/**
+ * The banner artwork is 2560x1078 (2.37:1). From `lg` the section adopts that
+ * exact ratio, so the whole photograph is on screen rather than a band cropped
+ * out of the middle. A portrait phone can't fit that ratio, so there the photo
+ * stays behind the copy as one block and is anchored left — that side of the
+ * frame holds the two figures, and it keeps the darker area under the text.
+ */
+const HeroSection = () => (
+  <section
+    id="hero-section"
+    aria-label="Hero"
+    className="relative mt-16 flex w-full items-center overflow-hidden bg-[#0c0d08] py-16 lg:mt-[81px] lg:aspect-[2560/1078] lg:max-h-[calc(100dvh-81px)] lg:py-0"
+  >
+    <div className="absolute inset-0">
+      <Image
+        src="/images/redesign/hero-banner.webp"
+        alt="Innovare HP healthcare marketing professionals collaborating"
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover object-left lg:object-center"
+      />
+      {/* Keeps the headline above AA contrast on the lighter parts of the photo. */}
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-black/45 lg:bg-black/35"
+      />
+    </div>
 
-const HeroSection = () => {
-  // Transform-only so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
-  const containerVariants: Variants = {
-    hidden: {},
-    visible: {
-      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
-    },
-  };
-
-  const itemVariants: Variants = {
-    hidden: { y: 20 },
-    visible: {
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
-
-  const bgVariants: Variants = {
-    hidden: { scale: 1.05 },
-    visible: {
-      scale: 1,
-      transition: {
-        duration: 2,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  return (
-    <section
-      id="hero-section"
-      className="relative w-full min-h-[100vh] flex items-end overflow-hidden bg-gray-900"
-      aria-label="Hero section"
-    >
-      <motion.div
-        variants={bgVariants}
-        initial="hidden"
-        animate="visible"
-        className="absolute inset-0 w-full h-full"
+    <div className="hp-container relative lg:flex lg:h-full lg:items-center">
+      <div
+        data-anim="hero"
+        className="mx-auto flex max-w-[790px] flex-col items-center text-center"
       >
-        <img
-          src="/images/hero-section.jpg"
-          alt="Healthcare marketing team at Innovare HP: professionals collaborating on growth strategy for senior care and behavioral health organizations"
-          width={1920}
-          height={1080}
-          className="object-cover w-full border-2 min-h-[100vh]"
-          fetchPriority="high"
-          sizes="100vw"
-        />
-        {/* 2. BETTER OVERLAY:
-            Added a gradient that is darker at the bottom to ensure text
-            readability while keeping the top clearer for the image subjects. */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent sm:bg-black/60" />
-      </motion.div>
+        <p className="text-[13px] tracking-[0.05em] text-white uppercase sm:text-base">
+          Full-service marketing for healthcare
+        </p>
 
-      <div className="relative z-10 w-full px-8 sm:px-6 md:px-12 lg:px-20 pb-12 pt-4 sm:py-24 sm:pb-4">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          // 3. TEXT SPACING:
-          // Reduced font size slightly for mobile and added a larger bottom margin (mb-6)
-          // to keep the text block compact at the very bottom.
-          className="max-w-4xl space-y-3 sm:space-y-4 mb-6 sm:mb-0"
+        <h1 className="mt-6 text-[clamp(1.75rem,6vw,3rem)] leading-[1.15] font-bold text-white">
+          <span className="font-semibold">Marketing that empowers </span>
+          <span className="font-bold">healthcare brands </span>
+          <span className="font-semibold">to stand apart.</span>
+        </h1>
+
+        <p className="mt-6 max-w-[484px] text-left text-base leading-[1.5] text-white sm:text-xl">
+          We provide{" "}
+          <strong className="font-semibold">
+            growth strategy, referral development,
+          </strong>{" "}
+          and i
+          <strong className="font-semibold">
+            ntegrated digital marketing solutions
+          </strong>{" "}
+          designed to expand market presence and accelerate census.
+        </p>
+
+        <PillButton
+          href="#contact"
+          title="Work With Us"
+          srHint="(navigate to contact section)"
+          className="mt-8"
         >
-          <motion.h1
-            variants={itemVariants}
-            className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight font-bold"
-          >
-            Marketing that empowers healthcare brands to stand apart.
-          </motion.h1>
-
-          <motion.p
-            variants={itemVariants}
-            className="text-lg sm:text-2xl md:text-3xl text-gray-100 max-w-xl tracking-wide"
-          >
-            <strong>Innovare HP</strong> delivers full-service marketing for
-            healthcare organizations that want to lead—not follow.
-          </motion.p>
-
-          <motion.p
-            variants={itemVariants}
-            className="text-sm sm:text-base md:text-lg text-gray-300 max-w-xl leading-relaxed"
-          >
-            We provide growth strategy, referral development, and integrated
-            digital marketing solutions designed to expand market presence and
-            accelerate census.
-          </motion.p>
-
-          <motion.div variants={itemVariants} className="pt-2 sm:pt-4">
-            <WorkWithUsButton variant="hero" />
-          </motion.div>
-        </motion.div>
+          Work with us
+        </PillButton>
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
 export default HeroSection;

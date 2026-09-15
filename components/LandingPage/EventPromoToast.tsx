@@ -9,7 +9,9 @@ const DISPLAY_MS = 4000;
 const FADE_MS = 400;
 
 export function EventPromoToast() {
-  const [phase, setPhase] = useState<"visible" | "fading" | "hidden">("visible");
+  const [phase, setPhase] = useState<"visible" | "fading" | "hidden">(
+    "visible"
+  );
   const hasStartedRef = useRef(false);
   const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -46,7 +48,11 @@ export function EventPromoToast() {
       }`}
       style={{ transitionDuration: `${FADE_MS}ms` }}
       onTransitionEnd={(e) => {
-        if (e.target !== e.currentTarget || e.propertyName !== "opacity" || phase !== "fading")
+        if (
+          e.target !== e.currentTarget ||
+          e.propertyName !== "opacity" ||
+          phase !== "fading"
+        )
           return;
         setPhase("hidden");
       }}

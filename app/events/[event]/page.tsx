@@ -1,8 +1,7 @@
 import { getEventById } from "@/app/events/action/eventaction";
 import EventDetailClient from "@/components/EventDetail/EventDetailClient";
-import InteractiveBackground from "@/components/EventsPage/InteractiveBackground";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import Navigation from "@/components/LandingPage/Navigation/Navigation";
+import FooterBar from "@/components/LandingPage/shared/FooterBar";
 import { Prisma } from "@prisma/client";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
@@ -98,26 +97,41 @@ const EventPage = async ({ params }: EventPageProps) => {
   const event = response.data;
 
   return (
-    <div className="min-h-screen overflow-hidden">
-      <InteractiveBackground />
+    <>
+      <Navigation />
 
-      <div className="z-10 p-4 lg:p-8 flex items-center justify-center overflow-hidden max-w-7xl mx-auto">
-        <Card className="w-full max-w-5xl max-h-screen overflow-y-auto shadow-xl border-0 bg-blue-50/90 backdrop-blur flex flex-col border-2 shadow-lg">
-          <div className="p-2 flex items-center">
-            <Link href="/events">
-              <Button variant="secondary" size="sm">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Events
-              </Button>
-            </Link>
-          </div>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="mt-16 bg-white lg:mt-[81px]"
+      >
+        <div className="hp-container pt-10">
+          <Link
+            href="/events"
+            className="group inline-flex items-center gap-2 text-sm font-bold tracking-[0.02em] text-brand uppercase no-underline hover:text-brand-deep"
+          >
+            <ArrowLeft
+              aria-hidden
+              className="size-4 transition-transform duration-300 group-hover:-translate-x-1"
+              strokeWidth={2.4}
+            />
+            Back to events
+          </Link>
+        </div>
 
-          <Suspense fallback={<div>Loading event details...</div>}>
-            <EventDetailClient event={event as EventWithRelations} />
-          </Suspense>
-        </Card>
-      </div>
-    </div>
+        <Suspense
+          fallback={
+            <p className="hp-container py-16 text-base text-ink-muted sm:text-lg">
+              Loading event details&hellip;
+            </p>
+          }
+        >
+          <EventDetailClient event={event as EventWithRelations} />
+        </Suspense>
+      </main>
+
+      <FooterBar />
+    </>
   );
 };
 export default EventPage;

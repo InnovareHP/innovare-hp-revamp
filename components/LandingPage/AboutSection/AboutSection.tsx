@@ -1,88 +1,85 @@
-"use client";
+import PillButton from "@/components/LandingPage/shared/PillButton";
+import SectionBadge from "@/components/LandingPage/shared/SectionBadge";
+import Image from "next/image";
 
-import { motion, Variants } from "framer-motion"; // Import Variants type
-
-const AboutSection = () => {
-  // Transform-only so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
-  const fadeInRight: Variants = {
-    hidden: { x: 50 },
-    visible: {
-      x: 0,
-      transition: { duration: 0.8, ease: "easeOut" },
-    },
-  };
-
-  const fadeInLeft: Variants = {
-    hidden: { x: -50 },
-    visible: {
-      x: 0,
-      transition: { duration: 0.8, ease: "easeOut" },
-    },
-  };
-
-  return (
-    <section
-      id="about"
-      className="flex flex-col lg:flex-row min-h-[70vh] overflow-hidden"
-      aria-label="About us"
-    >
-      {/* Left side - Image */}
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={fadeInLeft}
-        className="w-full lg:w-1/2 bg-gray-200 flex items-center justify-center relative min-h-[400px] lg:min-h-[60vh]"
+const AboutSection = () => (
+  <section
+    id="about"
+    aria-label="About us"
+    className="bg-surface-1 py-16 sm:py-20 lg:py-[126px]"
+  >
+    <div className="hp-container">
+      <div
+        data-anim="stagger"
+        className="grid gap-8 lg:grid-cols-[250px_1fr] lg:gap-10"
       >
-        <img
-          src="/images/about/about-img.png"
-          alt="Innovare HP Team"
-          title="Innovare HP Team"
-          className="object-cover w-full border-2 min-h-[90vh]"
-        />
-      </motion.div>
+        <SectionBadge number="01" className="w-fit">
+          About us
+        </SectionBadge>
 
-      {/* Right side - Content */}
-      <div className="w-full lg:w-1/2 bg-[#ded8d3] flex items-center justify-center p-8 lg:p-12 xl:p-16">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          // We can also type inline objects to prevent errors
-          variants={
-            {
-              visible: { transition: { staggerChildren: 0.2 } },
-            } as Variants
-          }
-          className="w-full max-w-2xl space-y-8"
-        >
-          <motion.h2
-            variants={fadeInRight}
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-relaxed sm:leading-tight"
-          >
-            We are community resource educators who use creative and thoughtful
-            communication methods and technology to help our healthcare partners
-            grow in a meaningful way.
-          </motion.h2>
-
-          <motion.p
-            variants={fadeInRight}
-            className="text-base sm:text-lg lg:text-2xl leading-relaxed sm:leading-normal text-gray-600 font-sans font-normal max-w-lg"
-          >
-            The landscape of healthcare marketing underwent a significant
-            transformation with the rise in patient choice and autonomy. This
-            shift led numerous healthcare facilities to adopt new strategies,
-            utilizing multiple platforms to promote their services combining
-            creative conscious communication efforts and impact-driven community
-            development projects. The demand for fresh and innovative approaches
-            in healthcare marketing is greater than ever before. We are leading
-            these advancements - constantly seeking better ways to provide
-            high-quality outreach initiatives.
-          </motion.p>
-        </motion.div>
+        <h2 className="text-[clamp(1.5rem,3.6vw,2.25rem)] leading-[1.25] font-medium text-ink">
+          We are community resource educators who use creative and thoughtful
+          communication methods and technology to help our healthcare partners
+          grow in a <span className="hp-mark">meaningful way.</span>
+        </h2>
       </div>
-    </section>
-  );
-};
+
+      <div className="mt-8 grid items-end gap-6 sm:mt-10 lg:mt-[54px] lg:grid-cols-[minmax(0,602px)_minmax(0,1fr)] lg:gap-12">
+        <div
+          data-anim="stagger"
+          data-anim-from="slide-left"
+          className="flex items-stretch gap-3 sm:gap-4 lg:items-end lg:gap-[22px]"
+        >
+          <div
+            data-anim="mask"
+            className="relative min-w-0 flex-1 overflow-hidden rounded-[20px] lg:max-w-[290px]"
+          >
+            <Image
+              src="/images/redesign/about-1.webp"
+              alt="Innovare HP strategist presenting to a healthcare client"
+              width={290}
+              height={323}
+              sizes="(max-width: 1024px) 45vw, 290px"
+              className="aspect-[5/6] h-full w-full object-cover lg:aspect-[290/323]"
+            />
+          </div>
+          <div
+            data-anim="mask"
+            className="relative min-w-0 flex-1 overflow-hidden rounded-[20px] lg:max-w-[290px]"
+          >
+            <Image
+              src="/images/redesign/about-2.webp"
+              alt="Healthcare marketing team laughing together during a workshop"
+              width={290}
+              height={274}
+              sizes="(max-width: 1024px) 45vw, 290px"
+              className="aspect-[5/6] h-full w-full object-cover lg:aspect-[290/274]"
+            />
+          </div>
+        </div>
+
+        <div data-anim="slide-right" className="mt-2 lg:mt-0 lg:pl-6">
+          <p className="max-w-[433px] text-base leading-[25px] text-ink sm:text-lg">
+            The rise of patient choice and autonomy has transformed healthcare
+            marketing, pushing facilities to adopt new, multi-platform
+            strategies that combine conscious communication with impact-driven
+            community development. The demand for fresh, innovative approaches
+            has never been greater — and we&apos;re leading that advancement,
+            constantly seeking better ways to deliver high-quality outreach.
+          </p>
+
+          <PillButton
+            href="#process"
+            variant="ghost"
+            title="How we work"
+            className="mt-6 -ml-6"
+          >
+            How we work
+          </PillButton>
+        </div>
+      </div>
+    </div>
+  </section>
+);
 
 export default AboutSection;

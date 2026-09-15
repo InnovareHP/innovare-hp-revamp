@@ -198,7 +198,11 @@ const EventRegistrationModal = ({
       <DialogTrigger asChild>
         <Button
           size="lg"
-          className="w-full sm:w-auto"
+          className={
+            isAlreadyRegistered
+              ? "h-[50px] w-full rounded-full border-hairline bg-white text-base font-bold tracking-[0.02em] text-brand uppercase hover:bg-surface-2 hover:text-brand-deep sm:w-auto"
+              : "h-[50px] w-full rounded-full bg-brand text-base font-bold tracking-[0.02em] text-white uppercase hover:bg-brand-deep sm:w-auto"
+          }
           disabled={isDisabled}
           variant={isAlreadyRegistered ? "outline" : "default"}
         >

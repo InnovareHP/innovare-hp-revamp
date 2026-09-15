@@ -19,10 +19,9 @@ export const articles: Article[] = [
     url: "https://www.brainzmagazine.com/post/building-a-healthcare-brand-people-remember",
     description:
       "Discover how to build a healthcare brand people remember. Learn why trust, consistency, and reputation drive growth long before occupancy, admissions, or referrals are ever discussed.",
-    category: "Healthcare Marketing",
+    category: "Healthcare Branding",
     publishedDate: "2026-07-16",
-    image:
-      "https://static.wixstatic.com/media/194202_289cd8f139c44e80b63e282bdc9bd042~mv2.jpg/v1/fill/w_768,h_512,al_c,lg_1,q_85/194202_289cd8f139c44e80b63e282bdc9bd042~mv2.jpg",
+    image: "/images/redesign/fieldnote.webp",
   },
   {
     id: 1,

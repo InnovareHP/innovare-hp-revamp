@@ -1,104 +1,145 @@
-"use client";
+import PillButton from "@/components/LandingPage/shared/PillButton";
+import Image from "next/image";
 
-import WorkWithUsButton from "@/components/ui/work-with-us-button";
-import { motion, Variants } from "framer-motion";
+/**
+ * Hero per the Figma redesign: centred copy on a dark halftone field, with a
+ * fan of five photographs anchored under it.
+ *
+ * All five cards are 2x exports that already carry their tilt, white frame and
+ * brand glow, so nothing is rotated or framed in CSS — doing so would double
+ * the angle and stack a second border on top of the baked one. Displayed
+ * widths are half the export, capped in `vw` so the row keeps its proportions
+ * on a narrow desktop without ever outgrowing the frame.
+ *
+ * The fan sits outside the page gutter and is centred with a measured gap
+ * rather than spread edge to edge — spread across a wide monitor the cards
+ * drift into five islands. Every card is a complete card, so a window wider
+ * than the row shows all five whole; a narrower one lets the outer pair run
+ * off the sides, which is how the Figma frame treats them. Narrow screens keep
+ * the middle of the fan: the outer pair drops below `lg`, the inner pair below
+ * `sm`.
+ *
+ * The hero runs under the fixed header, which is transparent until the reader
+ * scrolls; the top padding is what keeps the copy clear of the bar.
+ */
+const HeroSection = () => (
+  <section
+    id="hero-section"
+    aria-label="Hero"
+    className="relative w-full overflow-hidden bg-[#03102f] pt-[7rem] pb-14 lg:pt-[calc(81px+4rem)] lg:pb-[4.5rem]"
+  >
+    <div aria-hidden className="absolute inset-0">
+      <Image
+        data-parallax
+        data-hero-drift
+        src="/images/redesign/hero-texture.webp"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
+      />
+      {/* The same 45% black the design lays over the texture — it is what keeps
+          the headline above AA contrast on the lighter top-right corner. */}
+      <div className="absolute inset-0 bg-black/45" />
+    </div>
 
-const HeroSection = () => {
-  // Transform-only so content is never "visually hidden" (opacity 0) while exposed to AT (rule #10)
-  const containerVariants: Variants = {
-    hidden: {},
-    visible: {
-      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
-    },
-  };
-
-  const itemVariants: Variants = {
-    hidden: { y: 20 },
-    visible: {
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
-
-  const bgVariants: Variants = {
-    hidden: { scale: 1.05 },
-    visible: {
-      scale: 1,
-      transition: {
-        duration: 2,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  return (
-    <section
-      id="hero-section"
-      className="relative w-full min-h-[100vh] flex items-end overflow-hidden bg-gray-900"
-      aria-label="Hero section"
-    >
-      <motion.div
-        variants={bgVariants}
-        initial="hidden"
-        animate="visible"
-        className="absolute inset-0 w-full h-full"
+    <div data-hero-copy className="hp-container relative">
+      <div
+        data-anim="hero"
+        className="mx-auto flex max-w-[864px] flex-col items-center text-center"
       >
-        <img
-          src="/images/hero-section.jpg"
-          alt="Healthcare marketing team at Innovare HP: professionals collaborating on growth strategy for senior care and behavioral health organizations"
-          width={1920}
-          height={1080}
-          className="object-cover w-full border-2 min-h-[100vh]"
-          fetchPriority="high"
-          sizes="100vw"
-        />
-        {/* 2. BETTER OVERLAY:
-            Added a gradient that is darker at the bottom to ensure text
-            readability while keeping the top clearer for the image subjects. */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent sm:bg-black/60" />
-      </motion.div>
+        <p className="text-sm tracking-[0.05em] text-white uppercase sm:text-base">
+          Full-service marketing for healthcare
+        </p>
 
-      <div className="relative z-10 w-full px-8 sm:px-6 md:px-12 lg:px-20 pb-12 pt-4 sm:py-24 sm:pb-4">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          // 3. TEXT SPACING:
-          // Reduced font size slightly for mobile and added a larger bottom margin (mb-6)
-          // to keep the text block compact at the very bottom.
-          className="max-w-4xl space-y-3 sm:space-y-4 mb-6 sm:mb-0"
+        {/* Word-by-word mask reveal — each word rises out of its own line box,
+            so the headline arrives with a rhythm instead of one block fade. */}
+        <h1
+          data-anim="words"
+          className="mt-4 text-[clamp(1.875rem,5vw,3rem)] leading-[1.2] font-semibold text-white"
         >
-          <motion.h1
-            variants={itemVariants}
-            className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight font-bold"
-          >
-            Marketing that empowers healthcare brands to stand apart.
-          </motion.h1>
+          Marketing that empowers{" "}
+          <span className="text-brand-glow font-bold">healthcare brands</span>{" "}
+          to stand apart.
+        </h1>
 
-          <motion.p
-            variants={itemVariants}
-            className="text-lg sm:text-2xl md:text-3xl text-gray-100 max-w-xl tracking-wide"
-          >
-            <strong>Innovare HP</strong> delivers full-service marketing for
-            healthcare organizations that want to lead—not follow.
-          </motion.p>
+        <p className="mt-6 text-base leading-[1.5] text-white sm:text-xl">
+          We provide{" "}
+          <strong className="font-semibold">
+            growth strategy, referral development,
+          </strong>{" "}
+          and{" "}
+          <strong className="font-semibold">
+            integrated digital marketing solutions
+          </strong>{" "}
+          designed to expand market presence and accelerate census.
+        </p>
 
-          <motion.p
-            variants={itemVariants}
-            className="text-sm sm:text-base md:text-lg text-gray-300 max-w-xl leading-relaxed"
-          >
-            We provide growth strategy, referral development, and integrated
-            digital marketing solutions designed to expand market presence and
-            accelerate census.
-          </motion.p>
-
-          <motion.div variants={itemVariants} className="pt-2 sm:pt-4">
-            <WorkWithUsButton variant="hero" />
-          </motion.div>
-        </motion.div>
+        <PillButton
+          href="#contact"
+          title="Work With Us"
+          srHint="(navigate to contact section)"
+          className="mt-8"
+        >
+          Work with us
+        </PillButton>
       </div>
-    </section>
-  );
-};
+    </div>
+
+    <div
+      data-anim="stagger"
+      data-anim-from="lift"
+      className="relative mx-auto mt-12 flex w-full max-w-[1600px] items-start justify-center gap-4 sm:gap-6 lg:mt-[3.25rem] lg:gap-[clamp(14px,1.8vw,34px)]"
+    >
+      <Image
+        src="/images/redesign/hero-fan-side-left.webp"
+        quality={90}
+        alt="Clinician talking with a patient across a desk"
+        width={512}
+        height={712}
+        sizes="256px"
+        className="hidden h-auto w-[min(18.5vw,256px)] shrink-0 lg:block"
+      />
+      <Image
+        src="/images/redesign/hero-fan-inner-left.webp"
+        quality={90}
+        alt="Two colleagues in conversation in an open office"
+        width={552}
+        height={770}
+        sizes="(min-width: 1024px) 276px, 26vw"
+        className="hidden h-auto w-[min(26vw,276px)] shrink-0 sm:block lg:w-[min(20vw,276px)]"
+      />
+      <Image
+        src="/images/redesign/hero-fan-center.webp"
+        quality={90}
+        alt="Healthcare marketing team meeting outdoors over coffee"
+        width={776}
+        height={848}
+        priority
+        sizes="(min-width: 1024px) 388px, (min-width: 640px) 36vw, 64vw"
+        className="h-auto w-[min(64vw,240px)] shrink-0 sm:w-[min(36vw,388px)] lg:w-[min(28vw,388px)]"
+      />
+      <Image
+        src="/images/redesign/hero-fan-inner-right.webp"
+        quality={90}
+        alt="Two professionals shaking hands outside an office building"
+        width={552}
+        height={770}
+        sizes="(min-width: 1024px) 276px, 26vw"
+        className="hidden h-auto w-[min(26vw,276px)] shrink-0 sm:block lg:w-[min(20vw,276px)]"
+      />
+      <Image
+        src="/images/redesign/hero-fan-side-right.webp"
+        quality={90}
+        alt="Hospital staff reviewing notes on a tablet together"
+        width={512}
+        height={712}
+        sizes="256px"
+        className="hidden h-auto w-[min(18.5vw,256px)] shrink-0 lg:block"
+      />
+    </div>
+  </section>
+);
 
 export default HeroSection;

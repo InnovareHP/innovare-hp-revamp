@@ -7,7 +7,7 @@ const offices = [
   {
     label: "Headquarters",
     name: "Grand Rapids Office",
-    meta: "Comstock Park, MI · (269) 501-4496",
+    meta: "Comstock Park, MI",
     mapsHref:
       "https://maps.google.com/?q=4221+Bud+Drive+NE+Comstock+Park+MI+49321",
   },

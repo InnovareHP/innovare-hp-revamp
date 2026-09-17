@@ -393,6 +393,20 @@ h6 {
   }
 }
 
+/* SplitText wraps every word in an inline-block element, and an inline-block
+   sits on the text baseline — the strut's descender space beneath it is added
+   to each line box, so a word-masked headline renders roughly 0.2em looser
+   than its `line-height` asks for. On a phone, where the hero headline runs to
+   three or four lines, that reads as a scattered stack. Top-aligning the
+   wrappers drops the phantom row, leaving exactly the declared leading; the
+   margins above and below the headline are untouched. Phone-only, so the
+   desktop hero keeps the rhythm it shipped with. */
+@media (max-width: 767px) {
+  [data-anim="words"] > * {
+    vertical-align: top;
+  }
+}
+
 /* Images that reveal behind a wipe start covered. The wipe is applied by
    `LandingAnimations`; if that script never runs, or motion is reduced, the
    rule below is overridden and the picture is simply visible. */

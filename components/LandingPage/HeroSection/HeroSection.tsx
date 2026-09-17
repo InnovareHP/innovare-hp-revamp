@@ -16,17 +16,27 @@ import Image from "next/image";
  * drift into five islands. Every card is a complete card, so a window wider
  * than the row shows all five whole; a narrower one lets the outer pair run
  * off the sides, which is how the Figma frame treats them. Narrow screens keep
- * the middle of the fan: the outer pair drops below `lg`, the inner pair below
- * `sm`.
+ * the middle of the fan: the outer pair drops below `lg`, and a phone still
+ * gets three — the inner pair narrows and its outer edges crop against the
+ * section, which reads as a fan rather than a single stranded card.
  *
  * The hero runs under the fixed header, which is transparent until the reader
  * scrolls; the top padding is what keeps the copy clear of the bar.
+ *
+ * On a phone the section claims `100svh` — the viewport with the browser bars
+ * showing, the state the reader lands in — so the next section's white does not
+ * sit under the fold. The stack is then centred in that height rather than
+ * parked at the top: the copy and the fan are sized by viewport *width*, so on a
+ * tall narrow handset they cannot fill the height on their own, and any surplus
+ * would otherwise collect as dead space beneath the cards. Centring splits it
+ * above and below, and the gap before the fan scales with `svh` so the spread
+ * lands in the layout rather than at its edges.
  */
 const HeroSection = () => (
   <section
     id="hero-section"
     aria-label="Hero"
-    className="relative w-full overflow-hidden bg-[#03102f] pt-[7rem] pb-14 lg:pt-[calc(81px+4rem)] lg:pb-[4.5rem]"
+    className="relative w-full overflow-hidden bg-[#03102f] pt-[4.5rem] pb-8 max-sm:flex max-sm:min-h-[100svh] max-sm:flex-col max-sm:justify-center sm:pt-[7rem] sm:pb-14 lg:pt-[calc(81px+4rem)] lg:pb-[4.5rem]"
   >
     <div aria-hidden className="absolute inset-0">
       <Image
@@ -49,22 +59,27 @@ const HeroSection = () => (
         data-anim="hero"
         className="mx-auto flex max-w-[864px] flex-col items-center text-center"
       >
-        <p className="text-sm tracking-[0.05em] text-white uppercase sm:text-base">
+        <p className="text-xs tracking-[0.05em] text-white uppercase sm:text-base">
           Full-service marketing for healthcare
         </p>
 
         {/* Word-by-word mask reveal — each word rises out of its own line box,
-            so the headline arrives with a rhythm instead of one block fade. */}
+            so the headline arrives with a rhythm instead of one block fade.
+            `text-balance` evens the line lengths: at phone width the headline
+            runs to four lines and, left to the normal greedy wrap, the last one
+            is a single orphaned word. The size keeps scaling with the viewport
+            below `sm` rather than sticking at the clamp floor, so 360px and
+            430px screens don't get the same 30px type. */}
         <h1
           data-anim="words"
-          className="mt-4 text-[clamp(1.875rem,5vw,3rem)] leading-[1.2] font-semibold text-white"
+          className="mt-3 text-[clamp(1.75rem,7.5vw,3rem)] sm:mt-4 leading-[1.2] font-semibold text-balance text-white"
         >
           Marketing that empowers{" "}
           <span className="text-brand-glow font-bold">healthcare brands</span>{" "}
           to stand apart.
         </h1>
 
-        <p className="mt-6 text-base leading-[1.5] text-white sm:text-xl">
+        <p className="mt-4 text-[0.9375rem] leading-[1.5] text-pretty text-white sm:mt-6 sm:text-xl">
           We provide{" "}
           <strong className="font-semibold">
             growth strategy, referral development,
@@ -80,7 +95,7 @@ const HeroSection = () => (
           href="#contact"
           title="Work With Us"
           srHint="(navigate to contact section)"
-          className="mt-8"
+          className="mt-7 sm:mt-8"
         >
           Work with us
         </PillButton>
@@ -90,7 +105,7 @@ const HeroSection = () => (
     <div
       data-anim="stagger"
       data-anim-from="lift"
-      className="relative mx-auto mt-12 flex w-full max-w-[1600px] items-start justify-center gap-4 sm:gap-6 lg:mt-[3.25rem] lg:gap-[clamp(14px,1.8vw,34px)]"
+      className="relative mx-auto mt-[clamp(2.5rem,7svh,4.5rem)] flex w-full max-w-[1600px] items-start justify-center gap-2 sm:mt-10 sm:gap-6 lg:mt-[3.25rem] lg:gap-[clamp(14px,1.8vw,34px)]"
     >
       <Image
         src="/images/redesign/hero-fan-side-left.webp"
@@ -107,8 +122,9 @@ const HeroSection = () => (
         alt="Two colleagues in conversation in an open office"
         width={552}
         height={770}
-        sizes="(min-width: 1024px) 276px, 26vw"
-        className="hidden h-auto w-[min(26vw,276px)] shrink-0 sm:block lg:w-[min(20vw,276px)]"
+        loading="eager"
+        sizes="(min-width: 1024px) 276px, (min-width: 640px) 26vw, 36vw"
+        className="h-auto w-[min(36vw,276px)] shrink-0 sm:w-[min(26vw,276px)] lg:w-[min(20vw,276px)]"
       />
       <Image
         src="/images/redesign/hero-fan-center.webp"
@@ -117,8 +133,8 @@ const HeroSection = () => (
         width={776}
         height={848}
         priority
-        sizes="(min-width: 1024px) 388px, (min-width: 640px) 36vw, 64vw"
-        className="h-auto w-[min(64vw,240px)] shrink-0 sm:w-[min(36vw,388px)] lg:w-[min(28vw,388px)]"
+        sizes="(min-width: 1024px) 388px, (min-width: 640px) 36vw, 46vw"
+        className="h-auto w-[min(46vw,388px)] shrink-0 sm:w-[min(36vw,388px)] lg:w-[min(28vw,388px)]"
       />
       <Image
         src="/images/redesign/hero-fan-inner-right.webp"
@@ -126,8 +142,9 @@ const HeroSection = () => (
         alt="Two professionals shaking hands outside an office building"
         width={552}
         height={770}
-        sizes="(min-width: 1024px) 276px, 26vw"
-        className="hidden h-auto w-[min(26vw,276px)] shrink-0 sm:block lg:w-[min(20vw,276px)]"
+        loading="eager"
+        sizes="(min-width: 1024px) 276px, (min-width: 640px) 26vw, 36vw"
+        className="h-auto w-[min(36vw,276px)] shrink-0 sm:w-[min(26vw,276px)] lg:w-[min(20vw,276px)]"
       />
       <Image
         src="/images/redesign/hero-fan-side-right.webp"

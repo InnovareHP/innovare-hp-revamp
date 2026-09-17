@@ -538,10 +538,24 @@ const LandingAnimations = () => {
     );
 
     // Late-loading imagery changes section heights; re-measure once settled.
-    const refresh = () => ScrollTrigger.refresh();
+    // The refresh is deferred a frame and dropped once this effect is torn
+    // down: a refresh that lands while `mm.revert()` is killing triggers walks
+    // a list that is shrinking under it, which throws inside ScrollTrigger
+    // (`curTrigger.end` on an index that no longer exists). React's dev-mode
+    // double mount makes that race easy to hit.
+    let isActive = true;
+    let refreshFrame = 0;
+
+    const refresh = () => {
+      refreshFrame = requestAnimationFrame(() => {
+        if (isActive) ScrollTrigger.refresh();
+      });
+    };
     window.addEventListener("load", refresh);
 
     return () => {
+      isActive = false;
+      cancelAnimationFrame(refreshFrame);
       window.removeEventListener("load", refresh);
       mm.revert();
     };

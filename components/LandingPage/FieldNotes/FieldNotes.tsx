@@ -1,4 +1,6 @@
-import { ArrowRight } from "lucide-react";
+import FooterBar from "@/components/LandingPage/shared/FooterBar";
+import SectionBadge from "@/components/LandingPage/shared/SectionBadge";
+import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Navigation from "../Navigation/Navigation";
@@ -6,100 +8,123 @@ import { articles } from "./articles";
 
 const categories = [...new Set(articles.map((a) => a.category))];
 
-const formatDate = (dateString: string) => {
-  return new Date(dateString + "T00:00:00").toLocaleDateString("en-US", {
+const formatDate = (dateString: string) =>
+  new Date(`${dateString}T00:00:00`).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
-};
 
-const FieldNotes = () => {
-  return (
-    <>
-      <Navigation isFieldNotes={true} />
-      <main id="main-content" className="relative" tabIndex={-1}>
-        <section id="field-notes" className="pt-20">
-          <div className="max-w-4xl mx-auto px-6 py-12 bg-white font-sans text-gray-800">
-            {/* Header */}
-            <header className="mb-12 border-b pb-8">
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
-                Field Notes
-              </h1>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                A curated collection of articles from across the healthcare
-                industry — covering strategy, marketing, behavioral health,
-                senior care, and more.
-              </p>
-            </header>
+/**
+ * Full Field Notes index. Speaks the landing page's language: `hp-container`
+ * gutters, a `SectionBadge` opener, the marker headline, brand-blue link
+ * headings and the hover rule that draws under a card — so arriving here from
+ * the landing section doesn't read as a different site.
+ */
+const FieldNotes = () => (
+  <>
+    <Navigation isFieldNotes={true} />
+    <main id="main-content" className="relative bg-white" tabIndex={-1}>
+      <section id="field-notes" className="pt-28 pb-16 sm:pt-32 sm:pb-20">
+        <div className="hp-container">
+          <header className="border-b border-hairline pb-10">
+            <SectionBadge>Field notes</SectionBadge>
 
-            {/* Articles by category */}
-            <div className="space-y-12">
-              {categories.map((category) => (
-                <div key={category}>
-                  <h2 className="text-sm font-semibold uppercase tracking-widest text-blue-900 mb-4">
-                    {category}
-                  </h2>
-                  <div className="space-y-4">
-                    {articles
-                      .filter((a) => a.category === category)
-                      .map((article) => (
-                        <Link
-                          key={article.id}
-                          href={`/field-notes/${article.slug}`}
-                          className="block group border border-gray-200 rounded-lg overflow-hidden hover:border-blue-300 hover:shadow-md transition-all duration-200"
-                        >
-                          {article.image && (
-                            <div className="relative w-full h-48 sm:h-56">
-                              <Image
-                                src={article.image}
-                                alt={article.title}
-                                fill
-                                className="object-cover"
-                                sizes="(max-width: 768px) 100vw, 800px"
-                              />
-                            </div>
-                          )}
-                          <div className="flex items-start justify-between gap-4 p-5">
-                            <div className="flex-1 min-w-0">
-                              <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-700 transition-colors">
-                                {article.title}
-                              </h3>
-                              <p className="text-sm text-gray-500 mt-1">
-                                {article.source} &middot;{" "}
-                                {formatDate(article.publishedDate)}
-                              </p>
-                              <p className="text-gray-600 mt-2 text-sm leading-relaxed">
-                                {article.description}
-                              </p>
-                            </div>
-                            <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 flex-shrink-0 mt-1 transition-colors" />
-                          </div>
-                        </Link>
-                      ))}
-                  </div>
+            <h1 className="mt-6 max-w-[760px] text-[clamp(1.875rem,5.5vw,3rem)] leading-[1.2] font-semibold text-balance text-ink">
+              Insights and stories from across the{" "}
+              <span className="hp-mark">healthcare industry.</span>
+            </h1>
+
+            <p className="mt-5 max-w-[560px] text-base leading-[1.6] text-pretty text-ink sm:text-lg">
+              A curated collection of articles covering strategy, marketing,
+              behavioral health, senior care, and more.
+            </p>
+          </header>
+
+          <div className="mt-12 space-y-14 sm:mt-16">
+            {categories.map((category) => (
+              <section key={category} aria-label={category}>
+                <h2 className="flex items-center gap-3 text-[13px] tracking-[0.18em] text-brand uppercase sm:gap-4 sm:text-sm">
+                  {category}
+                  <span aria-hidden className="h-px flex-1 bg-brand/25" />
+                </h2>
+
+                <div className="mt-6 grid gap-6 sm:grid-cols-2">
+                  {articles
+                    .filter((a) => a.category === category)
+                    .map((article) => (
+                      <article key={article.id} className="group">
+                        {article.image ? (
+                          <Link
+                            href={`/field-notes/${article.slug}`}
+                            className="block overflow-hidden no-underline"
+                            tabIndex={-1}
+                            aria-hidden
+                          >
+                            <Image
+                              src={article.image}
+                              alt=""
+                              width={640}
+                              height={306}
+                              sizes="(max-width: 640px) 100vw, 50vw"
+                              className="w-full object-cover transition-transform duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+                              style={{ aspectRatio: "640 / 306" }}
+                            />
+                          </Link>
+                        ) : null}
+
+                        {/* The rule draws in under the whole card on hover,
+                            same affordance as the landing page's cards. */}
+                        <span
+                          aria-hidden
+                          className="hp-hover-rule mt-5 block h-[2px] w-full bg-brand"
+                        />
+
+                        <h3 className="mt-4 flex items-start gap-3 text-xl leading-[1.25] font-semibold transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-2">
+                          <Link
+                            href={`/field-notes/${article.slug}`}
+                            className="text-brand no-underline hover:text-brand-deep"
+                          >
+                            {article.title}
+                          </Link>
+                          <ArrowUpRight
+                            aria-hidden
+                            className="mt-1 size-5 shrink-0 text-brand-bright opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                          />
+                        </h3>
+
+                        <p className="mt-2 text-sm text-ink-muted">
+                          {article.source} &middot;{" "}
+                          {formatDate(article.publishedDate)}
+                        </p>
+
+                        <p className="mt-3 text-sm leading-[1.6] text-ink">
+                          {article.description}
+                        </p>
+                      </article>
+                    ))}
                 </div>
-              ))}
-            </div>
-
-            {/* Footer */}
-            <footer className="mt-16 bg-gray-50 p-8 rounded-xl border border-gray-100 text-center">
-              <p className="text-gray-600">
-                Have an article to suggest?{" "}
-                <a
-                  href="/#contact"
-                  className="text-blue-700 hover:text-blue-800 underline font-medium"
-                >
-                  Get in touch
-                </a>{" "}
-                — we&apos;re always looking for great reads.
-              </p>
-            </footer>
+              </section>
+            ))}
           </div>
-        </section>
-      </main>
-    </>
-  );
-};
+
+          <aside className="mt-16 border-t border-hairline bg-surface-3 px-6 py-10 text-center sm:mt-20 sm:px-10">
+            <p className="text-base leading-[1.6] text-ink">
+              Have an article to suggest?{" "}
+              <Link
+                href="/#contact"
+                className="font-semibold text-brand underline underline-offset-4 hover:text-brand-deep"
+              >
+                Get in touch
+              </Link>{" "}
+              — we&apos;re always looking for great reads.
+            </p>
+          </aside>
+        </div>
+      </section>
+    </main>
+    <FooterBar />
+  </>
+);
 
 export default FieldNotes;

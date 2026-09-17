@@ -19,22 +19,23 @@ const ArticleReader = ({ article }: { article: Article }) => {
   return (
     <div className="flex flex-col h-screen">
       {/* Top bar */}
-      <header className="flex items-center gap-4 px-4 py-3 bg-white border-b border-gray-200 shadow-sm flex-shrink-0 z-10">
+      {/* Brand bar, same fill as the site header the reader just came from. */}
+      <header className="z-10 flex flex-shrink-0 items-center gap-4 bg-brand px-4 py-3 text-white">
         <Link
           href="/field-notes"
-          className="flex items-center gap-1.5 text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0"
+          className="flex flex-shrink-0 items-center gap-1.5 text-white/80 no-underline transition-colors hover:text-white"
         >
           <ArrowLeft className="w-5 h-5" />
           <span className="hidden sm:inline text-sm font-medium">Back</span>
         </Link>
 
-        <div className="h-5 w-px bg-gray-300 flex-shrink-0" />
+        <div className="h-5 w-px flex-shrink-0 bg-white/25" />
 
         <div className="flex-1 min-w-0">
-          <h1 className="text-sm font-semibold text-gray-900 truncate">
+          <h1 className="truncate text-sm font-semibold text-white">
             {article.title}
           </h1>
-          <p className="text-xs text-gray-500 truncate">
+          <p className="truncate text-xs text-white/70">
             {article.source} &middot; {formatDate(article.publishedDate)}
           </p>
         </div>
@@ -43,7 +44,7 @@ const ArticleReader = ({ article }: { article: Article }) => {
           href={article.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 text-sm text-blue-600 hover:text-blue-800 transition-colors flex-shrink-0 font-medium"
+          className="flex flex-shrink-0 items-center gap-1.5 text-sm font-semibold text-brand-glow no-underline transition-colors hover:text-white"
         >
           <span className="hidden sm:inline">Open original</span>
           <ExternalLink className="w-4 h-4" />
@@ -52,13 +53,13 @@ const ArticleReader = ({ article }: { article: Article }) => {
 
       {/* iframe or fallback */}
       {iframeError ? (
-        <div className="flex-1 flex items-center justify-center bg-gray-50 px-6">
+        <div className="flex flex-1 items-center justify-center bg-surface-2 px-6">
           <div className="text-center max-w-md">
-            <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-4" />
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">
+            <AlertTriangle className="mx-auto mb-4 size-12 text-brand-bright" />
+            <h2 className="mb-2 text-lg font-semibold text-ink">
               This article can&apos;t be displayed here
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="mb-6 text-ink-muted">
               The source website doesn&apos;t allow embedding. You can read the
               full article on their site.
             </p>
@@ -66,7 +67,7 @@ const ArticleReader = ({ article }: { article: Article }) => {
               href={article.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+              className="inline-flex h-[50px] items-center gap-2.5 rounded-full bg-brand px-6 text-sm font-bold tracking-[0.02em] text-white uppercase no-underline transition-colors duration-300 hover:bg-brand-deep"
             >
               Read on {article.source}
               <ExternalLink className="w-4 h-4" />

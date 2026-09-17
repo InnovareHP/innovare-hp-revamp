@@ -1,10 +1,21 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  ADA_NOTICE_AFTER_EMAIL,
+  ADA_NOTICE_BEFORE_EMAIL,
+  NOTICE_EMAIL,
+  NOTICE_EMAIL_LABEL,
+} from "./shared/noticeCopy";
 
 /**
  * Accessibility notice pinned to the bottom of the viewport while the hero is
  * on screen. CSS-only transitions keep it off the landing page's JS budget.
+ *
+ * Kept under the header's `z-50` so the navigation overlay covers it.
+ *
+ * Hidden below `md`: on a phone this bar and the events toast cover the hero
+ * between them, so `MobileNoticeDock` carries both behind one button instead.
  */
 const ADABanner = () => {
   const [isDismissed, setIsDismissed] = useState(false);
@@ -30,7 +41,7 @@ const ADABanner = () => {
 
   return (
     <aside
-      className={`fixed inset-x-0 bottom-0 z-[100] border-t border-white/20 bg-brand/95 text-white shadow-[0_-4px_20px_rgba(0,0,0,0.3)] backdrop-blur-md transition-transform duration-300 ease-out ${
+      className={`fixed inset-x-0 bottom-0 z-30 max-md:hidden border-t border-white/20 bg-brand/95 text-white shadow-[0_-4px_20px_rgba(0,0,0,0.3)] backdrop-blur-md transition-transform duration-300 ease-out ${
         isVisible ? "translate-y-0" : "translate-y-full"
       }`}
       aria-label="Accessibility Notice"
@@ -59,16 +70,15 @@ const ADABanner = () => {
           </svg>
 
           <p className="text-[11px] leading-snug sm:text-xs md:text-sm">
-            We are committed to ADA compliance and aim to make our website
-            accessible to all users. Email us at{" "}
+            {ADA_NOTICE_BEFORE_EMAIL}
             <a
-              href="mailto:info@innovarehp.com"
+              href={`mailto:${NOTICE_EMAIL}`}
               className="font-medium text-white underline transition-colors hover:text-white/80"
-              aria-label="Send an email to info@innovarehp.com (opens email application)"
+              aria-label={NOTICE_EMAIL_LABEL}
             >
-              info@innovarehp.com
-            </a>{" "}
-            if you encounter any issues.
+              {NOTICE_EMAIL}
+            </a>
+            {ADA_NOTICE_AFTER_EMAIL}
           </p>
         </div>
 

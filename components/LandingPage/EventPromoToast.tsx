@@ -5,6 +5,10 @@ import { CalendarIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import { useRef, useState } from "react";
 
+/**
+ * Events nudge, wide screens only. Below `md` it is hidden and its copy moves
+ * into `MobileNoticeDock` so the phone hero keeps one floating control.
+ */
 const DISPLAY_MS = 4000;
 const FADE_MS = 400;
 
@@ -43,7 +47,7 @@ export function EventPromoToast() {
       role="status"
       aria-live="polite"
       aria-label="Events notice"
-      className={`fixed bottom-20 right-6 z-200 w-[min(360px,calc(100vw-2rem))] rounded-lg border border-border bg-popover p-4 text-popover-foreground shadow-lg transition-opacity ease-out ${
+      className={`fixed bottom-20 right-6 z-30 max-md:hidden w-[min(360px,calc(100vw-2rem))] rounded-lg border border-border bg-popover p-4 text-popover-foreground shadow-lg transition-opacity ease-out ${
         phase === "fading" ? "opacity-0" : "opacity-100"
       }`}
       style={{ transitionDuration: `${FADE_MS}ms` }}

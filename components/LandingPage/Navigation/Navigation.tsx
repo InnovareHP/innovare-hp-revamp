@@ -23,8 +23,6 @@ const navLinks = [
   { name: "Privacy Policy", href: "/privacy-policy", title: "Privacy Policy" },
 ];
 
-
-
 /** Sections the header tracks, in page order, for the menu's current link. */
 const trackedSections = [
   { id: "about" },
@@ -129,7 +127,6 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
     elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, [isLanding]);
-
 
   // Keyboard handling and focus trapping for the overlay menu.
   useEffect(() => {
@@ -262,10 +259,14 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
           aria-label="Menu"
           aria-hidden={!isOpen}
           inert={!isOpen}
-          className={`fixed inset-0 z-40 overflow-y-auto bg-brand-deep text-white transition-transform duration-500 ease-in-out ${
+          className={`fixed inset-0 z-40 h-[100dvh] bg-brand-deep text-white transition-transform duration-500 ease-in-out ${
             isOpen ? "translate-x-0" : "pointer-events-none translate-x-full"
           }`}
         >
+          {/* The halftone sits on the panel itself, not inside the scroller:
+              an `inset-0` layer inside an `overflow-y-auto` box is only as tall
+              as the scrollport, so it scrolled away and left the rows below the
+              first screen sitting on bare brand-deep. */}
           <div aria-hidden className="pointer-events-none absolute inset-0">
             <Image
               src="/images/redesign/hero-texture.webp"
@@ -276,51 +277,57 @@ const Navigation = ({ isFieldNotes = false }: NavigationProps) => {
             />
           </div>
 
-          <div className="hp-container relative flex min-h-full flex-col justify-center py-24">
-            <span className="flex items-center gap-4 text-[11px] tracking-[0.18em] text-white/60 uppercase">
-              <span aria-hidden className="h-px w-8 bg-white/30" />
-              Menu
-            </span>
+          {/* `100dvh` + the safe-area pad keep the last row and the address
+              clear of the iOS home indicator and the collapsing URL bar. */}
+          <div className="relative h-full overflow-y-auto overscroll-contain">
+            <div className="hp-container flex min-h-full flex-col justify-center py-24 pb-[max(6rem,calc(env(safe-area-inset-bottom)+4rem))]">
+              <span className="flex items-center gap-4 text-[11px] tracking-[0.18em] text-white/60 uppercase">
+                <span aria-hidden className="h-px w-8 bg-white/30" />
+                Menu
+              </span>
 
-            <nav className="mt-8 flex flex-col" aria-label="Main navigation">
-              {navLinks.map((link, index) => {
-                const isCurrent =
-                  isLanding && link.href === `#${activeSection ?? ""}`;
+              <nav className="mt-8 flex flex-col" aria-label="Main navigation">
+                {navLinks.map((link, index) => {
+                  const isCurrent =
+                    isLanding && link.href === `#${activeSection ?? ""}`;
 
-                return (
-                  <Link
-                    key={link.name}
-                    href={getHref(link.href)}
-                    onClick={() => setIsOpen(false)}
-                    aria-current={isCurrent ? "true" : undefined}
-                    className={`group/row flex items-baseline gap-5 border-b border-white/10 py-4 no-underline transition-colors duration-300 sm:gap-8 sm:py-5 ${
-                      isCurrent ? "text-white" : "text-white/75 hover:text-white"
-                    }`}
-                  >
-                    <span
-                      aria-hidden
-                      className={`text-[11px] tabular-nums transition-colors duration-300 ${
-                        isCurrent ? "text-brand-glow" : "text-white/40"
+                  return (
+                    <Link
+                      key={link.name}
+                      href={getHref(link.href)}
+                      onClick={() => setIsOpen(false)}
+                      aria-current={isCurrent ? "true" : undefined}
+                      className={`group/row flex items-baseline gap-5 border-b border-white/10 py-4 no-underline transition-colors duration-300 sm:gap-8 sm:py-5 ${
+                        isCurrent
+                          ? "text-white"
+                          : "text-white/75 hover:text-white"
                       }`}
                     >
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="text-2xl tracking-[0.02em] sm:text-4xl">
-                      {link.name}
-                    </span>
-                    <ArrowRight
-                      aria-hidden
-                      className="ml-auto size-5 shrink-0 self-center opacity-0 transition-all duration-300 group-hover/row:translate-x-1 group-hover/row:opacity-100"
-                    />
-                  </Link>
-                );
-              })}
-            </nav>
+                      <span
+                        aria-hidden
+                        className={`text-[11px] tabular-nums transition-colors duration-300 ${
+                          isCurrent ? "text-brand-glow" : "text-white/40"
+                        }`}
+                      >
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-2xl tracking-[0.02em] sm:text-4xl">
+                        {link.name}
+                      </span>
+                      <ArrowRight
+                        aria-hidden
+                        className="ml-auto size-5 shrink-0 self-center opacity-0 transition-all duration-300 group-hover/row:translate-x-1 group-hover/row:opacity-100"
+                      />
+                    </Link>
+                  );
+                })}
+              </nav>
 
-            <p className="mt-10 max-w-[420px] text-sm leading-[1.6] text-white/60">
-              Healthcare marketing and growth strategy — Comstock Park and Ann
-              Arbor, Michigan.
-            </p>
+              <p className="mt-10 max-w-[420px] text-sm leading-[1.6] text-white/60">
+                Healthcare marketing and growth strategy — Comstock Park and Ann
+                Arbor, Michigan.
+              </p>
+            </div>
           </div>
         </div>
       </header>

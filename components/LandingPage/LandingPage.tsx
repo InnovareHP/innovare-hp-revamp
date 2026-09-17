@@ -8,6 +8,7 @@ import FieldNotesSummary from "./FieldNotes/FieldNotesSummary";
 import HeroSection from "./HeroSection/HeroSection";
 import LandingAnimations from "./LandingAnimations";
 import MissionSection from "./MissionSection/MissionSection";
+import MobileNoticeDock from "./MobileNoticeDock";
 import Navigation from "./Navigation/Navigation";
 import Process from "./Proces/Process";
 import ServicesSection from "./ServiceOfferings/ServicesSection";
@@ -34,6 +35,7 @@ const LandingPage = () => (
     <LandingAnimations />
     <ADABanner />
     <EventPromoToast />
+    <MobileNoticeDock />
   </>
 );
 

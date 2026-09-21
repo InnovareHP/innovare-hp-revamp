@@ -37,10 +37,7 @@ const organizationJsonLd = {
     "Innovare HP: Healthcare marketing & brand strategy for senior care, behavioral health, and clinical organizations.",
   foundingDate: "2020",
   priceRange: "$$",
-  // No `telephone`: the only number available was a personal mobile, and a
-  // number in JSON-LD is public, machine-readable and routinely scraped. Email
-  // and address still carry the local signal; add a business line here if one
-  // is ever set up.
+  telephone: "+1-616-551-4951",
   email: "hello@innovarehp.com",
   address: {
     "@type": "PostalAddress",
@@ -70,6 +67,7 @@ const organizationJsonLd = {
   ],
   contactPoint: {
     "@type": "ContactPoint",
+    telephone: "+1-616-551-4951",
     email: "hello@innovarehp.com",
     contactType: "customer service",
     areaServed: "US",

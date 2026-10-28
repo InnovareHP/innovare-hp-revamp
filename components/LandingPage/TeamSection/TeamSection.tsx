@@ -10,7 +10,7 @@ const team: { name: string; role: string; image: string; zoom?: number }[] = [
   },
   {
     name: "Roy Gingrich",
-    role: "CFO",
+    role: "Chief Financial Officer",
     image: "/images/team/Roy-3.jpg",
   },
   {

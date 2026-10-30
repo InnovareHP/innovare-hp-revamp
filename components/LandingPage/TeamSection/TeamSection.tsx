@@ -2,46 +2,48 @@ import SectionBadge from "@/components/LandingPage/shared/SectionBadge";
 import Image from "next/image";
 
 import SectionSeam from "@/components/LandingPage/shared/SectionSeam";
-const team = [
+const team: { name: string; role: string; image: string; zoom?: number }[] = [
   {
     name: "Rich Nollen, BSN, RN",
     role: "Owner/CEO",
-    image: "/images/team/team-1.png",
+    image: "/images/team/Rich-6.jpg",
   },
   {
     name: "Roy Gingrich",
-    role: "CFO",
-    image: "/images/team/team-5.png",
+    role: "Chief Financial Officer",
+    image: "/images/team/Roy-3.jpg",
   },
   {
     name: "Mark Ivor Glorioso",
     role: "Software Engineer/CIO",
-    image: "/images/team/team-3.png",
+    image: "/images/team/Ivor-5.jpg",
   },
   {
     name: "Abcdef Cresencio",
     role: "Software Engineer/IT & Web Systems Manager",
-    image: "/images/team/team-7.png",
+    image: "/images/team/Abcdef-2.jpg",
   },
   {
     name: "Kristin Ann Artillaga",
     role: "Creative Director",
-    image: "/images/team/team-9.png",
+    image: "/images/team/Kristin-2.jpg",
   },
   {
     name: "Llewilyn Janda",
     role: "Social Media Specialist",
-    image: "/images/team/team-10.png",
+    image: "/images/team/Llewilyn-3.jpg",
   },
   {
     name: "Gerald Ponteras, CPA",
     role: "Accounting & Billing Manager",
-    image: "/images/team/Team-11.png",
+    image: "/images/team/Gerald.jpg",
+    // Gerald sits smaller in his frame than the others; crop in to match.
+    zoom: 1.22,
   },
   {
     name: "Arzenio Victor Duque",
     role: "Graphic Designer",
-    image: "/images/team/Team-12.png",
+    image: "/images/team/Arvie-3.jpg",
   },
 ];
 
@@ -92,18 +94,27 @@ const TeamSection = () => (
             {/* The frame holds still; only the portrait inside scales, so the
                 grid rhythm never shifts on hover. */}
             <div className="overflow-hidden">
-              <Image
-                src={member.image}
-                alt={member.name}
-                width={250}
-                height={index % 2 === 0 ? 335 : 276}
-                sizes="(max-width: 640px) 45vw, (max-width: 1024px) 45vw, 250px"
-                className={`aspect-[5/6] w-full object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06] ${
-                  index % 2 === 0
-                    ? "lg:aspect-[250/335]"
-                    : "lg:aspect-[250/276]"
-                }`}
-              />
+              <div
+                className="origin-[50%_15%]"
+                style={
+                  member.zoom
+                    ? { transform: `scale(${member.zoom})` }
+                    : undefined
+                }
+              >
+                <Image
+                  src={member.image}
+                  alt={member.name}
+                  width={250}
+                  height={index % 2 === 0 ? 335 : 276}
+                  sizes="(max-width: 640px) 45vw, (max-width: 1024px) 45vw, 250px"
+                  className={`aspect-[5/6] w-full object-cover object-top transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06] ${
+                    index % 2 === 0
+                      ? "lg:aspect-[250/335]"
+                      : "lg:aspect-[250/276]"
+                  }`}
+                />
+              </div>
             </div>
             <span
               aria-hidden

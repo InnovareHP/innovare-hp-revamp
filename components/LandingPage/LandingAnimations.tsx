@@ -67,11 +67,19 @@ const LandingAnimations = () => {
         const travel = (value: number) => (desktop ? value : value * 0.6);
         const time = (value: number) => (desktop ? value : value * 0.85);
 
-        /** Shared ScrollTrigger config for one-shot reveals. */
+        /**
+         * Shared ScrollTrigger config for one-shot reveals. Plays on first
+         * entry and never reverses. Deliberately not `once: true`: that kills
+         * the trigger the moment it finds itself already scrolled past, and
+         * arriving on a deep link (`/#contact`) puts every reveal above the
+         * fold in that state at once. Several triggers dying inside
+         * ScrollTrigger's nested creation-time refresh leaves it reading
+         * `.end` off an index that no longer exists.
+         */
         const once = (trigger: Element, start = "top 88%") => ({
           trigger,
           start,
-          once: true,
+          toggleActions: "play none none none",
         });
 
         // ---- Hero ----

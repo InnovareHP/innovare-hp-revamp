@@ -2,7 +2,16 @@ import SectionBadge from "@/components/LandingPage/shared/SectionBadge";
 import Image from "next/image";
 
 import SectionSeam from "@/components/LandingPage/shared/SectionSeam";
-const team: { name: string; role: string; image: string; zoom?: number }[] = [
+const team: {
+  name: string;
+  role: string;
+  image: string;
+  zoom?: number;
+  /** Horizontal nudge in % of the frame (negative = left). Needs `zoom` so
+      the shifted portrait still covers the frame: keep |offsetX| under
+      roughly (zoom - 1) / 2 * 100. */
+  offsetX?: number;
+}[] = [
   {
     name: "Rich Nollen, BSN, RN",
     role: "Owner/CEO",
@@ -22,6 +31,7 @@ const team: { name: string; role: string; image: string; zoom?: number }[] = [
     name: "Abcdef Cresencio",
     role: "Software Engineer/IT & Web Systems Manager",
     image: "/images/team/Abcdef-2.jpg",
+    zoom: 1.1,
   },
   {
     name: "Kristin Ann Artillaga",
@@ -32,6 +42,8 @@ const team: { name: string; role: string; image: string; zoom?: number }[] = [
     name: "Llewilyn Janda",
     role: "Social Media Specialist",
     image: "/images/team/Llewilyn-3.jpg",
+    zoom: 1.1,
+    offsetX: -4,
   },
   {
     name: "Gerald Ponteras, CPA",
@@ -44,6 +56,11 @@ const team: { name: string; role: string; image: string; zoom?: number }[] = [
     name: "Arzenio Victor Duque",
     role: "Graphic Designer",
     image: "/images/team/Arvie-3.jpg",
+  },
+  {
+    name: "Allynah Beatrice De Castro",
+    role: "Marketing & Outreach Specialist",
+    image: "/images/team/Allynah.jpg",
   },
 ];
 
@@ -79,55 +96,61 @@ const TeamSection = () => (
       <ul
         data-anim="stagger"
         data-anim-from="lift"
-        className="mt-8 grid grid-cols-2 items-start gap-x-4 gap-y-8 sm:mt-10 sm:gap-x-[29px] sm:gap-y-10 lg:mt-[68px] lg:grid-cols-4"
+        className="mt-8 grid grid-cols-2 items-start gap-x-4 gap-y-8 sm:mt-10 sm:grid-cols-3 sm:gap-x-[29px] sm:gap-y-10 lg:mt-[68px] lg:gap-x-12 lg:gap-y-14"
       >
-        {team.map((member, index) => (
-          <li
-            key={member.name}
-            /* Second-row shorter portraits sit higher, as in the Figma
-               stagger. Only from `lg`, where the grid is four across — the
-               two-column layout below that stays flush. */
-            className={`group ${
-              index >= 4 && index % 2 === 1 ? "lg:-mt-[51px]" : ""
-            }`}
-          >
-            {/* The frame holds still; only the portrait inside scales, so the
+        {team.map((member, index) => {
+          /* Three across from `sm`. On `lg` the middle column carries the
+             shorter portraits and sits centred in its row, so it floats
+             between the taller outer columns — the Figma stagger, without
+             negative margins that depend on the row count. */
+          const isMiddle = index % 3 === 1;
+          return (
+            <li
+              key={member.name}
+              /* Below `sm` the grid is two across, so an odd last card would
+               sit alone on the left; centre it instead. */
+              className={`group max-sm:last:odd:col-span-2 max-sm:last:odd:w-[calc(50%-0.5rem)] max-sm:last:odd:justify-self-center ${
+                isMiddle ? "lg:self-center" : ""
+              }`}
+            >
+              {/* The frame holds still; only the portrait inside scales, so the
                 grid rhythm never shifts on hover. */}
-            <div className="overflow-hidden">
-              <div
-                className="origin-[50%_15%]"
-                style={
-                  member.zoom
-                    ? { transform: `scale(${member.zoom})` }
-                    : undefined
-                }
-              >
-                <Image
-                  src={member.image}
-                  alt={member.name}
-                  width={250}
-                  height={index % 2 === 0 ? 335 : 276}
-                  sizes="(max-width: 640px) 45vw, (max-width: 1024px) 45vw, 250px"
-                  className={`aspect-[5/6] w-full object-cover object-top transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06] ${
-                    index % 2 === 0
-                      ? "lg:aspect-[250/335]"
-                      : "lg:aspect-[250/276]"
-                  }`}
-                />
+              <div className="overflow-hidden">
+                <div
+                  className="origin-[50%_15%]"
+                  style={
+                    member.zoom
+                      ? {
+                          transform: `translateX(${member.offsetX ?? 0}%) scale(${member.zoom})`,
+                        }
+                      : undefined
+                  }
+                >
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    width={250}
+                    height={isMiddle ? 276 : 335}
+                    sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 340px"
+                    className={`aspect-[5/6] w-full object-cover object-top transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06] ${
+                      isMiddle ? "lg:aspect-[250/276]" : "lg:aspect-[250/335]"
+                    }`}
+                  />
+                </div>
               </div>
-            </div>
-            <span
-              aria-hidden
-              className="hp-hover-rule mt-3 block h-[2px] w-full bg-brand sm:mt-4"
-            />
-            <h3 className="mt-3 text-[15px] leading-tight font-medium text-brand transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5 sm:text-lg lg:text-xl">
-              {member.name}
-            </h3>
-            <p className="mt-1 text-[13px] leading-snug text-ink transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5 sm:text-sm lg:text-[15px]">
-              {member.role}
-            </p>
-          </li>
-        ))}
+              <span
+                aria-hidden
+                className="hp-hover-rule mt-3 block h-[2px] w-full bg-brand sm:mt-4"
+              />
+              <h3 className="mt-3 text-[15px] leading-tight font-medium text-brand transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5 sm:text-lg lg:text-xl">
+                {member.name}
+              </h3>
+              <p className="mt-1 text-[13px] leading-snug text-ink transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1.5 sm:text-sm lg:text-[15px]">
+                {member.role}
+              </p>
+            </li>
+          );
+        })}
       </ul>
     </div>
   </section>
